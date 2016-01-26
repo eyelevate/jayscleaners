@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/jayscleaners":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/jayscleaners","hostpath":"/Users/wondochoung/Documents/eyelevate/jayscleaners","disabled":false},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/wondochoung/Documents/eyelevate/jayscleaners","disabled":false}}}
