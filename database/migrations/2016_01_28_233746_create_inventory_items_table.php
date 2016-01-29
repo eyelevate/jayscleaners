@@ -12,7 +12,12 @@ class CreateInventoryItemsTable extends Migration
      */
     public function up()
     {
-        //
+        $table->increments('id');
+        $table->integer('company_id');
+        $table->string('name',50)->nullable();
+        $table->text('description')->nullable();
+        $table->tinyInteger('status')->nullable();
+        $table->timestamps();
     }
 
     /**
@@ -22,6 +27,6 @@ class CreateInventoryItemsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('inventory_items');
     }
 }
