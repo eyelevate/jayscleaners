@@ -2395,10 +2395,11 @@
 	#banner {
 		background-attachment: scroll, scroll, scroll, fixed;
 		background-color: #645862;
-		background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("images/overlay.png"), url("../../images/banner.jpg");
-		background-position: bottom left, bottom right, top left, top center;
-		background-repeat: no-repeat, no-repeat, repeat, no-repeat;
-		background-size: 25em, 25em, auto, cover;
+		background-image: url("../../images/green_nature.png");
+		background-repeat:no-repeat;
+		background-size:contain;
+		background-position:center;
+		background-size: 100% auto;
 		color: #fff;
 		cursor: default;
 		padding: 6em 0;
@@ -2602,6 +2603,7 @@
 		/* Banner */
 
 			#banner {
+				background-size: cover;
 				background-attachment: scroll;
 			}
 
@@ -2677,7 +2679,7 @@
 		/* Banner */
 
 			#banner {
-				background-size: 15em, 15em, auto, cover;
+				background-size: cover;
 			}
 
 		/* Main */
@@ -2729,7 +2731,7 @@
 		/* Section/Article */
 
 			section {
-				margin: 1em 0 1em 0;
+				margin: 0;
 			}
 
 				section:first-child {
@@ -2778,7 +2780,7 @@
 		/* Banner */
 
 			#banner {
-				margin: 0;
+				background-size: cover;
 			}
 
 		/* Wrapper */
@@ -3119,14 +3121,13 @@
 		/* Banner */
 
 			#banner {
-				background-size: 10em, 10em, auto, cover;
-				padding: 6em 0;
+				background-size: cover;
 			}
 
 				#banner .inner {
-					background: none;
+
 					display: block;
-					padding: 0 1.5em;
+					padding: 1.5em;
 				}
 
 					#banner .inner header h2 {

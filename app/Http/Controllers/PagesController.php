@@ -15,12 +15,24 @@ use Session;
 use Laracasts\Flash\Flash;
 use View;
 
-use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class PagesController extends Controller
 {
-    //
+    public function __construct() {
+    	$this->layout = 'layouts.home';
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function getIndex()
+    {
+
+        return view('pages.index')
+        ->with('layout',$this->layout);
+    }
 }
