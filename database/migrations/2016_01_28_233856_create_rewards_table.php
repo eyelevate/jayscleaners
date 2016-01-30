@@ -12,7 +12,14 @@ class CreateRewardsTable extends Migration
      */
     public function up()
     {
-        //
+        $table->increments('id');
+        $table->integer('company_id');
+        $table->string('name',100)->nullable();
+        $table->integer('points');
+        $table->decimal('discount',6,4)->nullable();
+        $table->tinyInteger('status')->nullable();
+        $table->softDeletes();
+        $table->timestamps();
     }
 
     /**
@@ -22,6 +29,6 @@ class CreateRewardsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('rewards');
     }
 }
