@@ -22,6 +22,7 @@ class CreateDeliveriesTable extends Migration
         $table->text('zipcode')->nullable();
         $table->text('blackout')->nullable();
         $table->tinyInteger('status')->nullable();
+        $table->softDeletes();
         $table->timestamps();
     }
 

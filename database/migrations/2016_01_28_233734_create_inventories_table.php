@@ -17,6 +17,7 @@ class CreateInventoriesTable extends Migration
         $table->string('name',50)->nullable();
         $table->text('description')->nullable();
         $table->tinyInteger('status')->nullable();
+        $table->softDeletes();
         $table->timestamps();
     }
 
