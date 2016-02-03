@@ -1,0 +1,22 @@
+{
+  "name": "jayscleaners",
+  "description": "Jays Cleaner website",
+  "main": "",
+  "authors": [
+    "eyelevate <wondo@eyelevate.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/eyelevate/jayscleaners",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "bootstrap-sass-official#^3.3.6"
+  }
+}

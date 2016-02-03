@@ -26,4 +26,5 @@ Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
 
 Route::group(['middleware' => ['web']], function () {
     //
+    Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 });
