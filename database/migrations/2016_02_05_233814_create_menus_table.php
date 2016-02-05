@@ -12,12 +12,14 @@ class CreateMenusTable extends Migration
      */
     public function up()
     {
-        $table->increments('id');
-        $table->string('name',100)->nullable();
-        $table->text('edit_menu')->nullable();
-        $table->tinyInteger('status')->nullable();
-        $table->softDeletes();
-        $table->timestamps();
+        Schema::create('menus', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name',100)->nullable();
+            $table->text('edit_menu')->nullable();
+            $table->tinyInteger('status', false, true)->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+        });
     }
 
     /**

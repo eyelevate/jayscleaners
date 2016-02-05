@@ -39,4 +39,10 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
+    public function getLogin() {
+
+    	return view('admins.index')
+    	->with('layout',$this->layout);
+    }
+
 }
