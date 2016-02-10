@@ -205,6 +205,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Html'      => Collective\Html\HtmlFacade::class,
         'Form'      => Collective\Html\FormFacade::class,
+        'Input'     => Illuminate\Support\Facades\Input::class,
         'Flash'     => 'Laracasts\Flash\Flash',
         'UploadHelper'=> App\Helpers\UploadHelper::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
+
 use Input;
 use Validator;
 use Redirect;
@@ -40,9 +43,45 @@ class AdminsController extends Controller
     }
 
     public function getLogin() {
-
-    	return view('admins.index')
+        $this->layout = 'layouts.admin_login';
+    	return view('admins.login')
     	->with('layout',$this->layout);
+    }
+
+    public function postLogin() {
+        $this->layout = 'layouts.admin_login';
+        $username = Input::get('username');
+        $password = Input::get('password');
+        $remember = Input::get('remember');
+
+        if($remember) { // If user requests to be remembered create session
+            if (Auth::attempt(['username' => $username, 'password' => $password], $remember)) {
+                Flash::success('Welcome back '.$username.'!');
+
+                //redirect to intended page
+                return (Session::has('intended_url')) ? Redirect::to(Session::get('intended_url')) : redirect()->intended('/admins');
+            } else { //LOGING FAILED
+                Flash::error('Wrong Username or Password!');
+                return view('admins.login')
+                ->with('layout',$this->layout);
+            }   
+        } else {
+            if (Auth::attempt(['username'=>$username, 'password'=>$password])) {
+                Flash::success('Welcome back '.$username.'!');
+
+                return (Session::has('intended_url')) ? Redirect::to(Session::get('intended_url')) : redirect()->intended('/admins');
+            } else { //LOGING FAILED
+                Flash::error('Wrong Username or Password!');
+                return view('admins.login')
+                ->with('layout',$this->layout);
+            }   
+        }
+     
+    }
+
+    public function postLogout() {
+        Auth::logout();
+
     }
 
 }

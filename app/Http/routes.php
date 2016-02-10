@@ -30,5 +30,9 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/home', 'HomeController@index');
     Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
+    Route::get('/admins/login',  ['as'=>'admins_login', 'uses' => 'AdminsController@getLogin']);
+	Route::post('/admins/login',  ['as'=>'admins_login_post', 'uses' => 'AdminsController@postLogin']);
+	Route::post('/admins/logout',  ['uses' => 'AdminsController@postLogout']);
+
 });
 
