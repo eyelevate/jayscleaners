@@ -31,12 +31,13 @@ use App\Layout;
 class AdminsController extends Controller
 {
     public function __construct() {
+
+        //Set controller variables
     	$this->layout = 'layouts.admin';
 
     }
     
     public function getIndex() {
-
 
         return view('admins.index')
         ->with('layout',$this->layout);
@@ -81,6 +82,8 @@ class AdminsController extends Controller
 
     public function postLogout() {
         Auth::logout();
+        Flash::success('You have successfully been logged out');
+        return Redirect::action('AdminsController@getLogin');
 
     }
 
