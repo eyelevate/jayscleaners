@@ -87,4 +87,29 @@ class AdminsController extends Controller
 
     }
 
+    public function getOverview(){
+
+        
+    }
+
+    public function getAdd(){
+
+    }
+
+    public function postAdd(){
+
+    }
+
+    public function getEdit($id = null){
+
+    }
+
+    public function postEdit(){
+
+    }
+
+    public function getView($id = null){
+
+    }
+
 }

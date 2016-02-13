@@ -33,6 +33,12 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admins/login',  ['as'=>'admins_login', 'uses' => 'AdminsController@getLogin']);
 	Route::post('/admins/login',  ['as'=>'admins_login_post', 'uses' => 'AdminsController@postLogin']);
 	Route::post('/admins/logout',  ['as'=>'admins_logout_post', 'uses' => 'AdminsController@postLogout']);
+	Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);
+	Route::post('/admins/add',['as'=>'admins_post_add','uses'=>'AdminsController@postAdd']);
+	Route::get('/admins/edit/{id}',['as'=>'admins_edit','uses'=>'AdminsController@getEdit']);
+	Route::post('/admins/edit',['as'=>'admins_post_edit','uses'=>'AdminsController@postEdit']);
+	Route::get('/admins/view/{id}',['as'=>'admins_view','uses'=>'AdminsController@getView']);
+	Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 
 });
 
