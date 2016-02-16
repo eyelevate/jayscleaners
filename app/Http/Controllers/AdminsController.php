@@ -88,12 +88,14 @@ class AdminsController extends Controller
     }
 
     public function getOverview(){
+        return view('admins.overview')
+        ->with('layout',$this->layout);
 
-        
     }
 
     public function getAdd(){
-
+        return view('admins.add')
+        ->with('layout',$this->layout);
     }
 
     public function postAdd(){
@@ -101,7 +103,8 @@ class AdminsController extends Controller
     }
 
     public function getEdit($id = null){
-
+        return view('admins.edit')
+        ->with('layout',$this->layout);
     }
 
     public function postEdit(){
@@ -109,7 +112,8 @@ class AdminsController extends Controller
     }
 
     public function getView($id = null){
-
+        return view('admins.view')
+        ->with('layout',$this->layout);
     }
 
 }

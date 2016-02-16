@@ -20,13 +20,6 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->guest()) {
-            if ($request->ajax()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect()->guest('login');
-            }
-        }
         if (!Auth::check()) {
 
             // Check where the user came from, if from admins then redirect accordingly
@@ -37,6 +30,14 @@ class Authenticate
             Flash::error('You must be logged in to view the page');
             return redirect($redirect_path);
         }
+        if (Auth::guard($guard)->guest()) {
+            if ($request->ajax()) {
+                return response('Unauthorized.', 401);
+            } else {
+                return redirect()->guest('login');
+            }
+        }
+
 
         return $next($request);
     }

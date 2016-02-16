@@ -24,21 +24,29 @@ Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
 |
 */
 
+
 Route::group(['middleware' => ['web']], function () {
-    //
+    //public pages
     Route::auth();
 
     Route::get('/home', 'HomeController@index');
-    Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
     Route::get('/admins/login',  ['as'=>'admins_login', 'uses' => 'AdminsController@getLogin']);
 	Route::post('/admins/login',  ['as'=>'admins_login_post', 'uses' => 'AdminsController@postLogin']);
 	Route::post('/admins/logout',  ['as'=>'admins_logout_post', 'uses' => 'AdminsController@postLogout']);
-	Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);
-	Route::post('/admins/add',['as'=>'admins_post_add','uses'=>'AdminsController@postAdd']);
-	Route::get('/admins/edit/{id}',['as'=>'admins_edit','uses'=>'AdminsController@getEdit']);
-	Route::post('/admins/edit',['as'=>'admins_post_edit','uses'=>'AdminsController@postEdit']);
-	Route::get('/admins/view/{id}',['as'=>'admins_view','uses'=>'AdminsController@getView']);
-	Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
+
+	//Authenticated Pages
+	Route::group(['middleware' => ['auth']], function(){
+		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
+		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);
+		Route::post('/admins/add',['as'=>'admins_add_post','uses'=>'AdminsController@postAdd']);
+		Route::get('/admins/edit/{id}',['as'=>'admins_edit','uses'=>'AdminsController@getEdit']);
+		Route::post('/admins/edit',['as'=>'admins_edit_post','uses'=>'AdminsController@postEdit']);
+		Route::get('/admins/view/{id}',['as'=>'admins_view','uses'=>'AdminsController@getView']);
+		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
+
+
+		//ACL Rules
+	});
 
 });
 
