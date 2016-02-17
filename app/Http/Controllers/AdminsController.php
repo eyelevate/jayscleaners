@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-
 use Input;
 use Validator;
 use Redirect;
@@ -17,7 +14,7 @@ use Session;
 use Laracasts\Flash\Flash;
 use View;
 
-use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Job;
 use App\User;
@@ -94,12 +91,39 @@ class AdminsController extends Controller
     }
 
     public function getAdd(){
+        $companies = [''=>'Select A Location',1=>'Montlake',2=>'Roosevelt'];
+
         return view('admins.add')
-        ->with('layout',$this->layout);
+        ->with('layout',$this->layout)
+        ->with('companies',$companies);
     }
 
-    public function postAdd(){
+    public function postAdd(Request $request){
 
+        //Validate the request
+        $this->validate($request, [
+            'username' => 'required|unique:users|max:255',
+            'first_name' => 'required|min:1',
+            'last_name' => 'required|min:1',
+            'phone'=>'required|min:10',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:6',
+            'company_id'=>'required'
+        ]);
+
+        // Validation has passed save data
+        $users = new User;
+        $users->username = $request->username;
+        $users->first_name = $request->first_name;
+        $users->last_name = $request->last_name;
+        $users->role_id = 1; //Admin status
+        $users->email = $request->email;
+        $users->password = bcrypt($request->password);
+
+        if ($users->save()) {
+             Flash::success('Successfully added!');
+             return Redirect::route('admins_overview');
+        }
     }
 
     public function getEdit($id = null){

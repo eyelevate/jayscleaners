@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    public $table = "users";
     /**
      * The attributes that are mass assignable.
      *

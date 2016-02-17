@@ -13,7 +13,8 @@
 	</ol>
 @stop
 @section('content')
-	<form class="form-horizontal" role="form" method="POST" action="{{ route('admins_add_post') }}">
+	{!! Form::open(array('action' => 'AdminsController@postAdd', 'class'=>'form-horizontal','role'=>"form")) !!}
+		{!! csrf_field() !!}
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">Admin Registration Form</h3>
@@ -23,8 +24,7 @@
                     <label class="col-md-4 control-label">Username</label>
 
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="username" value="{{ old('username') }}">
-
+                    	{!! Form::text('username', old('username'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                         @if ($errors->has('username'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('username') }}</strong>
@@ -36,8 +36,7 @@
                     <label class="col-md-4 control-label">First Name</label>
 
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}">
-
+                        {!! Form::text('first_name', old('first_name'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                         @if ($errors->has('first_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('first_name') }}</strong>
@@ -49,8 +48,7 @@
                     <label class="col-md-4 control-label">Last Name</label>
 
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}">
-
+                        {!! Form::text('last_name', old('last_name'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                         @if ($errors->has('last_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('last_name') }}</strong>
@@ -62,8 +60,7 @@
                     <label class="col-md-4 control-label">Email</label>
 
                     <div class="col-md-6">
-                        <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-
+                    	{!! Form::email('email', old('email'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                         @if ($errors->has('email'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('email') }}</strong>
@@ -75,19 +72,56 @@
                     <label class="col-md-4 control-label">Phone</label>
 
                     <div class="col-md-6">
-                        <input type="phone" class="form-control" name="phone" value="{{ old('phone') }}">
-
+                        {!! Form::text('phone', old('phone'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                         @if ($errors->has('phone'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('phone') }}</strong>
                             </span>
                         @endif
                     </div>
-                </div>				
+                </div>
+                <div class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Location</label>
+
+                    <div class="col-md-6">
+                        {!! Form::select('company_id',$companies , '', ['class'=>'form-control']) !!}
+                        @if ($errors->has('company_id'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('company_id') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Password</label>
+
+                    <div class="col-md-6">
+                    	{!! Form::password('password', '', ['class'=>'form-control']) !!}
+                        @if ($errors->has('password'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Confirm Password</label>
+
+                    <div class="col-md-6">
+                        {!! Form::password('password_confirmation', '', ['class'=>'form-control']) !!}
+                        @if ($errors->has('password_confirmation'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('password_confirmation') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
 			</div>
 			<div class="panel-footer clearfix">
 				<input type="submit" value="Add" class="btn btn-primary pull-right"/>
 			</div>
 		</div>
-	</form>
+	{!! Form::close() !!}
 @stop
