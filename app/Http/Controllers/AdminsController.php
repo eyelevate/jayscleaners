@@ -85,8 +85,11 @@ class AdminsController extends Controller
     }
 
     public function getOverview(){
+        $admins = Admin::prepareAdmin(User::where('role_id',1)->orderBy('last_name', 'asc')->get());
+
         return view('admins.overview')
-        ->with('layout',$this->layout);
+        ->with('layout',$this->layout)
+        ->with('admins',$admins);
 
     }
 
@@ -118,6 +121,7 @@ class AdminsController extends Controller
         $users->last_name = $request->last_name;
         $users->role_id = 1; //Admin status
         $users->email = $request->email;
+        $users->contact_phone = $request->phone;
         $users->password = bcrypt($request->password);
 
         if ($users->save()) {
@@ -127,12 +131,38 @@ class AdminsController extends Controller
     }
 
     public function getEdit($id = null){
+        $user = User::find($id);
+        $companies = [''=>'Select A Location',1=>'Montlake',2=>'Roosevelt'];
+
         return view('admins.edit')
-        ->with('layout',$this->layout);
+        ->with('layout',$this->layout)
+        ->with('companies',$companies)
+        ->with('user',$user);
     }
 
-    public function postEdit(){
+    public function postEdit(Request $request){
+        //Validate the request
+        $this->validate($request, [
+            'first_name' => 'required|min:1',
+            'last_name' => 'required|min:1',
+            'phone'=>'required|min:10',
+            'password' => 'required|confirmed|min:6',
+            'company_id'=>'required'
+        ]);
 
+        // Validation has passed save data
+        $users = User::find($request->id);
+        $users->first_name = $request->first_name;
+        $users->last_name = $request->last_name;
+        $users->role_id = 1; //Admin status
+        $users->contact_phone = $request->phone;
+        $users->company_id = $request->company_id;
+        $users->password = bcrypt($request->password);
+
+        if ($users->save()) {
+             Flash::success('Successfully updated admin!');
+             return Redirect::route('admins_overview');
+        }
     }
 
     public function getView($id = null){

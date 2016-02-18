@@ -36,13 +36,22 @@ Route::group(['middleware' => ['web']], function () {
 
 	//Authenticated Pages
 	Route::group(['middleware' => ['auth']], function(){
+		//Admins
 		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);
 		Route::post('/admins/add',['as'=>'admins_add_post','uses'=>'AdminsController@postAdd']);
 		Route::get('/admins/edit/{id}',['as'=>'admins_edit','uses'=>'AdminsController@getEdit']);
-		Route::post('/admins/edit',['as'=>'admins_edit_post','uses'=>'AdminsController@postEdit']);
+		Route::post('/admins/edit',['uses'=>'AdminsController@postEdit']);
 		Route::get('/admins/view/{id}',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
+
+		//Invoices
+		Route::get('/invoices',  ['as'=>'invoices_index', 'uses' => 'InvoicesController@getIndex']);
+		Route::get('/invoices/add',['as'=>'invoices_add','uses'=>'InvoicesController@getAdd']);
+		Route::post('/invoices/add',['uses'=>'InvoicesController@postAdd']);
+		Route::get('/invoices/edit/{id}',['as'=>'invoices_edit','uses'=>'InvoicesController@getEdit']);
+		Route::post('/invoices/edit',['uses'=>'InvoicesController@postEdit']);
+		Route::get('/invoices/view/{id}',['as'=>'invoices_view','uses'=>'InvoicesController@getView']);
 
 
 		//ACL Rules

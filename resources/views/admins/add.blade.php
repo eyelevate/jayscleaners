@@ -9,6 +9,7 @@
 	<h1> Add An Admin <small>Control panel</small></h1>
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
+		<li><a href="{{ route('admins_overview') }}"> Overview</a></li>
 		<li class="active">Add</li>
 	</ol>
 @stop
@@ -68,14 +69,14 @@
                         @endif
                     </div>
                 </div>	
-                <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
+                <div class="form-group{{ $errors->has('contact_phone') ? ' has-error' : '' }}">
                     <label class="col-md-4 control-label">Phone</label>
 
                     <div class="col-md-6">
-                        {!! Form::text('phone', old('phone'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                        @if ($errors->has('phone'))
+                        {!! Form::text('contact_phone', old('contact_phone'), ['class'=>'form-control', 'placeholder'=>'']) !!}
+                        @if ($errors->has('contact_phone'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('phone') }}</strong>
+                                <strong>{{ $errors->first('contact_phone') }}</strong>
                             </span>
                         @endif
                     </div>
