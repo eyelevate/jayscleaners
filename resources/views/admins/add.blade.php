@@ -14,7 +14,7 @@
 	</ol>
 @stop
 @section('content')
-	{!! Form::open(array('action' => 'AdminsController@postAdd', 'class'=>'form-horizontal','role'=>"form")) !!}
+	{!! Form::open(['action' => 'AdminsController@postAdd', 'class'=>'form-horizontal','role'=>"form"]) !!}
 		{!! csrf_field() !!}
 		<div class="panel panel-default">
 			<div class="panel-heading">

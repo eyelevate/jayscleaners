@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="/packages/AdminLTE-2.3.0/plugins/daterangepicker/daterangepicker-bs3.css">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="/packages/AdminLTE-2.3.0/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- layout stylesheets -->
+    <link rel="stylesheet" href="/css/layouts/admins.css">
     @yield('stylesheets')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -72,7 +74,7 @@
                       <li><!-- start message -->
                         <a href="#">
                           <div class="pull-left">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="img-circle" alt="User Image">
                           </div>
                           <h4>
                             Support Team
@@ -84,7 +86,7 @@
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                            <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="img-circle" alt="User Image">
                           </div>
                           <h4>
                             AdminLTE Design Team
@@ -96,7 +98,7 @@
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                            <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="img-circle" alt="User Image">
                           </div>
                           <h4>
                             Developers
@@ -108,7 +110,7 @@
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
+                            <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="img-circle" alt="User Image">
                           </div>
                           <h4>
                             Sales Department
@@ -120,7 +122,7 @@
                       <li>
                         <a href="#">
                           <div class="pull-left">
-                            <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
+                            <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="img-circle" alt="User Image">
                           </div>
                           <h4>
                             Reviewers
@@ -248,13 +250,13 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                  <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="user-image" alt="User Image">
                   <span class="hidden-xs">{{ Auth::user()->username }}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="img-circle" alt="User Image">
                     <p>
                       {{ Auth::user()->username }} - Web Developer
                       <small>Member since Nov. 2012</small>
@@ -301,7 +303,7 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <img src="http://api.adorable.io/avatars/285/abott@adorable.png" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
               <p>{{ Auth::user()->username }}</p>
@@ -309,27 +311,38 @@
             </div>
           </div>
           <!-- search form -->
-          <form action="#" method="get" class="sidebar-form">
+          {!! Form::open(['action' => 'InvoicesController@getIndex', 'class'=>'sidebar-form','role'=>"form"]) !!}
             <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search...">
+              <input id="search" type="text" name="search" class="form-control" placeholder="Phone / Last Name / ID">
               <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
             </div>
-          </form>
+          {{ Form::close() }}
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="active treeview">
+            <li class="{{ (Request::is('invoices') || Request::is('invoices/add') || Request::is('invoices/rack')) ? 'active' : '' }} treeview">
               <a href="#">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+                <i class="fa fa-files-o"></i> <span>Invoice</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                <li class="{{ Request::is('invoices/add') ? 'active' : '' }}"><a href="{{ route('invoices_add') }}"><i class="fa fa-circle-o"></i> New Invoice</a></li>
+                <li class="{{ Request::is('invoices/rack') ? 'active' : '' }}"><a href="{{ route('invoices_rack') }}"><i class="fa fa-circle-o"></i> Rack</a></li>
+                <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{ route('invoices_index') }}"><i class="fa fa-circle-o"></i> History</a></li>
               </ul>
             </li>
+            <li class="{{ (Request::is('admins/overview') || Request::is('admins/add')) ? 'active' : '' }} treeview">
+              <a href="#">
+                <i class="fa fa-dashboard"></i> <span>Admins</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="{{ Request::is('admins/overview') ? 'active' : '' }}"><a href="{{ route('admins_overview') }}"><i class="fa fa-circle-o"></i> Overview</a></li>
+                <li class="{{ Request::is('admins/add') ? 'active' : '' }}"><a href="{{ route('admins_add') }}"><i class="fa fa-circle-o"></i> Add</a></li>
+              </ul>
+            </li>
+
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-files-o"></i>
@@ -685,6 +698,7 @@
     <script src="/packages/AdminLTE-2.3.0//packages/AdminLTE-2.3.0/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="/packages/AdminLTE-2.3.0/dist/js/demo.js"></script>
+    <script src="/js/layouts/admins.js" type="text/javascript"></script>
     @yield('scripts')
   </body>
 </html>

@@ -85,6 +85,7 @@ class AdminsController extends Controller
     }
 
     public function getOverview(){
+
         $admins = Admin::prepareAdmin(User::where('role_id',1)->orderBy('last_name', 'asc')->get());
 
         return view('admins.overview')

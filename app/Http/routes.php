@@ -52,7 +52,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/invoices/edit/{id}',['as'=>'invoices_edit','uses'=>'InvoicesController@getEdit']);
 		Route::post('/invoices/edit',['uses'=>'InvoicesController@postEdit']);
 		Route::get('/invoices/view/{id}',['as'=>'invoices_view','uses'=>'InvoicesController@getView']);
-
+		Route::get('/invoices/rack',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
+		Route::post('/invoices/rack',['uses'=>'InvoicesController@postRack']);
 
 		//ACL Rules
 	});
