@@ -311,12 +311,20 @@
             </div>
           </div>
           <!-- search form -->
-          {!! Form::open(['action' => 'InvoicesController@getIndex', 'class'=>'sidebar-form','role'=>"form"]) !!}
-            <div class="input-group">
-              <input id="search" type="text" name="search" class="form-control" placeholder="Phone / Last Name / ID">
+          {!! Form::open(['action' => 'UsersController@postIndex', 'class'=>'sidebar-form','role'=>"form", 'method'=>'post']) !!}
+            {!! csrf_field() !!}
+            <div class="input-group {{ $errors->has('search') ? ' has-error' : '' }}">
+              {!! Form::text('search_query', old('search'), ['id'=>'search','class'=>'form-control', 'placeholder'=>'Phone / Last Name / ID']) !!}
               <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
+            </div>
+            <div>
+              @if ($errors->has('search'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('search') }}</strong>
+                  </span>
+              @endif
             </div>
           {{ Form::close() }}
           <!-- /.search form -->

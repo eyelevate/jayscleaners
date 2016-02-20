@@ -103,7 +103,7 @@
                       <!-- Emphasis label -->
                       <span class="badge-yellow">10</span>
                       <!-- todo text -->
-                      <span class="ltext">Due Tomorrow</span>
+                      <span class="ltext">Delivery Today</span>
                       </a>
                     </li>
                     <li>

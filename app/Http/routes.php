@@ -45,6 +45,14 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/view/{id}',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 
+		//Customers
+		Route::get('/customers/{$query}',  ['as'=>'customers_index', 'uses' => 'CustomersController@getIndex']);
+		Route::get('/customers/add',['as'=>'customers_add','uses'=>'CustomersController@getAdd']);
+		Route::post('/customers/add',['uses'=>'CustomersController@postAdd']);
+		Route::get('/customers/edit/{id}',['as'=>'customers_edit','uses'=>'CustomersController@getEdit']);
+		Route::post('/customers/edit',['uses'=>'CustomersController@postEdit']);
+		Route::get('/customers/view/{id}',['as'=>'customers_view','uses'=>'CustomersController@getView']);
+
 		//Invoices
 		Route::get('/invoices',  ['as'=>'invoices_index', 'uses' => 'InvoicesController@getIndex']);
 		Route::get('/invoices/add',['as'=>'invoices_add','uses'=>'InvoicesController@getAdd']);
@@ -54,6 +62,10 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/invoices/view/{id}',['as'=>'invoices_view','uses'=>'InvoicesController@getView']);
 		Route::get('/invoices/rack',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
 		Route::post('/invoices/rack',['uses'=>'InvoicesController@postRack']);
+
+		//Users
+		Route::get('/users',  ['as'=>'users_index', 'uses' => 'UsersController@getIndex']);
+		Route::post('/users',['uses' => 'UsersController@postIndex']);		
 
 		//ACL Rules
 	});
