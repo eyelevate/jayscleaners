@@ -46,11 +46,13 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 
 		//Customers
-		Route::get('/customers/{$query}',  ['as'=>'customers_index', 'uses' => 'CustomersController@getIndex']);
+		Route::get('/customers',  ['as'=>'customers_index', 'uses' => 'CustomersController@getIndex']);
+		Route::post('/customers',['as'=>'customers_index_post','uses'=>'CustomersController@postIndex']);
 		Route::get('/customers/add',['as'=>'customers_add','uses'=>'CustomersController@getAdd']);
 		Route::post('/customers/add',['uses'=>'CustomersController@postAdd']);
 		Route::get('/customers/edit/{id}',['as'=>'customers_edit','uses'=>'CustomersController@getEdit']);
 		Route::post('/customers/edit',['uses'=>'CustomersController@postEdit']);
+		Route::get('/customers/delete/{id}',  ['as'=>'customers_delete','uses' => 'CustomersController@getDelete']);
 		Route::get('/customers/view/{id}',['as'=>'customers_view','uses'=>'CustomersController@getView']);
 
 		//Invoices

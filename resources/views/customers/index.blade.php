@@ -8,7 +8,7 @@
 <script type="text/javascript" src="/js/admins/overview.js"></script>
 @stop
 @section('header')
-	<h1> Admins Overview <small>Control panel</small></h1>
+	<h1> Customers <small>Control panel</small></h1>
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
 		<li class="active">Customers</li>
@@ -49,19 +49,24 @@
 			            </tr>
 			        </tfoot>
 			        <tbody>
-			        	@foreach($admins as $admin)
-			        		<tr>
-			        			<td>{{ $admin->id }}</td>
-			        			<td>{{ $admin->location }}</td>
-			        			<td>{{ $admin->last_name }}</td>
-			        			<td>{{ $admin->first_name }}</td>
-			        			<td>{{ $admin->username }}</td>
-			        			<td>{{ $admin->email }}</td>
-			        			<td>{{ $admin->contact_phone }}</td>
-			        			<td>{{ $admin->created_on }}</td>
-			        			<td><a class="btn-link" href="{{ route('admins_edit',$admin->id) }}">edit</a></td>
-			        		</tr>
-			        	@endforeach
+			        	@if(isset($customers))
+				        	@foreach($customers as $cust)
+				        		<tr>
+				        			<td>{{ $cust->id }}</td>
+				        			<td>{{ $cust->location }}</td>
+				        			<td>{{ $cust->last_name }}</td>
+				        			<td>{{ $cust->first_name }}</td>
+				        			<td>{{ $cust->username }}</td>
+				        			<td>{{ $cust->email }}</td>
+				        			<td>{{ $cust->contact_phone }}</td>
+				        			<td>{{ $cust->created_on }}</td>
+				        			<td>
+				        				<a class="btn btn-info" href="{{ route('customers_edit',$cust->id) }}">edit</a> 
+				        				<a class="btn btn-danger" href="{{ route('customers_delete',$cust->id) }}">delete</a>
+				        			</td>
+				        		</tr>
+				        	@endforeach
+			        	@endif
 			        </tbody>
 			    </table>
 			</div>

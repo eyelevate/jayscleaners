@@ -311,7 +311,7 @@
             </div>
           </div>
           <!-- search form -->
-          {!! Form::open(['action' => 'UsersController@postIndex', 'class'=>'sidebar-form','role'=>"form", 'method'=>'post']) !!}
+          {!! Form::open(['action' => 'CustomersController@postIndex', 'class'=>'sidebar-form','role'=>"form", 'method'=>'post']) !!}
             {!! csrf_field() !!}
             <div class="input-group {{ $errors->has('search') ? ' has-error' : '' }}">
               {!! Form::text('search_query', old('search'), ['id'=>'search','class'=>'form-control', 'placeholder'=>'Phone / Last Name / ID']) !!}

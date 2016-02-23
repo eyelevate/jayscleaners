@@ -35,16 +35,7 @@ class UsersController extends Controller
     }
 
     public function postIndex(Request $request) {
-        //Validate the request
-        $this->validate($request, [
-            'search_query' => 'required'
-        ]);    
 
-        // Search has validated start searching
-        $results = User::prepareResults($request->search_query);
-        
-        return view('users.index')
-        ->with('layout',$this->layout);
 
     }
 }
