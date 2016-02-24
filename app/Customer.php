@@ -173,7 +173,6 @@ class Customer extends Model
             }
         }
 
-        Job::dump($results);
 
         return $results;
         

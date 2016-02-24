@@ -314,7 +314,7 @@
           {!! Form::open(['action' => 'CustomersController@postIndex', 'class'=>'sidebar-form','role'=>"form", 'method'=>'post']) !!}
             {!! csrf_field() !!}
             <div class="input-group {{ $errors->has('search') ? ' has-error' : '' }}">
-              {!! Form::text('search_query', old('search'), ['id'=>'search','class'=>'form-control', 'placeholder'=>'Phone / Last Name / ID']) !!}
+              {!! Form::text('search_query', old('search'), ['id'=>'search','class'=>'form-control', 'style'=>'font-size:20px', 'placeholder'=>'Search...']) !!}
               <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>

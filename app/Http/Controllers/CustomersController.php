@@ -97,9 +97,14 @@ class CustomersController extends Controller
 
     }
 
+    public function getHistory($id = null) {
+
+    }
+
     public function getView($id = null){
     	return view('customers.view')
-    	->with('layout',$this->layout);
+    	->with('layout',$this->layout)
+    	->with('customer_id',$id);
     }
 
 }
