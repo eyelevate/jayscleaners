@@ -53,8 +53,7 @@ class CustomersController extends Controller
 
 	        	break;
 
-	        	case 'customers_view':
-	        		Flash::success('Successfully found customer!');
+	        	case 'customers_view': // found customer
 	        		return Redirect::route('customers_view',$results['param']);
 	        	break;
 
@@ -76,12 +75,41 @@ class CustomersController extends Controller
     }
 
     public function getAdd(){
+    	$companies = [''=>'Select A Location',1=>'Montlake',2=>'Roosevelt'];
+
+
     	return view('customers.add')
-    	->with('layout',$this->layout);
+    	->with('layout',$this->layout)
+    	->with('companies',$companies);
     }
 
-    public function postAdd(){
+    public function postAdd(Request $request){
+        //Validate the request
+        $this->validate($request, [
+            'username' => 'required|unique:users|max:255',
+            'first_name' => 'required|min:1',
+            'last_name' => 'required|min:1',
+            'phone'=>'required|min:10',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:6',
+            'company_id'=>'required'
+        ]);
 
+        // Validation has passed save data
+        $users = new User;
+        $users->username = $request->username;
+        $users->first_name = $request->first_name;
+        $users->last_name = $request->last_name;
+        $users->role_id = 3; //Customer status
+        $users->email = $request->email;
+        $users->contact_phone = $request->phone;
+        $users->password = bcrypt($request->password);
+        $users->company_id = Auth::user()->company_id;
+
+        if ($users->save()) {
+             Flash::success('Successfully added a new customer!');
+             return Redirect::route('customers_view',$users->id);
+        }
     }
 
     public function getEdit($id = null){
@@ -102,9 +130,13 @@ class CustomersController extends Controller
     }
 
     public function getView($id = null){
+
+    	$customers = User::find($id);
     	return view('customers.view')
     	->with('layout',$this->layout)
-    	->with('customer_id',$id);
+    	->with('customers',$customers);
+
+
     }
 
 }

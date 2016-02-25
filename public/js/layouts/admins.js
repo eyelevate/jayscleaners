@@ -8,5 +8,10 @@ admins = {
 		setTimeout(function(){
 			$("#search").focus().click();
 		},500);
+
+		// disable all a tags with href = #
+		$('a[href="#"]').click(function(e){
+			e.preventDefault();
+		});
 	}
 };

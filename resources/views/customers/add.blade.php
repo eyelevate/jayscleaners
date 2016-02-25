@@ -6,19 +6,19 @@
 
 @stop
 @section('header')
-	<h1> Add An Admin <small>Control panel</small></h1>
+	<h1> Add A Customer <small>Control panel</small></h1>
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
-		<li><a href="{{ route('admins_overview') }}"> Overview</a></li>
+		<li><a href="{{ route('customers_index') }}"> Customers</a></li>
 		<li class="active">Add</li>
 	</ol>
 @stop
 @section('content')
-	{!! Form::open(['action' => 'AdminsController@postAdd', 'class'=>'form-horizontal','role'=>"form"]) !!}
+	{!! Form::open(['action' => 'CustomersController@postAdd', 'class'=>'form-horizontal','role'=>"form"]) !!}
 		{!! csrf_field() !!}
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Admin Registration Form</h3>
+				<h3 class="panel-title">Customer Registration Form</h3>
 			</div>
 			<div class="panel-body">
                 <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
