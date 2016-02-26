@@ -53,12 +53,12 @@
 				        	@foreach($customers as $cust)
 				        		<tr>
 				        			<td>{{ $cust->id }}</td>
-				        			<td>{{ $cust->location }}</td>
+				        			<td>{{ $cust->company_id }}</td>
 				        			<td>{{ $cust->last_name }}</td>
 				        			<td>{{ $cust->first_name }}</td>
 				        			<td>{{ $cust->username }}</td>
 				        			<td>{{ $cust->email }}</td>
-				        			<td>{{ $cust->contact_phone }}</td>
+				        			<td>{{ $cust->phone }}</td>
 				        			<td>{{ $cust->created_on }}</td>
 				        			<td>
 				        				<a class="btn btn-info" href="{{ route('customers_edit',$cust->id) }}">edit</a> 

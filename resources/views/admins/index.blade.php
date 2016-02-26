@@ -70,63 +70,85 @@
       </div>
     </a><!-- ./col -->
   </div><!-- /.row -->
+  <!-- Sales -->
+  <!-- Custom tabs (Charts with tabs)-->
+  <div class="nav-tabs-custom">
+    <!-- Tabs within a box -->
+    <ul class="nav nav-tabs pull-right">
+      <li><a href="#sales-other" data-toggle="tab">Other</a></li>
+      <li><a href="#sales-household" data-toggle="tab">Household</a></li>
+      <li><a href="#sales-alteration" data-toggle="tab">Alteration</a></li>
+      <li><a href="#sales-laundry" data-toggle="tab">Laundry</a></li>
+      <li><a href="#sales-dryclean" data-toggle="tab">Dry Clean</a></li>
+      <li class="active"><a href="#revenue-chart" data-toggle="tab">Totals</a></li>
+      <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
+    </ul>
+    <div class="tab-content no-padding">
+      <!-- Morris chart - Sales -->
+      <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
+      <div class="chart tab-pane" id="sales-dryclean" style="position: relative; height: 300px;"></div>
+      <div class="chart tab-pane" id="sales-laundry" style="position: relative; height: 300px;"></div>
+      <div class="chart tab-pane" id="sales-alteration" style="position: relative; height: 300px;"></div>
+      <div class="chart tab-pane" id="sales-household" style="position: relative; height: 300px;"></div>
+      <div class="chart tab-pane" id="sales-other" style="position: relative; height: 300px;"></div>
+    </div>
+  </div><!-- /.nav-tabs-custom -->
+  <!-- TO DO List -->
+  <div class="box box-primary">
+    <div class="box-header">
+      <i class="ion ion-clipboard"></i>
+      <h3 class="box-title">Work List</h3>
+      <div class="box-tools pull-right">
 
-              <!-- TO DO List -->
-              <div class="box box-primary">
-                <div class="box-header">
-                  <i class="ion ion-clipboard"></i>
-                  <h3 class="box-title">Work List</h3>
-                  <div class="box-tools pull-right">
+      </div>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+      <ul class="todo-list">
+        <li>
+          <a href="#">
+            <!-- Emphasis label -->
+            <span class="badge-default">10</span>
+            <!-- todo text -->
+            <span class="ltext">Overdue Orders</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+          <!-- Emphasis label -->
+          <span class="badge-green">10</span>
+          <!-- todo text -->
+          <span class="ltext">Due Today</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+          <!-- Emphasis label -->
+          <span class="badge-yellow">10</span>
+          <!-- todo text -->
+          <span class="ltext">Delivery Today</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+          <!-- Emphasis label -->
+          <span class="badge-red">10</span>
+          <!-- todo text -->
+          <span class="ltext">Voided Today</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+          <!-- Emphasis label -->
+          <span class="badge-aqua">10</span>
+          <!-- todo text -->
+          <span class="ltext">Aged (30 days+)</span>
+          </a>
+        </li>
 
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <ul class="todo-list">
-                    <li>
-                      <a href="#">
-                        <!-- Emphasis label -->
-                        <span class="badge-default">10</span>
-                        <!-- todo text -->
-                        <span class="ltext">Overdue Orders</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                      <!-- Emphasis label -->
-                      <span class="badge-green">10</span>
-                      <!-- todo text -->
-                      <span class="ltext">Due Today</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                      <!-- Emphasis label -->
-                      <span class="badge-yellow">10</span>
-                      <!-- todo text -->
-                      <span class="ltext">Delivery Today</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                      <!-- Emphasis label -->
-                      <span class="badge-red">10</span>
-                      <!-- todo text -->
-                      <span class="ltext">Voided Today</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                      <!-- Emphasis label -->
-                      <span class="badge-aqua">10</span>
-                      <!-- todo text -->
-                      <span class="ltext">Aged (30 days+)</span>
-                      </a>
-                    </li>
-
-                  </ul>
-                </div><!-- /.box-body -->
-                <div class="box-footer clearfix no-border">
-                  
-                </div>
-              </div><!-- /.box -->
+      </ul>
+    </div><!-- /.box-body -->
+    <div class="box-footer clearfix no-border">
+      
+    </div>
+  </div><!-- /.box -->
 @stop

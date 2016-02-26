@@ -95,6 +95,7 @@ class AdminsController extends Controller
     }
 
     public function getAdd(){
+        $this->layout = 'layouts.admin_login';
         $companies = [''=>'Select A Location',1=>'Montlake',2=>'Roosevelt'];
 
         return view('admins.add')
@@ -115,6 +116,7 @@ class AdminsController extends Controller
             'company_id'=>'required'
         ]);
 
+
         // Validation has passed save data
         $users = new User;
         $users->username = $request->username;
@@ -122,12 +124,13 @@ class AdminsController extends Controller
         $users->last_name = $request->last_name;
         $users->role_id = 1; //Admin status
         $users->email = $request->email;
-        $users->contact_phone = $request->phone;
+        $users->phone = $request->phone;
         $users->password = bcrypt($request->password);
+
 
         if ($users->save()) {
              Flash::success('Successfully added!');
-             return Redirect::route('admins_overview');
+             return Redirect::route('admins_login');
         }
     }
 

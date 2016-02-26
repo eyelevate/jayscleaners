@@ -126,7 +126,7 @@ class Customer extends Model
 
     private static function searchByPhoneNumber($query) {
         $results = [];
-        $first = User::where('contact_phone',$query)->get();
+        $first = User::where('phone',$query)->get();
         if(count($first) >0) {
         	foreach ($first as $f) {
 	            $results = [
@@ -139,7 +139,7 @@ class Customer extends Model
 
         } else {
 
-            $second = User::where('contact_phone', 'like', '%'.$query.'%')->get();
+            $second = User::where('phone', 'like', '%'.$query.'%')->get();
             
             if(count($second) == 1) {
             

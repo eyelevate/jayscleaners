@@ -75,12 +75,19 @@ class CustomersController extends Controller
     }
 
     public function getAdd(){
-    	$companies = [''=>'Select A Location',1=>'Montlake',2=>'Roosevelt'];
-
+    	$companies = [1=>'Montlake',2=>'Roosevelt'];
+    	$starch = [1=>'None',2=>'Light',3=>'Medium',4=>'Heavy'];
+    	$hanger = [1=>'Hanger',2=>'Box/Folded'];
+    	$delivery = [1=>'No', 2=>'Yes'];
+    	$account = [1=>'No', 2=>'Yes'];
 
     	return view('customers.add')
     	->with('layout',$this->layout)
-    	->with('companies',$companies);
+    	->with('companies',$companies)
+    	->with('starch',$starch)
+    	->with('hanger',$hanger)
+    	->with('delivery',$delivery)
+    	->with('account',$account);
     }
 
     public function postAdd(Request $request){
