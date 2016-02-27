@@ -72,6 +72,7 @@
 	@if(isset($customers))
 		{!! View::make('partials.customers.view-id')
 			->with('customers',$customers)
+			->render()
 		!!}		
 	@else
 		{!! View::make('partials.customers.view') !!}

@@ -40,14 +40,14 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('contact_phone') ? ' has-error' : '' }}">
+                <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                     <label class="col-md-4 control-label">Phone <span class="text text-danger">*</span></label>
 
                     <div class="col-md-6">
-                        {!! Form::text('contact_phone', old('contact_phone'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                        @if ($errors->has('contact_phone'))
+                        {!! Form::text('phone', old('phone'), ['class'=>'form-control', 'placeholder'=>'']) !!}
+                        @if ($errors->has('phone'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('contact_phone') }}</strong>
+                                <strong>{{ $errors->first('phone') }}</strong>
                             </span>
                         @endif
                     </div>

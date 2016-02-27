@@ -78,8 +78,8 @@ class CustomersController extends Controller
     	$companies = [1=>'Montlake',2=>'Roosevelt'];
     	$starch = [1=>'None',2=>'Light',3=>'Medium',4=>'Heavy'];
     	$hanger = [1=>'Hanger',2=>'Box/Folded'];
-    	$delivery = [1=>'No', 2=>'Yes'];
-    	$account = [1=>'No', 2=>'Yes'];
+    	$delivery = [false=>'No', true=>'Yes'];
+    	$account = [false=>'No', true=>'Yes'];
 
     	return view('customers.add')
     	->with('layout',$this->layout)
@@ -93,25 +93,46 @@ class CustomersController extends Controller
     public function postAdd(Request $request){
         //Validate the request
         $this->validate($request, [
-            'username' => 'required|unique:users|max:255',
             'first_name' => 'required|min:1',
             'last_name' => 'required|min:1',
             'phone'=>'required|min:10',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-            'company_id'=>'required'
+            'email' => 'email|max:255|unique:users',
+            'company_id'=>'required',
+            'delivery'=>'required',
+            'account'=>'required'
         ]);
 
         // Validation has passed save data
         $users = new User;
-        $users->username = $request->username;
-        $users->first_name = $request->first_name;
+        $users->company_id = $request->company_id;
+        $users->phone = $request->phone;
         $users->last_name = $request->last_name;
-        $users->role_id = 3; //Customer status
+        $users->first_name = $request->first_name;
+        $users->starch = $request->starch;
+        $users->shirt = $request->hanger;
         $users->email = $request->email;
-        $users->contact_phone = $request->phone;
-        $users->password = bcrypt($request->password);
-        $users->company_id = Auth::user()->company_id;
+        $users->important_memo = $request->important_memo;
+        $users->invoice_memo = $request->invoice_memo;
+        $users->delivery = $request->delivery;
+        if($request->delivery == '1') {
+	        $users->username = $request->username;
+	        $users->mobile = $request->mobile;
+	        $users->street = $request->street;
+	        $users->suite = $request->suite;
+	        $users->city = $request->city;
+	        $users->zipcode = $request->zipcode;
+	        $users->concierge_name = $request->concierge_contact;
+	        $users->concierge_number = $request->concierge_number;
+	        $users->special_instructions = $request->special_instructions;
+        }
+
+        $users->account = $request->account;
+
+        if($request->account == '1') {
+			
+        }
+        $users->role_id = 3; //Customer status
+          
 
         if ($users->save()) {
              Flash::success('Successfully added a new customer!');

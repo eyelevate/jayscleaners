@@ -72,7 +72,7 @@
 			</div>
 		</div>
 		<div class="panel-footer clearfix">
-			<a class="btn btn-primary pull-right" href="{{ route('admins_add') }}">Create Admin</a>
+			<a class="btn btn-primary pull-right" href="{{ route('customers_add') }}">New Customer</a>
 		</div>
 	</div>
 @stop

@@ -24,7 +24,7 @@
                         <label class="col-md-4 control-label">Phone</label>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="phone" value="{{ $customers->contact_phone }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                            <input type="text" class="form-control" name="phone" value="{{ $customers->phone }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -38,21 +38,21 @@
                         <label class="col-md-4 control-label">Street</label>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="street" value="{{ $customers->contact_address }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                            <input type="text" class="form-control" name="street" value="{{ $customers->street }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
                         <label class="col-md-4 control-label">City</label>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="city" value="{{ $customers->contact_city }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                            <input type="text" class="form-control" name="city" value="{{ $customers->city }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('zipcode') ? ' has-error' : '' }}">
                         <label class="col-md-4 control-label">Zip</label>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="zipcode" value="{{ $customers->contact_zipcode }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                            <input type="text" class="form-control" name="zipcode" value="{{ $customers->zipcode }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
                         </div>
                     </div>
 				</div>
@@ -64,7 +64,7 @@
 				<a class="btn btn-lg btn-info" href="#" data-toggle="modal" data-target="#print-card">
 					<div class="icon"><i class="ion-ios-printer-outline"></i> Print Card</div>
 				</a>
-                <a class="btn btn-lg btn-danger" href="{{ route('customer_add') }}">
+                <a class="btn btn-lg btn-danger" href="{{ route('customers_add') }}">
                     <div class="icon"><i class="ion-person-add"></i> New</div>
                 </a>
 			</div>			

@@ -336,7 +336,7 @@
                 <i class="fa fa-files-o"></i> <span>Invoice</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li class="{{ Request::is('invoices/add') ? 'active' : '' }}"><a href="{{ route('invoices_add') }}"><i class="fa fa-circle-o"></i> New Invoice</a></li>
+                <li class="{{ Request::is('invoices/dropoff') ? 'active' : '' }}"><a href="{{ route('invoices_dropoff') }}"><i class="fa fa-circle-o"></i> New Invoice</a></li>
                 <li class="{{ Request::is('invoices/rack') ? 'active' : '' }}"><a href="{{ route('invoices_rack') }}"><i class="fa fa-circle-o"></i> Rack</a></li>
                 <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{ route('invoices_index') }}"><i class="fa fa-circle-o"></i> History</a></li>
               </ul>
