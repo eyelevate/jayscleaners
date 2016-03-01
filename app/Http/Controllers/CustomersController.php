@@ -18,7 +18,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Job;
 use App\User;
+use App\Company;
 use App\Customer;
+use App\Custid;
 use App\Layout;
 
 class CustomersController extends Controller
@@ -75,11 +77,11 @@ class CustomersController extends Controller
     }
 
     public function getAdd(){
-    	$companies = [1=>'Montlake',2=>'Roosevelt'];
-    	$starch = [1=>'None',2=>'Light',3=>'Medium',4=>'Heavy'];
-    	$hanger = [1=>'Hanger',2=>'Box/Folded'];
-    	$delivery = [false=>'No', true=>'Yes'];
-    	$account = [false=>'No', true=>'Yes'];
+    	$companies = Company::getCompany();
+    	$starch = Company::getStarch();
+    	$hanger = Company::getShirt();
+    	$delivery = Company::getDelivery();
+    	$account = Company::getAccount();
 
     	return view('customers.add')
     	->with('layout',$this->layout)
@@ -95,7 +97,7 @@ class CustomersController extends Controller
         $this->validate($request, [
             'first_name' => 'required|min:1',
             'last_name' => 'required|min:1',
-            'phone'=>'required|min:10',
+            'phone'=>'required|min:10|unique:users',
             'email' => 'email|max:255|unique:users',
             'company_id'=>'required',
             'delivery'=>'required',
@@ -135,18 +137,118 @@ class CustomersController extends Controller
           
 
         if ($users->save()) {
-             Flash::success('Successfully added a new customer!');
-             return Redirect::route('customers_view',$users->id);
+        	// Create Shirt Mark
+        	$custid = new Custid;
+        	$custid->customer_id = $users->id;
+        	$custid->mark = Custid::createOriginalMark($users);
+        	$custid->status = 1; // approved
+
+        	if($custid->save()) {
+				Flash::success('Successfully added a new customer!');
+				return Redirect::route('customers_view',$users->id);
+        	}
         }
     }
 
     public function getEdit($id = null){
+    	$customers = User::find($id);
+    	$marks = Custid::where('customer_id',$id)->get();
+    	$companies = Company::getCompany();
+    	$starch = Company::getStarch();
+    	$hanger = Company::getShirt();
+    	$delivery = Company::getDelivery();
+    	$account = Company::getAccount();
+
     	return view('customers.edit')
-    	->with('layout',$this->layout);
+    	->with('layout',$this->layout)
+    	->with('customers',$customers)
+    	->with('marks',$marks)
+    	->with('companies',$companies)
+    	->with('starch',$starch)
+    	->with('hanger',$hanger)
+    	->with('delivery',$delivery)
+    	->with('account',$account);
     }
 
-    public function postEdit(){
+    public function postEdit(Request $request){
+        //Validate the request
+        $this->validate($request, [
+            'first_name' => 'required|min:1',
+            'last_name' => 'required|min:1',
+            'phone'=>'required|min:10',
+            'email' => 'email|max:255',
+            'company_id'=>'required',
+            'delivery'=>'required',
+            'account'=>'required'
+        ]);
 
+        // Validation has passed save data
+        $users = User::find($request->customer_id);
+        $users->company_id = $request->company_id;
+        $users->phone = $request->phone;
+        $users->last_name = $request->last_name;
+        $users->first_name = $request->first_name;
+        $users->starch = $request->starch;
+        $users->shirt = $request->hanger;
+        $users->email = $request->email;
+        $users->important_memo = $request->important_memo;
+        $users->invoice_memo = $request->invoice_memo;
+        $users->delivery = $request->delivery;
+        if($request->delivery == '1') {
+	        $users->username = $request->username;
+	        $users->mobile = $request->mobile;
+	        $users->street = $request->street;
+	        $users->suite = $request->suite;
+	        $users->city = $request->city;
+	        $users->zipcode = $request->zipcode;
+	        $users->concierge_name = $request->concierge_contact;
+	        $users->concierge_number = $request->concierge_number;
+	        $users->special_instructions = $request->special_instructions;
+        }
+
+        $users->account = $request->account;
+
+        if($request->account == '1') {
+			
+        }
+        $users->role_id = 3; //Customer status
+
+        if ($users->save()) {
+        	// Update Shirt Marks
+        	$marks = Input::get('marks');
+			$mark1_id = preg_replace('/\s+/', '', $marks[1]['id']);
+			$mark1_mark = preg_replace('/\s+/', '', $marks[1]['mark']);
+			$mark2_id = preg_replace('/\s+/', '', $marks[2]['id']);
+			$mark2_mark = preg_replace('/\s+/', '', $marks[2]['mark']);
+        	// If there is an id
+			if( $mark1_id !== '' && $mark1_mark == '') { // softdelete the row
+        		$custid1 = Custid::find($mark1_id);
+        		$custid1->delete(); // Soft delete
+        	} else { // save 
+        		$custid1 = ($mark1_id !== '' && $mark1_mark !== '') ? Custid::find($mark1_id) : new Custid;
+	        	$custid1->customer_id = $users->id;
+	        	$custid1->mark = $mark1_mark;
+	        	$custid1->status = 2; // approved
+	        	$custid1->save();
+				
+        	}
+        	// If there is an id
+			if( $mark2_id !== '' && $mark2_mark == '') { // softdelete the row
+        		$custid2 = Custid::find($mark2_id);
+        		$custid2->delete(); // Soft delete
+        	} else { // save 
+        		$custid2 = ($mark2_id !== '' && $mark2_mark !== '') ? Custid::find($mark2_id) : new Custid;
+	        	$custid2->customer_id = $users->id;
+	        	$custid2->mark = $mark2_mark;
+	        	$custid2->status = 2; // approved
+	        	$custid2->save();
+				
+        	}
+
+			Flash::success('Successfully updated customer!');
+			return Redirect::route('customers_view',$users->id);
+
+        }
     }
 
     public function getDelete($id = null){
@@ -159,7 +261,8 @@ class CustomersController extends Controller
 
     public function getView($id = null){
 
-    	$customers = User::find($id);
+    	$customers = Customer::prepareView(User::find($id));
+
     	return view('customers.view')
     	->with('layout',$this->layout)
     	->with('customers',$customers);

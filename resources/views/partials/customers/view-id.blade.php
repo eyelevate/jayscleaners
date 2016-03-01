@@ -1,9 +1,25 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="box box-primary">
-			<div class="box-header">Customer Info</div>
+			<div class="box-header">Customer Info 
+                <label class="pull-right">
+                @if(isset($customers->marks))
+                    @foreach($customers->marks as $mark)
+                    <span class="label label-danger" style="font-size:20px;">{{ $mark->mark }}</span>
+                    @endforeach
+                @endif
+                </label>
+            </div>
 			<div class="box-body" style="">
 				<div class="form-horizontal">
+
+                    <div class="form-group{{ $errors->has('company_name') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label">Branch</label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="company_name" value="{{ $customers->company_name }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
 
                     <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
                         <label class="col-md-4 control-label">Last Name</label>
@@ -53,6 +69,48 @@
 
                         <div class="col-md-6">
                             <input type="text" class="form-control" name="zipcode" value="{{ $customers->zipcode }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('shirt') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label">Shirts</label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="shirt" value="{{ $customers->shirt }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('starch') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label">Starch</label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="starch" value="{{ $customers->starch }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('account') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label"><a href="#" style="cursor:pointer;">Account</a></label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="account" value="{{ $customers->account }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('delivery') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label"><a href="#" style="cursor:pointer;">Delivery</a></label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="delivery" value="{{ $customers->delivery }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('important_memo') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label">Important Memo</label>
+
+                        <div class="col-md-6">
+                            <textarea class="form-control" name="important_memo" disabled="true" style="font-size:20px; background-color:#ffffff;">{{ $customers->important_memo }}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('invoice_memo') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label">Invoice Memo</label>
+
+                        <div class="col-md-6">
+                            <textarea class="form-control" name="important_invoice" disabled="true" style="font-size:20px;background-color:#ffffff;">{{ $customers->invoice_memo }}</textarea>
                         </div>
                     </div>
 				</div>

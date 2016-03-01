@@ -48,6 +48,76 @@ class Customer extends Model
         return $results;
     }
 
+    public static function prepareView($data){
+        if(isset($data['company_id'])){
+            switch($data['company_id']) {
+                case 1: //Montlake
+                    $data['company_name'] = 'Montlake';
+                break;
+
+                case 2: //Roosevelt
+                    $data['company_name'] = 'Roosevelt';
+                break;
+
+                default: //TBD
+                    $data['company_name'] = 'TBD';
+                break;
+            }
+        }
+
+        if(isset($data['shirt'])){
+            switch ($data['shirt']) {
+                case 1: //No Starch
+                    $data['shirt'] = 'Hanger';
+                    break;
+                case 2: //Light
+                    $data['shirt'] = 'Folded';
+                    break;
+
+                    $data['shirt'] = 'Hanger';
+                    break;
+            }
+        }
+        if(isset($data['starch'])){
+            switch ($data['starch']) {
+                case 1: //No Starch
+                    $data['starch'] = 'None';
+                    break;
+                case 2: //Light
+                    $data['starch'] = 'Light';
+                    break;
+                case 3: //Medium
+                    $data['starch'] = 'Medium';
+                    break;
+                case 4: //Heavy
+                    $data['starch'] = 'Heavy';
+                    break;
+                default:
+                    $data['starch'] = 'None';
+                    break;
+            }
+        }
+        if(isset($data['account'])){
+            $data['account'] = ($data['account'] == true) ? 'Yes' : 'No';
+        }
+        if(isset($data['delivery'])){
+            $data['delivery'] = ($data['delivery'] == true) ? 'Yes' : 'No';
+        }
+
+        if(isset($data['id'])) {
+            $data['marks'] = Custid::where('customer_id',$data['id'])->get();
+        }
+
+        return $data;
+    }
+
+
+    /**
+    * PRIVATE METHODS
+    * 
+    **/
+
+
     private static function searchByQuery($query) {
         $results = [];
         if(is_numeric($query)) { //Is a number so start checking for lengths
@@ -153,7 +223,7 @@ class Customer extends Model
 		            break;
 	        	}
 
-            } elseif($count($second > 1)){
+            } elseif(count($second) > 1){
             	foreach ($second as $s) {
 	                $results = [
 	                    'status'=>true,
