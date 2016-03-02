@@ -78,8 +78,14 @@
 		{!! View::make('partials.customers.view') !!}
 	@endif
 
+
+@stop
+@section('modals')
 	<!-- Modals -->
-	{!! View::make('partials.customers.last10') !!}
+	{!! View::make('partials.customers.last10')
+		->with('last10',$last10)
+		->render()
+	 !!}
 	{!! View::make('partials.customers.reprint-card') !!}
 	{!! View::make('partials.customers.reprint-invoice') !!}
 @stop

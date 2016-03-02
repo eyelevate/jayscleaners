@@ -69,6 +69,22 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/invoices/rack',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
 		Route::post('/invoices/rack',['uses'=>'InvoicesController@postRack']);
 
+		//Inventory
+		Route::get('/inventories',  ['as'=>'inventories_index', 'uses' => 'InventoriesController@getIndex']);
+		Route::get('/inventories/add',['as'=>'inventories_add','uses'=>'InventoriesController@getAdd']);
+		Route::post('/inventories/add',['as'=>'inventories_add_post','uses'=>'InventoriesController@postAdd']);
+		Route::post('/inventories/delete',['as'=>'inventories_delete_post','uses'=>'InventoriesController@postDelete']);
+		Route::get('/inventories/edit/{id}',['as'=>'inventories_edit','uses'=>'InventoriesController@getEdit']);
+		Route::post('/inventories/edit',['uses'=>'InventoriesController@postEdit']);
+		Route::post('/inventories/order',['uses'=>'InventoriesController@postOrder']);
+		Route::get('/inventories/view/{id}',['as'=>'inventories_view','uses'=>'InventoriesController@getView']);
+
+		//Inventory
+		Route::post('/items/add',['as'=>'items_add_post','uses'=>'InventoryItemsController@postAdd']);
+		Route::post('/items/delete',['as'=>'items_delete_post','uses'=>'InventoryItemsController@postDelete']);
+		Route::post('/inventories/edit',['uses'=>'InventoryItemsController@postEdit']);
+		Route::post('/items/order',['uses'=>'InventoryItemController@postOrder']);
+
 		//Users
 		Route::get('/users',  ['as'=>'users_index', 'uses' => 'UsersController@getIndex']);
 		Route::post('/users',['uses' => 'UsersController@postIndex']);		

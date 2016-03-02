@@ -491,6 +491,7 @@
         <section class="content">
           @include('flash::message')
           @yield('content')
+          @yield('modals')
          
 
         </section><!-- /.content -->

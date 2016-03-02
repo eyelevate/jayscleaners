@@ -259,13 +259,16 @@ class CustomersController extends Controller
 
     }
 
-    public function getView($id = null){
-
-    	$customers = Customer::prepareView(User::find($id));
+    public function getView(Request $request, $id = null){
+    	$users = User::find($id);
+    	$customers = Customer::prepareView($users);
+    	$last10 = Customer::prepareLast10($users, $request->session()->get('last10'));
+    	$request->session()->put('last10',$last10);
 
     	return view('customers.view')
     	->with('layout',$this->layout)
-    	->with('customers',$customers);
+    	->with('customers',$customers)
+    	->with('last10',$last10);
 
 
     }
