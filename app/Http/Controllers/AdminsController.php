@@ -169,6 +169,11 @@ class AdminsController extends Controller
         }
     }
 
+    public function getSettings(){
+         return view('admins.settings')
+        ->with('layout',$this->layout);       
+    }
+
     public function getView($id = null){
         return view('admins.view')
         ->with('layout',$this->layout);

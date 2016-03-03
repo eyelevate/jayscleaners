@@ -5,7 +5,12 @@ $(document).ready(function(){
 
 inventories = {
 	pageLoad: function(){
-
+		$('#image_select').ddslick({
+			onSelected: function(selectedData){
+				//callback function: do something with selectedData;
+				$("#image_selected").val(selectedData.selectedData.value);
+			}
+		});
 	},
 	events: function(){
 		$("#inventory-edit").click(function(){

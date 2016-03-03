@@ -42,6 +42,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/admins/add',['as'=>'admins_add_post','uses'=>'AdminsController@postAdd']);
 		Route::get('/admins/edit/{id}',['as'=>'admins_edit','uses'=>'AdminsController@getEdit']);
 		Route::post('/admins/edit',['uses'=>'AdminsController@postEdit']);
+		Route::get('/admins/settings',['as'=>'admins_settings','uses'=>'AdminsController@getSettings']);
 		Route::get('/admins/view/{id}',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 

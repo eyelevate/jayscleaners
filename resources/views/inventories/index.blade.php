@@ -3,6 +3,7 @@
 
 @stop
 @section('scripts')
+<script src="/packages/ddslick/ddslick.min.js"></script>
 <script src="/js/inventories/index.js" type="text/javascript"></script>
 @stop
 @section('header')
@@ -82,7 +83,7 @@
 				@foreach($inventories as $inventory)
 				<?php $idx++;?>
 				<li class="{{ ($idx == 0) ? 'active' : '' }}" class="cursor:pointer">
-					<a href="#sales-dryclean" data-toggle="tab">{{ $inventory->name }}</a>
+					<a href="#sales-{{ $inventory->id }}" data-toggle="tab">{{ $inventory->name }}</a>
 					<div class="hide">
 						{{ Form::hidden('inventory['.$idx.'][id]',$inventory->id,['class'=>'inventory-id']) }}
 						{{ Form::hidden('inventory['.$idx.'][name]',$inventory->name,['class'=>'inventory-name']) }}
@@ -97,11 +98,31 @@
 	{!! Form::close() !!}
 	<div class="tab-content no-padding">
 		<!-- Morris chart - Sales -->
-		<div class="chart tab-pane active" id="sales-dryclean" style="position: relative; min-height: 300px;"></div>
-		<div class="chart tab-pane" id="sales-laundry" style="position: relative; min-height: 300px;"></div>
-		<div class="chart tab-pane" id="sales-alteration" style="position: relative; min-height: 300px;"></div>
-		<div class="chart tab-pane" id="sales-household" style="position: relative; min-height: 300px;"></div>
-		<div class="chart tab-pane" id="sales-other" style="position: relative; min-height: 300px;"></div>
+		<?php $idx = -1;?>
+		@if(isset($items))
+			@foreach($items as $key => $value)
+			<?php $idx++;?>
+			<div class="chart tab-pane {{ ($idx == 0) ? 'active' : '' }}" id="sales-{{ $key }}" style="position: relative; min-height: 300px; padding:5px;">
+			@if(isset($value['items']))
+				@foreach($value['items'] as $item)
+				<a id="inventory-item-edit" href="#" class="col-lg-3 col-md-3 col-xs-3">
+					<!-- small box -->
+					<div class="small-box bg-gray clearfix" style="max-height:100px; overflow:hidden">
+						<div class="inner" style="padding-bottom:50px;">
+							<h4><strong>{{ $item->name }}</strong></h4>
+							<small><strong>{{ $item->description }}</strong></small>
+					        <div class="icon" style="z-index:0">
+					          <img src="{{ $item->image }}" style="max-width:64px; opacity:0.6"/>
+					        </div>
+						</div>
+				        <div class="small-box-footer" style="position:absolute; width:100%; bottom:0px; background:rgba(0,0,0,0.4)"><strong>{{ $item->price }}</strong></i></div>
+					</div>
+				</a><!-- ./col -->					
+				@endforeach
+			@endif
+			</div>
+			@endforeach
+		@endif
 	</div>
 </div><!-- /.nav-tabs-custom -->
 
@@ -119,6 +140,9 @@
 	!!}
 	{!! View::make('partials.inventories.item-add')
 		->with('companies',$companies)
+		->with('group_select',$group_select)
+		->with('icon_select',$icon_select)
+		->with('tags_select',$tags_select)
 		->render()
 	 !!}
 	{!! View::make('partials.inventories.item-edit')

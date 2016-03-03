@@ -37,16 +37,20 @@ class InventoriesController extends Controller
     	->where('status',1)
     	->orderBy('ordered','asc')
     	->get();
-    	$items = InventoryItem::where('company_id',Auth::user()->company_id)
-    	->where('status',1)
-    	->orderBy('ordered','asc')
-    	->get();
+    	$items = InventoryItem::prepareItems($inventories);
+
+    	$group_select = Inventory::prepareInventorySelect($inventories); 
+    	$icon_select = Inventory::prepareIconSelect();
+    	$tags_select = Inventory::prepareTagSelect();
 
     	return view('inventories.index')
     	->with('layout',$this->layout)
     	->with('companies',$companies)
     	->with('inventories',$inventories)
-    	->with('items',$items);
+    	->with('items',$items)
+    	->with('group_select',$group_select)
+    	->with('icon_select',$icon_select)
+    	->with('tags_select',$tags_select);
     }
     public function getAdd(){
 

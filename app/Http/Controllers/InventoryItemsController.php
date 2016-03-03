@@ -35,17 +35,23 @@ class InventoryItemsController extends Controller
         $this->validate($request, [
             'name' => 'required|min:1',
             'description' => 'min:1',
-            'company_id'=>'required'
+            'company_id'=>'required',
+            'inventory_id'=>'required',
+     		'price'=>'required'
         ]);   
 
-        $inventory = new Inventory();
-        $inventory->company_id = $request->company_id;
-        $inventory->name = $request->name;
-        $inventory->description = $request->description;
-        $inventory->ordered = null;
-        $inventory->status = 1;
-        if($inventory->save()){
-			Flash::success('Successfully added a new inventory!');
+        $item = new InventoryItem();
+        $item->company_id = $request->company_id;
+        $item->inventory_id = $request->inventory_id;
+        $item->tags = $request->tags;
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->price = $request->price;
+        $item->image = $request->image;
+        $item->ordered = null;
+        $item->status = 1;
+        if($item->save()){
+			Flash::success('Successfully added a new inventory item!');
 			return Redirect::route('inventories_index');
         }
 
