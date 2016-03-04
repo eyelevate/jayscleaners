@@ -10,6 +10,7 @@
 	<h1> Inventory <small>Control panel</small></h1>
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
+		<li><a href="{{ route('admins_settings') }}"> Settings</a></li>
 		<li class="active">Inventory</li>
 	</ol>
 	<div class="row clearfix">
@@ -56,7 +57,7 @@
 			</div>
 		</a><!-- ./col -->
 		<!-- Inventory Item Edit -->
-		<a id="inventory-item-edit" href="#" class="col-lg-3 col-md-3 col-xs-3">
+		<a id="inventory-item-edit" href="#item-edit" class="col-lg-3 col-md-3 col-xs-3">
 			<!-- small box -->
 			<div class="small-box bg-yellow" style="padding-bottom:10px" data-toggle="modal" data-target="#item-edit">
 				<div class="inner">
@@ -96,34 +97,48 @@
 
 		</ul>
 	{!! Form::close() !!}
-	<div class="tab-content no-padding">
+	{!! Form::open(['action' => 'InventoryItemsController@postOrder', 'class'=>'form-horizontal','role'=>"form",'id'=>'item-form']) !!}
+	{!! csrf_field() !!}
+	<ul class="tab-content no-padding">
 		<!-- Morris chart - Sales -->
 		<?php $idx = -1;?>
 		@if(isset($items))
 			@foreach($items as $key => $value)
 			<?php $idx++;?>
-			<div class="chart tab-pane {{ ($idx == 0) ? 'active' : '' }}" id="sales-{{ $key }}" style="position: relative; min-height: 300px; padding:5px;">
+			<li class="chart tab-pane {{ ($idx == 0) ? 'active' : '' }}" id="sales-{{ $key }}" style="position: relative; min-height: 300px; padding:5px;">
 			@if(isset($value['items']))
 				@foreach($value['items'] as $item)
-				<a id="inventory-item-edit" href="#" class="col-lg-3 col-md-3 col-xs-3">
+				<a id="item-{{ $item->id }}" href="#" class="items col-lg-3 col-md-3 col-xs-3">
 					<!-- small box -->
-					<div class="small-box bg-gray clearfix" style="max-height:100px; overflow:hidden">
+					<div class="small-box bg-gray clearfix" style="max-height:125px; overflow:hidden">
 						<div class="inner" style="padding-bottom:50px;">
 							<h4><strong>{{ $item->name }}</strong></h4>
 							<small><strong>{{ $item->description }}</strong></small>
 					        <div class="icon" style="z-index:0">
-					          <img src="{{ $item->image }}" style="max-width:64px; opacity:0.6"/>
+					          <img src="{{ $item->image }}" style="max-width:64px; opacity:0.8"/>
 					        </div>
 						</div>
-				        <div class="small-box-footer" style="position:absolute; width:100%; bottom:0px; background:rgba(0,0,0,0.4)"><strong>{{ $item->price }}</strong></i></div>
+				        <div class="small-box-footer" style="position:absolute; width:100%; bottom:0px; background:rgba(0,0,0,0.6); font-size:15px;"><strong>{{ $item->price }}</strong></i></div>
+					</div>
+					<div class="hide">
+						{{ Form::hidden('item['.$item->id.'][id]',$item->id,['class'=>'item-id']) }}
+						{{ Form::hidden('item['.$item->id.'][name]',$item->name,['class'=>'item-name']) }}
+						{{ Form::hidden('item['.$item->id.'][description]',$item->description,['class'=>'item-description']) }}
+						{{ Form::hidden('item['.$item->id.'][ordered]',$item->ordered,['class'=>'item-order']) }}
+						{{ Form::hidden('item['.$item->id.'][price]',$item->price,['class'=>'item-price']) }}
+						{{ Form::hidden('item['.$item->id.'][image]',$item->image,['class'=>'item-image']) }}
+						{{ Form::hidden('item['.$item->id.'][tags]',$item->tags,['class'=>'item-tags']) }}
+						{{ Form::hidden('item['.$item->id.'][inventory_id]',$item->ordered,['class'=>'item-inventory_id']) }}
+
 					</div>
 				</a><!-- ./col -->					
 				@endforeach
 			@endif
-			</div>
+			</li>
 			@endforeach
 		@endif
-	</div>
+	</ul>
+	{!! Form::close() !!}
 </div><!-- /.nav-tabs-custom -->
 
 
@@ -147,6 +162,9 @@
 	 !!}
 	{!! View::make('partials.inventories.item-edit')
 		->with('companies',$companies)
+		->with('group_select',$group_select)
+		->with('icon_select',$icon_select)
+		->with('tags_select',$tags_select)
 		->render()
 	 !!}
 	{!! View::make('partials.inventories.group-delete')

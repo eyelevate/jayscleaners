@@ -40,7 +40,7 @@
 			<div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
 		</div>
 	</a><!-- ./col -->
-	<a href="#" class="col-lg-3 col-xs-6">
+	<a href="{{ route('taxes_index') }}" class="col-lg-3 col-xs-6">
 		<!-- small box -->
 		<div class="small-box bg-red">
 			<div class="inner">

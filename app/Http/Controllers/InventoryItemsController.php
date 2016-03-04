@@ -57,10 +57,10 @@ class InventoryItemsController extends Controller
 
     }
     public function postDelete(Request $request) {
-        $inventory = Inventory::find($request->id);
-        $inventory->status = 2;
-        if($inventory->delete()){
-			Flash::success('Successfully deleted an inventory group!');
+        $item = InventoryItem::find($request->id);
+        $item->status = 2;
+        if($item->delete()){
+			Flash::success('Successfully deleted an inventory item!');
 			return Redirect::route('inventories_index');
         }    	
     }
@@ -69,34 +69,39 @@ class InventoryItemsController extends Controller
         $this->validate($request, [
             'name' => 'required|min:1',
             'description' => 'min:1',
-            'company_id'=>'required'
+            'company_id'=>'required',
+            'inventory_id'=>'required',
+     		'price'=>'required'
         ]);   
 
-        $inventory = Inventory::find($request->id);
-        $inventory->company_id = $request->company_id;
-        $inventory->name = $request->name;
-        $inventory->description = $request->description;
-        $inventory->ordered = $request->order;
-        $inventory->status = 1;
-        if($inventory->save()){
-			Flash::success('Successfully added a new inventory!');
+        $item = InventoryItem::find($request->id);
+        $item->company_id = $request->company_id;
+        $item->inventory_id = $request->inventory_id;
+        $item->tags = $request->tags;
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->price = $request->price;
+        $item->image = $request->image;
+        $item->status = 1;
+        if($item->save()){
+			Flash::success('Successfully updated inventory item!');
 			return Redirect::route('inventories_index');
         }
     }
 
     public function postOrder(Request $request) {
 
-    	$inventories = $request->inventory;
-    	if($inventories !== '') {
-    		foreach ($inventories as $key => $value) {
-		        $inventory = Inventory::find($value['id']);
+    	$items = $request->item;
+    	if($items !== '') {
+    		foreach ($items as $key => $value) {
+		        $inventory = InventoryItem::find($value['id']);
 		        $inventory->ordered = $value['ordered'];  
 		        $inventory->save();	
     		}
     	}
 
 
-		Flash::success('Successfully updated inventory group order!');
+		Flash::success('Successfully updated inventory items order!');
 		return Redirect::route('inventories_index'); 	
     }
 }

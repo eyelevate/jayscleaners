@@ -83,8 +83,12 @@ Route::group(['middleware' => ['web']], function () {
 		//Inventory
 		Route::post('/items/add',['as'=>'items_add_post','uses'=>'InventoryItemsController@postAdd']);
 		Route::post('/items/delete',['as'=>'items_delete_post','uses'=>'InventoryItemsController@postDelete']);
-		Route::post('/inventories/edit',['uses'=>'InventoryItemsController@postEdit']);
-		Route::post('/items/order',['uses'=>'InventoryItemController@postOrder']);
+		Route::post('/items/edit',['uses'=>'InventoryItemsController@postEdit']);
+		Route::post('/items/order',['uses'=>'InventoryItemsController@postOrder']);
+
+		//Taxes
+		Route::get('/taxes',['as'=>'taxes_index','uses'=>'TaxesController@getIndex']);
+		Route::post('/taxes/update',['uses'=>'TaxesController@postUpdate']);
 
 		//Users
 		Route::get('/users',  ['as'=>'users_index', 'uses' => 'UsersController@getIndex']);
