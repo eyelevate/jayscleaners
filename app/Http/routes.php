@@ -47,6 +47,15 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 
 		//Customers
+		Route::get('/companies',  ['as'=>'companies_index', 'uses' => 'CompaniesController@getIndex']);
+		Route::get('/companies/add',['as'=>'companies_add','uses'=>'CompaniesController@getAdd']);
+		Route::post('/companies/add',['uses'=>'CompaniesController@postAdd']);
+		Route::get('/companies/edit/{id}',['as'=>'customers_edit','uses'=>'CustomersController@getEdit']);
+		Route::post('/companies/edit',['uses'=>'CustomersController@postEdit']);
+		Route::post('/companies/delete',  ['as'=>'customers_delete','uses' => 'CustomersController@postDelete']);
+
+
+		//Customers
 		Route::get('/customers',  ['as'=>'customers_index', 'uses' => 'CustomersController@getIndex']);
 		Route::post('/customers',['as'=>'customers_index_post','uses'=>'CustomersController@postIndex']);
 		Route::get('/customers/add',['as'=>'customers_add','uses'=>'CustomersController@getAdd']);
