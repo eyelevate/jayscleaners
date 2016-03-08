@@ -28,4 +28,30 @@ class Company extends Model
     	return [false=>'No', true=>'Yes'];
 
     }
+
+    public static function prepareStoreHours() {
+        $hours = [];
+        for ($i=1; $i<=12 ; $i++) { 
+            $hours[$i] = $i;
+        }
+
+        return $hours;
+    }
+
+    public static function prepareStoreHourStatus(){
+        return ['0'=>'Closed','1'=>'Open'];
+    }
+
+    public static function prepareMinutes(){
+        $minutes = [];
+        for ($i=1; $i<=60 ; $i++) { 
+            $minutes[$i] = $i;
+        }
+
+        return $minutes;
+    }
+
+    public static function prepareAmpm(){
+        return ['am'=>'AM','pm'=>'PM'];
+    }
 }

@@ -21,7 +21,8 @@ class CreateCompaniesTable extends Migration
             $table->string('zip',10)->nullable();
             $table->string('phone',20)->nullable();
             $table->string('email',100)->nullable();
-            $table->integer('owner_id', false, true)->length(11)->nullable();
+            $table->text('store_hours')->nullable();
+            $table->text('turn_around')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

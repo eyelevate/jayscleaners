@@ -54,12 +54,12 @@
 		</div>
 	</a><!-- ./col -->
 
-	<a href="{{ route('admins_settings') }}" class="col-lg-3 col-xs-6">
+	<a href="{{ route('companies_operation') }}" class="col-lg-3 col-xs-6">
 		<!-- small box -->
 		<div class="small-box bg-red">
 			<div class="inner">
-				<h3>Oper.</h3>
-				<p>Turnaround Times</p>
+				<h3>Operation</h3>
+				<p>Hours & Turnaround</p>
 			</div>
 			<div class="icon">
 				<i class="ion-ios-loop-strong"></i>

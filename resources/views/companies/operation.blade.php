@@ -6,19 +6,18 @@
 
 @stop
 @section('header')
-	<h1> Companies Edit <small>Control panel</small></h1>
+	<h1> Store Hours & Turnaround Time <small>Control panel</small></h1>
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
 		<li><a href="{{ route('admins_settings') }}"> Settings</a></li>
 		<li><a href="{{ route('companies_index') }}"> Companies</a></li>
-		<li class="active">Edit</li>
+		<li class="active">Operation</li>
 	</ol>
 @stop
 @section('content')
 <!-- Add Company Form -->
-{!! Form::open(['action' => 'CompaniesController@postEdit', 'class'=>'form-horizontal','role'=>"form"]) !!}
+{!! Form::open(['action' => 'CompaniesController@postOperation', 'class'=>'form-horizontal','role'=>"form"]) !!}
 {!! csrf_field() !!}
-{{ Form::hidden('id',$company->id) }}
 <div class="box box-primary">
 	<div class="box-header">
 		<i class="ion ion-clipboard"></i>
@@ -28,11 +27,79 @@
 		</div>
 	</div><!-- /.box-header -->
 	<div class="box-body">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<TH>Day</TH>
+					<th>Status</th>
+					<TH>Open</TH>
+					<TH>Close</TH>
+					<TH>Turnaround</TH>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Sunday</td>
+					<td>
+
+					</td>
+					<td>
+
+					</td>
+					<td>
+
+					</td>
+					<td>
+
+					</td>
+				</tr>
+				<tr>
+					<td>Monday</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Tuesday</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Wednesday</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Thursday</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Friday</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Saturday</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
             <label class="col-md-4 control-label">Company Name <span class="text text-danger">*</span></label>
 
             <div class="col-md-6">
-                {!! Form::text('name', $company->name, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                {!! Form::text('name', old('name'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('name'))
                     <span class="help-block">
                         <strong>{{ $errors->first('name') }}</strong>
@@ -44,7 +111,7 @@
             <label class="col-md-4 control-label">Phone <span class="text text-danger">*</span></label>
 
             <div class="col-md-6">
-                {!! Form::text('phone', $company->phone, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                {!! Form::text('phone', old('phone'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('phone'))
                     <span class="help-block">
                         <strong>{{ $errors->first('phone') }}</strong>
@@ -56,7 +123,7 @@
             <label class="col-md-4 control-label">Email <span class="text text-danger">*</span></label>
 
             <div class="col-md-6">
-                {!! Form::text('email', $company->email, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                {!! Form::text('email', old('email'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('email'))
                     <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -68,7 +135,7 @@
             <label class="col-md-4 control-label">Street <span class="text text-danger">*</span></label>
 
             <div class="col-md-6">
-                {!! Form::text('street', $company->street, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                {!! Form::text('street', old('street'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('street'))
                     <span class="help-block">
                         <strong>{{ $errors->first('phone') }}</strong>
@@ -80,7 +147,7 @@
             <label class="col-md-4 control-label">City <span class="text text-danger">*</span></label>
 
             <div class="col-md-6">
-                {!! Form::text('city', $company->city, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                {!! Form::text('city', old('city'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('city'))
                     <span class="help-block">
                         <strong>{{ $errors->first('city') }}</strong>
@@ -92,7 +159,7 @@
             <label class="col-md-4 control-label">State <span class="text text-danger">*</span></label>
 
             <div class="col-md-6">
-                {!! Form::text('state', $company->state, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                {!! Form::text('state', old('state'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('state'))
                     <span class="help-block">
                         <strong>{{ $errors->first('state') }}</strong>
@@ -104,7 +171,7 @@
             <label class="col-md-4 control-label">Zipcode <span class="text text-danger">*</span></label>
 
             <div class="col-md-6">
-                {!! Form::text('zip', $company->zip, ['class'=>'form-control', 'placeholder'=>'']) !!}
+                {!! Form::text('zip', old('zip'), ['class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('zip'))
                     <span class="help-block">
                         <strong>{{ $errors->first('zip') }}</strong>
@@ -114,9 +181,8 @@
         </div>
 	</div><!-- /.box-body -->
 	<div class="box-footer clearfix no-border ">
-		<input type="submit" value="Edit Company" class="btn btn-primary btn-large pull-right"/>
+		<input type="submit" value="Create Company" class="btn btn-primary btn-large pull-right"/>
 	</div>
 </div><!-- /.box -->
 {{ Form::close() }}
-
 @stop

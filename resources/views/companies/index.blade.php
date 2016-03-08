@@ -11,6 +11,7 @@
 	<h1> Companies Home <small>Control panel</small></h1>
 	<ol class="breadcrumb">
 		<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
+		<li><a href="{{ route('admins_settings') }}"> Settings</a></li>
 		<li class="active">Company</li>
 	</ol>
 @stop
@@ -27,7 +28,7 @@
 		            	<th>Id</th>
 		            	<th>Name</th>
 		                <th>Phone</th>
-		                <th>Owner</th>
+		                <th>Email</th>
 		                <th>Street</th>
 		                <th>City</th>
 		                <th>Zip</th>
@@ -40,7 +41,7 @@
 		            	<th>Id</th>
 		            	<th>Name</th>
 		                <th>Phone</th>
-		                <th>Owner</th>
+		                <th>Email</th>
 		                <th>Street</th>
 		                <th>City</th>
 		                <th>Zip</th>
@@ -50,19 +51,19 @@
 		        </tfoot>
 		        <tbody>
 		        	@if(isset($companies))
-			        	@foreach($companies as $company)
+			        	@foreach($companies as $c)
 			        		<tr>
-			        			<td>{{ $company->id }}</td>
-			        			<td>{{ $company->name }}</td>
-			        			<td>{{ $company->phone }}</td>
-			        			<td>{{ $company->owner_id }}</td>
-			        			<td>{{ $company->street }}</td>
-			        			<td>{{ $company->city }}</td>
-			        			<td>{{ $company->zip }}</td>
-			        			<td>{{ $cust->created_on }}</td>
+			        			<td>{{ $c->id }}</td>
+			        			<td>{{ $c->name }}</td>
+			        			<td>{{ $c->phone }}</td>
+			        			<td>{{ $c->email }}</td>
+			        			<td>{{ $c->street }}</td>
+			        			<td>{{ $c->city }}</td>
+			        			<td>{{ $c->zip }}</td>
+			        			<td>{{ $c->created_at }}</td>
 			        			<td>
-			        				<a class="btn btn-info" href="{{ route('companies_edit',$companies->id) }}">edit</a> 
-			        				<!-- <a class="btn btn-danger" href="{{ route('companies_delete',$companies->id) }}">delete</a> -->
+			        				<a class="btn btn-info" href="{{ route('companies_edit',$c->id) }}">edit</a> 
+
 			        			</td>
 			        		</tr>
 			        	@endforeach

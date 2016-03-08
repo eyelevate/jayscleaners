@@ -50,10 +50,11 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/companies',  ['as'=>'companies_index', 'uses' => 'CompaniesController@getIndex']);
 		Route::get('/companies/add',['as'=>'companies_add','uses'=>'CompaniesController@getAdd']);
 		Route::post('/companies/add',['uses'=>'CompaniesController@postAdd']);
-		Route::get('/companies/edit/{id}',['as'=>'customers_edit','uses'=>'CustomersController@getEdit']);
-		Route::post('/companies/edit',['uses'=>'CustomersController@postEdit']);
-		Route::post('/companies/delete',  ['as'=>'customers_delete','uses' => 'CustomersController@postDelete']);
-
+		Route::get('/companies/edit/{id}',['as'=>'companies_edit','uses'=>'CompaniesController@getEdit']);
+		Route::post('/companies/edit',['uses'=>'CompaniesController@postEdit']);
+		Route::post('/companies/delete',  ['as'=>'companies_delete','uses' => 'CompaniesController@postDelete']);
+		Route::get('/companies/operation',['as'=>'companies_operation','uses'=>'CompaniesController@getOperation']);
+		Route::post('/companies/operation',['uses'=>'CompaniesController@postOperation']);
 
 		//Customers
 		Route::get('/customers',  ['as'=>'customers_index', 'uses' => 'CustomersController@getIndex']);
