@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+
+    public static function prepareCompany($data){
+        if(isset($data['store_hours'])){
+            $data['store_hours'] = json_decode($data['store_hours'],true);
+        }
+
+        return $data;
+    }
     public static function getCompany(){
 
     	return [1=>'Montlake',2=>'Roosevelt'];
@@ -39,13 +47,13 @@ class Company extends Model
     }
 
     public static function prepareStoreHourStatus(){
-        return ['0'=>'Closed','1'=>'Open'];
+        return ['1'=>'Closed','2'=>'Open'];
     }
 
     public static function prepareMinutes(){
         $minutes = [];
-        for ($i=1; $i<=60 ; $i++) { 
-            $minutes[$i] = $i;
+        for ($i=0; $i<60 ; $i++) { 
+            $minutes[str_pad($i, 2, '0', STR_PAD_LEFT)] = ':'.str_pad($i, 2, '0', STR_PAD_LEFT);
         }
 
         return $minutes;
@@ -53,5 +61,23 @@ class Company extends Model
 
     public static function prepareAmpm(){
         return ['am'=>'AM','pm'=>'PM'];
+    }
+    public static function prepareTurnaround(){
+        $turnaround = [];
+        for ($i=0; $i <= 14 ; $i++) { 
+            $turnaround[$i] = ($i == 0) ? 'Same Day' : $i.' days';
+        }
+        return $turnaround;
+    }
+    public static function prepareDayOfWeek(){
+        return [
+            0=>'Sunday',
+            1=>'Monday',
+            2=>'Tuesday',
+            3=>'Wednesday',
+            4=>'Thursday',
+            5=>'Friday',
+            6=>'Saturday'
+        ];
     }
 }

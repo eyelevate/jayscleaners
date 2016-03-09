@@ -3,7 +3,7 @@
 
 @stop
 @section('scripts')
-
+	<script type="text/javascript" src="/js/companies/operation.js"></script>
 @stop
 @section('header')
 	<h1> Store Hours & Turnaround Time <small>Control panel</small></h1>
@@ -18,166 +18,150 @@
 <!-- Add Company Form -->
 {!! Form::open(['action' => 'CompaniesController@postOperation', 'class'=>'form-horizontal','role'=>"form"]) !!}
 {!! csrf_field() !!}
+{{	Form::hidden('id',$company->id) }}
 <div class="box box-primary">
 	<div class="box-header">
 		<i class="ion ion-clipboard"></i>
-		<h3 class="box-title">Add A Company</h3>
+		<h3 class="box-title">Store Hours / Invoice Turnaround Setup Form</h3>
 		<div class="box-tools pull-right">
 
 		</div>
 	</div><!-- /.box-header -->
 	<div class="box-body">
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<TH>Day</TH>
-					<th>Status</th>
-					<TH>Open</TH>
-					<TH>Close</TH>
-					<TH>Turnaround</TH>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Sunday</td>
-					<td>
+		<div class="table-responsive">
 
-					</td>
-					<td>
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<TH>Day</TH>
+						<th>Status</th>
+						<TH>Open</TH>
+						<TH>Close</TH>
+						<TH>Turnaround</TH>
+						<TH>Due</TH>
+					</tr>
+				</thead>
+				<tbody>
+					@if(isset($company->store_hours))
+						@foreach(json_decode($company->store_hours,true) as $key => $value)
+						<tr>
+							<td>{{ $dow[$key] }}</td>
+							<td>
+						        <div class="form-group{{ $errors->has('operation[$key][status]') ? ' has-error' : '' }}">
 
-					</td>
-					<td>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$key][status]', $status, $value->status, ['class'=>'form-control operation_status']) !!}
+						                @if ($errors->has('operation[$key][status]'))
+						                    <span class="help-block">
+						                        <strong>{{ $errors->first('operation[$key][status]') }}</strong>
+						                    </span>
+						                @endif
+						            </div>
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$key][open]') ? ' has-error' : '' }} clearfix">
 
-					</td>
-					<td>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$key][open_hour]', $hours, $value->open_hour, ['class'=>'form-control','disabled'=>'true']) !!}
+						                {!! Form::select('operation[$key][open_minutes]', $minutes, $value->open_minutes, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						                {!! Form::select('operation[$key][open_ampm]', $ampm, $value->open_ampm, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						            </div>
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$key][close]') ? ' has-error' : '' }} clearfix">
 
-					</td>
-				</tr>
-				<tr>
-					<td>Monday</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>Tuesday</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>Wednesday</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>Thursday</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>Friday</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>Saturday</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
-        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">Company Name <span class="text text-danger">*</span></label>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$key][closed_hour]', $hours, $value->closed_hour, ['class'=>'form-control','disabled'=>'true']) !!}
+						                {!! Form::select('operation[$key][closed_minutes]', $minutes, $value->closed_minutes, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						                {!! Form::select('operation[$key][closed_ampm]', $ampm, $valu->closed_ampm, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						            </div>
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$key][turnaround]') ? ' has-error' : '' }} clearfix">
 
-            <div class="col-md-6">
-                {!! Form::text('name', old('name'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                @if ($errors->has('name'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('name') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>	
-        <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">Phone <span class="text text-danger">*</span></label>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$key][turnaround]', $turnaround, $value->turnaround, ['class'=>'form-control','disabled'=>'true']) !!}
+						            </div>
 
-            <div class="col-md-6">
-                {!! Form::text('phone', old('phone'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                @if ($errors->has('phone'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('phone') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
-        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">Email <span class="text text-danger">*</span></label>
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$key][due]') ? ' has-error' : '' }} clearfix">
 
-            <div class="col-md-6">
-                {!! Form::text('email', old('email'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>		
-        <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">Street <span class="text text-danger">*</span></label>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$key][due_hour]', $hours, $value->due_hour, ['class'=>'form-control','disabled'=>'true']) !!}
+						                {!! Form::select('operation[$key][due_minutes]', $minutes, $value->due_minutes, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						                {!! Form::select('operation[$key][due_ampm]', $ampm, $value->due_ampm, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						            </div>
+						        </div>
+							</td>
+						</tr>
+						@endforeach
+					@else
+						@for($i = 0; $i <= 6; $i++)
+						<tr>
+							<td>{{ $dow[$i] }}</td>
+							<td>
+						        <div class="form-group{{ $errors->has('operation[$i][status]') ? ' has-error' : '' }}">
 
-            <div class="col-md-6">
-                {!! Form::text('street', old('street'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                @if ($errors->has('street'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('phone') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>	
-        <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">City <span class="text text-danger">*</span></label>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$i][status]', $status, null, ['class'=>'form-control operation_status']) !!}
+						                @if ($errors->has('operation[$i][status]'))
+						                    <span class="help-block">
+						                        <strong>{{ $errors->first('operation[$i][status]') }}</strong>
+						                    </span>
+						                @endif
+						            </div>
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$i][open]') ? ' has-error' : '' }} clearfix">
 
-            <div class="col-md-6">
-                {!! Form::text('city', old('city'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                @if ($errors->has('city'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('city') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
-        <div class="form-group{{ $errors->has('state') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">State <span class="text text-danger">*</span></label>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$i][open_hour]', $hours, 12, ['class'=>'form-control','disabled'=>'true']) !!}
+						                {!! Form::select('operation[$i][open_minutes]', $minutes, null, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						                {!! Form::select('operation[$i][open_ampm]', $ampm, null, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						            </div>
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$i][close]') ? ' has-error' : '' }} clearfix">
 
-            <div class="col-md-6">
-                {!! Form::text('state', old('state'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                @if ($errors->has('state'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('state') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>		
-        <div class="form-group{{ $errors->has('zip') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">Zipcode <span class="text text-danger">*</span></label>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$i][closed_hour]', $hours, 12, ['class'=>'form-control','disabled'=>'true']) !!}
+						                {!! Form::select('operation[$i][closed_minutes]', $minutes, null, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						                {!! Form::select('operation[$i][closed_ampm]', $ampm, null, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						            </div>
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$i][turnaround]') ? ' has-error' : '' }} clearfix">
 
-            <div class="col-md-6">
-                {!! Form::text('zip', old('zip'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                @if ($errors->has('zip'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('zip') }}</strong>
-                    </span>
-                @endif
-            </div>
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$i][turnaround]', $turnaround, null, ['class'=>'form-control','disabled'=>'true']) !!}
+						            </div>
+
+						        </div>
+							</td>
+							<td class="operationFormTd">
+						        <div class="form-group{{ $errors->has('operation[$i][due]') ? ' has-error' : '' }} clearfix">
+
+						            <div class="col-md-12">
+						                {!! Form::select('operation[$i][due_hour]', $hours, 12, ['class'=>'form-control','disabled'=>'true']) !!}
+						                {!! Form::select('operation[$i][due_minutes]', $minutes, null, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						                {!! Form::select('operation[$i][due_ampm]', $ampm, null, ['class'=>'form-control', 'disabled'=>'true']) !!}
+						            </div>
+						        </div>
+							</td>
+						</tr>
+						@endfor
+					@endif
+					
+				</tbody>
+			</table>
         </div>
 	</div><!-- /.box-body -->
 	<div class="box-footer clearfix no-border ">
