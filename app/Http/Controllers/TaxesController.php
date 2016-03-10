@@ -34,7 +34,7 @@ class TaxesController extends Controller
     public function getIndex(){
     	$companies = Company::getCompany();
     	$tax = Tax::prepareTax(Tax::where('status',1)->first());
-    	$history = Tax::where('id','>',0)->orderBy('id','desc')->get();
+    	$history = Tax::prepareHistory(Tax::where('id','>',0)->orderBy('id','desc')->get());
     	
     	return view('taxes.index')
     	->with('layout',$this->layout)

@@ -132,11 +132,10 @@ class CompaniesController extends Controller
     public function postOperation(Request $request){
 
         $company = Company::find($request->id);
-        $company->store_hours = json_encode(Input::get('operations'));
-
+        $company->store_hours = json_encode(Input::get('operation'));
         if($company->save()){
 			Flash::success('Successfully updated store hours!');
-			return Redirect::route('companies_index');        	
+			return Redirect::route('companies_operation');        	
         }
     }
 }

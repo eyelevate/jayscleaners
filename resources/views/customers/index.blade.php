@@ -61,8 +61,7 @@
 				        			<td>{{ $cust->phone }}</td>
 				        			<td>{{ $cust->created_on }}</td>
 				        			<td>
-				        				<a class="btn btn-info" href="{{ route('customers_edit',$cust->id) }}">edit</a> 
-				        				<a class="btn btn-danger" href="{{ route('customers_delete',$cust->id) }}">delete</a>
+				        				<a class="btn btn-info" href="{{ route('customers_view',$cust->id) }}">View</a> 
 				        			</td>
 				        		</tr>
 				        	@endforeach

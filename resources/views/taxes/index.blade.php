@@ -27,7 +27,7 @@
                 <label class="col-md-4 control-label">Current Sales Tax</label>
 
                 <div class="col-md-6">
-                    {!! Form::text('tax', $tax->rate, ['class'=>'form-control', 'placeholder'=>'','disabled'=>'true','style'=>'font-size:20px;']) !!}
+                    {!! Form::text('tax', $tax['rate'], ['class'=>'form-control', 'placeholder'=>'','disabled'=>'true','style'=>'font-size:20px;']) !!}
 
                 </div>
             </div> 				

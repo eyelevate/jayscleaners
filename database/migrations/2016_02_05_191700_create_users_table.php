@@ -42,6 +42,8 @@ class CreateUsersTable extends Migration
             $table->boolean('account')->nullable();
             $table->string('starch_old',10)->nullable();
             $table->tinyInteger('starch',false, true)->length(1)->nullable();
+            $table->text('important_memo')->nullable();
+            $table->text('invoice_memo')->nullable();
             $table->string('password', 60)->nullable();
             $table->tinyInteger('role_id', false, true)->length(1)->nullable();
             $table->softDeletes();

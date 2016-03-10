@@ -47,6 +47,14 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 
 		//Customers
+		Route::get('/colors',  ['as'=>'colors_index', 'uses' => 'ColorsController@getIndex']);
+		Route::get('/colors/add',['as'=>'colors_add','uses'=>'ColorsController@getAdd']);
+		Route::post('/colors/add',['uses'=>'ColorsController@postAdd']);
+		Route::get('/colors/edit/{id}',['as'=>'colors_edit','uses'=>'ColorsController@getEdit']);
+		Route::post('/colors/edit',['uses'=>'ColorsController@postEdit']);
+		Route::post('/colors/delete',  ['as'=>'colors_delete','uses' => 'ColorsController@postDelete']);
+
+		//Customers
 		Route::get('/companies',  ['as'=>'companies_index', 'uses' => 'CompaniesController@getIndex']);
 		Route::get('/companies/add',['as'=>'companies_add','uses'=>'CompaniesController@getAdd']);
 		Route::post('/companies/add',['uses'=>'CompaniesController@postAdd']);

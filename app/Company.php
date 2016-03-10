@@ -10,8 +10,9 @@ class Company extends Model
     public static function prepareCompany($data){
         if(isset($data['store_hours'])){
             $data['store_hours'] = json_decode($data['store_hours'],true);
-        }
 
+
+        }
         return $data;
     }
     public static function getCompany(){
