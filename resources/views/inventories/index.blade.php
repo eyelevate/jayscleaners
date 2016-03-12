@@ -7,71 +7,72 @@
 <script src="/js/inventories/index.js" type="text/javascript"></script>
 @stop
 @section('header')
-	<h1> Inventory <small>Control panel</small></h1>
-	<ol class="breadcrumb">
-		<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
-		<li><a href="{{ route('admins_settings') }}"> Settings</a></li>
-		<li class="active">Inventory</li>
-	</ol>
-	<div class="row clearfix">
-		<!-- Inventory Group -->
-		<a href="#" class="col-lg-3 col-md-3 col-xs-3">
-			<!-- small box -->
-			<div class="small-box bg-primary" style="padding-bottom:10px" data-toggle="modal" data-target="#group-add">
-				<div class="inner">
-					<h4>Add Group</h4>
-					<p>Add inventory group</p>
-				</div>
-		        <div class="icon">
-		          <i class="ion-ios-plus-outline"></i>
-		        </div>
-
+<h1> Inventory <small>Control panel</small></h1>
+<br/>
+<ol class="breadcrumb">
+	<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
+	<li><a href="{{ route('admins_settings') }}"> Settings</a></li>
+	<li class="active">Inventory</li>
+</ol>
+<div class="row clearfix">
+	<!-- Inventory Group -->
+	<a href="#" class="col-lg-3 col-md-3 col-xs-3">
+		<!-- small box -->
+		<div class="small-box bg-primary" style="padding-bottom:10px" data-toggle="modal" data-target="#group-add">
+			<div class="inner">
+				<h4>Add Group</h4>
+				<p>Add inventory group</p>
 			</div>
-		</a><!-- ./col -->
-		<!-- Inventory Group Edit -->
-		<a id="inventory-edit" href="#" class="col-lg-3 col-md-3 col-xs-3">
-			<!-- small box -->
-			<div class="small-box bg-yellow" style="padding-bottom:10px" data-toggle="modal" data-target="#group-edit">
-				<div class="inner">
-					<h4>Edit Group</h4>
-					<p>Edit inventory group</p>
-				</div>
-		        <div class="icon">
-		          <i class="ion-edit"></i>
-		        </div>
+	        <div class="icon">
+	          <i class="ion-ios-plus-outline"></i>
+	        </div>
 
+		</div>
+	</a><!-- ./col -->
+	<!-- Inventory Group Edit -->
+	<a id="inventory-edit" href="#" class="col-lg-3 col-md-3 col-xs-3">
+		<!-- small box -->
+		<div class="small-box bg-yellow" style="padding-bottom:10px" data-toggle="modal" data-target="#group-edit">
+			<div class="inner">
+				<h4>Edit Group</h4>
+				<p>Edit inventory group</p>
 			</div>
-		</a><!-- ./col -->
-		<!-- Inventory Item -->
-		<a href="#" class="col-lg-3 col-md-3 col-xs-3">
-			<!-- small box -->
-			<div class="small-box bg-primary" style="padding-bottom:10px" data-toggle="modal" data-target="#item-add">
-				<div class="inner">
-					<h4>Add Item</h4>
-					<p>Add inventory item</p>
-				</div>
-		        <div class="icon">
-		          <i class="ion-plus"></i>
-		        </div>
+	        <div class="icon">
+	          <i class="ion-edit"></i>
+	        </div>
 
+		</div>
+	</a><!-- ./col -->
+	<!-- Inventory Item -->
+	<a href="#" class="col-lg-3 col-md-3 col-xs-3">
+		<!-- small box -->
+		<div class="small-box bg-primary" style="padding-bottom:10px" data-toggle="modal" data-target="#item-add">
+			<div class="inner">
+				<h4>Add Item</h4>
+				<p>Add inventory item</p>
 			</div>
-		</a><!-- ./col -->
-		<!-- Inventory Item Edit -->
-		<a id="inventory-item-edit" href="#item-edit" class="col-lg-3 col-md-3 col-xs-3">
-			<!-- small box -->
-			<div class="small-box bg-yellow" style="padding-bottom:10px" data-toggle="modal" data-target="#item-edit">
-				<div class="inner">
-					<h4>Edit Item</h4>
-					<p>Edit inventory item</p>
-				</div>
-		        <div class="icon">
-		          <i class="ion-edit"></i>
-		        </div>
+	        <div class="icon">
+	          <i class="ion-plus"></i>
+	        </div>
 
+		</div>
+	</a><!-- ./col -->
+	<!-- Inventory Item Edit -->
+	<a id="inventory-item-edit" href="#item-edit" class="col-lg-3 col-md-3 col-xs-3">
+		<!-- small box -->
+		<div class="small-box bg-yellow" style="padding-bottom:10px" data-toggle="modal" data-target="#item-edit">
+			<div class="inner">
+				<h4>Edit Item</h4>
+				<p>Edit inventory item</p>
 			</div>
-		</a><!-- ./col -->
+	        <div class="icon">
+	          <i class="ion-edit"></i>
+	        </div>
 
-	</div>
+		</div>
+	</a><!-- ./col -->
+
+</div>
 @stop
 @section('content')
 <div class="nav-tabs-custom">

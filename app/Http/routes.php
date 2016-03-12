@@ -50,9 +50,9 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/colors',  ['as'=>'colors_index', 'uses' => 'ColorsController@getIndex']);
 		Route::get('/colors/add',['as'=>'colors_add','uses'=>'ColorsController@getAdd']);
 		Route::post('/colors/add',['uses'=>'ColorsController@postAdd']);
-		Route::get('/colors/edit/{id}',['as'=>'colors_edit','uses'=>'ColorsController@getEdit']);
 		Route::post('/colors/edit',['uses'=>'ColorsController@postEdit']);
 		Route::post('/colors/delete',  ['as'=>'colors_delete','uses' => 'ColorsController@postDelete']);
+		Route::post('/colors/order',['uses'=>'ColorsController@postOrder']);
 
 		//Customers
 		Route::get('/companies',  ['as'=>'companies_index', 'uses' => 'CompaniesController@getIndex']);
@@ -78,7 +78,7 @@ Route::group(['middleware' => ['web']], function () {
 
 		//Invoices
 		Route::get('/invoices',  ['as'=>'invoices_index', 'uses' => 'InvoicesController@getIndex']);
-		Route::get('/invoices/dropoff',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);
+		Route::get('/invoices/dropoff/{id}',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);
 		Route::post('/invoices/dropoff',['uses'=>'InvoicesController@postAdd']);
 		Route::get('/invoices/edit/{id}',['as'=>'invoices_edit','uses'=>'InvoicesController@getEdit']);
 		Route::post('/invoices/edit',['uses'=>'InvoicesController@postEdit']);

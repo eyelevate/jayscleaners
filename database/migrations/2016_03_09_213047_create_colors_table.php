@@ -16,6 +16,7 @@ class CreateColorsTable extends Migration
             $table->increments('id');
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->string('color',20)->nullable();
+            $table->string('name',50)->nullable();
             $table->tinyInteger('ordered', false, true)->nullable();
             $table->tinyInteger('status', false, true)->nullable();
             $table->softDeletes();
