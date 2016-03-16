@@ -31,7 +31,7 @@
 					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;">
 						<button type="button" id="actual_number" class="btn btn-default" style="font-size:30px; height:60px; width:100%"/><span id="itemQtySpan">--</span></button>
 						<div class="hide">
-							<input type="hidden" value="1" id="item_qty"/>
+							<input type="hidden" value="0" id="itemQty"/>
 						</div>
 					</li>
 				</ul>

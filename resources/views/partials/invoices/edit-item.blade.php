@@ -9,7 +9,12 @@
 					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="number-{{ $i }}" class="number btn btn-primary" style="font-size:30px; height:60px; width:100%">{{ $i }}</button></li>
 					@endfor
 					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="number-0" class="number btn btn-primary" style="font-size:30px; height:60px; width:100%">0</button></li>
-					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="actual_number" class="btn btn-default" style="font-size:30px; height:60px; width:100%"/>--</button></li>
+					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;">
+						<button type="button" id="actual_number" class="btn btn-default" style="font-size:30px; height:60px; width:100%"/><span id="colorQtySpan">--</span></button>
+						<div class="hide">
+							<input type="hidden" value="1" id="colorQty"/>
+						</div>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -22,14 +27,14 @@
 			</div>
 			<div class="modal-body" style="padding-top:0px;">
 				<div class="row">
-					<div  class="col-md-8">
+					<div  class="col-md-7">
 						<h3>Color Selection</h3>
 						<ul id="colorsUl" class="no-padding clearfix" style="list-style:none;">
 						@if(isset($colors))
 							<?php $idx = 0; ?>
 							@foreach($colors as $color)
 								<?php $idx++; ?>
-								<li id="color-{{ $color->id }}" class=" col-lg-3 col-md-4 col-xs-2 clearfix" style="cursor:pointer;  height:75px;">
+								<li id="color-{{ $color->id }}" class=" col-lg-3 col-md-3 col-sm-3 col-xs-4 clearfix" style="cursor:pointer;  height:75px;">
 									<!-- small box -->
 									<button href="#" class="btn btn-sm colorBtn" style="background-color:{{ $color->color }}; min-width:60px; height:60px; border:3px solid #e5e5e5;">
 										
@@ -43,16 +48,9 @@
 						@endif
 						</ul>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<h3>Selected</h3>
-						<ul class="no-padding clearfix" style="list-style:none;">
-							<li class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-								<div class="alert alert-default alert-dismissible colorRow" role="alert" color="" quantity="">
-								  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								  <span class="badge" style="font-size:18px">4</span> <strong style="font-size:15px;">Black</strong>
-								</div>
-							</li>
-						</ul>
+						<ul id="selectedColorsUl" class="no-padding clearfix" style="list-style:none;"></ul>
 					</div>
 				</div>
 
@@ -65,4 +63,9 @@
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
+	<div id="colorsFormData" class="hide">
+		{{ Form::hidden('total',null,['id'=>'colorForm-total']) }}
+		{{ Form::hidden('qty',null,['id'=>'colorForm-qty']) }}
+		{{ Form::hidden('id', null,['id'=>'colorForm-id']) }}	
+	</div>
 </div><!-- /.modal -->
