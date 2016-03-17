@@ -43,6 +43,7 @@ class InventoryItemsController extends Controller
         $item = new InventoryItem();
         $item->company_id = $request->company_id;
         $item->inventory_id = $request->inventory_id;
+        $item->quantity = $request->quantity;
         $item->tags = $request->tags;
         $item->name = $request->name;
         $item->description = $request->description;
@@ -77,6 +78,7 @@ class InventoryItemsController extends Controller
         $item = InventoryItem::find($request->id);
         $item->company_id = $request->company_id;
         $item->inventory_id = $request->inventory_id;
+        $item->tags = $request->quantity;
         $item->tags = $request->tags;
         $item->name = $request->name;
         $item->description = $request->description;

@@ -19,6 +19,7 @@ class CreateInventoryItemsTable extends Migration
             $table->string('name',50)->nullable();
             $table->text('description')->nullable();
             $table->tinyInteger('tags', false, true)->nullable();
+            $table->tinyInteger('quantity', false, true)->nullable();
             $table->tinyInteger('ordered', false, true)->nullable();
             $table->decimal('price',11,2)->nullable();
             $table->string('image',150)->nullable();

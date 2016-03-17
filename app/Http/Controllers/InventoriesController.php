@@ -42,6 +42,7 @@ class InventoriesController extends Controller
     	$group_select = Inventory::prepareInventorySelect($inventories); 
     	$icon_select = Inventory::prepareIconSelect();
     	$tags_select = Inventory::prepareTagSelect();
+        $quantity_select = Inventory::prepareQuantitySelect();
 
     	return view('inventories.index')
     	->with('layout',$this->layout)
@@ -50,7 +51,8 @@ class InventoriesController extends Controller
     	->with('items',$items)
     	->with('group_select',$group_select)
     	->with('icon_select',$icon_select)
-    	->with('tags_select',$tags_select);
+    	->with('tags_select',$tags_select)
+        ->with('quantity_select',$quantity_select);
     }
     public function getAdd(){
 

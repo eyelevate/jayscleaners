@@ -147,5 +147,10 @@
 	{!! View::make('partials.invoices.edit-item')
 		->with('colors',$colors)
 		->render()
-	 !!}
+	!!}
+
+	{!! View::make('partials.invoices.memos')
+		->with('memos',$colors)
+		->render()
+	!!}	 
 @stop

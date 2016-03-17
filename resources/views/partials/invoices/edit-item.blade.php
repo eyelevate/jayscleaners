@@ -4,15 +4,15 @@
 		<div class="box box-primary col-lg-12 col-md-12 col-sm-12" style="margin-bottom:0px; border-radius:0px;">
 			<div class="box-body">	
 				<ul class=" no-padding" >
-					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="number-c" class="number-clear btn btn-primary" style="font-size:30px; height:60px; width:100%">C</button></li>
+					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="numberColors-c" class="numberColors-clear btn btn-primary" style="font-size:30px; height:60px; width:100%">C</button></li>
 					@for($i=1;$i<=9;$i++)
-					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="number-{{ $i }}" class="number btn btn-primary" style="font-size:30px; height:60px; width:100%">{{ $i }}</button></li>
+					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="numberColors-{{ $i }}" class="numberColors btn btn-primary" style="font-size:30px; height:60px; width:100%">{{ $i }}</button></li>
 					@endfor
-					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="number-0" class="number btn btn-primary" style="font-size:30px; height:60px; width:100%">0</button></li>
+					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;"><button type="button" id="numberColors-0" class="numberColors btn btn-primary" style="font-size:30px; height:60px; width:100%">0</button></li>
 					<li class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="list-style:none; height:65px;">
 						<button type="button" id="actual_number" class="btn btn-default" style="font-size:30px; height:60px; width:100%"/><span id="colorQtySpan">--</span></button>
 						<div class="hide">
-							<input type="hidden" value="1" id="colorQty"/>
+							<input type="hidden" value="0" id="colorQty"/>
 						</div>
 					</li>
 				</ul>
@@ -57,9 +57,9 @@
 			</div>
 			<div class="modal-footer clearfix">
 
-				<button type="button" class="btn btn-lg btn-info pull-left">Add Memo</button>
-				<button type="button" class="btn btn-lg btn-default" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-lg btn-primary" data-dismiss="modal">Update</button>
+				<button type="button" class="btn btn-lg btn-info pull-left" data-toggle="modal" data-target="#memos">Add Memo</button>
+				<button id="colorCancel" type="button" class="btn btn-lg btn-default" data-dismiss="modal">Cancel</button>
+				<button id="colorUpdate" type="button" class="btn btn-lg btn-primary" data-dismiss="modal">Update</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

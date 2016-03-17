@@ -129,6 +129,7 @@
 						{{ Form::hidden('item['.$item->id.'][price]',$item->price,['class'=>'item-price']) }}
 						{{ Form::hidden('item['.$item->id.'][image]',$item->image,['class'=>'item-image']) }}
 						{{ Form::hidden('item['.$item->id.'][tags]',$item->tags,['class'=>'item-tags']) }}
+						{{ Form::hidden('item['.$item->id.'][quantity]',$item->quantity,['class'=>'item-quantity']) }}
 						{{ Form::hidden('item['.$item->id.'][inventory_id]',$item->ordered,['class'=>'item-inventory_id']) }}
 
 					</div>
@@ -159,6 +160,7 @@
 		->with('group_select',$group_select)
 		->with('icon_select',$icon_select)
 		->with('tags_select',$tags_select)
+		->with('quantity_select',$quantity_select)
 		->render()
 	 !!}
 	{!! View::make('partials.inventories.item-edit')
@@ -166,6 +168,7 @@
 		->with('group_select',$group_select)
 		->with('icon_select',$icon_select)
 		->with('tags_select',$tags_select)
+		->with('quantity_select',$quantity_select)
 		->render()
 	 !!}
 	{!! View::make('partials.inventories.group-delete')

@@ -53,6 +53,7 @@ inventories = {
 			var item_desc = $(this).find('.item-description').val();
 			var item_price = $(this).find('.item-price').val();
 			var item_tags = $(this).find('.item-tags').val();
+			var item_quantity = $(this).find('.item-quantity').val();
 			var item_inventory_id = $(this).find('.item-inventory_id').val();
 			var item_image = $(this).find('.item-image').val();
 
@@ -61,6 +62,7 @@ inventories = {
 			$("#itemEdit-description").val(item_desc);
 			$("#itemEdit-inventory_id option[value='"+item_inventory_id+"']").attr('selected','selected');
 			$("#itemEdit-tags option[value='"+item_tags+"']").attr('selected','selected');
+			$("#itemEdit-quantity option[value='"+item_quantity+"']").attr('selected','selected');
 			$("#itemEdit-price").val(item_price);
 			$("#itemEdit-image").val(item_image);
 			$("#image_select-edit .dd-option-value").each(function(e){

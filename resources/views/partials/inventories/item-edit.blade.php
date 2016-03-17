@@ -34,7 +34,19 @@
                             </span>
                         @endif
                     </div>
-                </div>		
+                </div>	
+                <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Quantity <span class="text text-danger">*</span></label>
+
+                    <div class="col-md-6">
+                        {!! Form::select('quantity',$quantity_select , '1', ['class'=>'form-control']) !!}
+                        @if ($errors->has('quantity'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('quantity') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div> 	
                 <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
                     <label class="col-md-4 control-label">Tags <span class="text text-danger">*</span></label>
 
@@ -111,7 +123,7 @@
 			<div class="modal-footer">
                 <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#item-delete">Delete</a>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<input class="btn btn-primary" type="submit" value="Add Item"/>
+				<input class="btn btn-primary" type="submit" value="Update Item"/>
 			</div>
 			
 		</div><!-- /.modal-content -->

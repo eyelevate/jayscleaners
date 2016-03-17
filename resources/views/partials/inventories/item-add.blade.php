@@ -34,6 +34,18 @@
                         @endif
                     </div>
                 </div>		
+                <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Quantity <span class="text text-danger">*</span></label>
+
+                    <div class="col-md-6">
+                        {!! Form::select('quantity',$quantity_select , '1', ['class'=>'form-control']) !!}
+                        @if ($errors->has('quantity'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('quantity') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>  
                 <div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
                     <label class="col-md-4 control-label">Tags <span class="text text-danger">*</span></label>
 
@@ -46,6 +58,7 @@
                         @endif
                     </div>
                 </div> 	
+
                 <div class="form-group{{ $errors->has('price') ? ' has-error' : '' }}">
                     <label class="col-md-4 control-label">Price <span class="text text-danger">*</span></label>
 

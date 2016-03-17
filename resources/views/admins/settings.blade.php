@@ -109,7 +109,7 @@
 		</div>
 	</a><!-- ./col -->
 
-	<a href="{{ route('admins_settings') }}" class="col-lg-3 col-xs-6">
+	<a href="{{ route('memos_index') }}" class="col-lg-3 col-xs-6">
 		<!-- small box -->
 		<div class="small-box bg-red">
 			<div class="inner">

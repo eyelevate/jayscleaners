@@ -104,6 +104,13 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/items/edit',['uses'=>'InventoryItemsController@postEdit']);
 		Route::post('/items/order',['uses'=>'InventoryItemsController@postOrder']);
 
+		//Memos
+		Route::get('/memos',  ['as'=>'memos_index', 'uses' => 'MemosController@getIndex']);
+		Route::post('/memos/add',['uses'=>'MemosController@postAdd']);
+		Route::post('/memos/delete',['as'=>'memos_delete_post','uses'=>'MemosController@postDelete']);
+		Route::post('/memos/edit',['uses'=>'MemosController@postEdit']);
+		Route::post('/memos/order',['uses'=>'MemosController@postOrder']);
+
 		//Taxes
 		Route::get('/taxes',['as'=>'taxes_index','uses'=>'TaxesController@getIndex']);
 		Route::post('/taxes/update',['uses'=>'TaxesController@postUpdate']);
