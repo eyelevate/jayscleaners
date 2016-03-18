@@ -72,7 +72,7 @@
 					<li class="chart tab-pane {{ ($idx == 0) ? 'active' : '' }}" id="sales-{{ $key }}" style="position: relative; min-height: 300px; padding-top:5px;">
 					@if(isset($value['items']))
 						@foreach($value['items'] as $item)
-						<a id="item-{{ $item->id }}" href="#" class="items col-lg-3 col-md-4 col-xs-6 " data-toggle="modal" data-target="#item-update">
+						<a id="item-{{ $item->id }}" href="#" class="items col-lg-3 col-md-4 col-xs-6 ">
 							<!-- small box -->
 							<div class="small-box bg-gray clearfix" style="max-height:125px; overflow:hidden">
 								<div class="inner" style="padding-bottom:50px;">
@@ -107,7 +107,7 @@
 	<div class="col-lg-5 col-md-5 col-sm-5" >
 		<div class="box box-primary">
 			<div class="box-body">
-				<table class="table ">
+				<table id="invoiceSummaryTable" class="table table-hover">
 					<thead>
 						<tr>
 							<th>Qty</th>
@@ -116,8 +116,7 @@
 							<th>Price</th>
 						</tr>
 					</thead>
-					<tbody>
-					</tbody>
+					<tbody></tbody>
 					<tfoot>
 						<tr>
 							<td colspan="2" style="border:none;"></td>
@@ -131,6 +130,11 @@
 						</tr>
 						<tr>
 							<td colspan="2" style="border:none;"></td>
+							<td>Discount</td>
+							<th></th>
+						</tr>
+						<tr>
+							<td colspan="2" style="border:none;"></td>
 							<th>Total</th>
 							<th></th>
 						</tr>
@@ -140,7 +144,11 @@
 		</div>
 	</div><!-- /.nav-tabs-custom -->	
 </div>
+{!! Form::open(['action' => 'InvoicesController@postAdd','id'=>'invoice-form', 'class'=>'form-horizontal','role'=>"form"]) !!}
+{!! csrf_field() !!}
+{{ Form::hidden('customer_id',$customer->id) }}
 
+{!! Form::close() !!}
 @stop
 
 @section('modals')
@@ -150,7 +158,7 @@
 	!!}
 
 	{!! View::make('partials.invoices.memos')
-		->with('memos',$colors)
+		->with('memos',$memos)
 		->render()
 	!!}	 
 @stop

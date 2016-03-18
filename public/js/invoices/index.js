@@ -11,8 +11,22 @@ invoices = {
 		$(".items").click(function(){
 			var item_name = $(this).find('.item-name').val();
 			var item_id = $(this).find('.item-id').val();
-			var item_qty = (parseInt($("#itemQty").val(),false) === 0) ? 1 : parseInt($("#itemQty").val(),false);
+			var qty = (parseInt($("#itemQty").val(),false) === 0) ? 1 : parseInt($("#itemQty").val(),false);
+			var price = parseFloat($(this).find('.item-price').val(),false);
+			// create or edit an existing row
+			invoices.addInvoiceTableRow(item_id, item_name, qty, price);
 
+			// //reset
+			// invoices.resetItemQty();
+		});
+
+		$(document).find("#invoiceSummaryTable .invoiceTr").on('click',function(){
+			alert('clicked');
+			var item_id = $(this).attr('item-id');
+			var item_name = $(this).find('.itemTr-name').val();
+			var item_qty = (parseInt($(this).attr('qty'),false) === 0) ? 1 : parseInt($(this).attr('qty'),false);
+
+			console.log('item_id='+item_id);
 			$("#invoiceModal-item_name").html(item_name);
 			$("#invoiceModal-item_id").val(item_id);
 			$("#invoiceModal-total_qty").html(item_qty);
@@ -134,8 +148,34 @@ invoices = {
 		$("#colorForm-qty").val(count);
 		$("#invoiceModal-item_qty").html(count);
 	},
-	addNewInvoiceRow: function() {
+	addInvoiceTableRow: function(item_id, item_name, qty, price) {
+		// check for existing tr
+		if($(document).find('#invoiceSummaryTable tbody tr[item-id="'+item_id+'"]').length > 0) { // exists so only update
+			var old_qty = parseInt($('#invoiceSummaryTable tbody tr[item-id="'+item_id+'"]').attr('qty'), false);
+			var new_qty = old_qty + parseInt(qty,false);
+			var new_price = $.number(new_qty*price,2);
+			$('#invoiceSummaryTable tbody tr[item-id="'+item_id+'"]').attr('qty',new_qty).find('.itemTr-qty').html(new_qty);
+			$('#invoiceSummaryTable tbody tr[item-id="'+item_id+'"]').find('.itemTr-price').html(new_price);
 
+		} else { // Does not exist create a new row
+			//insert new row into table
+			var newTableRow = generate.invoiceRow(item_id, item_name, qty, price);
+			$("#invoiceSummaryTable tbody").prepend(newTableRow);
+		}
+
+
+		//insert new rows into the main invoice form
+		var invoiceItem = generate.formItem(item_id,qty,price);
+
+		$("#invoice-form").append(invoiceItem);
+
+		// update total fields
+		var pre_tax = '';
+		var tax_rate = '';
+		var total = '';
+
+		//reset 
+		invoices.resetAll();
 	},
 	quantity: function(current_quantity, new_quantity) {
 		var quantity = 0;
@@ -188,5 +228,26 @@ generate = {
 						'<span class="badge colorQty" style="font-size:18px">'+qty+'</span> <strong class="colorName" style="font-size:15px;">'+color_name+'</strong>'+
 					'</div>'+
 				'</li>';
+	},
+	invoiceRow: function(item_id, item_name, qty, price) {
+		return '<tr class="invoiceTr" data-toggle="modal" data-target="#item-update" item-id="'+item_id+'" qty="'+qty+'" style="cursor:pointer;">'+
+					'<td class="itemTr-qty">'+qty+'</td>'+
+					'<td class="itemTr-name">'+item_name+'</td>'+
+					'<td class="itemTr-color"></td>'+
+					'<td class="itemTr-price">'+$.number(price*qty,2)+'</td>'+
+				'</tr>';
+	},
+	formItem: function(item_id,qty,price){
+		var idx = $(document).find('#invoice-form .invoiceItem-id[item-id="'+item_id+'"]').length +1;
+		var item = '';
+		var total_qty = idx+parseInt(qty,false);
+		for (var i = idx; i < total_qty; i++) {
+			item += '<input class="invoiceItem-id" type="hidden" value="'+item_id+'" name="item['+item_id+'][item_id]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item +=	'<input class="invoiceItem-price" type="hidden" value="'+price+'" name="item['+item_id+'][price]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item += '<input class="invoiceItem-color" type="hidden" value="" name="item['+item_id+'][color]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item += '<input class="invoiceItem-memo" type="hidden" value="" name="item['+item_id+'][memo]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+		}
+
+		return item;
 	}
 };

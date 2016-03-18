@@ -23,6 +23,7 @@ use App\Layout;
 use App\Inventory;
 use App\InventoryItem;
 use App\Color;
+use App\Memo;
 
 class InvoicesController extends Controller
 {
@@ -48,12 +49,14 @@ class InvoicesController extends Controller
         ->get();
         $items = InventoryItem::prepareItems($inventories);
         $colors = Color::where('company_id',Auth::user()->company_id)->orderBy('ordered','asc')->get();
+        $memos = Memo::where('company_id',Auth::user()->company_id)->orderBy('ordered','asc')->get();
         return view('invoices.add')
         ->with('layout',$this->layout)
         ->with('customer',$customer)
         ->with('inventories',$inventories)
         ->with('items',$items)
-        ->with('colors',$colors);
+        ->with('colors',$colors)
+        ->with('memos',$memos);
     }
 
     public function postAdd(){

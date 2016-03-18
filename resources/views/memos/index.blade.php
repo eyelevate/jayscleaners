@@ -52,7 +52,7 @@
 @stop
 
 @section('content')
-{!! Form::open(['action' => 'MemosController@postOrder','id'=>'color-form', 'class'=>'form-horizontal','role'=>"form"]) !!}
+{!! Form::open(['action' => 'MemosController@postOrder','id'=>'memo-form', 'class'=>'form-horizontal','role'=>"form"]) !!}
 {!! csrf_field() !!}
 
 <div class="box box-primary">
@@ -64,14 +64,14 @@
 		@if(isset($memos))
 			<?php $idx = 0; ?>
 			@foreach($memos as $memo)
-				<?php $idx++; ?>
-			<li id="memo-{{ $memo->id }}" class=" col-lg-1 col-md-1 col-xs-1" style="cursor:pointer;">
-				<p>{{ $memo->memo }}</p>
+			<?php $idx++; ?>
+			<li id="memo-{{ $memo->id }}" class="memoLi alert alert-default col-lg-2 col-md-2 col-sm-4 col-xs-6" style="cursor:pointer; text-align:center; height:75px; {{ (strlen($memo->memo) < 20) ?  'padding:0px; vertical-align:middle; line-height:75px;' : null }}">
+				{{ $memo->memo }}
 				<!-- small box -->
 				<div class="hide">
 					{{ Form::hidden('id',$memo->id,['class'=>'memosId']) }}
 					{{ Form::hidden('memo',$memo->memo,['class'=>'memosMemo']) }}
-					{{ Form::hidden('memos['.$memo->id.'][order]',$idx)}}
+					{{ Form::hidden('memos['.$memo->id.'][order]',$idx,['class'=>'memosOrdered'])}}
 				</div>
 			</li>
 			@endforeach

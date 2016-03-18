@@ -43,6 +43,7 @@ class MemosController extends Controller
         $memo = new Memo;
         $memo->memo = $request->memo;
         $memo->company_id = Auth::user()->company_id;
+        $memo->status = 1;
         $memo->ordered = null;
         if($memo->save()){
 			Flash::success('Successfully added a new memo!');
@@ -66,6 +67,7 @@ class MemosController extends Controller
         ]); 
         $memo = Memo::find($request->id);
         $memo->memo = $request->memo;
+        $memo->status = 1;
 
         if($memo->save()){
 			Flash::success('Successfully edited memo!');
@@ -76,9 +78,10 @@ class MemosController extends Controller
 
     public function postOrder(Request $request) {
     	$memos = Input::get('memos');
+
     	if(isset($memos)) {
     		foreach ($memos as $key => $value) {
-    			$memo = Color::find($key);
+    			$memo = Memo::find($key);
     			$memo->ordered = $value['order'];
     			$memo->save();
     		}
