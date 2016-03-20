@@ -355,13 +355,13 @@
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 	<!-- Content Header (Page header) -->
-	<section class="content-header">
+	<section class="content-header" style="margin-top:0px; padding:0px;">
 	@yield('header')
 
 	</section>
 
 		<!-- Main content -->
-		<section class="content">
+		<section class="content" style="margin-top:0px; padding-top:0px;">
 			@include('flash::message')
 			@yield('content')
 

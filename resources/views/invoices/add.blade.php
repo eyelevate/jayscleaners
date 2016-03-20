@@ -7,19 +7,11 @@
 <script type="text/javascript" src="/js/invoices/index.js"></script>
 @stop
 @section('header')
-<h1> Invoice <small>Control panel</small></h1>
-<br/>
-<ol class="breadcrumb">
-	<li><a href="{{ route('admins_index') }}"><i class="fa fa-dashboard"></i> Admins</a></li>
-	<li><a href="{{ route('customers_view',$customer->id) }}"> Customer</a></li>
-	<li class="active">Dropoff</li>
-</ol>
+
 @stop
 @section('content')
 <div class="affix-bottom clearfix" data-spy="affix" data-offset-top="150" data-offset-bottom="0" style="z-index:9999; top:0px; width:100%;">
 	<div class="row">
-
-
 		<div class="box box-primary col-lg-12 col-md-12 col-sm-12" style="border-radius:0px;">
 			<div class="box-body">	
 				<ul class=" no-padding" >
@@ -39,6 +31,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-lg-7 col-md-7 col-sm-7">
 
@@ -104,37 +97,39 @@
 			</ul>
 		</div><!-- /.nav-tabs-custom -->
 	</div>
+
 	<div class="col-lg-5 col-md-5 col-sm-5" >
 		<div class="box box-primary">
 			<div class="box-body">
 				<table id="invoiceSummaryTable" class="table table-hover">
 					<thead>
 						<tr>
-							<th>Qty</th>
-							<th>Item</th>
-							<th>Color</th>
-							<th>Price</th>
+							<th><a id="editQty" href="#" class="btn btn-info" data-toggle="modal" data-target="#qty"><strong>Qty</strong></a></th>
+							<th><a id="editItem" href="#" class="btn btn-disabled" style="color:#5e5e5e; cursor:default;"><strong>Item</strong></a></th>
+							<th><a id="editColor" href="#" class="btn btn-info" data-toggle="modal" data-target="#color"><strong>Color</strong></a></th>
+							<th><a id="editMemo" href="#" class="btn btn-info" data-toggle="modal" data-target="#memo"><strong>Memo</strong></a></th>
+							<th><a id="editPrice" href="#" class="btn btn-info" data-toggle="modal" data-target="#price"><strong>Price</strong></a></th>
 						</tr>
 					</thead>
-					<tbody></tbody>
+					<tbody><tr></tr></tbody>
 					<tfoot>
 						<tr>
-							<td colspan="2" style="border:none;"></td>
+							<td colspan="3" style="border:none;"></td>
 							<td>Subtotal</td>
 							<th></th>
 						</tr>
 						<tr>
-							<td colspan="2" style="border:none;"></td>
+							<td colspan="3" style="border:none;"></td>
 							<td>Tax</td>
 							<th></th>
 						</tr>
 						<tr>
-							<td colspan="2" style="border:none;"></td>
+							<td colspan="3" style="border:none;"></td>
 							<td>Discount</td>
 							<th></th>
 						</tr>
 						<tr>
-							<td colspan="2" style="border:none;"></td>
+							<td colspan="3" style="border:none;"></td>
 							<th>Total</th>
 							<th></th>
 						</tr>
@@ -152,13 +147,19 @@
 @stop
 
 @section('modals')
-	{!! View::make('partials.invoices.edit-item')
+	{!! View::make('partials.invoices.colors')
 		->with('colors',$colors)
 		->render()
 	!!}
 
 	{!! View::make('partials.invoices.memos')
 		->with('memos',$memos)
+		->render()
+	!!}	 
+	{!! View::make('partials.invoices.prices')
+		->render()
+	!!}	 
+	{!! View::make('partials.invoices.qty')
 		->render()
 	!!}	 
 @stop
