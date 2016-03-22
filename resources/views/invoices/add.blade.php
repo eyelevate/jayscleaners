@@ -107,7 +107,7 @@
 							<th><a id="editQty" href="#" class="btn btn-info" data-toggle="modal" data-target="#qty"><strong>Qty</strong></a></th>
 							<th><a id="editItem" href="#" class="btn btn-disabled" style="color:#5e5e5e; cursor:default;"><strong>Item</strong></a></th>
 							<th><a id="editColor" href="#" class="btn btn-info" data-toggle="modal" data-target="#color"><strong>Color</strong></a></th>
-							<th><a id="editMemo" href="#" class="btn btn-info" data-toggle="modal" data-target="#memo"><strong>Memo</strong></a></th>
+							<th><a id="editMemo" href="#" class="btn btn-info" data-toggle="modal" data-target="#memo-table"><strong>Memo</strong></a></th>
 							<th><a id="editPrice" href="#" class="btn btn-info" data-toggle="modal" data-target="#price"><strong>Price</strong></a></th>
 						</tr>
 					</thead>
@@ -151,7 +151,9 @@
 		->with('colors',$colors)
 		->render()
 	!!}
-
+	{!! View::make('partials.invoices.memos-table')
+		->render()
+	!!}
 	{!! View::make('partials.invoices.memos')
 		->with('memos',$memos)
 		->render()

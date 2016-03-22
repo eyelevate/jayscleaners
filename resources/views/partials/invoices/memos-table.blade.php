@@ -1,12 +1,12 @@
-<div id="qty" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+<div id="memo-table" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header clearfix">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Quantity Update - <strong class="badge" style="font-size:20px;"><span id="qtyModalTotal">0</span></strong></h4>
+				<h4 class="modal-title">Memo Update </h4>
 			</div>
 			<div class="modal-body">
-				<table id="qtyTable" class="no-padding clearfix table table-striped" style="list-style:none;">
+				<table id="memoTable" class="no-padding clearfix table table-striped" style="list-style:none;">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -21,9 +21,9 @@
 				</table>
 			</div>
 			<div class="modal-footer">
-				<button id="deleteQty-all" class="btn btn-danger pull-left" type="button" data-dismiss="modal">Delete All</button>
+				<button id="deleteMemo-all" class="btn btn-danger pull-left" type="button">Delete Memo(s)</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button id="deleteQty-selected" type="button" class="btn btn-danger" data-dismiss="modal">Delete Selected</button>
+				<button id="memo-accept" type="button" class="btn btn-success" data-dismiss="modal">Accept Memo(s)</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

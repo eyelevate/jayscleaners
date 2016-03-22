@@ -86,12 +86,84 @@ invoices = {
 				var item_id = colors[k];
 				var color_count = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"][item-id="'+item_id+'"]').length;
 				var color_name =  $("#invoice-form").find('.invoiceItem-color[value="'+k+'"]:first').attr('color-name');
-				color_string += color_count+' - '+color_name+' /';
+				color_string += color_count+' - '+color_name+' / ';
 			}
 
 			
-			$("#invoiceSummaryTable tbody").find('tr.success .itemTr-color').html(color_string);
+			$("#invoiceSummaryTable tbody").find('tr.success .itemTr-color').html(color_string.substring(0,color_string.length-2));
+
 		});
+
+		$("#editQty").click(function(){
+			invoices.resetAll();
+			var item_id = $('#invoiceSummaryTable tbody').find('tr.success').attr('item-id');
+			var item_name = $('#invoiceSummaryTable tbody').find('tr.success').find('.itemTr-name').html();
+			invoices.editQtyFromInvoice(item_id, item_name);
+		});
+
+		$("#deleteQty-selected").click(function(){
+			$("#qtyTable tbody").find('tr').each(function(e){
+				if($(this).hasClass('danger')){
+					var idx = $(this).attr('item-idx');
+					$(this).remove();
+					$("#invoice-form").find('div.formItemsDiv[item-idx="'+idx+'"]').remove();
+				}
+
+			});
+
+			//reindex idx & update invoice table
+			invoices.reindexIdx();
+		});
+
+		$("#deleteQty-all").click(function(){
+			$("#qtyTable tbody").find('tr').each(function(e){
+				var idx = $(this).attr('item-idx');
+				$(this).remove();
+				$("#invoice-form").find('div.formItemsDiv[item-idx="'+idx+'"]').remove();
+			});
+			//reindex idx & update invoice table
+			invoices.reindexIdx();
+		});
+
+		//Memo
+		$("#editMemo").click(function(){
+			invoices.resetAll();
+			var item_id = $('#invoiceSummaryTable tbody').find('tr.success').attr('item-id');
+			var item_name = $('#invoiceSummaryTable tbody').find('tr.success').find('.itemTr-name').html();
+			invoices.editMemoFromInvoice(item_id, item_name);
+		});
+		$(".memoLi").click(function(){
+			var item_id=$(this).parents('ul:first').attr('item-id');
+			var item_idx = $(this).parents('ul:first').attr('item-idx');
+			var memo_id = $(this).find(".memosId").val();
+			//make active
+			if($(this).hasClass('active')) {
+				$(this).removeClass('active').removeClass('alert-info').addClass('alert-default');
+				$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul li[memo-id="'+memo_id+'"]').remove();
+			} else {
+				var memoli = generate.memoLi(memo_id);
+				$(this).addClass('active').removeClass('alert-default').addClass('alert-info');
+				$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul').append(memoli);
+			}
+
+			var memo = generate.createMemo();
+			// updte memo input
+			$("#memoInput").val(memo);
+		});
+
+		$("#memoAdd").click(function(){
+			var item_id = $("#memosUl").attr('item-id');
+			var item_idx = $("#memosUl").attr('item-idx');
+			var memo_string = $("#memoInput").val();
+
+			$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] .invoiceItem-memo').val(memo_string);
+			$("#memoTable tbody").find('.success .memoTd').html(memo_string);
+			invoices.resetMemoList();
+		});
+
+		// final memo accept 
+		
+
 
 	},
 	addColorsFromInvoice: function(item_id, item_name) {
@@ -134,12 +206,13 @@ invoices = {
 		});
 		$("#invoiceModal-item_qty").html(count);
 	},
+
 	addInvoiceTableRow: function(item_id, item_name, qty, price) {
 		// check for existing tr
 		$("#invoiceSummaryTable tbody tr").removeClass('success');
 
 		if($(document).find('#invoiceSummaryTable tbody tr[item-id="'+item_id+'"]').length > 0) { // exists so only update
-			var old_qty = parseInt($('#invoiceSummaryTable tbody tr[item-id="'+item_id+'"]').attr('qty'), false);
+			var old_qty = $("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"]').length;
 			var new_qty = old_qty + parseInt(qty,false);
 			var new_price = $.number(new_qty*price,2);
 			$('#invoiceSummaryTable tbody tr[item-id="'+item_id+'"]').attr('qty',new_qty).addClass('success').find('.itemTr-qty').html(new_qty);
@@ -171,6 +244,59 @@ invoices = {
 		//reset 
 		invoices.resetAll();
 	},
+	editMemoFromInvoice: function(item_id, item_name) {
+		invoices.resetAll();
+		// send item_id and item name to the colors modal
+		element = $("#invoice-form").find('input.invoiceItem-id[item-id="'+item_id+'"]');
+		element.each(function(e){
+			var idx = $(this).attr('item-idx');
+			var items = generate.memoRow(item_id,item_name,idx);
+			$("#memoTable tbody").append(items);
+
+			$("#memoTr-"+idx).click(function(){
+				invoices.resetMemoList();
+				$(this).parents('tbody:first').find('tr').removeClass('success');
+				$(this).addClass('success');
+				// send the proper variables to the memo modal
+				$("#memosUl").attr('item-idx',idx).attr('item-id',item_id);
+
+				// check to see what memo items were previously clicked
+				$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+idx+'"] ul li').each(function(){
+					var memo_id = $(this).attr('memo-id');
+					$('#memo-'+memo_id).addClass('active').removeClass('alert-default').addClass('alert-info');
+				});
+				// repopulate the memo input
+				var memo_string = $("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+idx+'"] .invoiceItem-memo').val();
+				$("#memoInput").val(memo_string);
+
+			});
+		});
+
+	},
+	editQtyFromInvoice: function(item_id, item_name) {
+		invoices.resetAll();
+		var itemQty = $("#invoice-form").find('input.invoiceItem-id[item-id="'+item_id+'"]').length;
+		// send item_id and item name to the colors modal
+		$("#qtyModalTotal").html(itemQty);
+		element = $("#invoice-form").find('input.invoiceItem-id[item-id="'+item_id+'"]');
+		element.each(function(e){
+			var idx = $(this).attr('item-idx');
+			var items = generate.qtyRow(item_id,item_name,idx);
+			$("#qtyTable tbody").append(items);
+
+			$("#qtyTr-"+idx).click(function(){
+				if($(this).hasClass('danger')) {
+					$(this).removeClass('danger');
+					$(this).find('input[type="checkbox"]').removeAttr('checked');
+				} else {
+					$(this).addClass('danger');
+					$(this).find('input[type="checkbox"]').prop('checked', true);
+
+				}
+			});
+		});
+
+	},
 	quantity: function(current_quantity, new_quantity) {
 		var quantity = 0;
 
@@ -186,18 +312,83 @@ invoices = {
 		return quantity;
 	
 	},
+	reindexIdx: function() {
+		$("#invoice-form").find('div.formItemsDiv').each(function(e){
+			var idx = e+1;
+			$(this).attr('item-idx',idx);
+			$(this).find('.invoiceItem-id').attr('item-idx',idx);
+			$(this).find('.invoiceItem-price').attr('item-idx',idx);
+			$(this).find('.invoiceItem-memo').attr('item-idx',idx);
+			$(this).find('.invoiceItem-color').attr('item-idx',idx);
+		});
 
+		invoices.repopulateInvoiceTable();
+	},
+	repopulateInvoiceTable: function(){
+		// variables
+		color_string = '';
+		colors = [];
+
+		// qty update
+		$("#invoice-form").find('div.formItemsDiv').each(function(e){
+			var item_id = $(this).attr('item-id');
+			var item_idx = $(this).attr('item-idx');
+			var color_id = $(this).find('.invoiceItem-color[item-id="'+item_id+'"]').val();
+			colors[color_id] = item_id;
+			var qty = $("#invoice-form").find('.invoiceItem-id[item-id="'+item_id+'"]').length;
+			$("#invoiceSummaryTable tbody").find("#invoiceTr-"+item_id).attr('qty',qty).find('.itemTr-qty').html(qty);
+		});
+
+		// iterate through color array and update invoice table with new colors
+		for (var k in colors){
+			var item_id = colors[k];
+			var color_count = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"][item-id="'+item_id+'"]').length;
+			var color_name =  $("#invoice-form").find('.invoiceItem-color[value="'+k+'"]:first').attr('color-name');
+			color_string += color_count+' - '+color_name+' / ';
+
+			$("#invoiceSummaryTable tbody").find("#invoiceTr-"+item_id+" .itemTr-color").html(color_string.substring(0,color_string.length-2));
+		}
+
+		// update price
+
+		$(document).find('#invoiceSummaryTable tbody tr').each(function(e){
+			var item_id = $(this).attr('item-id');
+			var price = 0;
+			if($("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"]').length > 0){
+				$("#invoice-form").find('.invoiceItem-price[item-id="'+item_id+'"]').each(function(f){
+					price += parseFloat($(this).val(),false);
+				});
+				$("#invoiceSummaryTable tbody").find("#invoiceTr-"+item_id+" .itemTr-price").html($.number(price,2));
+			} else {
+				$(this).remove();
+			}
+
+		});
+
+		//update memo
+
+
+	},
 	resetItemQty: function() {
 		$("#itemQty").val(0);
 		$("#itemQtySpan").html('--');
 	},
+	resetMemoList: function() {
+		$("#memosUl").attr('item-id','').attr('item-idx','');
+		$("#memosUl li").removeClass('active').removeClass('alert-info').addClass('alert-default');
+		$("#memoInput").val('');
+	},
 	resetAll: function() {
 		// reset qty counters
-		$("#itemQty, #colorQty").val(0);
-		$("#itemQtySpan, #colorQtySpan").html('--');
+		$("#itemQty").val(0);
+		$("#itemQtySpan").html('--');
+
+		// reset qty edit
+		$("#qtyModalTotal").html('0');
+		$("#qtyTable tbody").find('tr').remove();
 
 		// reset colors
-		$(document).find("#selectedColorsTable tbody tr").remove();
+		$("#selectedColorsTable tbody").find('tr').remove();
 		invoices.updateColorCount();
 		// reset items
 		$("#invoiceModal-item_name").html('');
@@ -205,6 +396,8 @@ invoices = {
 		$("#invoiceModal-total_qty").html('');
 
 		// reset memos
+		$("#memoTable tbody").find('tr').remove();
+		$("#memosUl li").removeClass('active').removeClass('alert-info').addClass('alert-default');
 
 	}
 
@@ -215,6 +408,7 @@ generate = {
 		var success = (e === 0) ? 'success' : '';
 		var rows = '';
 		if(status === true){
+			// TODO after editing the color for 2 rows stays on the last color edited. 
 			var color = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').attr('color-name');
 			var color_id = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
 			var hex = $(".colorsId[value='"+color_id+"']").parents('button:first').find('.colorsColor').val();
@@ -236,6 +430,18 @@ generate = {
 	colorItem: function(idx, color, hex, id){
 		return '<input name="colorSelected-'+idx+'" type="color" value="'+hex+'" color_id="'+id+'" color="'+color+'" disabled="true"/>';
 	},
+	createMemo: function() {
+		var memo_string = '';
+		// first check to see which items have been selected
+		$("#memosUl li").each(function(e){
+
+			if($(this).hasClass('active')) {
+				var string_item = $(this).find('.memosMemo').val()+' / ';
+				memo_string += string_item;
+			}
+		});
+		return memo_string.substring(0,memo_string.length-2);
+	},
 	invoiceRow: function(item_id, item_name, qty, price) {
 		return '<tr id="invoiceTr-'+item_id+'" class="invoiceTr success" item-id="'+item_id+'" qty="'+qty+'" style="cursor:pointer;">'+
 					'<td class="itemTr-qty">'+qty+'</td>'+
@@ -245,16 +451,62 @@ generate = {
 					'<td class="itemTr-price">'+$.number(price*qty,2)+'</td>'+
 				'</tr>';
 	},
+	memoLi: function(memo_id){
+		return '<li id="memoli-form-'+memo_id+'" class="memoli-form hide" memo-id="'+memo_id+'"></li>';
+	},
+	memoRow:function(item_id,item_name,idx) {
+		var color = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').attr('color-name');
+		var color_id = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var hex = $(".colorsId[value='"+color_id+"']").parents('button:first').find('.colorsColor').val();
+		var colorItem = (color_id === '') ? '' : generate.colorItem(idx, color, hex, color_id);
+		var memo = $("#invoice-form").find('.invoiceItem-memo[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var price = $("#invoice-form").find('.invoiceItem-price[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var rows = '<tr id="memoTr-'+idx+'" class="memoTr" item-id="'+item_id+'" item-idx="'+idx+'" check="false" style="cursor:pointer;" data-toggle="modal" data-target="#memo">'+
+				'<td>'+idx+'</td>'+
+				'<td>'+item_name+'</td>'+
+				'<td>'+colorItem+'</td>'+
+				'<td id="memoTd-'+idx+'" class="memoTd">'+memo+'</td>'+
+				'<td>'+$.number(price,2)+'</td>'+
+				'<td>'+
+					'<input id="memoCheck-'+idx+'" class="memoCheck" type="checkbox" disabled="true"/>'+
+				'</td>'+
+			'</tr>';
+
+		return rows;
+	},
+	qtyRow:function(item_id,item_name,idx) {
+		var color = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').attr('color-name');
+		var color_id = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var hex = $(".colorsId[value='"+color_id+"']").parents('button:first').find('.colorsColor').val();
+		var colorItem = (color_id === '') ? '' : generate.colorItem(idx, color, hex, color_id);
+		var memo = $("#invoice-form").find('.invoiceItem-memo[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var price = $("#invoice-form").find('.invoiceItem-price[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var rows = '<tr id="qtyTr-'+idx+'" class="qtyTr" item-id="'+item_id+'" item-idx="'+idx+'" check="false" style="cursor:pointer;">'+
+				'<td>'+idx+'</td>'+
+				'<td>'+item_name+'</td>'+
+				'<td>'+colorItem+'</td>'+
+				'<td class="memo">'+memo+'</td>'+
+				'<td>'+$.number(price,2)+'</td>'+
+				'<td>'+
+					'<input id="qtyCheck-'+idx+'" class="qtyCheck" type="checkbox" disabled="true"/>'+
+				'</td>'+
+			'</tr>';
+
+		return rows;
+	},
 	formItem: function(item_id,qty,price){
-		var idx = $(document).find('#invoice-form .invoiceItem-id[item-id="'+item_id+'"]').length +1;
+		var idx = $(document).find('#invoice-form .invoiceItem-id').length +1;
 		var item = '';
 		var total_qty = idx+parseInt(qty,false);
 		for (var i = idx; i < total_qty; i++) {
+			item += '<div class="hide formItemsDiv" item-idx="'+i+'" item-id="'+item_id+'">';
 			item += '<input class="invoiceItem-id" type="hidden" value="'+item_id+'" name="item['+item_id+'][item_id]" item-idx="'+i+'" item-id="'+item_id+'"/>';
 			item +=	'<input class="invoiceItem-price" type="hidden" value="'+price+'" name="item['+item_id+'][price]" item-idx="'+i+'" item-id="'+item_id+'"/>';
 			item += '<input class="invoiceItem-color" type="hidden" value="" name="item['+item_id+'][color]" item-idx="'+i+'" item-id="'+item_id+'" color-name=""/>';
 			item += '<input class="invoiceItem-memo" type="hidden" value="" name="item['+item_id+'][memo]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item +='<ul class="memoFormUl"></ul></div>';
 		}
+		
 
 		return item;
 	}

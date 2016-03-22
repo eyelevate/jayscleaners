@@ -1,4 +1,4 @@
-<div id="memo" class="modal fade" tabindex="-1" role="dialog">
+<div id="memo" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -6,7 +6,7 @@
 				<h4 class="modal-title">Memo</h4>
 			</div>
 			<div class="modal-body clearfix">
-				<ul id="memosUl" class="no-padding" style="list-style:none;">
+				<ul id="memosUl" item-id="" item-idx="" class="no-padding" style="list-style:none;">
 				@if(isset($memos))
 					<?php $idx = 0; ?>
 					@foreach($memos as $memo)
@@ -27,13 +27,13 @@
                     <label class="col-lg-12 col-md-12 col-sm-12 control-label">Memo <span class="text text-danger">*</span></label>
 
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        {!! Form::text('memo', null, ['id'=>'memo','class'=>'form-control', 'placeholder'=>'Add memo here']) !!}
+                        {!! Form::text('memo', null, ['id'=>'memoInput','class'=>'form-control', 'placeholder'=>'Add memo here']) !!}
                     </div>
                 </div> 		
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
-				<button id="memoAdd" type="button" class="btn btn-success btn-lg">Add Memo</button>
+				<button id="memoAdd" type="button" class="btn btn-success btn-lg" data-dismiss="modal">Add Memo</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
