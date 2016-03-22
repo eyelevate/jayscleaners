@@ -21,8 +21,7 @@
 				</table>
 			</div>
 			<div class="modal-footer">
-				<button id="deleteMemo-all" class="btn btn-danger pull-left" type="button">Delete Memo(s)</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button id="memo-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 				<button id="memo-accept" type="button" class="btn btn-success" data-dismiss="modal">Accept Memo(s)</button>
 			</div>
 		</div><!-- /.modal-content -->

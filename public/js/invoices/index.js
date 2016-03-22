@@ -161,8 +161,52 @@ invoices = {
 			invoices.resetMemoList();
 		});
 
+		//clear memo
+		$("#clearMemo").click(function() {
+			$(".memoLi").each(function(){
+				var item_id = $(this).parents('ul:first').attr('item-id');
+				var item_idx = $(this).parents('ul:first').attr('item-idx');
+				var memo_id = $(this).find(".memosId").val();
+
+				//remove active and ul in form 
+				if($(this).hasClass('active')) {
+					console.log(item_id+' - '+item_idx+' - '+memo_id);
+					$(this).removeClass('active').removeClass('alert-info').addClass('alert-default');
+					$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul li[memo-id="'+memo_id+'"]').remove();
+				}
+				// update memo input
+				
+			});
+			$("#memoInput").val('');
+			// remove the value from the form
+			var item_id = $("#memoUl").attr('item-id');
+			var item_idx = $("#memoUl").attr('item-idx');
+			$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] .invoiceItem-color').val('');
+		});
+
+
 		// final memo accept 
-		
+		$("#memo-accept").click(function(){
+			var memo_string = '';
+			$("#memoTable").find('tr').each(function(){
+				var item_id = $(this).attr('item-id');
+				var item_idx = $(this).attr('item-idx');
+				var memo_count = $("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul li').length;
+				if(memo_count > 0) {
+					$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul li').each(function(){
+						var memo_id = $(this).attr('memo-id');
+
+						memo_string += $("#memo-"+memo_id+" .memosMemo").val()+' / ';
+					});
+					
+				}
+			});
+			var item_id = $("#invoiceSummaryTable tbody").find('.success').attr('item-id');
+
+			console.log(memo_string.substring(0,memo_string.length-2));
+			$("#invoiceSummaryTable tbody").find('.success .itemTr-memo').html(memo_string.substring(0,memo_string.length-2));
+		});
+
 
 
 	},
@@ -343,9 +387,10 @@ invoices = {
 		for (var k in colors){
 			var item_id = colors[k];
 			var color_count = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"][item-id="'+item_id+'"]').length;
-			var color_name =  $("#invoice-form").find('.invoiceItem-color[value="'+k+'"]:first').attr('color-name');
-			color_string += color_count+' - '+color_name+' / ';
-
+			var color_name = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"]:first').attr('color-name');
+			if(color_count > 0 && color_name !== ''){
+				color_string += color_count+' - '+color_name+' / ';
+			}
 			$("#invoiceSummaryTable tbody").find("#invoiceTr-"+item_id+" .itemTr-color").html(color_string.substring(0,color_string.length-2));
 		}
 
