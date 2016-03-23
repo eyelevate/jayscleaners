@@ -198,6 +198,9 @@
 	!!}	
 	{!! View::make('partials.invoices.calendar')
 		->with('turnaround_date',$turnaround_date)
+		->with('hours',$hours)
+		->with('minutes',$minutes)
+		->with('ampm',$ampm)
 		->render()
 	!!} 
 @stop

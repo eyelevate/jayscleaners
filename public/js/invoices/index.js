@@ -212,14 +212,17 @@ invoices = {
 		// Due date
 		$("#calendar-selected").click(function(){
 			var temp_date = $("#temp_date").val();
-			if(temp_date !== '') {
-				$("#due_date").val(temp_date);
-			}
-			var hour_selected = '4';
-			var minutes_selected = '00';
-			var ampm_selected = 'pm';
+			var hour_selected = $('#due_temp_hours option:selected').val();
+			var minutes_selected = $('#due_temp_minutes option:selected').val();
+			var ampm_selected = $('#due_temp_ampm option:selected').val();
 			var time_selected = hour_selected+':'+minutes_selected+''+ampm_selected;
-			$("#openCalendar").find('h4').html(moment(temp_date).format('ddd, MM/DD, ')+time_selected);
+			var date_time_selected = moment(temp_date).format('ddd, MM/DD, ')+''+time_selected;
+			console.log(date_time_selected);
+			$("#openCalendar").find('h4').html(date_time_selected);
+			
+			if(temp_date !== '') {
+				$("#due_date").val(temp_date+' '+time_selected);
+			}
 			
 		});
 

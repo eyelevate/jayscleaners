@@ -56,7 +56,9 @@ class InvoicesController extends Controller
 
         $turnaround_date = Company::getTurnaroundDate($company);
         $turnaround = Company::getTurnaround($company);
-
+        $hours = Company::prepareStoreHours();
+        $minutes = Company::prepareMinutes();
+        $ampm = Company::prepareAmpm();
 
         return view('invoices.add')
         ->with('layout',$this->layout)
@@ -67,7 +69,10 @@ class InvoicesController extends Controller
         ->with('memos',$memos)
         ->with('turnaround',$turnaround)
         ->with('turnaround_date',$turnaround_date)
-        ->with('store_hours',$store_hours);
+        ->with('store_hours',$store_hours)
+        ->with('hours',$hours)
+        ->with('minutes',$minutes)
+        ->with('ampm',$ampm);
     }
 
     public function postAdd(){

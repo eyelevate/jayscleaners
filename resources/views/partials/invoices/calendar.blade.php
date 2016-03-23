@@ -10,20 +10,21 @@
 				<div id="calendarDiv">
 
 				</div>
-
+				<br/>
 				<div class="row">
 					
-					<div>
-
-					</div>
-
-					<div>
-
-					</div>
-
-					<div>
-
-					</div>
+			        <div class="form-group clearfix">
+			        	<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Choose time</label>
+			            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			                {!! Form::select('hours', $hours, '4', ['id'=>'due_temp_hours','class'=>'form-control']) !!}
+			            </div>
+			            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			                {!! Form::select('minutes', $minutes,'00',['id'=>'due_temp_minutes','class'=>'form-control']) !!}
+			            </div>
+			            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+			                {!! Form::select('ampm', $ampm, 'pm', ['id'=>'due_temp_ampm','class'=>'form-control']) !!}
+			            </div>
+			        </div>
 				</div>
 			</div>
 
