@@ -37,7 +37,86 @@ class Company extends Model
     	return [false=>'No', true=>'Yes'];
 
     }
+    public static function getStorehours($data) {
+        $store_hours = [];
+        $today = date('Y-m-d');
+        
+        if(isset($data)) {
+            foreach ($data as $key => $value) {
+                if(isset($data[$key]['store_hours'])) {
+                    $sh = json_decode($data[$key]['store_hours'],true);
 
+                    if(isset($sh)){
+                        foreach ($sh as $skey => $svalue) {
+                            if($svalue['status'] == 2) {
+                                $start_time = date('H:i',strtotime($today.' '.$svalue['open_hour'].':'.$svalue['open_minutes'].' '.$svalue['open_ampm']));
+                                $end_time = date('H:i',strtotime($today.' '.$svalue['closed_hour'].':'.$svalue['closed_minutes'].' '.$svalue['closed_ampm']));
+                                $store_hours[$skey] = [
+                                    'start'=>$start_time,
+                                    'end'=>$end_time,
+                                    'dow'=>$skey
+                                ];
+                            } 
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+        $final_hours = [];
+        $idx = -1;
+        if(isset($store_hours)){
+            // check to see what times are the same
+            foreach ($store_hours as $key => $value) {
+                $idx++;
+                $final_hours['start'] = '00:00';
+                $final_hours['end'] = '23:59';
+                $final_hours['dow'][$idx] = $key;
+            }
+        }
+
+
+
+        return json_encode($final_hours);
+    }  
+    public static function getTurnaround($data) {
+        $turnaround = '';
+        $dow = date('N',strtotime(date('Y-m-d H:i:s')));
+        
+        if(isset($data)) {
+            foreach ($data as $key => $value) {
+                if(isset($data[$key]['store_hours'])) {
+                    $store_hours = json_decode($data[$key]['store_hours'],true);
+                    $today_string = strtotime(date('n/d/Y').' '.$store_hours[$dow]['due_hour'].':'.$store_hours[$dow]['due_minutes'].' '.$store_hours[$dow]['due_ampm']);
+                    $turnaround_days_string = ($store_hours[$dow]['turnaround']==1) ? ' day' : ' days';
+                    $turnaround= $store_hours[$dow]['turnaround'];
+                    break;
+                }
+            }
+        }
+
+        return $turnaround;
+    }
+    public static function getTurnaroundDate($data) {
+        $turnaround = '';
+        $dow = date('N',strtotime(date('Y-m-d H:i:s')));
+        
+        if(isset($data)) {
+            foreach ($data as $key => $value) {
+                if(isset($data[$key]['store_hours'])) {
+                    $store_hours = json_decode($data[$key]['store_hours'],true);
+                    $today_string = strtotime(date('n/d/Y').' '.$store_hours[$dow]['due_hour'].':'.$store_hours[$dow]['due_minutes'].' '.$store_hours[$dow]['due_ampm']);
+                    $turnaround_days_string = ($store_hours[$dow]['turnaround']==1) ? ' day' : ' days';
+                    $turnaround_string = '+'.$store_hours[$dow]['turnaround'].$turnaround_days_string;
+
+                    $turnaround = date('Y-m-d H:i:s', strtotime($turnaround_string,$today_string));
+                }
+            }
+        }
+
+        return $turnaround;
+    }
     public static function prepareStoreHours() {
         $hours = [];
         for ($i=1; $i<=12 ; $i++) { 

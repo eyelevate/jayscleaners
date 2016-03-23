@@ -1,11 +1,14 @@
 $(document).ready(function(){
 	invoices.pageLoad();
 	invoices.events();
+	calendars.events();
 });
 
 invoices = {
 	pageLoad: function() {
-
+		$.ajaxSetup({
+			headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content') }
+		});
 	},
 	events: function() {
 		$(".items").click(function(){
@@ -203,11 +206,22 @@ invoices = {
 			});
 			var item_id = $("#invoiceSummaryTable tbody").find('.success').attr('item-id');
 
-			console.log(memo_string.substring(0,memo_string.length-2));
 			$("#invoiceSummaryTable tbody").find('.success .itemTr-memo').html(memo_string.substring(0,memo_string.length-2));
 		});
 
-
+		// Due date
+		$("#calendar-selected").click(function(){
+			var temp_date = $("#temp_date").val();
+			if(temp_date !== '') {
+				$("#due_date").val(temp_date);
+			}
+			var hour_selected = '4';
+			var minutes_selected = '00';
+			var ampm_selected = 'pm';
+			var time_selected = hour_selected+':'+minutes_selected+''+ampm_selected;
+			$("#openCalendar").find('h4').html(moment(temp_date).format('ddd, MM/DD, ')+time_selected);
+			
+		});
 
 	},
 	addColorsFromInvoice: function(item_id, item_name) {
@@ -512,9 +526,6 @@ generate = {
 				'<td>'+colorItem+'</td>'+
 				'<td id="memoTd-'+idx+'" class="memoTd">'+memo+'</td>'+
 				'<td>'+$.number(price,2)+'</td>'+
-				'<td>'+
-					'<input id="memoCheck-'+idx+'" class="memoCheck" type="checkbox" disabled="true"/>'+
-				'</td>'+
 			'</tr>';
 
 		return rows;
@@ -554,5 +565,77 @@ generate = {
 		
 
 		return item;
+	}
+};
+
+calendars = {
+	events: function() {
+		$('#openCalendar').on('click', function () {
+			setTimeout(function(){
+				$('#calendarDiv').fullCalendar('prev');
+				$('#calendarDiv').fullCalendar('next');
+				$('#calendarDiv').fullCalendar('render');
+
+			}, 500);
+
+		});
+
+		$('#calendarDiv').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month'
+			},
+			eventLimit: true,
+			defaultDate: moment(new Date()).format(),
+			businessHours: $.parseJSON($("#store_hours").val()), // display business hours
+			editable: true,
+			dayRender: function(date, cell){
+
+				var check=moment(date).format('L');
+				var today = moment(new Date()).format('L');
+				var turnaround = moment().add($("#turnaround").val(), 'days').format('L');
+				var temp_turnaround = moment($("#temp_date").val()).format('L');
+				
+				// make sure all previous days are disabled
+				if (check < today){
+					$(cell).addClass('fc-state-disabled');
+				}
+
+
+				// check for turnaround selected in form
+				if($("#temp_date").val() === '') {
+					if(check === turnaround) {
+						$(cell).addClass("fc-turnaround-selected").addClass('turnaround');
+					}
+				} else if(check == temp_turnaround){
+					$(cell).addClass("fc-turnaround-selected").addClass('turnaround');
+				}
+
+
+			},
+			selectable: true,
+			select: function(start, end, allDay) {
+				//start with turnaround date preselected
+				$("#calendarDiv").find(".fc-turnaround-selected").removeClass('fc-turnaround-selected');
+
+				var check=moment(start).format();
+				var today = moment().subtract(1, 'days').format();
+				
+				if(check < today || moment(start).format('dddd') === 'Sunday') { // Previous Day. show message if you want otherwise do nothing.
+					alert(moment(start).format('ll')+' is not selectable');
+					$("#calendarDiv").find(".fc-highlight").removeClass('fc-highlight');
+					$("#calendarDiv").find(".turnaround").addClass('fc-turnaround-selected');
+					$("#temp_date").val('');
+				} else { // Its a right date
+					// Do something
+					$("#calendarDiv").find(".turnaround").removeClass('turnaround');
+					$("#calendarDiv").find(".fc-highlight").addClass('fc-turnaround-selected').addClass('turnaround').removeClass("fc-highlight");
+					//send date to tempform
+					$("#temp_date").val(moment(start).format('L'));
+
+				}
+			}
+		});
 	}
 };

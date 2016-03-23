@@ -82,6 +82,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/invoices/dropoff',['uses'=>'InvoicesController@postAdd']);
 		Route::get('/invoices/edit/{id}',['as'=>'invoices_edit','uses'=>'InvoicesController@getEdit']);
 		Route::post('/invoices/edit',['uses'=>'InvoicesController@postEdit']);
+		Route::post('/invoices/feed',['uses'=>'InvoicesController@postFeed']);
 		Route::get('/invoices/view/{id}',['as'=>'invoices_view','uses'=>'InvoicesController@getView']);
 		Route::get('/invoices/pickup/{id}',['as'=>'invoices_pickup','uses'=>'InvoicesController@getPickup']);
 		Route::post('/invoices/pickup',['uses'=>'InvoicesController@postPickup']);

@@ -1,16 +1,21 @@
 @extends($layout)
 @section('stylesheets')
+<link href='/packages/fullcalendar-2.6.1/fullcalendar.css' rel='stylesheet' />
+<link href='/packages/fullcalendar-2.6.1/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link rel="stylesheet" href="/css/colors/index.css">
+<link rel="stylesheet" href="/css/invoices/add.css">
 @stop
 @section('scripts')
 <script type="text/javascript" src="/packages/number/jquery.number.min.js"></script>
+<script src='/packages/fullcalendar-2.6.1/lib/moment.min.js'></script>
+<script src='/packages/fullcalendar-2.6.1/fullcalendar.min.js'></script>
 <script type="text/javascript" src="/js/invoices/index.js"></script>
 @stop
 @section('header')
 
 @stop
 @section('content')
-<div class="affix-bottom clearfix" data-spy="affix" data-offset-top="150" data-offset-bottom="0" style="z-index:9999; top:0px; width:100%;">
+<div class=" clearfix">
 	<div class="row">
 		<div class="box box-primary col-lg-12 col-md-12 col-sm-12" style="border-radius:0px;">
 			<div class="box-body">	
@@ -100,7 +105,7 @@
 
 	<div class="col-lg-5 col-md-5 col-sm-5" >
 		<div class="box box-primary">
-			<div class="box-body">
+			<div class="box-body table-responsive">
 				<table id="invoiceSummaryTable" class="table table-hover">
 					<thead>
 						<tr>
@@ -136,14 +141,41 @@
 					</tfoot>
 				</table>
 			</div>
+			<div class="panel-footer clearfix">
+				<div id="openCalendar" class="small-box bg-yellow col-lg-6 col-md-6" style="padding-bottom:10px" data-toggle="modal" data-target="#calendar">
+					<div class="inner">
+						<h4>{{ date('D, n/d, g:ia',strtotime($turnaround_date)) }}</h4>
+						<p>Due Date</p>
+					</div>
+			        <div class="icon">
+			          <i class="ion-calendar"></i>
+			        </div>
+
+				</div>
+				<div class="small-box bg-green col-lg-6 col-md-6" style="padding-bottom:10px" data-toggle="modal" data-target="#">
+					<div class="inner">
+						<h4>Finish</h4>
+						<p>Print & Create RFID</p>
+					</div>
+			        <div class="icon">
+			          <i class="ion-ios-printer"></i>
+			        </div>
+
+				</div>
+			</div>
 		</div>
 	</div><!-- /.nav-tabs-custom -->	
 </div>
 {!! Form::open(['action' => 'InvoicesController@postAdd','id'=>'invoice-form', 'class'=>'form-horizontal','role'=>"form"]) !!}
 {!! csrf_field() !!}
 {{ Form::hidden('customer_id',$customer->id) }}
-
+{{ Form::hidden('due_date',null,['id'=>'due_date'])}}
 {!! Form::close() !!}
+<div id="eventFormDataDiv" class="hide">
+	{{ Form::hidden('turnaround',$turnaround,['id'=>'turnaround']) }}
+	{{ Form::hidden('turnaround_date',$turnaround_date,['id'=>'turnaround_date']) }}
+	{{ Form::hidden('store_hours',$store_hours,['id'=>'store_hours']) }}
+</div>
 @stop
 
 @section('modals')
@@ -163,5 +195,9 @@
 	!!}	 
 	{!! View::make('partials.invoices.qty')
 		->render()
-	!!}	 
+	!!}	
+	{!! View::make('partials.invoices.calendar')
+		->with('turnaround_date',$turnaround_date)
+		->render()
+	!!} 
 @stop

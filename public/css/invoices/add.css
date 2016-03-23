@@ -1,0 +1,17 @@
+#colorsUl a {
+	padding:25px;
+	border:5px solid #e5e5e5;
+}
+#colorsUl .active {
+	border:5px solid #00fdff !important;
+}
+.alert-default{
+	background-color: #e5e5e5 !important;
+	border: 1px solid #5e5e5e !important;
+	color: #5e5e5e !important;
+}
+
+.fc-turnaround-selected {
+	background-color: #00c0ef !important;
+	border-color: #00acd6 !important;
+}

@@ -34,7 +34,7 @@
 			<div class="modal-footer">
 				<button id="clearMemo" class="btn btn-danger pull-left" type="button" >Clear Memo</button>
 				<button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
-				<button id="memoAdd" type="button" class="btn btn-success btn-lg" data-dismiss="modal">Add Memo</button>
+				<button id="memoAdd" type="button" class="btn btn-success btn-lg" data-dismiss="modal">Update Memo</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
