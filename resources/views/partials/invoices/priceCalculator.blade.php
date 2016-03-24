@@ -44,8 +44,8 @@
 			
 			</div>
 			<div class="modal-footer">
-				<button id="cancelPrice" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button id="updatePrice" type="button" class="btn btn-success" data-dismiss="modal">Update Price</button>
+				<button id="cancelPrice" type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
+				<button id="updateCalcPrice" type="button" class="btn btn-success btn-lg" data-dismiss="modal">Update Price</button>
 
 			</div>
 		</div><!-- /.modal-content -->

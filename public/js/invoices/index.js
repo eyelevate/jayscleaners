@@ -20,7 +20,7 @@ invoices = {
 			var price = parseFloat($(this).find('.item-price').val(),false);
 			// create or edit an existing row
 			invoices.addInvoiceTableRow(item_id, item_name, qty, price);
-
+			invoices.recalculateTotals();
 			// //reset
 			// invoices.resetItemQty();
 		});
@@ -91,7 +91,7 @@ invoices = {
 				var item_id = colors[k];
 				var color_count = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"][item-id="'+item_id+'"]').length;
 				var color_name =  $("#invoice-form").find('.invoiceItem-color[value="'+k+'"]:first').attr('color-name');
-				color_string += color_count+' - '+color_name+' / ';
+				color_string += color_count+'-'+color_name+' / ';
 			}
 
 			
@@ -118,6 +118,7 @@ invoices = {
 
 			//reindex idx & update invoice table
 			invoices.reindexIdx();
+			invoices.recalculateTotals();
 		});
 
 		$("#deleteQty-all").click(function(){
@@ -175,7 +176,6 @@ invoices = {
 
 				//remove active and ul in form 
 				if($(this).hasClass('active')) {
-					console.log(item_id+' - '+item_idx+' - '+memo_id);
 					$(this).removeClass('active').removeClass('alert-info').addClass('alert-default');
 					$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul li[memo-id="'+memo_id+'"]').remove();
 				}
@@ -216,7 +216,6 @@ invoices = {
 			var ampm_selected = $('#due_temp_ampm option:selected').val();
 			var time_selected = hour_selected+':'+minutes_selected+''+ampm_selected;
 			var date_time_selected = moment(temp_date).format('ddd, MM/DD, ')+''+time_selected;
-			console.log(date_time_selected);
 			$("#openCalendar").find('h4').html(date_time_selected);
 			
 			if(temp_date !== '') {
@@ -298,11 +297,6 @@ invoices = {
 
 		$("#invoice-form").append(invoiceItem);
 
-		// update total fields TODO
-		var pre_tax = '';
-		var tax_rate = '';
-		var total = '';
-
 		//add scripts
 		$("#invoiceTr-"+item_id).click(function(){
 			$(this).parents('tbody:first').find('.invoiceTr').removeClass('success');
@@ -351,7 +345,10 @@ invoices = {
 			$("#priceTable tbody").append(items);
 
 			$("#priceTr-"+idx).click(function(){
-
+				$(this).parents('tbody:first').find('tr').removeClass('success');
+				$(this).addClass('success');
+				var price = $("#priceInput-"+idx).val();
+				$("#priceCalculatorInput").val(price).attr('status',1);
 			});
 		});
 
@@ -428,7 +425,7 @@ invoices = {
 			var color_count = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"][item-id="'+item_id+'"]').length;
 			var color_name = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"]:first').attr('color-name');
 			if(color_count > 0 && color_name !== ''){
-				color_string += color_count+' - '+color_name+' / ';
+				color_string += color_count+'-'+color_name+' / ';
 			}
 			$("#invoiceSummaryTable tbody").find("#invoiceTr-"+item_id+" .itemTr-color").html(color_string.substring(0,color_string.length-2));
 		}
@@ -461,6 +458,36 @@ invoices = {
 		$("#memosUl").attr('item-id','').attr('item-idx','');
 		$("#memosUl li").removeClass('active').removeClass('alert-info').addClass('alert-default');
 		$("#memoInput").val('');
+	},
+	recalculateTotals: function() {
+		// get item row totals
+		$("#invoiceSummaryTable tbody").find('tr').each(function(){
+			var item_id = $(this).attr('item-id');
+			var subtotal = 0;
+			$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"]').each(function(){
+				subtotal += parseFloat($(this).find('.invoiceItem-price').val(),false);
+			});
+
+			$(this).find('.itemTr-price').html($.number(subtotal,2));
+
+		});
+
+
+
+		var subtotal = 0;
+		var qty = 0;
+		var tax_rate = parseFloat($("#tax_rate").val(),false);
+		//grab subtotals
+		$("#invoice-form").find('div.formItemsDiv').each(function(){
+			qty++;
+			subtotal += parseFloat($(this).find('.invoiceItem-price').val(),false);
+		});
+		var tax = $.number(parseFloat(subtotal,false) * tax_rate,2);
+		var total = $.number(subtotal * (1+tax_rate),2);
+		$("#invoiceItem-subtotal, #subtotal").html($.number(subtotal,2));
+		$("#invoiceItem-tax, #tax").html(tax);
+		$("#invoiceItem-total, #total").html(total);
+
 	},
 	resetAll: function() {
 		// reset qty counters
@@ -692,9 +719,18 @@ calculator = {
 			var first = parseFloat($("#priceCalculatorInput").attr('first'),false);
 			var total = parseFloat($("#priceCalculatorInput").val(), false);
 			var new_total = 0;
-			if(num == 'C') {
+			if(num === 'C') {
 				$('.priceNum').removeClass('active');
 				$('#priceCalculatorInput').attr('first','0.00').val('0.00');
+			} else if(num === 'B') {
+				var backed = $("#priceCalculatorInput").val().replace(/[^0-9]/g, '').replace(/^0+/, '');
+				backed = backed.substring(0,backed.length-1);
+				backed = (parseFloat(backed) / 100 > 0) ? parseFloat(backed) / 100 : '0.00';
+				$("#priceCalculatorInput").val(backed);
+
+			} else if(num === '='){
+				$('.priceNum').removeClass('active');
+				$("#priceCalculatorInput").attr('first','0.00').attr('status','1');
 			} else if(num === '+'|| num === '-' || num==='*' || num==='/') {
 				var operand = $(".priceNum.active").html();
 				$("#priceCalculatorInput").attr('operand',$(this).html());
@@ -704,23 +740,18 @@ calculator = {
 						switch(operand) {
 							case '+':
 							new_total = $.number(total+first,2);
-
 							break;
 
 							case '-':
 							new_total = $.number(first - total,2);
-
 							break;
 
 							case '*':
-
 							new_total = $.number(total * first,2);
-
 							break;
 
 							case '/':
 							new_total = Math.round(((total / first)*100)/100).toString(2);
-
 							break;
 
 						}
@@ -746,7 +777,6 @@ calculator = {
 					$("#priceCalculatorInput").val('0.00').attr('status','2');
 					total = calculator.calculate(num);
 				} else {
-					console.log('here ='+total+''+num);
 					total = calculator.calculate(total+''+num);
 				}
 
@@ -759,10 +789,26 @@ calculator = {
 
 			$(this).val(calculator.calculate($(this).val()));
 		});
+		$("#updateCalcPrice").click(function(){
+			var price = $("#priceCalculatorInput").val();
+			$('#priceTable').find('tr.success .priceInput').val(price);
+		});
+
+		$("#updatePrice").click(function(){
+			$('#priceTable').find('tr .priceInput').each(function(){
+				var price = $(this).val();
+				var item_id = $(this).parents('tr:first').attr('item-id');
+				var item_idx = $(this).parents('tr:first').attr('item-idx');
+				$("#invoice-form").find('div.formItemsDiv[item-idx="'+item_idx+'"][item-id="'+item_id+'"] .invoiceItem-price').val(price);
+				invoices.recalculateTotals();
+			});
+		});
+
+
 	},
 	calculate: function(data) {
 		var num = data.replace(/[^0-9]/g, '').replace(/^0+/, '');
-		console.log(num);
+
 		num = (parseFloat(num) / 100 > 0) ? parseFloat(num) / 100 : '0.00';
 
 		return $.number(num,2);

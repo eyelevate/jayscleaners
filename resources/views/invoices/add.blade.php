@@ -122,22 +122,22 @@
 						<tr>
 							<td colspan="3" style="border:none;"></td>
 							<td>Subtotal</td>
-							<th></th>
+							<th id="invoiceItem-subtotal"></th>
 						</tr>
 						<tr>
 							<td colspan="3" style="border:none;"></td>
 							<td>Tax</td>
-							<th></th>
+							<th id="invoiceItem-tax"></th>
 						</tr>
 						<tr>
 							<td colspan="3" style="border:none;"></td>
 							<td>Discount</td>
-							<th></th>
+							<th id="invoiceItem-discount"></th>
 						</tr>
 						<tr>
 							<td colspan="3" style="border:none;"></td>
 							<th>Total</th>
-							<th></th>
+							<th id="invoiceItem-total"></th>
 						</tr>
 					</tfoot>
 				</table>
@@ -171,11 +171,15 @@
 {!! csrf_field() !!}
 {{ Form::hidden('customer_id',$customer->id) }}
 {{ Form::hidden('due_date',null,['id'=>'due_date'])}}
+{{ Form::hidden('subtotal',null,['id'=>'subtotal']) }}
+{{ Form::hidden('tax',null,['id'=>'tax']) }}
+{{ Form::hidden('total',null,['id'=>'total']) }}
 {!! Form::close() !!}
 <div id="eventFormDataDiv" class="hide">
 	{{ Form::hidden('turnaround',$turnaround,['id'=>'turnaround']) }}
 	{{ Form::hidden('turnaround_date',$turnaround_date,['id'=>'turnaround_date']) }}
 	{{ Form::hidden('store_hours',$store_hours,['id'=>'store_hours']) }}
+	{{ Form::hidden('tax_rate',$tax_rate,['id'=>'tax_rate']) }}
 </div>
 @stop
 

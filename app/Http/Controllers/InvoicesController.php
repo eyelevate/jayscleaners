@@ -25,6 +25,7 @@ use App\InventoryItem;
 use App\Color;
 use App\Company;
 use App\Memo;
+use App\Tax;
 
 class InvoicesController extends Controller
 {
@@ -59,6 +60,7 @@ class InvoicesController extends Controller
         $hours = Company::prepareStoreHours();
         $minutes = Company::prepareMinutes();
         $ampm = Company::prepareAmpm();
+        $tax_rate = Tax::where('company_id',Auth::user()->company_id)->where('status',1)->first();
 
         return view('invoices.add')
         ->with('layout',$this->layout)
@@ -72,7 +74,8 @@ class InvoicesController extends Controller
         ->with('store_hours',$store_hours)
         ->with('hours',$hours)
         ->with('minutes',$minutes)
-        ->with('ampm',$ampm);
+        ->with('ampm',$ampm)
+        ->with('tax_rate',$tax_rate->rate);
     }
 
     public function postAdd(){
