@@ -7,6 +7,7 @@
 @stop
 @section('scripts')
 <script type="text/javascript" src="/packages/number/jquery.number.min.js"></script>
+<script type="text/javascript" src="/packages/numeric/jquery.numeric.js"></script>
 <script src='/packages/fullcalendar-2.6.1/lib/moment.min.js'></script>
 <script src='/packages/fullcalendar-2.6.1/fullcalendar.min.js'></script>
 <script type="text/javascript" src="/js/invoices/index.js"></script>
@@ -191,6 +192,9 @@
 		->render()
 	!!}	 
 	{!! View::make('partials.invoices.prices')
+		->render()
+	!!}	 
+	{!! View::make('partials.invoices.priceCalculator')
 		->render()
 	!!}	 
 	{!! View::make('partials.invoices.qty')

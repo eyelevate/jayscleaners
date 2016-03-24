@@ -2,6 +2,7 @@ $(document).ready(function(){
 	invoices.pageLoad();
 	invoices.events();
 	calendars.events();
+	calculator.events();
 });
 
 invoices = {
@@ -9,6 +10,7 @@ invoices = {
 		$.ajaxSetup({
 			headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content') }
 		});
+		$(".numeric").numeric();
 	},
 	events: function() {
 		$(".items").click(function(){
@@ -194,15 +196,12 @@ invoices = {
 			$("#memoTable").find('tr').each(function(){
 				var item_id = $(this).attr('item-id');
 				var item_idx = $(this).attr('item-idx');
-				var memo_count = $("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul li').length;
-				if(memo_count > 0) {
-					$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] ul li').each(function(){
-						var memo_id = $(this).attr('memo-id');
-
-						memo_string += $("#memo-"+memo_id+" .memosMemo").val()+' / ';
-					});
-					
-				}
+				$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+item_idx+'"] .invoiceItem-memo').each(function(){
+					var memo = $(this).val();
+					if(memo !== '') {
+						memo_string += $(this).val()+' / ';
+					}
+				});
 			});
 			var item_id = $("#invoiceSummaryTable tbody").find('.success').attr('item-id');
 
@@ -224,6 +223,14 @@ invoices = {
 				$("#due_date").val(temp_date+' '+time_selected);
 			}
 			
+		});
+
+		// Price
+		$("#editPrice").click(function(){
+			invoices.resetAll();
+			var item_id = $('#invoiceSummaryTable tbody').find('tr.success').attr('item-id');
+			var item_name = $('#invoiceSummaryTable tbody').find('tr.success').find('.itemTr-name').html();
+			invoices.editPriceFromInvoice(item_id, item_name);
 		});
 
 	},
@@ -329,6 +336,21 @@ invoices = {
 				// repopulate the memo input
 				var memo_string = $("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"][item-idx="'+idx+'"] .invoiceItem-memo').val();
 				$("#memoInput").val(memo_string);
+
+			});
+		});
+
+	},
+	editPriceFromInvoice: function(item_id, item_name) {
+		invoices.resetAll();
+		// send item_id and item name to the colors modal
+		element = $("#invoice-form").find('input.invoiceItem-id[item-id="'+item_id+'"]');
+		element.each(function(e){
+			var idx = $(this).attr('item-idx');
+			var items = generate.priceRow(item_id,item_name,idx);
+			$("#priceTable tbody").append(items);
+
+			$("#priceTr-"+idx).click(function(){
 
 			});
 		});
@@ -461,6 +483,9 @@ invoices = {
 		$("#memoTable tbody").find('tr').remove();
 		$("#memosUl li").removeClass('active').removeClass('alert-info').addClass('alert-default');
 
+		// reset price
+		$("#priceTable tbody").find('tr').remove();
+
 	}
 
 };
@@ -529,6 +554,23 @@ generate = {
 				'<td>'+colorItem+'</td>'+
 				'<td id="memoTd-'+idx+'" class="memoTd">'+memo+'</td>'+
 				'<td>'+$.number(price,2)+'</td>'+
+			'</tr>';
+
+		return rows;
+	},
+	priceRow:function(item_id,item_name,idx) {
+		var color = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').attr('color-name');
+		var color_id = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var hex = $(".colorsId[value='"+color_id+"']").parents('button:first').find('.colorsColor').val();
+		var colorItem = (color_id === '') ? '' : generate.colorItem(idx, color, hex, color_id);
+		var memo = $("#invoice-form").find('.invoiceItem-memo[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var price = $("#invoice-form").find('.invoiceItem-price[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
+		var rows = '<tr id="priceTr-'+idx+'" class="priceTr" item-id="'+item_id+'" item-idx="'+idx+'" check="false" style="cursor:pointer;" data-toggle="modal" data-target="#priceCalculator">'+
+				'<td>'+idx+'</td>'+
+				'<td>'+item_name+'</td>'+
+				'<td>'+colorItem+'</td>'+
+				'<td>'+memo+'</td>'+
+				'<td class="form-group"><input id="priceInput-'+idx+'" class="priceInput" value="'+$.number(price,2)+'" type="text" disabled="disabled" style="background-color:#ffffff"></td>'+
 			'</tr>';
 
 		return rows;
@@ -641,4 +683,89 @@ calendars = {
 			}
 		});
 	}
+};
+
+calculator = {
+	events: function() {
+		$(".priceNum").click(function() {
+			var num = $(this).attr('num');
+			var first = parseFloat($("#priceCalculatorInput").attr('first'),false);
+			var total = parseFloat($("#priceCalculatorInput").val(), false);
+			var new_total = 0;
+			if(num == 'C') {
+				$('.priceNum').removeClass('active');
+				$('#priceCalculatorInput').attr('first','0.00').val('0.00');
+			} else if(num === '+'|| num === '-' || num==='*' || num==='/') {
+				var operand = $(".priceNum.active").html();
+				$("#priceCalculatorInput").attr('operand',$(this).html());
+
+				if(($(".priceNum").hasClass('active'))) {
+					if($("#priceCalculatorInput").attr('operand') === operand){
+						switch(operand) {
+							case '+':
+							new_total = $.number(total+first,2);
+
+							break;
+
+							case '-':
+							new_total = $.number(first - total,2);
+
+							break;
+
+							case '*':
+
+							new_total = $.number(total * first,2);
+
+							break;
+
+							case '/':
+							new_total = Math.round(((total / first)*100)/100).toString(2);
+
+							break;
+
+						}
+						$("#priceCalculatorInput").attr('first',new_total).val(new_total).attr('status','1');
+						$('.priceNum').removeClass('active');
+						$(this).addClass('active');
+					} else {
+						$('.priceNum').removeClass('active');
+						$(this).addClass('active');
+						$("#priceCalculatorInput").attr('first',total).attr('status','1');
+					}
+
+				} else {
+					$('.priceNum').removeClass('active');
+					$(this).addClass('active');
+					$("#priceCalculatorInput").attr('first',total).attr('status','1').attr('operand',$(this).val()).val(total);
+				}
+
+			} else {
+				var status = $("#priceCalculatorInput").attr('status');
+
+				if(status === '1') {
+					$("#priceCalculatorInput").val('0.00').attr('status','2');
+					total = calculator.calculate(num);
+				} else {
+					console.log('here ='+total+''+num);
+					total = calculator.calculate(total+''+num);
+				}
+
+				$("#priceCalculatorInput").val(total);
+			}
+
+			
+		});
+		$( "#priceCalculatorInput" ).keyup(function() {
+
+			$(this).val(calculator.calculate($(this).val()));
+		});
+	},
+	calculate: function(data) {
+		var num = data.replace(/[^0-9]/g, '').replace(/^0+/, '');
+		console.log(num);
+		num = (parseFloat(num) / 100 > 0) ? parseFloat(num) / 100 : '0.00';
+
+		return $.number(num,2);
+	}
+
 };
