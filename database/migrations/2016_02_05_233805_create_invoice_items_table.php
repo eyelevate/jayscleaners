@@ -14,12 +14,13 @@ class CreateInvoiceItemsTable extends Migration
     {
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('reference_id', false, true)->length(11)->nullable();
             $table->integer('invoice_id', false, true)->length(11)->nullable();
+            $table->integer('item_id',false,true)->length(11)->nullable();
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->integer('customer_id', false, true)->length(11)->nullable();
             $table->tinyInteger('quantity', false, true)->nullable();
-            $table->text('colors')->nullable();
+            $table->tinyInteger('color', false, true)->nullable();
+            $table->text('memo')->nullable();
             $table->decimal('pretax',11,2)->nullable();
             $table->decimal('tax',11,2)->nullable();
             $table->decimal('total',11,2)->nullable();

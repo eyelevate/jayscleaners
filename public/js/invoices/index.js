@@ -10,7 +10,11 @@ invoices = {
 		$.ajaxSetup({
 			headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content') }
 		});
-		$(".numeric").numeric();
+
+		$("#priceCalculatorInput").priceFormat({
+			'prefix':'',
+			limit:10
+		});
 	},
 	events: function() {
 		$(".items").click(function(){
@@ -232,6 +236,15 @@ invoices = {
 			invoices.editPriceFromInvoice(item_id, item_name);
 		});
 
+		//print
+		$(".printSelection").click(function(){
+			var print = ($(this).attr('id').replace('printSelection-','') === 'store') ? true : false;
+			$("#store_copy").val(print);
+			$("#invoice-form").submit();
+		});
+
+
+
 	},
 	addColorsFromInvoice: function(item_id, item_name) {
 		var colorQty = $("#invoice-form").find('input.invoiceItem-color[item-id="'+item_id+'"]').length;
@@ -395,11 +408,12 @@ invoices = {
 	reindexIdx: function() {
 		$("#invoice-form").find('div.formItemsDiv').each(function(e){
 			var idx = e+1;
+			var item_id = $(this).attr('item-id');
 			$(this).attr('item-idx',idx);
-			$(this).find('.invoiceItem-id').attr('item-idx',idx);
-			$(this).find('.invoiceItem-price').attr('item-idx',idx);
-			$(this).find('.invoiceItem-memo').attr('item-idx',idx);
-			$(this).find('.invoiceItem-color').attr('item-idx',idx);
+			$(this).find('.invoiceItem-id').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][id]');
+			$(this).find('.invoiceItem-price').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][price]');
+			$(this).find('.invoiceItem-memo').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][memo]');
+			$(this).find('.invoiceItem-color').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][color]');
 		});
 
 		invoices.repopulateInvoiceTable();
@@ -437,7 +451,7 @@ invoices = {
 			var price = 0;
 			if($("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"]').length > 0){
 				$("#invoice-form").find('.invoiceItem-price[item-id="'+item_id+'"]').each(function(f){
-					price += parseFloat($(this).val(),false);
+					price += parseFloat($(this).val().replace(/,/g, ''),false);
 				});
 				$("#invoiceSummaryTable tbody").find("#invoiceTr-"+item_id+" .itemTr-price").html($.number(price,2));
 			} else {
@@ -465,14 +479,12 @@ invoices = {
 			var item_id = $(this).attr('item-id');
 			var subtotal = 0;
 			$("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"]').each(function(){
-				subtotal += parseFloat($(this).find('.invoiceItem-price').val(),false);
+				subtotal += parseFloat($(this).find('.invoiceItem-price').val().replace(/,/g, ''),false);
 			});
 
 			$(this).find('.itemTr-price').html($.number(subtotal,2));
 
 		});
-
-
 
 		var subtotal = 0;
 		var qty = 0;
@@ -480,13 +492,16 @@ invoices = {
 		//grab subtotals
 		$("#invoice-form").find('div.formItemsDiv').each(function(){
 			qty++;
-			subtotal += parseFloat($(this).find('.invoiceItem-price').val(),false);
+			subtotal += parseFloat($(this).find('.invoiceItem-price').val().replace(/,/g, ''),false);
 		});
 		var tax = $.number(parseFloat(subtotal,false) * tax_rate,2);
 		var total = $.number(subtotal * (1+tax_rate),2);
-		$("#invoiceItem-subtotal, #subtotal").html($.number(subtotal,2));
-		$("#invoiceItem-tax, #tax").html(tax);
-		$("#invoiceItem-total, #total").html(total);
+		$("#invoiceItem-subtotal").html($.number(subtotal,2));
+		$("#subtotal").val(subtotal);
+		$("#invoiceItem-tax").html(tax);
+		$("#tax").val(tax);
+		$("#invoiceItem-total").html(total);
+		$("#total").val(total);
 
 	},
 	resetAll: function() {
@@ -628,10 +643,10 @@ generate = {
 		var total_qty = idx+parseInt(qty,false);
 		for (var i = idx; i < total_qty; i++) {
 			item += '<div class="hide formItemsDiv" item-idx="'+i+'" item-id="'+item_id+'">';
-			item += '<input class="invoiceItem-id" type="hidden" value="'+item_id+'" name="item['+item_id+'][item_id]" item-idx="'+i+'" item-id="'+item_id+'"/>';
-			item +=	'<input class="invoiceItem-price" type="hidden" value="'+price+'" name="item['+item_id+'][price]" item-idx="'+i+'" item-id="'+item_id+'"/>';
-			item += '<input class="invoiceItem-color" type="hidden" value="" name="item['+item_id+'][color]" item-idx="'+i+'" item-id="'+item_id+'" color-name=""/>';
-			item += '<input class="invoiceItem-memo" type="hidden" value="" name="item['+item_id+'][memo]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item += '<input class="invoiceItem-id" type="hidden" value="'+item_id+'" name="item['+i+']['+item_id+'][item_id]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item +=	'<input class="invoiceItem-price" type="hidden" value="'+price+'" name="item['+i+']['+item_id+'][price]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item += '<input class="invoiceItem-color" type="hidden" value="" name="item['+i+']['+item_id+'][color]" item-idx="'+i+'" item-id="'+item_id+'" color-name=""/>';
+			item += '<input class="invoiceItem-memo" type="hidden" value="" name="item['+i+']['+item_id+'][memo]" item-idx="'+i+'" item-id="'+item_id+'"/>';
 			item +='<ul class="memoFormUl"></ul></div>';
 		}
 		
@@ -714,8 +729,10 @@ calendars = {
 
 calculator = {
 	events: function() {
+
 		$(".priceNum").click(function() {
 			var num = $(this).attr('num');
+			var raw = $("#priceCalculatorInput").val().replace(/,/g, '');
 			var first = parseFloat($("#priceCalculatorInput").attr('first'),false);
 			var total = parseFloat($("#priceCalculatorInput").val(), false);
 			var new_total = 0;
@@ -726,7 +743,7 @@ calculator = {
 				var backed = $("#priceCalculatorInput").val().replace(/[^0-9]/g, '').replace(/^0+/, '');
 				backed = backed.substring(0,backed.length-1);
 				backed = (parseFloat(backed) / 100 > 0) ? parseFloat(backed) / 100 : '0.00';
-				$("#priceCalculatorInput").val(backed);
+				$("#priceCalculatorInput").val($.number(backed,2));
 
 			} else if(num === '='){
 				$('.priceNum').removeClass('active');
@@ -739,19 +756,19 @@ calculator = {
 					if($("#priceCalculatorInput").attr('operand') === operand){
 						switch(operand) {
 							case '+':
-							new_total = $.number(total+first,2);
+							new_total = $.number((parseFloat(raw,false) + first),2);
 							break;
 
 							case '-':
-							new_total = $.number(first - total,2);
+							new_total = $.number(first - parseFloat(raw,false),2);
 							break;
 
 							case '*':
-							new_total = $.number(total * first,2);
+							new_total = $.number(parseFloat(raw,false) * first,2);
 							break;
 
 							case '/':
-							new_total = Math.round(((total / first)*100)/100).toString(2);
+							new_total = Math.round(((parseFloat(raw,false) / first)*100)/100).toString(2);
 							break;
 
 						}
@@ -777,18 +794,16 @@ calculator = {
 					$("#priceCalculatorInput").val('0.00').attr('status','2');
 					total = calculator.calculate(num);
 				} else {
-					total = calculator.calculate(total+''+num);
+	
+					total = calculator.calculate((Math.round(parseFloat(raw,true)*100))+''+num);
 				}
 
-				$("#priceCalculatorInput").val(total);
+				$("#priceCalculatorInput").val($.number(total,2));
 			}
 
 			
 		});
-		$( "#priceCalculatorInput" ).keyup(function() {
 
-			$(this).val(calculator.calculate($(this).val()));
-		});
 		$("#updateCalcPrice").click(function(){
 			var price = $("#priceCalculatorInput").val();
 			$('#priceTable').find('tr.success .priceInput').val(price);
@@ -806,12 +821,11 @@ calculator = {
 
 
 	},
+
 	calculate: function(data) {
-		var num = data.replace(/[^0-9]/g, '').replace(/^0+/, '');
 
-		num = (parseFloat(num) / 100 > 0) ? parseFloat(num) / 100 : '0.00';
-
-		return $.number(num,2);
+		var num = (parseInt(data, false) * 1) / 100;
+		return num;
 	}
 
 };

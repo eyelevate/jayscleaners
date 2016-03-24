@@ -8,6 +8,7 @@
 @section('scripts')
 <script type="text/javascript" src="/packages/number/jquery.number.min.js"></script>
 <script type="text/javascript" src="/packages/numeric/jquery.numeric.js"></script>
+<script type="text/javascript" src="/packages/priceformat/priceformat.min.js"></script>
 <script src='/packages/fullcalendar-2.6.1/lib/moment.min.js'></script>
 <script src='/packages/fullcalendar-2.6.1/fullcalendar.min.js'></script>
 <script type="text/javascript" src="/js/invoices/index.js"></script>
@@ -118,7 +119,7 @@
 						</tr>
 					</thead>
 					<tbody><tr></tr></tbody>
-					<tfoot>
+					<tfoot style="border-top:2px solid black">
 						<tr>
 							<td colspan="3" style="border:none;"></td>
 							<td>Subtotal</td>
@@ -153,7 +154,7 @@
 			        </div>
 
 				</div>
-				<div class="small-box bg-green col-lg-6 col-md-6" style="padding-bottom:10px" data-toggle="modal" data-target="#">
+				<div class="small-box bg-green col-lg-6 col-md-6" style="padding-bottom:10px" data-toggle="modal" data-target="#print">
 					<div class="inner">
 						<h4>Finish</h4>
 						<p>Print & Create RFID</p>
@@ -170,10 +171,11 @@
 {!! Form::open(['action' => 'InvoicesController@postAdd','id'=>'invoice-form', 'class'=>'form-horizontal','role'=>"form"]) !!}
 {!! csrf_field() !!}
 {{ Form::hidden('customer_id',$customer->id) }}
-{{ Form::hidden('due_date',null,['id'=>'due_date'])}}
+{{ Form::hidden('due_date',$turnaround_date,['id'=>'due_date'])}}
 {{ Form::hidden('subtotal',null,['id'=>'subtotal']) }}
 {{ Form::hidden('tax',null,['id'=>'tax']) }}
 {{ Form::hidden('total',null,['id'=>'total']) }}
+{{ Form::hidden('store_copy',false,['id'=>'store_copy']) }}
 {!! Form::close() !!}
 <div id="eventFormDataDiv" class="hide">
 	{{ Form::hidden('turnaround',$turnaround,['id'=>'turnaround']) }}
@@ -211,4 +213,7 @@
 		->with('ampm',$ampm)
 		->render()
 	!!} 
+	{!! View::make('partials.invoices.print')
+		->render()
+	!!}
 @stop

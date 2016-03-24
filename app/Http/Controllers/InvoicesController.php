@@ -26,6 +26,8 @@ use App\Color;
 use App\Company;
 use App\Memo;
 use App\Tax;
+use App\Invoice;
+use App\InvoiceItem;
 
 class InvoicesController extends Controller
 {
@@ -78,8 +80,45 @@ class InvoicesController extends Controller
         ->with('tax_rate',$tax_rate->rate);
     }
 
-    public function postAdd(){
+    public function postAdd(Request $request){
+        $items = Input::get('item');
+        if(count($items) > 0) {
+            $invoice = new Invoice();
+            $invoice->company_id = Auth::user()->company_id;
+            $invoice->customer_id = $request->customer_id;
+            $invoice->due_date = $request->due_date;
+            $invoice->pretax = $request->subtotal;
+            $invoice->tax = $request->tax;
+            $invoice->total = $request->total;
+            $invoice->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
+            $invoice->status = 1;
+            if($invoice->save()){
+                
+                foreach ($items as $i) {
+                    foreach ($i as $ikey => $ivalue) {
+                        $item = new InvoiceItem();
+                        $item->invoice_id = $invoice->id;
+                        $item->item_id = $ikey;
+                        $item->pretax = $i[$ikey]['price'];
+                        $item->quantity = 1;
+                        $item->color = $i[$ikey]['color'];
+                        $item->memo = $i[$ikey]['memo'];
+                        $item->status = 1;
+                        $item->save();
+                    }
 
+                }
+                // Do printer logic here
+
+                
+                // all finished
+                Flash::success('Successfully added a new inventory!');
+                return Redirect::route('customers_view',$invoice->customer_id);               
+            }
+        } else {
+            Flash::warning('Could not save your invoice! Please select an invoice item');
+            return Redirect::route('invoices_dropoff',$request->customer_id); 
+        }   
     }
 
     public function getEdit($id = null){
