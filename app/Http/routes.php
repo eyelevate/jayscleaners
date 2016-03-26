@@ -88,6 +88,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/invoices/pickup',['uses'=>'InvoicesController@postPickup']);
 		Route::get('/invoices/rack',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
 		Route::post('/invoices/rack',['uses'=>'InvoicesController@postRack']);
+		Route::get('/invoices/test',['as'=>'invoices_test','uses'=>'InvoicesController@getTest']);
 
 		//Inventory
 		Route::get('/inventories',  ['as'=>'inventories_index', 'uses' => 'InventoriesController@getIndex']);

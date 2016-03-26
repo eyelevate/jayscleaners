@@ -22,6 +22,8 @@ use App\Company;
 use App\Customer;
 use App\Custid;
 use App\Layout;
+use App\Invoice;
+use App\InvoiceItem;
 
 class CustomersController extends Controller
 {
@@ -264,11 +266,13 @@ class CustomersController extends Controller
     	$customers = Customer::prepareView($users);
     	$last10 = Customer::prepareLast10($users, $request->session()->get('last10'));
     	$request->session()->put('last10',$last10);
+        $invoices = Invoice::prepareInvoice(Invoice::where('customer_id',$id)->where('status',1)->orderBy('id','desc')->get());
 
     	return view('customers.view')
     	->with('layout',$this->layout)
     	->with('customers',$customers)
-    	->with('last10',$last10);
+    	->with('last10',$last10)
+        ->with('invoices',$invoices);
 
 
     }

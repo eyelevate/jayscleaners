@@ -15,6 +15,11 @@ invoices = {
 			'prefix':'',
 			limit:10
 		});
+
+		//repopulate invoice table based on form data
+		invoices.repopulateInvoiceTable();
+		invoices.recalculateTotals();
+		
 	},
 	events: function() {
 		$(".items").click(function(){
@@ -27,6 +32,11 @@ invoices = {
 			invoices.recalculateTotals();
 			// //reset
 			// invoices.resetItemQty();
+		});
+
+		$(".invoiceTr").click(function(){
+			$(".invoiceTr").removeClass('success');
+			$(this).addClass('success');
 		});
 
 		$(".number").click(function(){
@@ -95,7 +105,7 @@ invoices = {
 				var item_id = colors[k];
 				var color_count = $("#invoice-form").find('.invoiceItem-color[value="'+k+'"][item-id="'+item_id+'"]').length;
 				var color_name =  $("#invoice-form").find('.invoiceItem-color[value="'+k+'"]:first').attr('color-name');
-				color_string += color_count+'-'+color_name+' / ';
+				color_string += (parseInt(color_count,false) > 0) ? color_count+'-'+color_name+' / ' : '';
 			}
 
 			
@@ -409,11 +419,12 @@ invoices = {
 		$("#invoice-form").find('div.formItemsDiv').each(function(e){
 			var idx = e+1;
 			var item_id = $(this).attr('item-id');
+			var inventory_id = $("#item-"+item_id).find('.item-inventory_id').val();
 			$(this).attr('item-idx',idx);
-			$(this).find('.invoiceItem-id').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][id]');
-			$(this).find('.invoiceItem-price').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][price]');
-			$(this).find('.invoiceItem-memo').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][memo]');
-			$(this).find('.invoiceItem-color').attr('item-idx',idx).attr('name','item['+idx+']['+item_id+'][color]');
+			$(this).find('.invoiceItem-id').attr('item-idx',idx).attr('name','item['+inventory_id+']['+idx+']['+item_id+'][item_id]');
+			$(this).find('.invoiceItem-price').attr('item-idx',idx).attr('name','item['+inventory_id+']['+idx+']['+item_id+'][price]');
+			$(this).find('.invoiceItem-memo').attr('item-idx',idx).attr('name','item['+inventory_id+']['+idx+']['+item_id+'][memo]');
+			$(this).find('.invoiceItem-color').attr('item-idx',idx).attr('name','item['+inventory_id+']['+idx+']['+item_id+'][color]');
 		});
 
 		invoices.repopulateInvoiceTable();
@@ -446,7 +457,7 @@ invoices = {
 
 		// update price
 
-		$(document).find('#invoiceSummaryTable tbody tr').each(function(e){
+		$('#invoiceSummaryTable tbody').find('tr').each(function(e){
 			var item_id = $(this).attr('item-id');
 			var price = 0;
 			if($("#invoice-form").find('div.formItemsDiv[item-id="'+item_id+'"]').length > 0){
@@ -557,7 +568,7 @@ generate = {
 		return rows;
 	},
 	colorItem: function(idx, color, hex, id){
-		return '<input name="colorSelected-'+idx+'" type="color" value="'+hex+'" color_id="'+id+'" color="'+color+'" disabled="true"/>';
+		return (parseInt(id, false) === 0 || id === '') ? '' : '<input name="colorSelected-'+idx+'" type="color" value="'+hex+'" color_id="'+id+'" color="'+color+'" disabled="true"/>';
 	},
 	createMemo: function() {
 		var memo_string = '';
@@ -639,14 +650,16 @@ generate = {
 	},
 	formItem: function(item_id,qty,price){
 		var idx = $(document).find('#invoice-form .invoiceItem-id').length +1;
+		var inventory_id = $("#item-"+item_id).find('.item-inventory_id').val();
+		console.log(inventory_id);
 		var item = '';
 		var total_qty = idx+parseInt(qty,false);
 		for (var i = idx; i < total_qty; i++) {
 			item += '<div class="hide formItemsDiv" item-idx="'+i+'" item-id="'+item_id+'">';
-			item += '<input class="invoiceItem-id" type="hidden" value="'+item_id+'" name="item['+i+']['+item_id+'][item_id]" item-idx="'+i+'" item-id="'+item_id+'"/>';
-			item +=	'<input class="invoiceItem-price" type="hidden" value="'+price+'" name="item['+i+']['+item_id+'][price]" item-idx="'+i+'" item-id="'+item_id+'"/>';
-			item += '<input class="invoiceItem-color" type="hidden" value="" name="item['+i+']['+item_id+'][color]" item-idx="'+i+'" item-id="'+item_id+'" color-name=""/>';
-			item += '<input class="invoiceItem-memo" type="hidden" value="" name="item['+i+']['+item_id+'][memo]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item += '<input class="invoiceItem-id" type="hidden" value="'+item_id+'" name="item['+inventory_id+']['+i+']['+item_id+'][item_id]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item +=	'<input class="invoiceItem-price" type="hidden" value="'+price+'" name="item['+inventory_id+']['+i+']['+item_id+'][price]" item-idx="'+i+'" item-id="'+item_id+'"/>';
+			item += '<input class="invoiceItem-color" type="hidden" value="" name="item['+inventory_id+']['+i+']['+item_id+'][color]" item-idx="'+i+'" item-id="'+item_id+'" color-name=""/>';
+			item += '<input class="invoiceItem-memo" type="hidden" value="" name="item['+inventory_id+']['+i+']['+item_id+'][memo]" item-idx="'+i+'" item-id="'+item_id+'"/>';
 			item +='<ul class="memoFormUl"></ul></div>';
 		}
 		

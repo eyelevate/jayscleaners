@@ -4,7 +4,7 @@
 
 @stop
 @section('scripts')
-
+<script type="text/javascript" src="/js/customers/view.js"></script>
 @stop
 @section('header')
 	<div class="row clearfix">
@@ -72,6 +72,7 @@
 	@if(isset($customers))
 		{!! View::make('partials.customers.view-id')
 			->with('customers',$customers)
+			->with('invoices',$invoices)
 			->render()
 		!!}		
 	@else
@@ -88,4 +89,16 @@
 	 !!}
 	{!! View::make('partials.customers.reprint-card') !!}
 	{!! View::make('partials.customers.reprint-invoice') !!}
+
+	<!-- Invoice data -->
+	@if(isset($invoices))
+		@foreach($invoices as $invoice)
+		{!! View::make('partials.customers.invoice_items')
+			->with('invoice_id',$invoice->id)
+			->with('items',$invoice->items)
+			->render()
+		!!}	
+		@endforeach
+	@endif
+
 @stop

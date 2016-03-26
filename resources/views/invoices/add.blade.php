@@ -92,7 +92,7 @@
 								{{ Form::hidden('item['.$item->id.'][price]',$item->price,['class'=>'item-price']) }}
 								{{ Form::hidden('item['.$item->id.'][image]',$item->image,['class'=>'item-image']) }}
 								{{ Form::hidden('item['.$item->id.'][tags]',$item->tags,['class'=>'item-tags']) }}
-								{{ Form::hidden('item['.$item->id.'][inventory_id]',$item->ordered,['class'=>'item-inventory_id']) }}
+								{{ Form::hidden('item['.$item->id.'][inventory_id]',$item->inventory_id,['class'=>'item-inventory_id']) }}
 
 							</div>
 						</a><!-- ./col -->					

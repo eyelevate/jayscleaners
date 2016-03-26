@@ -16,9 +16,7 @@ class CreateInvoicesTable extends Migration
             $table->increments('id');
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->integer('customer_id', false, true)->length(11)->nullable();
-            $table->text('items')->nullable();
             $table->tinyInteger('quantity', false, true)->nullable();
-            $table->tinyInteger('tags', false, true)->nullable();
             $table->decimal('pretax',11,2)->nullable();
             $table->decimal('tax',11,2)->nullable();
             $table->integer('reward_id', false, true)->length(11)->nullable();

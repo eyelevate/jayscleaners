@@ -209,7 +209,7 @@ return [
         'Input'     => Illuminate\Support\Facades\Input::class,
         'Flash'     => 'Laracasts\Flash\Flash',
         'UploadHelper'=> App\Helpers\UploadHelper::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class
 
     ],
 

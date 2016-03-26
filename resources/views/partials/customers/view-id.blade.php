@@ -131,7 +131,7 @@
 	<div class="col-md-6">
 		<div class="box box-success">
 			<div class="box-body table-responsive">
-				<table class="table table-hover table-striped">
+				<table id="invoiceTable" class="table table-hover table-striped">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -142,15 +142,23 @@
 							<th>Total</th>
 						</tr>
 					</thead>
+                    <tbody>
+                    @if(isset($invoices))
+                        @foreach($invoices as $invoice)
+                        <tr id="invoiceTr-{{ $invoice->id }}" class="invoiceTr" invoice-id="{{ $invoice->id }}" data-toggle="modal" data-target="#invoiceModal-{{ $invoice->id }}">
+                            <td>{{ str_pad($invoice->id, 6, '0', STR_PAD_LEFT) }}</td>
+                            <td>{{ date('D, n/d',strtotime($invoice->created_at)) }}</td>
+                            <td>{{ date('D, n/d',strtotime($invoice->due_date)) }}</td>
+                            <td>{{ $invoice->tags }}</td>
+                            <td>{{ $invoice->rack }}</td>
+                            <td>{{ $invoice->total }}</td>
+                        </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
 				</table>
 			</div>
             <div class="panel-footer">
-                <a class="btn btn-lg btn-primary" href="{{ route('customers_edit',$customers->id) }}">
-                    <div class="icon"><i class="ion-ios-compose-outline"></i> Edit</div>
-                </a>
-                <a class="btn btn-lg btn-info" href="#" data-toggle="modal" data-target="#print-invoice">
-                    <div class="icon"><i class="ion-ios-printer-outline"></i> Reprint</div>
-                </a>
                 <a class="btn btn-lg btn-info" href="#">
                     <div class="icon"><i class="ion-filing"></i> History</div>
                 </a>
