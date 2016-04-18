@@ -179,9 +179,12 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
-    public function postApiUpdate(Request $request){
-
-        return response()->json(['status_code'=>200,'name' => 'Wondo Choung', 'state' => 'WA']);
+    public function getApiUpdate($company_id = null, $api_token = null){
+        $authenticate = Company::where('company_id',$company_id)->where('api_token',$api_token)->first();
+        if ($authenticate){
+            return response()->json(['status_code'=>200,'name' => 'Wondo Choung', 'state' => 'WA']);    
+        } 
+        return false
     }
 
 }
