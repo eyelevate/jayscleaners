@@ -57,6 +57,7 @@ class Admin extends Model
     	$company_id = $company->id;
     	$last_created_at = $company->created_at;
     	$update = [];
+    	$update_rows = 0;
 
     	if ($created_at > 0) {
     		// get all data from models
@@ -81,60 +82,77 @@ class Admin extends Model
     		// 
     		if(count($colors) > 0){
     			$update['colors'] = $colors;
+    			$update_rows += count($colors);
     		}
     		if(count($companies) > 0){
     			$update['companies'] = $companies;
+    			$update_rows += count($companies);
     		}
     		if(count($custids) > 0){
     			$update['custids'] = $custids;
+    			$update_rows += count($custids);
     		}
     		// if(count($customers) > 0){
     		// 	$update['customers'] = $customers;
     		// }
     		if(count($deliveries) > 0){
     			$update['deliveries'] = $deliveries;
+    			$update_rows += count($deliveries);
     		}
     		if(count($discounts) > 0){
     			$update['discounts'] = $discounts;
+    			$update_rows += count($discounts);
     		}
     		if(count($inventories) > 0){
     			$update['inventories'] = $inventories;
+    			$update_rows += count($inventories);
     		}
     		if(count($inventory_items) > 0){
     			$update['inventory_items'] = $inventory_items;
+    			$update_rows += count($inventory_items);
     		}
     		if(count($invoices) > 0){
     			$update['invoices'] = $invoices;
+    			$update_rows += count($invoices);
     		}
     		if(count($invoice_items) > 0){
     			$update['invoice_items'] = $invoice_items;
+    			$update_rows += count($invoice_items);
     		}
     		if(count($memos) > 0){
     			$update['memos'] = $memos;
+    			$update_rows += count($memos);
     		}
     		if(count($printers) > 0){
     			$update['printers'] = $printers;
+    			$update_rows += count($printers);
     		}
     		if(count($rewards) > 0){
     			$update['rewards'] = $rewards;
+    			$update_rows += count($rewards);
     		}
 			if(count($reward_transactions) > 0){
     			$update['reward_transactions'] = $reward_transactions;
+    			$update_rows += count($reward_transactions);
     		}
     		if(count($schedules) > 0){
     			$update['schedules'] = $schedules;
+    			$update_rows += count($schedules);
     		}
     		if(count($taxes) > 0){
     			$update['taxes'] = $taxes;
+    			$update_rows += count($taxes);
     		}
     		if(count($transactions) > 0){
     			$update['transactions'] = $transactions;
+    			$update_rows += count($transactions);
     		}
     		if(count($users) > 0){
     			$update['users'] = $users;
+    			$update_rows += count($users);
     		}
     	}
 
-    	return $update;
+    	return [$update, $update_rows];
     }
 }
