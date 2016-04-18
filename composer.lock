@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0d69eb7c69bd4728eafb2518dd2fc5bb",
-    "content-hash": "9c59926976861193d6655fcd0efe682c",
+    "hash": "ba7d921c0e0a7b8d2417425baa9ea224",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -885,16 +884,16 @@
         },
         {
             "name": "mike42/escpos-php",
-            "version": "v1.0",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mike42/escpos-php.git",
-                "reference": "a34978abc2e1f4d12cb7b814388569f9bec8b342"
+                "reference": "96f05cbf460f5b67c2184ee4e91aedfbcedeb788"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/a34978abc2e1f4d12cb7b814388569f9bec8b342",
-                "reference": "a34978abc2e1f4d12cb7b814388569f9bec8b342",
+                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/96f05cbf460f5b67c2184ee4e91aedfbcedeb788",
+                "reference": "96f05cbf460f5b67c2184ee4e91aedfbcedeb788",
                 "shasum": ""
             },
             "require": {
@@ -944,7 +943,7 @@
                 "print",
                 "receipt"
             ],
-            "time": "2016-02-24 11:39:27"
+            "time": "2016-03-27 23:08:27"
         },
         {
             "name": "monolog/monolog",

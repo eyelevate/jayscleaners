@@ -45,6 +45,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/settings',['as'=>'admins_settings','uses'=>'AdminsController@getSettings']);
 		Route::get('/admins/view/{id}',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
+		Route::post('/admins/api/update',['as'=>'admins_api_update','uses'=>'AdminsController@postApiUpdate']);
 
 		//Customers
 		Route::get('/colors',  ['as'=>'colors_index', 'uses' => 'ColorsController@getIndex']);

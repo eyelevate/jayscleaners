@@ -28,7 +28,9 @@ use App\Memo;
 use App\Tax;
 use App\Invoice;
 use App\InvoiceItem;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\CapabilityProfiles\StarCapabilityProfile;
 use Mike42\Escpos\Printer;
 
 class InvoicesController extends Controller
@@ -296,11 +298,26 @@ class InvoicesController extends Controller
 
     public function getTest(){
 
-$connector = new FilePrintConnector("php://stdout");
-$printer = new Printer($connector);
-$printer -> text("Hello World!\n");
-$printer -> cut();
-$printer -> close();
+
+try {
+    $connector = new CupsPrintConnector("TSP100LAN");
+    // $connector = new NetworkPrintConnector("10.1.10.10", 9100); 
+    /* Print a "Hello world" receipt" */
+    $printer = new Printer($connector);
+    $printer -> text("Hello World!\n");
+    $printer -> cut();
+    
+    /* Close printer */
+    $printer -> close();
+
+} catch(Exception $e) {
+    echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+}
+// $connector = new FilePrintConnector("php://stdout");
+// $printer = new Printer($connector);
+// $printer -> text("Hello World!\n");
+// $printer -> cut();
+// $printer -> close();
 
         return view('invoices.test')
         ->with('layout',$this->layout);        

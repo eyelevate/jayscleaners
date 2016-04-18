@@ -179,4 +179,9 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
+    public function postApiUpdate(Request $request){
+
+        return response()->json(['status_code'=>200,'name' => 'Wondo Choung', 'state' => 'WA']);
+    }
+
 }
