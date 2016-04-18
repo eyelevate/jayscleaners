@@ -186,7 +186,7 @@ class AdminsController extends Controller
         if ($authenticate){
             return response()->json(['status_code'=>200,'name' => 'Wondo Choung', 'state' => 'WA']);    
         } 
-        return false;
+        return abort(404);
     }
 
 }
