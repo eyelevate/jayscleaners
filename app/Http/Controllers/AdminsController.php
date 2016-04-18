@@ -20,6 +20,7 @@ use App\Job;
 use App\User;
 use App\Admin;
 use App\Layout;
+use App\Company;
 // use App\Role;
 // use App\RoleUser;
 // use App\Permission;
@@ -179,12 +180,13 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
-    public function getApiUpdate($company_id = null, $api_token = null){
-        $authenticate = Company::where('company_id',$company_id)->where('api_token',$api_token)->first();
+    public function getApiUpdate($id = null, $api_token = null){
+        $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
+
         if ($authenticate){
             return response()->json(['status_code'=>200,'name' => 'Wondo Choung', 'state' => 'WA']);    
         } 
-        return false
+        return false;
     }
 
 }
