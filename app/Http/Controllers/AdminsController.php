@@ -180,13 +180,21 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
-    public function getApiUpdate($id = null, $api_token = null){
+    public function getApiUpdate($id = null, $api_token = null, $server_at = null){
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
         if ($authenticate){
-            return response()->json(['status_code'=>200,'name' => 'Wondo Choung', 'state' => 'WA']);    
+            // create items to return
+            $updates = Admin::makeUpdate($authenticate,date('Y-m-d H:i:s',$server_at));
+
+            // update items
+
+            // create list of items with new ids to save in local db     
+
+
+            return response()->json(['status_code'=>200,'server_at'=>$server_at,'updates'=>$updates]);    
         } 
-        return abort(404);
+        return abort(403, 'Unauthorized action.');
     }
 
 }
