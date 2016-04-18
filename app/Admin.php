@@ -62,7 +62,7 @@ class Admin extends Model
     		// get all data from models
     		$colors = Color::where('updated_at','>=',$created_at)->where('company_id',$company_id)->get();
     		$companies = Company::where('updated_at','>=',$created_at)->where('id',$company_id)->get();
-    		$custids = Custid::where('updated_at','>=',$created_at)->where('company_id',$company_id)->get();
+    		$custids = Custid::where('updated_at','>=',$created_at)->get();
     		// $customers = Customer::where('updated_at',' >= ',$created_at)->get();
     		$deliveries = Delivery::where('updated_at','>=',$created_at)->where('company_id',$company_id)->get();
     		$discounts = Discount::where('updated_at','>=',$created_at)->where('company_id',$company_id)->get();
