@@ -192,9 +192,14 @@ class AdminsController extends Controller
             // create list of items with new ids to save in local db     
 
 
-            return response()->json(['status_code'=>200,'server_at'=>$server_at,'updates'=>$updates[0],'rows'=>$updates[1]]);    
+            return response()->json(['status_code'=>200,'server_at'=>$server_at,'updates'=>$updates[0],'rows'=>$updates[]]);    
         } 
         return abort(403, 'Unauthorized action.');
+    }
+
+    public function postApiUpdate(Request $request) {
+
+        return response()->json(['first_name'=>$request->first_name,'last_name'=>$request->last_name]);
     }
 
 }
