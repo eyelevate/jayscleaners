@@ -197,9 +197,9 @@ class AdminsController extends Controller
         return abort(403, 'Unauthorized action.');
     }
 
-    public function postApiUpdate(Request $request) {
+    public function postApiUpdate() {
 
-        return true
+        return response()->json(['first_name'=>Input::get('first_name'),'last_name'=>Input::get('last_name')]);    
     }
 
 }
