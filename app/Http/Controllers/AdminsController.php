@@ -199,6 +199,8 @@ class AdminsController extends Controller
 
     public function postApiUpdate() {
 
+        Job::dump($_SERVER['REQUEST_METHOD'])
+
         return response()->json(['first_name'=>Input::get('first_name'),'last_name'=>Input::get('last_name')]);    
     }
 
