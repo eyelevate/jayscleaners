@@ -200,7 +200,7 @@ class AdminsController extends Controller
     public function postApiUpdate(Request $request) {
 
 
-        return response()->json(['test':'works']);    
+        return true;    
     }
 
 }
