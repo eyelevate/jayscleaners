@@ -200,7 +200,7 @@ class AdminsController extends Controller
     public function postApiUpdate(Request $request) {
 
 
-        return true;    
+        return abort(403, 'Unauthorized action.');   
     }
 
 }
