@@ -191,8 +191,8 @@ class AdminsController extends Controller
             $upload = json_decode($up);
             // create list of items with new ids to save in local db     
 
-            // return response()->json(['status'=>200,'updates'=>$updates[0],'rows'=>$updates[1]]);
-            return response()->json(['status'=>200,'up'=>$up]);
+            return response()->json(['status'=>200,'updates'=>$updates[0],'rows'=>$updates[1]]);
+            // return response()->json(['status'=>200,'up'=>$up]);
     
         } 
         return abort(403, 'Unauthorized action.');
