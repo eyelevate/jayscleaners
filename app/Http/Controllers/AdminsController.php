@@ -192,7 +192,7 @@ class AdminsController extends Controller
 
             return response()->json(['status'=>200,
                                      'rows_to_create'=>$updates[1],
-                                     'updates'=>$updates[0],
+                                     // 'updates'=>$updates[0],
                                      'rows_saved'=>10,
                                      'saved'=>$uploads]);
     

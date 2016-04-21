@@ -172,6 +172,8 @@ class Admin extends Model
     				$up['colors'][$key]['app_id'] = $color->id;
     			}
     		}
+    	} else {
+    		unset($up['colors']);
     	}
     	if (count($up['companies']) > 0) {
     		foreach ($up['companies'] as $key => $value) {
@@ -190,6 +192,8 @@ class Admin extends Model
     				$up['companies'][$key]['app_id'] = $company->id;
     			}
     		}
+    	} else {
+    		unset($up['companies']);
     	}
 
     	if (count($up['custids']) > 0){
@@ -202,7 +206,9 @@ class Admin extends Model
     				$up['custids'][$key]['app_id'] = $custid->id;
     			}
     		}
-    	}   
+    	} else {
+    		unset($up['custids']);
+    	}
     	if (count($up['deliveries']) > 0){
     		foreach ($up['deliveries'] as $key => $value) {
     			$delivery = new Delivery();
@@ -210,10 +216,12 @@ class Admin extends Model
     			$delivery->mark = $value['mark'];
     			$delivery->status = $value['status'];
     			if($delivery->save()){
-    				$up['delivere'][$key]['app_id'] = $delivery->id;
+    				$up['delivery'][$key]['app_id'] = $delivery->id;
     			}
     		}
-    	} 	
+    	} else {
+    		unset($up['deliveries']);
+    	}	
     	if (count($up['discounts']) > 0){
     		foreach ($up['discounts'] as $key => $value) {
     			$discount = new Discount();
@@ -232,6 +240,8 @@ class Admin extends Model
     				$up['discounts'][$key]['app_id'] = $discount->id;
     			}
     		}
+    	} else {
+    		unset($up['discounts']);
     	}
     	if (count($up['inventories']) > 0){
     		foreach ($up['inventories'] as $key => $value) {
@@ -245,6 +255,8 @@ class Admin extends Model
     				$up['inventories'][$key]['app_id'] = $inventory->id;
     			}
     		}
+    	} else {
+    		unset($up['inventories']);
     	}
     	if (count($up['inventory_items']) > 0){
     		foreach ($up['inventory_items'] as $key => $value) {
@@ -263,6 +275,8 @@ class Admin extends Model
     				$up['inventory_items'][$key]['app_id'] = $inventory_item->id;
     			}
     		}
+    	} else {
+    		unset($up['inventory_items']);
     	}
     	if (count($up['invoices']) > 0){
     		foreach ($up['invoices'] as $key => $value) {
@@ -283,6 +297,8 @@ class Admin extends Model
     				$up['invoices'][$key]['app_id'] = $invoice->id;
     			}
     		}
+    	} else {
+    		unset($up['invoices']);
     	}
     	if (count($up['invoice_items']) > 0){
     		foreach ($up['invoice_items'] as $key => $value) {
@@ -302,6 +318,8 @@ class Admin extends Model
     				$up['invoice_items'][$key]['app_id'] = $invoice_item->id;
     			}
     		}
+    	} else {
+    		unset($up['invoice_items']);
     	}
     	if (count($up['memos']) > 0){
     		foreach ($up['memos'] as $key => $value) {
@@ -314,6 +332,8 @@ class Admin extends Model
     				$up['memos'][$key]['app_id'] = $memo->id;
     			}
     		}
+    	} else {
+    		unset($up['memos']);
     	}
     	if (count($up['printers']) > 0){
     		foreach ($up['printers'] as $key => $value) {
@@ -328,6 +348,23 @@ class Admin extends Model
     				$up['printers'][$key]['app_id'] = $printer->id;
     			}
     		}
+    	} else {
+    		unset($up['printers']);
+    	}
+    	if (count($up['rewards']) > 0){
+    		foreach ($up['rewards'] as $key => $value) {
+    			$reward = new Reward();
+    			$reward->company_id = $company_id;
+    			$reward->name = $value['name'];
+    			$reward->points = $value['points'];
+    			$reward->discount = $value['discount'];
+    			$reward->status = $value['status'];
+    			if($reward->save()){
+    				$up['rewards'][$key]['app_id'] = $reward->id;
+    			}
+    		}
+    	} else {
+    		unset($up['rewards']);
     	}
     	if (count($up['reward_transactions']) > 0){
     		foreach ($up['reward_transactions'] as $key => $value) {
@@ -349,6 +386,8 @@ class Admin extends Model
     				$up['reward_transactions'][$key]['app_id'] = $reward_transaction->id;
     			}
     		}
+    	} else {
+    		unset($up['reward_transactions']);
     	}
     	if (count($up['schedules']) > 0){
     		foreach ($up['schedules'] as $key => $value) {
@@ -367,6 +406,8 @@ class Admin extends Model
     				$up['schedules'][$key]['app_id'] = $schedule->id;
     			}
     		}
+    	} else {
+    		unset($up['schedules']);
     	}
     	if (count($up['taxes']) > 0){
     		foreach ($up['taxes'] as $key => $value) {
@@ -378,6 +419,8 @@ class Admin extends Model
     				$up['taxes'][$key]['app_id'] = $tax->id;
     			}
     		}
+    	} else {
+    		unset($up['taxes']);
     	}
     	if (count($up['transactions']) > 0){
     		foreach ($up['transactions'] as $key => $value) {
@@ -399,6 +442,8 @@ class Admin extends Model
     				$up['transactions'][$key]['app_id'] = $transaction->id;
     			}
     		}
+    	} else {
+    		unset($up['transactions']);
     	}
     	if (count($up['users']) > 0){
     		foreach ($up['users'] as $key => $value) {
@@ -438,6 +483,8 @@ class Admin extends Model
     				$up['users'][$key]['app_id'] = $user->id;
     			}
     		}
+    	} else {
+    		unset($up['users']);
     	}
     	return $up;
     }
