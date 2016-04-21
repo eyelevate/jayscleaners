@@ -188,13 +188,15 @@ class AdminsController extends Controller
             $updates = Admin::makeUpdate($authenticate,$server_at);
 
             // create list of items with new ids to save in local db
-            $uploads = Admin::makeUpload($authenticate,json_decode($up,true));     
+            $uploads = Admin::makeUpload($authenticate,json_decode($up,true));
+    
 
             return response()->json(['status'=>200,
-                                     'rows_to_create'=>$updates[1],
+                                     // 'rows_to_create'=>$updates[1],
                                      // 'updates'=>$updates[0],
-                                     'rows_saved'=>10,
-                                     'saved'=>$uploads]);
+                                     'rows_saved'=>$uploads[0],
+                                     'saved'=>json_decode($uploads[1])
+                                     ]);
     
         } 
         return abort(403, 'Unauthorized action.');

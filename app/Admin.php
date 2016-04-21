@@ -170,6 +170,7 @@ class Admin extends Model
     			$color->status = $value['status'];
     			if($color->save()){
     				$up['colors'][$key]['app_id'] = $color->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -190,6 +191,7 @@ class Admin extends Model
     			$company->api_token = $value['api_token'];
     			if($company->save()){
     				$up['companies'][$key]['app_id'] = $company->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -204,6 +206,7 @@ class Admin extends Model
     			$custid->status = $value['status'];
     			if($custid->save()){
     				$up['custids'][$key]['app_id'] = $custid->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -217,6 +220,7 @@ class Admin extends Model
     			$delivery->status = $value['status'];
     			if($delivery->save()){
     				$up['delivery'][$key]['app_id'] = $delivery->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -238,6 +242,7 @@ class Admin extends Model
     			$discount->status = $value['status'];
     			if($discount->save()){
     				$up['discounts'][$key]['app_id'] = $discount->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -253,6 +258,7 @@ class Admin extends Model
     			$inventory->status = $value['status'];
     			if($inventory->save()){
     				$up['inventories'][$key]['app_id'] = $inventory->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -273,6 +279,7 @@ class Admin extends Model
     			$inventory_item->status = $value['status'];
     			if($inventory_item->save()){
     				$up['inventory_items'][$key]['app_id'] = $inventory_item->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -295,6 +302,7 @@ class Admin extends Model
     			$invoice->status = $value['status'];
     			if($invoice->save()){
     				$up['invoices'][$key]['app_id'] = $invoice->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -316,6 +324,7 @@ class Admin extends Model
     			$invoice_item->status = $value['status'];
     			if($invoice_item->save()){
     				$up['invoice_items'][$key]['app_id'] = $invoice_item->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -330,6 +339,7 @@ class Admin extends Model
     			$memo->status = $value['status'];
     			if($memo->save()){
     				$up['memos'][$key]['app_id'] = $memo->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -346,6 +356,7 @@ class Admin extends Model
     			$printer->status = $value['status'];
     			if($printer->save()){
     				$up['printers'][$key]['app_id'] = $printer->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -361,6 +372,7 @@ class Admin extends Model
     			$reward->status = $value['status'];
     			if($reward->save()){
     				$up['rewards'][$key]['app_id'] = $reward->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -384,6 +396,7 @@ class Admin extends Model
     			$reward_transaction->status = $value['status'];
     			if($reward_transaction->save()){
     				$up['reward_transactions'][$key]['app_id'] = $reward_transaction->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -404,6 +417,7 @@ class Admin extends Model
     			$schedule->status = $value['status'];
     			if($schedule->save()){
     				$up['schedules'][$key]['app_id'] = $schedule->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -417,6 +431,7 @@ class Admin extends Model
     			$tax->status = $value['status'];
     			if($tax->save()){
     				$up['taxes'][$key]['app_id'] = $tax->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -440,6 +455,7 @@ class Admin extends Model
     			$transaction->status = $value['status'];
     			if($transaction->save()){
     				$up['transactions'][$key]['app_id'] = $transaction->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
@@ -481,11 +497,12 @@ class Admin extends Model
     			$user->role_id = $value['role_id'];
     			if($user->save()){
     				$up['users'][$key]['app_id'] = $user->id;
+    				$uploaded_rows++;
     			}
     		}
     	} else {
     		unset($up['users']);
     	}
-    	return $up;
+    	return [$uploaded_rows,json_encode($up)];
     }
 }
