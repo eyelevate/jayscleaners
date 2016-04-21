@@ -187,7 +187,7 @@ class AdminsController extends Controller
         $server_at = (strtotime($authenticate->server_at) > 0) ? $authenticate_server_at : date('Y-m-d H:i:s', 0);
         if ($authenticate){
             // create items to return
-            // $updates = Admin::makeUpdate($authenticate,$server_at);
+            $updates = Admin::makeUpdate($authenticate,$server_at);
 
             // create list of items with new ids to save in local db
             $uploads = Admin::makeUpload($authenticate,$up);
