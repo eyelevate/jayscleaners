@@ -188,7 +188,7 @@ class AdminsController extends Controller
             $updates = Admin::makeUpdate($authenticate,$server_at);
 
             // create list of items with new ids to save in local db
-            $uploads = Admin::makeUpload($authenticate,json_decode($up));     
+            $uploads = Admin::makeUpload($authenticate,$up);     
 
             return response()->json(['status'=>200,
                                      'rows_to_create'=>$updates[1],
