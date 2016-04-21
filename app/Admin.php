@@ -156,9 +156,9 @@ class Admin extends Model
     	return [$update, $update_rows];
     }
 
-    static function makeUpload($company, $up){
-    	$company_id = $company->id;
-    	$last_created_at = $company->created_at;
+    static function makeUpload($c, $up){
+    	$company_id = $c->id;
+    	$last_created_at = $c->created_at;
     	$uploaded_rows = 0;
     	if(count($up['colors']) > 0){
     		foreach ($up['colors'] as $key => $value) {
@@ -175,7 +175,7 @@ class Admin extends Model
     	}
     	if (count($up['companies']) > 0) {
     		foreach ($up['companies'] as $key => $value) {
-    			$company = new Company()
+    			$company = new Company();
     			$company->name = $value['name'];
     			$company->street = $value['street'];
     			$company->city = $value['city'];
