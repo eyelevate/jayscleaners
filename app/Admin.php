@@ -503,6 +503,6 @@ class Admin extends Model
     	} else {
     		unset($up['users']);
     	}
-    	return [$uploaded_rows,json_encode($up)];
+    	return [$uploaded_rows,$up];
     }
 }

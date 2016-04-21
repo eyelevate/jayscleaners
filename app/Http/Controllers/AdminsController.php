@@ -180,18 +180,19 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
-    public function getApiUpdate($data = null){
-        $data = json_decode($data);
-        $authenticate = Company::where('id',$data->company_id)->where('api_token',$data->api_token)->first();
+    public function getApiUpdate($id = null, $api_token = null, $up = null){
+    
+        $up = json_decode(str_replace('up=', '', $up),true);
+        $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
         $server_at = (strtotime($authenticate->server_at) > 0) ? $authenticate_server_at : date('Y-m-d H:i:s', 0);
         if ($authenticate){
             // create items to return
             // $updates = Admin::makeUpdate($authenticate,$server_at);
 
             // create list of items with new ids to save in local db
-            $uploads = Admin::makeUpload($authenticate,json_decode($data->up,true));
+            $uploads = Admin::makeUpload($authenticate,$up);
     
-
+    
             return response()->json(['status'=>200,
                                      // 'rows_to_create'=>$updates[1],
                                      // 'updates'=>$updates[0],
