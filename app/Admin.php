@@ -91,7 +91,7 @@ class Admin extends Model
     		if(count($custids) > 0){
     			$update['custids'] = $custids;
     			$update_rows += count($custids);
-    		}
+    		} 
     		// if(count($customers) > 0){
     		// 	$update['customers'] = $customers;
     		// }
@@ -154,5 +154,291 @@ class Admin extends Model
     	}
 
     	return [$update, $update_rows];
+    }
+
+    static function makeUpload($company, $up){
+    	$company_id = $company->id;
+    	$last_created_at = $company->created_at;
+    	$uploaded_rows = 0;
+    	if(count($up['colors']) > 0){
+    		foreach ($up['colors'] as $key => $value) {
+    			$color = new Color();
+    			$color->company_id = $company_id;
+    			$color->color = $value['color'];
+    			$color->name = $value['name'];
+    			$color->ordered = $value['ordered'];
+    			$color->status = $value['status'];
+    			if($color->save()){
+    				$up['colors'][$key]['app_id'] = $color->id;
+    			}
+    		}
+    	}
+    	if (count($up['companies']) > 0) {
+    		foreach ($up['companies'] as $key => $value) {
+    			$company = new Company()
+    			$company->name = $value['name'];
+    			$company->street = $value['street'];
+    			$company->city = $value['city'];
+    			$company->state = $value['state'];
+    			$company->zip = $value['zip'];
+    			$company->phone = $value['phone'];
+    			$company->email = $value['email'];
+    			$company->store_hours = $value['store_hours'];
+    			$company->turn_around = $value['turn_around'];
+    			$company->api_token = $value['api_token'];
+    			if($company->save()){
+    				$up['companies'][$key]['app_id'] = $company->id;
+    			}
+    		}
+    	}
+
+    	if (count($up['custids']) > 0){
+    		foreach ($up['custids'] as $key => $value) {
+    			$custid = new Custid();
+    			$custid->customer_id = $value['customer_id'];
+    			$custid->mark = $value['mark'];
+    			$custid->status = $value['status'];
+    			if($custid->save()){
+    				$up['custids'][$key]['app_id'] = $custid->id;
+    			}
+    		}
+    	}   
+    	if (count($up['deliveries']) > 0){
+    		foreach ($up['deliveries'] as $key => $value) {
+    			$delivery = new Delivery();
+    			$delivery->customer_id = $value['customer_id'];
+    			$delivery->mark = $value['mark'];
+    			$delivery->status = $value['status'];
+    			if($delivery->save()){
+    				$up['delivere'][$key]['app_id'] = $delivery->id;
+    			}
+    		}
+    	} 	
+    	if (count($up['discounts']) > 0){
+    		foreach ($up['discounts'] as $key => $value) {
+    			$discount = new Discount();
+    			$discount->company_id = $company_id;
+    			$discount->inventory_id = $value['inventory_id'];
+    			$discount->inventory_item_id = $value['inventory_item_id'];
+    			$discount->name = $value['name'];
+    			$discount->type = $value['type'];
+    			$discount->discount = $value['discount'];
+    			$discount->rate = $value['rate'];
+    			$discount->end_time = $value['end_time'];
+    			$discount->start_date = $value['start_date'];
+    			$discount->end_date = $value['end_date'];
+    			$discount->status = $value['status'];
+    			if($discount->save()){
+    				$up['discounts'][$key]['app_id'] = $discount->id;
+    			}
+    		}
+    	}
+    	if (count($up['inventories']) > 0){
+    		foreach ($up['inventories'] as $key => $value) {
+    			$inventory = new Inventory();
+    			$inventory->company_id = $company_id;
+    			$inventory->name = $value['name'];
+    			$inventory->description = $value['description'];
+    			$inventory->ordered = $value['ordered'];
+    			$inventory->status = $value['status'];
+    			if($inventory->save()){
+    				$up['inventories'][$key]['app_id'] = $inventory->id;
+    			}
+    		}
+    	}
+    	if (count($up['inventory_items']) > 0){
+    		foreach ($up['inventory_items'] as $key => $value) {
+    			$inventory_item = new InventoryItem();
+    			$inventory_item->company_id = $company_id;
+    			$inventory_item->inventory_id = $value['inventory_id'];
+    			$inventory_item->name = $value['name'];
+    			$inventory_item->description = $value['description'];
+    			$inventory_item->tags = $value['tags'];
+    			$inventory_item->quantity = $value['quantity'];
+    			$inventory_item->ordered = $value['ordered'];
+    			$inventory_item->price = $value['price'];
+    			$inventory_item->image = $value['image'];
+    			$inventory_item->status = $value['status'];
+    			if($inventory_item->save()){
+    				$up['inventory_items'][$key]['app_id'] = $inventory_item->id;
+    			}
+    		}
+    	}
+    	if (count($up['invoices']) > 0){
+    		foreach ($up['invoices'] as $key => $value) {
+    			$invoice = new Invoice();
+    			$invoice->company_id = $company_id;
+    			$invoice->customer_id = $value['customer_id'];
+    			$invoice->quantity = $value['quantity'];
+    			$invoice->pretax = $value['pretax'];
+    			$invoice->tax = $value['tax'];
+    			$invoice->reward_id = $value['reward_id'];
+    			$invoice->discount_id = $value['discount_id'];
+    			$invoice->rack = $value['rack'];
+    			$invoice->rack_date = $value['rack_date'];
+    			$invoice->due_date = $value['due_date'];
+    			$invoice->memo = $value['memo'];
+    			$invoice->status = $value['status'];
+    			if($invoice->save()){
+    				$up['invoices'][$key]['app_id'] = $invoice->id;
+    			}
+    		}
+    	}
+    	if (count($up['invoice_items']) > 0){
+    		foreach ($up['invoice_items'] as $key => $value) {
+    			$invoice_item = new InvoiceItem();
+    			$invoice_item->invoice_id = $invoice_id;
+    			$invoice_item->item_id = $value['item_id'];
+    			$invoice_item->company_id = $company_id;
+    			$invoice_item->customer_id = $value['customer_id'];
+    			$invoice_item->quantity = $value['quantity'];
+    			$invoice_item->color = $value['color'];
+    			$invoice_item->memo = $value['memo'];
+    			$invoice_item->pretax = $value['pretax'];
+    			$invoice_item->tax = $value['tax'];
+    			$invoice_item->total = $value['total'];
+    			$invoice_item->status = $value['status'];
+    			if($invoice_item->save()){
+    				$up['invoice_items'][$key]['app_id'] = $invoice_item->id;
+    			}
+    		}
+    	}
+    	if (count($up['memos']) > 0){
+    		foreach ($up['memos'] as $key => $value) {
+    			$memo = new Memo();
+    			$memo->company_id = $company_id;
+    			$memo->memo = $value['memo'];
+    			$memo->ordered = $value['ordered'];
+    			$memo->status = $value['status'];
+    			if($memo->save()){
+    				$up['memos'][$key]['app_id'] = $memo->id;
+    			}
+    		}
+    	}
+    	if (count($up['printers']) > 0){
+    		foreach ($up['printers'] as $key => $value) {
+    			$printer = new Printer();
+    			$printer->company_id = $company_id;
+    			$printer->name = $value['name'];
+    			$printer->model = $value['model'];
+    			$printer->nick_name = $value['nick_name'];
+    			$printer->type = $value['type'];
+    			$printer->status = $value['status'];
+    			if($printer->save()){
+    				$up['printers'][$key]['app_id'] = $printer->id;
+    			}
+    		}
+    	}
+    	if (count($up['reward_transactions']) > 0){
+    		foreach ($up['reward_transactions'] as $key => $value) {
+    			$reward_transaction = new RewardTransaction();
+    			$reward_transaction->reward_id = $value['reward_id'];
+    			$reward_transaction->transaction_id = $value['transaction_id'];
+    			$reward_transaction->customer_id = $value['customer_id'];
+    			$reward_transaction->employee_id = $value['employee_id'];
+    			$reward_transaction->company_id = $company_id;
+    			$reward_transaction->type = $value['type'];
+    			$reward_transaction->points = $value['points'];
+    			$reward_transaction->credited = $value['credited'];
+    			$reward_transaction->reduced = $value['reduced'];
+    			$reward_transaction->running_total = $value['running_total'];
+    			$reward_transaction->reason = $value['reason'];
+    			$reward_transaction->name = $value['name'];
+    			$reward_transaction->status = $value['status'];
+    			if($reward_transaction->save()){
+    				$up['reward_transactions'][$key]['app_id'] = $reward_transaction->id;
+    			}
+    		}
+    	}
+    	if (count($up['schedules']) > 0){
+    		foreach ($up['schedules'] as $key => $value) {
+    			$schedule = new Schedule();
+    			$schedule->company_id = $company_id;
+    			$schedule->customer_id = $value['customer_id'];
+    			$schedule->pickup_delivery_id = $value['pickup_delivery_id'];
+    			$schedule->pickup_date = $value['pickup_date'];
+    			$schedule->dropoff_delivery_id = $value['dropoff_delivery_id'];
+    			$schedule->dropoff_date = $value['dropoff_date'];
+    			$schedule->special_instructions = $value['special_instructions'];
+    			$schedule->type = $value['type'];
+    			$schedule->token = $value['token'];
+    			$schedule->status = $value['status'];
+    			if($schedule->save()){
+    				$up['schedules'][$key]['app_id'] = $schedule->id;
+    			}
+    		}
+    	}
+    	if (count($up['taxes']) > 0){
+    		foreach ($up['taxes'] as $key => $value) {
+    			$tax = new Tax();
+    			$tax->company_id = $company_id;
+    			$tax->rate = $value['rate'];
+    			$tax->status = $value['status'];
+    			if($tax->save()){
+    				$up['taxes'][$key]['app_id'] = $tax->id;
+    			}
+    		}
+    	}
+    	if (count($up['transactions']) > 0){
+    		foreach ($up['transactions'] as $key => $value) {
+    			$transaction = new Schedule();
+    			$transaction->company_id = $company_id;
+    			$transaction->customer_id = $value['customer_id'];
+    			$transaction->schedule_id = $value['schedule_id'];
+    			$transaction->pretax = $value['pretax'];
+    			$transaction->tax = $value['tax'];
+    			$transaction->aftertax = $value['aftertax'];
+    			$transaction->discount = $value['discount'];
+    			$transaction->invoices = $value['invoices'];
+    			$transaction->type = $value['type'];
+    			$transaction->last_four = $value['last_four'];
+    			$transaction->tendered = $value['tendered'];
+    			$transaction->transaction_id = $value['transaction_id'];
+    			$transaction->status = $value['status'];
+    			if($transaction->save()){
+    				$up['transactions'][$key]['app_id'] = $transaction->id;
+    			}
+    		}
+    	}
+    	if (count($up['users']) > 0){
+    		foreach ($up['users'] as $key => $value) {
+    			$user = new User();
+    			$user->company_id = $company_id;
+    			$user->username = $value['username'];
+    			$user->first_name = $value['first_name'];
+    			$user->last_name = $value['last_name'];
+    			$user->street = $value['street'];
+    			$user->suite = $value['suite'];
+    			$user->city = $value['city'];
+    			$user->state = $value['state'];
+    			$user->zipcode = $value['zipcode'];
+    			$user->email = $value['email'];
+    			$user->phone = $value['phone'];
+    			$user->intercom = $value['intercom'];
+    			$user->concierge_name = $value['concierge_name'];
+    			$user->concierge_number = $value['concierge_number'];
+    			$user->special_instructions = $value['special_instructions'];
+    			$user->shirt_old = $value['shirt_old'];
+    			$user->shirt = $value['shirt'];
+    			$user->delivery = $value['delivery'];
+    			$user->profile_id = $value['profile_id'];
+    			$user->payment_status = $value['payment_status'];
+    			$user->payment_id = $value['payment_id'];
+    			$user->token = $value['token'];
+    			$user->api_token = $value['api_token'];
+    			$user->reward_status = $value['reward_status'];
+    			$user->reward_points = $value['reward_points'];
+    			$user->account = $value['account'];
+    			$user->starch_old = $value['starch_old'];
+    			$user->starch = $value['starch'];
+    			$user->important_memo = $value['important_memo'];
+    			$user->invoice_memo = $value['invoice_memo'];
+    			$user->role_id = $value['role_id'];
+    			if($user->save()){
+    				$up['users'][$key]['app_id'] = $user->id;
+    			}
+    		}
+    	}
+    	return $up;
     }
 }
