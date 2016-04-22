@@ -169,7 +169,7 @@ class Admin extends Model
     			$color->ordered = $value['ordered'];
     			$color->status = $value['status'];
     			if($color->save()){
-    				$up['colors'][$key]['app_id'] = $color->id;
+    				$up['colors'][$key]['color_id'] = $color->id;
     				$uploaded_rows++;
     			}
     		}
@@ -190,7 +190,7 @@ class Admin extends Model
     			$company->turn_around = $value['turn_around'];
     			$company->api_token = $value['api_token'];
     			if($company->save()){
-    				$up['companies'][$key]['app_id'] = $company->id;
+    				$up['companies'][$key]['company_id'] = $company->id;
     				$uploaded_rows++;
     			}
     		}
@@ -205,7 +205,7 @@ class Admin extends Model
     			$custid->mark = $value['mark'];
     			$custid->status = $value['status'];
     			if($custid->save()){
-    				$up['custids'][$key]['app_id'] = $custid->id;
+    				$up['custids'][$key]['cust_id'] = $custid->id;
     				$uploaded_rows++;
     			}
     		}
@@ -219,7 +219,7 @@ class Admin extends Model
     			$delivery->mark = $value['mark'];
     			$delivery->status = $value['status'];
     			if($delivery->save()){
-    				$up['delivery'][$key]['app_id'] = $delivery->id;
+    				$up['delivery'][$key]['delivery_id'] = $delivery->id;
     				$uploaded_rows++;
     			}
     		}
@@ -241,13 +241,14 @@ class Admin extends Model
     			$discount->end_date = $value['end_date'];
     			$discount->status = $value['status'];
     			if($discount->save()){
-    				$up['discounts'][$key]['app_id'] = $discount->id;
+    				$up['discounts'][$key]['discount_id'] = $discount->id;
     				$uploaded_rows++;
     			}
     		}
     	} else {
     		unset($up['discounts']);
     	}
+
     	if (count($up['inventories']) > 0){
     		foreach ($up['inventories'] as $key => $value) {
     			$inventory = new Inventory();
@@ -257,13 +258,14 @@ class Admin extends Model
     			$inventory->ordered = $value['ordered'];
     			$inventory->status = $value['status'];
     			if($inventory->save()){
-    				$up['inventories'][$key]['app_id'] = $inventory->id;
+    				$up['inventories'][$key]['inventory_id'] = $inventory->id;
     				$uploaded_rows++;
     			}
     		}
     	} else {
     		unset($up['inventories']);
     	}
+
     	if (count($up['inventory_items']) > 0){
     		foreach ($up['inventory_items'] as $key => $value) {
     			$inventory_item = new InventoryItem();
@@ -278,7 +280,7 @@ class Admin extends Model
     			$inventory_item->image = $value['image'];
     			$inventory_item->status = $value['status'];
     			if($inventory_item->save()){
-    				$up['inventory_items'][$key]['app_id'] = $inventory_item->id;
+    				$up['inventory_items'][$key]['item_id'] = $inventory_item->id;
     				$uploaded_rows++;
     			}
     		}
@@ -301,7 +303,7 @@ class Admin extends Model
     			$invoice->memo = $value['memo'];
     			$invoice->status = $value['status'];
     			if($invoice->save()){
-    				$up['invoices'][$key]['app_id'] = $invoice->id;
+    				$up['invoices'][$key]['invoice_id'] = $invoice->id;
     				$uploaded_rows++;
     			}
     		}
@@ -311,7 +313,7 @@ class Admin extends Model
     	if (count($up['invoice_items']) > 0){
     		foreach ($up['invoice_items'] as $key => $value) {
     			$invoice_item = new InvoiceItem();
-    			$invoice_item->invoice_id = $invoice_id;
+    			$invoice_item->invoice_id = $value['invoice_id'];
     			$invoice_item->item_id = $value['item_id'];
     			$invoice_item->company_id = $company_id;
     			$invoice_item->customer_id = $value['customer_id'];
@@ -323,7 +325,7 @@ class Admin extends Model
     			$invoice_item->total = $value['total'];
     			$invoice_item->status = $value['status'];
     			if($invoice_item->save()){
-    				$up['invoice_items'][$key]['app_id'] = $invoice_item->id;
+    				$up['invoice_items'][$key]['invoice_item_id'] = $invoice_item->id;
     				$uploaded_rows++;
     			}
     		}
@@ -338,7 +340,7 @@ class Admin extends Model
     			$memo->ordered = $value['ordered'];
     			$memo->status = $value['status'];
     			if($memo->save()){
-    				$up['memos'][$key]['app_id'] = $memo->id;
+    				$up['memos'][$key]['memo_id'] = $memo->id;
     				$uploaded_rows++;
     			}
     		}
@@ -355,7 +357,7 @@ class Admin extends Model
     			$printer->type = $value['type'];
     			$printer->status = $value['status'];
     			if($printer->save()){
-    				$up['printers'][$key]['app_id'] = $printer->id;
+    				$up['printers'][$key]['printer_id'] = $printer->id;
     				$uploaded_rows++;
     			}
     		}
@@ -371,7 +373,7 @@ class Admin extends Model
     			$reward->discount = $value['discount'];
     			$reward->status = $value['status'];
     			if($reward->save()){
-    				$up['rewards'][$key]['app_id'] = $reward->id;
+    				$up['rewards'][$key]['reward_id'] = $reward->id;
     				$uploaded_rows++;
     			}
     		}
@@ -395,7 +397,7 @@ class Admin extends Model
     			$reward_transaction->name = $value['name'];
     			$reward_transaction->status = $value['status'];
     			if($reward_transaction->save()){
-    				$up['reward_transactions'][$key]['app_id'] = $reward_transaction->id;
+    				$up['reward_transactions'][$key]['reward_id'] = $reward_transaction->id;
     				$uploaded_rows++;
     			}
     		}
@@ -416,7 +418,7 @@ class Admin extends Model
     			$schedule->token = $value['token'];
     			$schedule->status = $value['status'];
     			if($schedule->save()){
-    				$up['schedules'][$key]['app_id'] = $schedule->id;
+    				$up['schedules'][$key]['schedule_id'] = $schedule->id;
     				$uploaded_rows++;
     			}
     		}
@@ -430,7 +432,7 @@ class Admin extends Model
     			$tax->rate = $value['rate'];
     			$tax->status = $value['status'];
     			if($tax->save()){
-    				$up['taxes'][$key]['app_id'] = $tax->id;
+    				$up['taxes'][$key]['tax_id'] = $tax->id;
     				$uploaded_rows++;
     			}
     		}
@@ -454,7 +456,7 @@ class Admin extends Model
     			$transaction->transaction_id = $value['transaction_id'];
     			$transaction->status = $value['status'];
     			if($transaction->save()){
-    				$up['transactions'][$key]['app_id'] = $transaction->id;
+    				$up['transactions'][$key]['transaction_id'] = $transaction->id;
     				$uploaded_rows++;
     			}
     		}
@@ -496,7 +498,7 @@ class Admin extends Model
     			$user->invoice_memo = $value['invoice_memo'];
     			$user->role_id = $value['role_id'];
     			if($user->save()){
-    				$up['users'][$key]['app_id'] = $user->id;
+    				$up['users'][$key]['user_id'] = $user->id;
     				$uploaded_rows++;
     			}
     		}
