@@ -205,15 +205,18 @@ class AdminsController extends Controller
     }
 
     public function getAuthentication($username = null, $pw = null) {
-        $status = false;
+        
         if (Auth::attempt(['username'=>$username, 'password'=>$pw])) {
             $status = true;
+            return response()->json(['status'=>true,
+                                     'company_id'=>Auth::user()->company_id,
+                                     'user_id'=>Auth::user()->id
+                                     ]);
 
-        }  
-        return response()->json(['status'=>$status,
-                                 'company_id'=>Auth::user()->company_id,
-                                 'user_id'=>Auth::user()->id
-                                 ]);
+        } else {
+            return response()->json(['status'=>false]);
+        }
+
     }
 
 
