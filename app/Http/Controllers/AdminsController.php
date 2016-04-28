@@ -192,7 +192,7 @@ class AdminsController extends Controller
             // create list of items with new ids to save in local db
             $uploads = Admin::makeUpload($authenticate,$up);
     
-    
+
             return response()->json(['status'=>200,
                                      'rows_to_create'=>$updates[1],
                                      'updates'=>$updates[0],
@@ -202,6 +202,18 @@ class AdminsController extends Controller
     
         } 
         return abort(403, 'Unauthorized action.');
+    }
+
+    public function getAuthentication($username = null, $pw = null) {
+        $status = false;
+        if (Auth::attempt(['username'=>$username, 'password'=>$pw])) {
+            $status = true;
+
+        }  
+        return response()->json(['status'=>$status,
+                                 'company_id'=>Auth::user()->company_id,
+                                 'user_id'=>Auth::user()->id
+                                 ]);
     }
 
 
