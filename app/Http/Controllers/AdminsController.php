@@ -207,15 +207,23 @@ class AdminsController extends Controller
     public function getAuthentication($username = null, $pw = null) {
         
         if (Auth::attempt(['username'=>$username, 'password'=>$pw])) {
-            $status = true;
-            return response()->json(['status'=>true,
-                                     'company_id'=>Auth::user()->company_id,
-                                     'user_id'=>Auth::user()->id
-                                     ]);
+            
+            // Next check to see if the role is an admin or an employee
+            $role = Auth::user()->role_id;
+            if ($role < 3){
+                $status = true;
 
-        } else {
-            return response()->json(['status'=>false]);
-        }
+                return response()->json(['status'=>true,
+                                         'company_id'=>Auth::user()->company_id,
+                                         'user_id'=>Auth::user()->id
+                                         ]);
+            } 
+
+
+        } 
+
+        // If not authorized then return false
+        return response()->json(['status'=>false]);
 
     }
 
