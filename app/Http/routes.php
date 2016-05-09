@@ -33,7 +33,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/admins/login',  ['as'=>'admins_login', 'uses' => 'AdminsController@getLogin']);
 	Route::post('/admins/login',  ['as'=>'admins_login_post', 'uses' => 'AdminsController@postLogin']);
 	Route::post('/admins/logout',  ['as'=>'admins_logout_post', 'uses' => 'AdminsController@postLogout']);
-	Route::get('/admins/api/update/{id}/{api_token}/{up}',['as'=>'admins_api_update','uses'=>'AdminsController@getApiUpdate']);
+	Route::get('/admins/api/update/{id}/{api_token}/{server_at}/{up}',['as'=>'admins_api_update','uses'=>'AdminsController@getApiUpdate']);
 	Route::get('/admins/api/authenticate/{username}/{pw}',['as'=>'admins_api_authenticate','uses'=>'AdminsController@getAuthentication']);
 	//Authenticated Pages
 	Route::group(['middleware' => ['auth']], function(){

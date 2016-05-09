@@ -180,11 +180,12 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
-    public function getApiUpdate($id = null, $api_token = null, $up = null){
-    
+    public function getApiUpdate($id = null, $api_token = null, $server_at= null, $up = null){
+        $server_at = (strtotime(str_replace('%', ' ',$server_at)) > 0) ? str_replace('%', ' ',$server_at) : date('Y-m-d H:i:s', 0);
+
         $up = json_decode(str_replace('up=', '', $up),true);
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
-        $server_at = (strtotime($authenticate->server_at) > 0) ? $authenticate_server_at : date('Y-m-d H:i:s', 0);
+
         if ($authenticate){
             // create items to return
             $updates = Admin::makeUpdate($authenticate,$server_at);
