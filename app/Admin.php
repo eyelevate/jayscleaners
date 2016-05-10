@@ -59,7 +59,7 @@ class Admin extends Model
     	$update = [];
     	$update_rows = 0;
 
-    	if (strtotime($server_at) > 0) {
+    	if (is_numeric(strtotime($server_at))) {
     		// get all data from models
     		$colors = Color::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
     		$companies = Company::where('updated_at','>=',$server_at)->where('id',$company_id)->get();
