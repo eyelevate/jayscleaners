@@ -198,7 +198,8 @@ class AdminsController extends Controller
                                      'rows_to_create'=>$updates[1],
                                      'updates'=>$updates[0],
                                      'rows_saved'=>$uploads[0],
-                                     'saved'=>$uploads[1]
+                                     'saved'=>$uploads[1],
+                                     'server_at'=>$server_at
                                      ]);
     
         } 
