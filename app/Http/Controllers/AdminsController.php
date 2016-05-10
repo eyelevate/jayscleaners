@@ -180,8 +180,8 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
-    public function getApiUpdate($id = null, $api_token = null, $server_at= null, $up = null){
-        $server_at = (strtotime(str_replace('%', ' ',$server_at)) > 0) ? str_replace('%', ' ',$server_at) : date('Y-m-d H:i:s', 0);
+    public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null){
+        $server_at = date('Y-m-d H:i:s', $server_at);
 
         $up = json_decode(str_replace('up=', '', $up),true);
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
