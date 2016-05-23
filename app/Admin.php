@@ -492,7 +492,6 @@ class Admin extends Model
     			$user->reward_status = $value['reward_status'];
     			$user->reward_points = $value['reward_points'];
     			$user->account = $value['account'];
-    			$user->starch_old = $value['starch_old'];
     			$user->starch = $value['starch'];
     			$user->important_memo = $value['important_memo'];
     			$user->invoice_memo = $value['invoice_memo'];
