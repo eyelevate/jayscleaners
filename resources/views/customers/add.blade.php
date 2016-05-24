@@ -259,7 +259,7 @@
                     <label class="col-md-4 control-label">Account Customer? <span class="text text-danger">*</span></label>
 
                     <div class="col-md-6">
-                        {!! Form::select('account',$account , '1', ['class'=>'form-control']) !!}
+                        {!! Form::select('account',$account , '0', ['class'=>'form-control']) !!}
                         @if ($errors->has('account'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('account') }}</strong>
