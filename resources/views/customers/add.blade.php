@@ -146,7 +146,7 @@
                     <label class="col-md-4 control-label">Delivery Customer? <span class="text text-danger">*</span></label>
 
                     <div class="col-md-6">
-                        {!! Form::select('delivery',$delivery , '1', ['class'=>'form-control']) !!}
+                        {!! Form::select('delivery',$delivery , '0', ['class'=>'form-control']) !!}
                         @if ($errors->has('delivery'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('delivery') }}</strong>
