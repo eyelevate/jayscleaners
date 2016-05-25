@@ -219,7 +219,7 @@ class Admin extends Model
     			$delivery->mark = $value['mark'];
     			$delivery->status = $value['status'];
     			if($delivery->save()){
-    				$up['delivery'][$key]['delivery_id'] = $delivery->id;
+    				$up['deliveries'][$key]['delivery_id'] = $delivery->id;
     				$uploaded_rows++;
     			}
     		}
