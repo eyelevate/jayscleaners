@@ -21,6 +21,7 @@ use App\User;
 use App\Admin;
 use App\Layout;
 use App\Company;
+use App\Custid;
 use App\Passmanage;
 use App\Invoice;
 use App\InvoiceItem;
@@ -250,6 +251,26 @@ class AdminsController extends Controller
         //         }
         //     }
         // }
+
+        #make custids
+        $users = User::all();
+        if($users){
+            foreach ($users as $user) {
+                $user_id = $user['id'];
+                $last_name = $user['last_name'];
+                $starch = $user['starch_old'];
+                $mark = strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));
+                $custids = new Custid();
+                $custids->customer_id = $user_id;
+                $custids->mark = $mark;
+                $custids->status = 1;
+                if($custids->save()){
+                    Job::dump($mark);
+                }
+
+            }
+        }
+
 
 
         return view('admins.view')
