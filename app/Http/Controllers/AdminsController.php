@@ -24,8 +24,10 @@ use App\Company;
 use App\Passmanage;
 use App\Invoice;
 use App\InvoiceItem;
+use App\Inventory;
 use App\InventoryItem;
 use App\Color;
+use App\Delivery;
 use App\Tax;
 use App\Transaction;
 // use App\Role;
@@ -314,9 +316,17 @@ class AdminsController extends Controller
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
         if ($authenticate){
             switch ($table) {
+                case 'colors':
+                    $data[$table] = Color::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'companies':
+                    $data[$table] = Company::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'deliveries':
+                    $data[$table] = Delivery::whereBetween('id',[$start,$end])->get();
+                    break;
                 case 'invoices':
                     $data[$table] = Invoice::whereBetween('id',[$start,$end])->get();
-
                     break;
                 case 'transactions':
                     $data[$table] = Transaction::whereBetween('id',[$start,$end])->get();
@@ -324,7 +334,6 @@ class AdminsController extends Controller
                 case 'invoice_items':
                     $data[$table] = InvoiceItem::whereBetween('id',[$start,$end])->get();
                     break;
-
                 case 'schedules':
                     $data[$table] = Schedule::whereBetween('id',[$start,$end])->get();
                     break;
