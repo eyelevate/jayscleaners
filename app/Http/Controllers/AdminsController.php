@@ -258,15 +258,39 @@ class AdminsController extends Controller
             foreach ($users as $user) {
                 $user_id = $user['id'];
                 $last_name = $user['last_name'];
+                $hanger_old = $user['shirt_old'];
                 $starch = $user['starch_old'];
-                $mark = strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));
-                $custids = new Custid();
-                $custids->customer_id = $user_id;
-                $custids->mark = $mark;
-                $custids->status = 1;
-                if($custids->save()){
-                    Job::dump($mark);
+                switch($hanger_old){
+                    case 'hanger':
+                        $hanger = 1;
+                    break;
+
+                    case 'box':
+                        $hanger = 2;
+                    break;
+
+                    case 'fold':
+                        $hanger = 2;
+                    break;
+
+                    default:
+                        $hanger = 1;
+                    break;
                 }
+                $us = User::find($user_id);
+                $us->shirt = $hanger;
+                if($us->save()){
+                    Job::dump($hanger);
+                }
+
+                // $mark = strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));
+                // $custids = new Custid();
+                // $custids->customer_id = $user_id;
+                // $custids->mark = $mark;
+                // $custids->status = 1;
+                // if($custids->save()){
+                //     Job::dump($mark);
+                // }
 
             }
         }
@@ -343,6 +367,9 @@ class AdminsController extends Controller
                     break;
                 case 'companies':
                     $data[$table] = Company::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'custids':
+                    $data[$table] = Custid::whereBetween('id',[$start,$end])->get();
                     break;
                 case 'deliveries':
                     $data[$table] = Delivery::whereBetween('id',[$start,$end])->get();
