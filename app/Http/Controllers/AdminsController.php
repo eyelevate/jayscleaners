@@ -326,8 +326,17 @@ class AdminsController extends Controller
                 case 'deliveries':
                     $data[$table] = Delivery::whereBetween('id',[$start,$end])->get();
                     break;
+                case 'inventories':
+                    $data[$table] = Inventory::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'inventory_items':
+                    $data[$table] = InventoryItem::whereBetween('id',[$start,$end])->get();
+                    break;
                 case 'invoices':
                     $data[$table] = Invoice::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'tax':
+                    $data[$table] = Tax::whereBetween('id',[$start,$end])->get();
                     break;
                 case 'transactions':
                     $data[$table] = Transaction::whereBetween('id',[$start,$end])->get();
