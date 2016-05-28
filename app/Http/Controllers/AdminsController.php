@@ -28,6 +28,7 @@ use App\Inventory;
 use App\InventoryItem;
 use App\Color;
 use App\Delivery;
+use App\Schedule;
 use App\Tax;
 use App\Transaction;
 // use App\Role;
