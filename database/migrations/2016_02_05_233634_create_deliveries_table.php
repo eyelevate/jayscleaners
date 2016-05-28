@@ -22,7 +22,7 @@ class CreateDeliveriesTable extends Migration
             $table->string('end_time',25)->nullable();
             $table->text('zipcode')->nullable();
             $table->text('blackout')->nullable();
-            $table->tinyInteger('reward_points', false, true)->nullable();
+            $table->tinyInteger('status',false, true)->length(1)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
