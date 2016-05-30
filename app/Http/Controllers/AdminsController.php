@@ -253,44 +253,46 @@ class AdminsController extends Controller
         // }
 
         #make custids
-        $users = User::all();
+        $users = User::whereBetween('id',[10001,16000])->get();
         if($users){
             foreach ($users as $user) {
-                $user_id = $user['id'];
-                $last_name = $user['last_name'];
-                $hanger_old = $user['shirt_old'];
-                $starch = $user['starch_old'];
-                switch($hanger_old){
-                    case 'hanger':
-                        $hanger = 1;
-                    break;
+                $user_id = $user->id;
+                $last_name = $user->last_name;
+                $hanger_old = $user->shirt_old;
+                $starch = $user->starch_old;
+                // switch($hanger_old){
+                //     case 'hanger':
+                //         $hanger = 1;
+                //     break;
 
-                    case 'box':
-                        $hanger = 2;
-                    break;
+                //     case 'box':
+                //         $hanger = 2;
+                //     break;
 
-                    case 'fold':
-                        $hanger = 2;
-                    break;
+                //     case 'fold':
+                //         $hanger = 2;
+                //     break;
 
-                    default:
-                        $hanger = 1;
-                    break;
-                }
-                $us = User::find($user_id);
-                $us->shirt = $hanger;
-                if($us->save()){
-                    Job::dump($hanger);
-                }
-
-                // $mark = strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));
-                // $custids = new Custid();
-                // $custids->customer_id = $user_id;
-                // $custids->mark = $mark;
-                // $custids->status = 1;
-                // if($custids->save()){
-                //     Job::dump($mark);
+                //     default:
+                //         $hanger = 1;
+                //     break;
                 // }
+                // $us = User::find($user_id);
+                // $us->shirt = $hanger;
+                // if($us->save()){
+                //     Job::dump($hanger);
+                // }
+
+                $mark = Custid::createOriginalMark($user); 
+                // strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));
+                $custids = new Custid();
+                $custids->customer_id = $user_id;
+                $custids->company_id = $user->company_id;
+                $custids->mark = $mark;
+                $custids->status = 1;
+                if($custids->save()){
+                    Job::dump($mark);
+                }
 
             }
         }

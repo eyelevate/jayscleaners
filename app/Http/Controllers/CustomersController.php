@@ -109,6 +109,8 @@ class CustomersController extends Controller
         // Validation has passed save data
         $users = new User;
         $users->company_id = $request->company_id;
+        $last_user_id = User::where('company_id',$request->company_id)->orderBy('id','desc')->limit('1')->pluck('id');
+        $users->user_id = ($last_user_id[0]) ? $last_user_id[0]+1 : 1;
         $users->phone = $request->phone;
         $users->last_name = $request->last_name;
         $users->first_name = $request->first_name;
@@ -135,7 +137,7 @@ class CustomersController extends Controller
         if($request->account == '1') {
 			
         }
-        $users->role_id = 3; //Customer status
+        $users->role_id = 5; //Customer status
           
 
         if ($users->save()) {
@@ -216,6 +218,7 @@ class CustomersController extends Controller
         $users->role_id = 3; //Customer status
 
         if ($users->save()) {
+            #@TODO double check to see if this is how we want to do this
         	// Update Shirt Marks
         	$marks = Input::get('marks');
 			$mark1_id = preg_replace('/\s+/', '', $marks[1]['id']);

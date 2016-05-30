@@ -15,6 +15,7 @@ class CreateCustidsTable extends Migration
         Schema::create('custids', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id', false, true)->length(11)->nullable();
+            $table->integer('company_id', false, true)->length(11)->nullable();
             $table->text('mark')->nullable();
             $table->tinyInteger('status', false, true)->nullable();
             $table->softDeletes();

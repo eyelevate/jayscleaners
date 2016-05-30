@@ -14,7 +14,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->tinyInteger('company_id', false, true)->length(11)->nullable();
+            $table->integer('user_id', false, true)->length(11)->nullable();
+            $table->integer('company_id', false, true)->length(11)->nullable();
             $table->string('username',50)->nullable();
             $table->string('first_name',50)->nullable();
             $table->string('last_name',50)->nullable();
@@ -46,8 +47,8 @@ class CreateUsersTable extends Migration
             $table->text('invoice_memo')->nullable();
             $table->string('password', 60)->nullable();
             $table->tinyInteger('role_id', false, true)->length(1)->nullable();
-            $table->softDeletes();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

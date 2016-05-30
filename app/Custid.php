@@ -22,8 +22,11 @@ class Custid extends Model
     public static function createOriginalMark($users){
     	$mark = '';
 
+    	#get the last row by company id
+    	// $user_id = User::where('company_id',$users->company_id)->orderBy('id','desc')->pluck('user_id');
+
     	$first_mark = strtoupper(substr($users->last_name, 0,1));
-    	$second_mark = $users->id;
+    	$second_mark = $users->user_id;
 		switch($users->starch) {
 			case '1':
 				$last_mark = 'N';

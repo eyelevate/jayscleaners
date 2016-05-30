@@ -202,6 +202,7 @@ class Admin extends Model
     		foreach ($up['custids'] as $key => $value) {
     			$custid = new Custid();
     			$custid->customer_id = $value['customer_id'];
+                $custid->company_id = $value['company_id'];
     			$custid->mark = $value['mark'];
     			$custid->status = $value['status'];
     			if($custid->save()){
@@ -466,6 +467,8 @@ class Admin extends Model
     	if (count($up['users']) > 0){
     		foreach ($up['users'] as $key => $value) {
     			$user = new User();
+                $last_user_id = User::where('company_id',$company_id)->orderBy('id','desc')->limit('1')->pluck('id');
+                $user->user_id = ($last_user_id[0]) ? $last_user_id[0]+1 : 1;
     			$user->company_id = $company_id;
     			$user->username = $value['username'];
     			$user->first_name = $value['first_name'];
