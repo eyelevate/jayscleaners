@@ -60,26 +60,25 @@ class Admin extends Model
     	$update_rows = 0;
 
     	if (is_numeric(strtotime($server_at))) {
-            $check_date = date('Y-m-d H:i:s',$server_at);
     		// get all data from models
-    		$colors = Color::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$companies = Company::where('updated_at','>=',$check_date)->where('id',$company_id)->get();
-    		$custids = Custid::where('updated_at','>=',$check_date)->get();
-    		// $customers = Customer::where('updated_at',' >= ',$check_date)->get();
-    		$deliveries = Delivery::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$discounts = Discount::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$inventories = Inventory::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$inventory_items = InventoryItem::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$invoices = Invoice::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$invoice_items = InvoiceItem::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$memos = Memo::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$printers = Printer::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$rewards = Reward::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$reward_transactions = RewardTransaction::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$schedules = Schedule::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$taxes = Tax::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$transactions = Transaction::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
-    		$users = User::where('updated_at','>=',$check_date)->get();
+    		$colors = Color::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$companies = Company::where('updated_at','>=',$server_at)->where('id',$company_id)->get();
+    		$custids = Custid::where('updated_at','>=',$server_at)->get();
+    		// $customers = Customer::where('updated_at',' >= ',$server_at)->get();
+    		$deliveries = Delivery::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$discounts = Discount::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$inventories = Inventory::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$inventory_items = InventoryItem::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$invoices = Invoice::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$invoice_items = InvoiceItem::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$memos = Memo::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$printers = Printer::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$rewards = Reward::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$reward_transactions = RewardTransaction::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$schedules = Schedule::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$taxes = Tax::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$transactions = Transaction::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$users = User::where('updated_at','>=',$server_at)->get();
     		// 
     		if(count($colors) > 0){
     			$update['colors'] = $colors;
