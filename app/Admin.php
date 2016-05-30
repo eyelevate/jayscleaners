@@ -58,7 +58,6 @@ class Admin extends Model
     	$last_created_at = $company->created_at;
     	$update = [];
     	$update_rows = 0;
-        $check_date = date('Y-m-d H:i:s',$sever_at);
 
     	if (is_numeric(strtotime($server_at))) {
             $check_date = date('Y-m-d H:i:s',$sever_at);
