@@ -60,7 +60,7 @@ class Admin extends Model
     	$update_rows = 0;
 
     	if (is_numeric(strtotime($server_at))) {
-            $check_date = date('Y-m-d H:i:s',$sever_at);
+            $check_date = date('Y-m-d H:i:s',$server_at);
     		// get all data from models
     		$colors = Color::where('updated_at','>=',$check_date)->where('company_id',$company_id)->get();
     		$companies = Company::where('updated_at','>=',$check_date)->where('id',$company_id)->get();
