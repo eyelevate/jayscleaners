@@ -188,45 +188,75 @@ class AdminsController extends Controller
 
     public function getView($id = null){
         $this->layout = 'admins.login';
-        // update the invoice to make invoice items
-        // $invoices = Invoice::whereBetween('id', [58482, 60000])->get();
-        // if($invoices){
+        # update invoice to set users table id as customer_id instead of user_id
+        // $invoices = Invoice::whereBetween('id',[50001,55000])->get();
+        // if ($invoices) {
         //     foreach ($invoices as $invoice) {
-        //         $invoice_id = $invoice['id'];
-        //         $customer_id = $invoice['customer_id'];
-        //         $company_id = $invoice['company_id'];
-        //         $taxes = Tax::where('company_id',$company_id)->where('status',1)->first();
-        //         $tax_rate = $taxes['rate'];
-        //         $items = json_decode($invoice['items']);
-        //         if($items){
-        //             foreach ($items as $key => $value) {
-        //                 $item_id = $key;
-        //                 $item_qty = $value->quantity;
-        //                 for ($i=0; $i < $item_qty; $i++) { 
-        //                     $invoice_item = new InvoiceItem;
-        //                     $invoice_item->invoice_id = $invoice_id;
-        //                     $invoice_item->item_id = $item_id;
-        //                     $invoice_item->customer_id = $customer_id;
-        //                     $invoice_item->company_id = $company_id;
-        //                     $invoice_item->quantity = 1; 
-        //                     $inventory_items = InventoryItem::find($item_id);
-        //                     if ($inventory_items) {
-        //                         $invoice_item->pretax = money_format('%i',round($inventory_items->price,2));
-        //                         $invoice_item->tax = money_format('%i',round($inventory_items->price * $tax_rate,2));
-        //                         $invoice_item->total = money_format('%i',round($inventory_items->price * (1+$tax_rate),2));
-        //                         $invoice_item->status = 1; 
-        //                         if($invoice_item->save()){
-        //                             Job::dump($invoice_id.' - '.$invoice_item->id);
+        //         $customer_id = $invoice->customer_id;
+        //         $customers = User::where('user_id',$customer_id)->where('company_id',1)->get();
+        //         if ($customers){
+        //             foreach ($customers as $customer) {                   
+        //                 $invs = Invoice::find($invoice->id);
+        //                 $invs->customer_id = $customer->id;
+        //                 if($invs->save()){
+        //                     Job::dump('saved invoice - '.$invs->id.' - with customer #'.$customer->id);
+        //                     if($invs->transaction_id){
+        //                         $transaction = Transaction::find($invs->transaction_id);
+        //                         if($transaction){
+        //                             $transaction->customer_id = $customer->id;
+        //                             if($transaction->save()){
+        //                                 Job::dump('Saved Transaction - '.$transaction->id.' - with #'.$customer->id);
+        //                             }
         //                         }
-        //                     }
+
+        //                     }                            
         //                 }
+
         //             }
         //         }
+
         //     }
         // }
 
+        # update the invoice to make invoice items
+        $invoices = Invoice::whereBetween('id', [48001, 52000])->get();
+        if($invoices){
+            foreach ($invoices as $invoice) {
+                $invoice_id = $invoice['invoice_id'];
+                $customer_id = $invoice['customer_id'];
+                $company_id = $invoice['company_id'];
+                $taxes = Tax::where('company_id',$company_id)->where('status',1)->first();
+                $tax_rate = $taxes['rate'];
+                $items = json_decode($invoice['items']);
+                if($items){
+                    foreach ($items as $key => $value) {
+                        $item_id = $key;
+                        $item_qty = $value->quantity;
+                        for ($i=0; $i < $item_qty; $i++) { 
+                            $invoice_item = new InvoiceItem;
+                            $invoice_item->invoice_id = $invoice_id;
+                            $invoice_item->item_id = $item_id;
+                            $invoice_item->customer_id = $customer_id;
+                            $invoice_item->company_id = $company_id;
+                            $invoice_item->quantity = 1; 
+                            $inventory_items = InventoryItem::find($item_id);
+                            if ($inventory_items) {
+                                $invoice_item->pretax = money_format('%i',round($inventory_items->price,2));
+                                $invoice_item->tax = money_format('%i',round($inventory_items->price * $tax_rate,2));
+                                $invoice_item->total = money_format('%i',round($inventory_items->price * (1+$tax_rate),2));
+                                $invoice_item->status = 1; 
+                                if($invoice_item->save()){
+                                    Job::dump($invoice->id.' - '.$invoice_id.' - '.$invoice_item->id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         #update transactions
-        // $transactions = Transaction::whereBetween('id', [23582,25000])->get();
+        // $transactions = Transaction::whereBetween('id', [20001,25000])->get();
         // if ($transactions) {
         //     foreach ($transactions as $transaction) {
         //         $transaction_id = $transaction->id;
@@ -235,14 +265,20 @@ class AdminsController extends Controller
         //             foreach ($trans_invoices as $key => $value) {
         //                 $invoice_id = ($value->invoice_id) ? $value->invoice_id : false;
         //                 if ($invoice_id) {
-        //                     $invoices = Invoice::find($invoice_id);
+        //                     $invoices = Invoice::where('invoice_id',$invoice_id)->get();
         //                         if($invoices){
-        //                         $invoices->transaction_id = $transaction_id;
-        //                         if($invoices->save()){
-        //                             Job::dump('saved '.$transaction_id.' = '.$invoice_id);
-        //                         } else {
-        //                             Job::dump('could not save '.$transaction_id.' no such invoice - '.$invoice_id);
-        //                         }
+        //                             foreach ($invoices as $invoice) {
+        //                                 $invs = Invoice::find($invoice->id);
+        //                                 $invs->transaction_id = $transaction_id;
+        //                                 $invs->status = 5;
+
+        //                                 if($invs->save()){
+        //                                     Job::dump('saved '.$transaction_id.' = '.$invoice_id);
+        //                                 } else {
+        //                                     Job::dump('could not save '.$transaction_id.' no such invoice - '.$invoice_id);
+        //                                 }
+        //                             }
+
         //                     }
 
         //                 }
@@ -251,12 +287,11 @@ class AdminsController extends Controller
         //         }
         //     }
         // }
-        Job::dump(date('Y-m-d H:i:s',1464545248.0));
         #make custids
-        // $users = User::whereBetween('id',[10001,16000])->get();
+        // $users = User::whereBetween('id',[14180,16000])->get();
         // if($users){
         //     foreach ($users as $user) {
-        //         $user_id = $user->id;
+        //         $user_id = $user->user_id;
         //         $last_name = $user->last_name;
         //         $hanger_old = $user->shirt_old;
         //         $starch = $user->starch_old;
@@ -304,28 +339,34 @@ class AdminsController extends Controller
     }
 
     public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null){
-        $server_at = str_replace('_',' ',$server_at);
 
-        $up = json_decode(str_replace('up=', '', $up),true);
-        $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
+        if($server_at){
+            $server_at = str_replace('_',' ',$server_at);
+            $up =json_decode(str_replace('up=', '', $up),true);
+            $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
+            
 
-        if ($authenticate){
-            // create items to return
-            $updates = Admin::makeUpdate($authenticate,$server_at);
+            if ($authenticate){
+                // create items to return
+                $updates = Admin::makeUpdate($authenticate,$server_at);
+                // create list of items with new ids to save in local db
+                if (count($up) > 0) {
+                    $uploads = Admin::makeUpload($authenticate,$up);
+                } else{
+                    $uploads = [0,[]];
+                }
+                
+                return response()->json(['status'=>200,
+                                         'rows_to_create'=>$updates[1],
+                                         'updates'=>$updates[0],
+                                         'rows_saved'=>$uploads[0],
+                                         'saved'=>$uploads[1],
+                                         'server_at'=>date('Y-m-d H:i:s')
+                                         ]);
+        
+            } 
+        }
 
-            // create list of items with new ids to save in local db
-            $uploads = Admin::makeUpload($authenticate,$up);
-    
-
-            return response()->json(['status'=>200,
-                                     'rows_to_create'=>$updates[1],
-                                     'updates'=>$updates[0],
-                                     'rows_saved'=>$uploads[0],
-                                     'saved'=>$uploads[1],
-                                     'server_at'=>$server_at
-                                     ]);
-    
-        } 
         return abort(403, 'Unauthorized action.');
     }
 

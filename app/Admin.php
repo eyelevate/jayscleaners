@@ -79,7 +79,7 @@ class Admin extends Model
     		$taxes = Tax::where('updated_at','>=',$server_at)->get();
     		$transactions = Transaction::where('updated_at','>=',$server_at)->get();
     		$users = User::where('updated_at','>=',$server_at)->get();
-    		// 
+
     		if(count($colors) > 0){
     			$update['colors'] = $colors;
     			$update_rows += count($colors);
