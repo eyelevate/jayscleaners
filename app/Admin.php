@@ -486,7 +486,13 @@ class Admin extends Model
                 $color->name = $value['name'];
                 $color->ordered = $value['ordered'];
                 $color->status = $value['status'];
-                $color->save();
+                if(isset($value['deleted_at'])) {
+                    $color->delete();
+                } elseif($color->trashed() && !isset($value['deleted_at'])) {
+                    $color->restore();
+                } else {
+                    $color->save(); 
+                }
             }
         } 
         if (isset($up['companies'])) {
@@ -502,7 +508,13 @@ class Admin extends Model
                 $company->store_hours = $value['store_hours'];
                 $company->turn_around = $value['turn_around'];
                 $company->api_token = $value['api_token'];
-                $company->save();
+                if(isset($value['deleted_at'])) {
+                    $company->delete();
+                } elseif($company->trashed() && !isset($value['deleted_at'])) {
+                    $company->restore();
+                } else {
+                    $company->save(); 
+                }
             }
         } 
 
@@ -513,7 +525,13 @@ class Admin extends Model
                 $custid->company_id = $value['company_id'];
                 $custid->mark = $value['mark'];
                 $custid->status = $value['status'];
-                $custid->save();
+                if(isset($value['deleted_at'])) {
+                    $custid->delete();
+                } elseif($custid->trashed() && !isset($value['deleted_at'])) {
+                    $custid->restore();
+                } else {
+                    $custid->save(); 
+                }
             }
         } 
         if (isset($up['deliveries'])){
@@ -522,7 +540,13 @@ class Admin extends Model
                 $delivery->customer_id = $value['customer_id'];
                 $delivery->mark = $value['mark'];
                 $delivery->status = $value['status'];
-                $delivery->save();
+                if(isset($value['deleted_at'])) {
+                    $delivery->delete();
+                } elseif($delivery->trashed() && !isset($value['deleted_at'])) {
+                    $delivery->restore();
+                } else {
+                    $delivery->save(); 
+                }
             }
         }  
         if (isset($up['discounts'])){
@@ -539,7 +563,13 @@ class Admin extends Model
                 $discount->start_date = $value['start_date'];
                 $discount->end_date = $value['end_date'];
                 $discount->status = $value['status'];
-                $discount->save();
+                if(isset($value['deleted_at'])) {
+                    $discount->delete();
+                } elseif($discount->trashed() && !isset($value['deleted_at'])) {
+                    $discount->restore();
+                } else {
+                    $discount->save(); 
+                }
             }
         } 
 
@@ -551,7 +581,13 @@ class Admin extends Model
                 $inventory->description = $value['description'];
                 $inventory->ordered = $value['ordered'];
                 $inventory->status = $value['status'];
-                $inventory->save();
+                if(isset($value['deleted_at'])) {
+                    $inventory->delete();
+                } elseif($inventory->trashed() && !isset($value['deleted_at'])) {
+                    $inventory->restore();
+                } else {
+                    $inventory->save(); 
+                }
             }
         } 
 
@@ -568,7 +604,13 @@ class Admin extends Model
                 $inventory_item->price = $value['price'];
                 $inventory_item->image = $value['image'];
                 $inventory_item->status = $value['status'];
-                $inventory_item->save();
+                if(isset($value['deleted_at'])) {
+                    $inventory_item->delete();
+                } elseif($inventory_item->trashed() && !isset($value['deleted_at'])) {
+                    $inventory_item->restore();
+                } else {
+                    $inventory_item->save(); 
+                }
             }
         } 
         if (isset($up['invoices'])){
@@ -589,7 +631,14 @@ class Admin extends Model
                         $invoice->due_date = $value['due_date'];
                         $invoice->memo = $value['memo'];
                         $invoice->status = $value['status'];
-                        $invoice->save();
+                        if(isset($value['deleted_at'])) {
+                            $invoice->delete();
+                        } elseif($invoice->trashed() && !isset($value['deleted_at'])) {
+                            $invoice->restore();
+                        } else {
+                            $invoice->save(); 
+                        }
+                        
                     }
                 }
             }
@@ -608,7 +657,13 @@ class Admin extends Model
                 $invoice_item->tax = $value['tax'];
                 $invoice_item->total = $value['total'];
                 $invoice_item->status = $value['status'];
-                $invoice_item->save();
+                if(isset($value['deleted_at'])) {
+                    $invoice_item->delete();
+                } elseif($invoice_item->trashed() && !isset($value['deleted_at'])) {
+                    $invoice_item->restore();
+                } else {
+                    $invoice_item->save(); 
+                }
             }
         } 
         if (isset($up['memos'])){
@@ -618,7 +673,13 @@ class Admin extends Model
                 $memo->memo = $value['memo'];
                 $memo->ordered = $value['ordered'];
                 $memo->status = $value['status'];
-                $memo->save();
+                if(isset($value['deleted_at'])) {
+                    $memo->delete();
+                } elseif($memo->trashed() && !isset($value['deleted_at'])) {
+                    $memo->restore();
+                } else {
+                    $memo->save(); 
+                }
             }
         } 
         if (isset($up['printers'])){
@@ -630,7 +691,13 @@ class Admin extends Model
                 $printer->nick_name = $value['nick_name'];
                 $printer->type = $value['type'];
                 $printer->status = $value['status'];
-                $printer->save();
+                if(isset($value['deleted_at'])) {
+                    $printer->delete();
+                } elseif($printer->trashed() && !isset($value['deleted_at'])) {
+                    $printer->restore();
+                } else {
+                    $printer->save(); 
+                }
             }
         } 
         if (isset($up['rewards'])){
@@ -641,7 +708,13 @@ class Admin extends Model
                 $reward->points = $value['points'];
                 $reward->discount = $value['discount'];
                 $reward->status = $value['status'];
-                $reward->save();
+                if(isset($value['deleted_at'])) {
+                    $reward->delete();
+                } elseif($reward->trashed() && !isset($value['deleted_at'])) {
+                    $reward->restore();
+                } else {
+                    $reward->save(); 
+                }
             }
         } 
         if (isset($up['reward_transactions'])){
@@ -660,7 +733,13 @@ class Admin extends Model
                 $reward_transaction->reason = $value['reason'];
                 $reward_transaction->name = $value['name'];
                 $reward_transaction->status = $value['status'];
-                $reward_transaction->save();
+                if(isset($value['deleted_at'])) {
+                    $reward_transaction->delete();
+                } elseif($reward_transaction->trashed() && !isset($value['deleted_at'])) {
+                    $reward_transaction->restore();
+                } else {
+                    $reward_transaction->save(); 
+                }
             }
         }
         if (isset($up['schedules'])){
@@ -676,7 +755,13 @@ class Admin extends Model
                 $schedule->type = $value['type'];
                 $schedule->token = $value['token'];
                 $schedule->status = $value['status'];
-                $schedule->save();
+                if(isset($value['deleted_at'])) {
+                    $schedule->delete();
+                } elseif($schedule->trashed() && !isset($value['deleted_at'])) {
+                    $schedule->restore();
+                } else {
+                    $schedule->save(); 
+                }
             }
         } 
         if (isset($up['taxes'])){
@@ -685,7 +770,13 @@ class Admin extends Model
                 $tax->company_id = $company_id;
                 $tax->rate = $value['rate'];
                 $tax->status = $value['status'];
-                $tax->save();
+                if(isset($value['deleted_at'])) {
+                    $tax->delete();
+                } elseif($tax->trashed() && !isset($value['deleted_at'])) {
+                    $tax->restore();
+                } else {
+                    $tax->save(); 
+                }
 
             }
         } 
@@ -705,7 +796,13 @@ class Admin extends Model
                 $transaction->tendered = $value['tendered'];
                 $transaction->transaction_id = $value['transaction_id'];
                 $transaction->status = $value['status'];
-                $transaction->save();
+                if(isset($value['deleted_at'])) {
+                    $transaction->delete();
+                } elseif($transaction->trashed() && !isset($value['deleted_at'])) {
+                    $transaction->restore();
+                } else {
+                    $transaction->save(); 
+                }
             }
         } 
         if (isset($up['users'])){
@@ -743,7 +840,13 @@ class Admin extends Model
                         $user->important_memo = $value['important_memo'];
                         $user->invoice_memo = $value['invoice_memo'];
                         $user->role_id = $value['role_id'];
-                        $user->save();                        
+                        if(isset($value['deleted_at'])) {
+                            $user->delete();
+                        } elseif($user->trashed() && !isset($value['deleted_at'])) {
+                            $user->restore();
+                        } else {
+                            $user->save(); 
+                        }                     
                     }
                 }
 
