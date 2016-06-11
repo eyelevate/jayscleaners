@@ -3,13 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\InvoiceItem;
 use App\Invoice;
 use App\InventoryItem;
 use App\Inventory;
 class InvoiceItem extends Model
 {
+    use SoftDeletes;
     public static function prepareEdit($data){
     	if(isset($data)){
     		foreach ($data as $key => $value) {

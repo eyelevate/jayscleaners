@@ -6,9 +6,10 @@ use App\User;
 use App\Invoice;
 use App\Custid;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
+    use SoftDeletes;
     public $table = "users";
     /**
      * The attributes that are mass assignable.

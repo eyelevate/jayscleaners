@@ -7,8 +7,10 @@ use App\Customer;
 use App\Custid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Inventory extends Model
 {
+	use SoftDeletes;
 	public static function prepareTagSelect(){
 		return [
 			0 => 'None',

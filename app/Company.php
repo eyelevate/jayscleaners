@@ -3,10 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
-
+    use SoftDeletes;
     public static function prepareCompany($data){
         if(isset($data['store_hours'])){
             $data['store_hours'] = json_decode($data['store_hours'],true);

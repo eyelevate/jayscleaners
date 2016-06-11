@@ -7,10 +7,10 @@ use App\Invoice;
 use App\Customer;
 use App\Custid;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
-
+    use SoftDeletes;
     public static function prepareLast10($users, $last10) {
 
         $last10 = (count($last10) > 0) ? $last10 : [];

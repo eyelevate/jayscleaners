@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Job;
 use App\InvoiceItem;
 use App\Color;
@@ -10,6 +11,7 @@ use App\Tax;
 
 class Invoice extends Model
 {
+    use SoftDeletes;
     public static function prepareInvoice($company_id,$data){
     	if(isset($data)){
             $taxes = Tax::where('company_id',$company_id)->where('status',1)->first();
