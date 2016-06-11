@@ -480,7 +480,7 @@ class Admin extends Model
         $uploaded_rows = 0;
         if(isset($up['colors'])){
             foreach ($up['colors'] as $key => $value) {
-                $color = Color::find($value['color_id']);
+                $color = Color::withTrashed()->find($value['color_id']);
                 $color->company_id = $company_id;
                 $color->color = $value['color'];
                 $color->name = $value['name'];
@@ -497,7 +497,7 @@ class Admin extends Model
         } 
         if (isset($up['companies'])) {
             foreach ($up['companies'] as $key => $value) {
-                $company = Company::find($value['company_id']);
+                $company = Company::withTrashed()->find($value['company_id']);
                 $company->name = $value['name'];
                 $company->street = $value['street'];
                 $company->city = $value['city'];
@@ -520,7 +520,7 @@ class Admin extends Model
 
         if (isset($up['custids'])){
             foreach ($up['custids'] as $key => $value) {
-                $custid = Custid::find($value['cust_id']);
+                $custid = Custid::withTrashed()->find($value['cust_id']);
                 $custid->customer_id = $value['customer_id'];
                 $custid->company_id = $value['company_id'];
                 $custid->mark = $value['mark'];
@@ -536,7 +536,7 @@ class Admin extends Model
         } 
         if (isset($up['deliveries'])){
             foreach ($up['deliveries'] as $key => $value) {
-                $delivery = Delivery::find($value['delivery_id']);
+                $delivery = Delivery::withTrashed()->find($value['delivery_id']);
                 $delivery->customer_id = $value['customer_id'];
                 $delivery->mark = $value['mark'];
                 $delivery->status = $value['status'];
@@ -551,7 +551,7 @@ class Admin extends Model
         }  
         if (isset($up['discounts'])){
             foreach ($up['discounts'] as $key => $value) {
-                $discount = Discount::find($value['discount_id']);
+                $discount = Discount::withTrashed()->find($value['discount_id']);
                 $discount->company_id = $company_id;
                 $discount->inventory_id = $value['inventory_id'];
                 $discount->inventory_item_id = $value['inventory_item_id'];
@@ -575,7 +575,7 @@ class Admin extends Model
 
         if (isset($up['inventories'])){
             foreach ($up['inventories'] as $key => $value) {
-                $inventory = Inventory::find($value['inventory_id']);
+                $inventory = Inventory::withTrashed()->find($value['inventory_id']);
                 $inventory->company_id = $company_id;
                 $inventory->name = $value['name'];
                 $inventory->description = $value['description'];
@@ -593,7 +593,7 @@ class Admin extends Model
 
         if (isset($up['inventory_items'])){
             foreach ($up['inventory_items'] as $key => $value) {
-                $inventory_item = InventoryItem::find($value['item_id']);
+                $inventory_item = InventoryItem::withTrashed()->find($value['item_id']);
                 $inventory_item->company_id = $company_id;
                 $inventory_item->inventory_id = $value['inventory_id'];
                 $inventory_item->name = $value['name'];
@@ -615,10 +615,10 @@ class Admin extends Model
         } 
         if (isset($up['invoices'])){
             foreach ($up['invoices'] as $key => $value) {
-                $invoices = Invoice::where('invoice_id',$value['invoice_id'])->get();
+                $invoices = Invoice::withTrashed()->where('invoice_id',$value['invoice_id'])->get();
                 if ($invoices){
                     foreach ($invoices as $data) {
-                        $invoice = Invoice::find($data->id);
+                        $invoice = Invoice::withTrashed()->find($data->id);
                         $invoice->company_id = $company_id;
                         $invoice->customer_id = $value['customer_id'];
                         $invoice->quantity = $value['quantity'];
@@ -645,7 +645,7 @@ class Admin extends Model
         } 
         if (isset($up['invoice_items'])){
             foreach ($up['invoice_items'] as $key => $value) {
-                $invoice_item = InvoiceItem::find($value['invoice_item_id']);
+                $invoice_item = InvoiceItem::withTrashed()->find($value['invoice_item_id']);
                 $invoice_item->invoice_id = $value['invoice_id'];
                 $invoice_item->item_id = $value['item_id'];
                 $invoice_item->company_id = $company_id;
@@ -668,7 +668,7 @@ class Admin extends Model
         } 
         if (isset($up['memos'])){
             foreach ($up['memos'] as $key => $value) {
-                $memo = Memo::find($value['memo_id']);
+                $memo = Memo::withTrashed()->find($value['memo_id']);
                 $memo->company_id = $company_id;
                 $memo->memo = $value['memo'];
                 $memo->ordered = $value['ordered'];
@@ -684,7 +684,7 @@ class Admin extends Model
         } 
         if (isset($up['printers'])){
             foreach ($up['printers'] as $key => $value) {
-                $printer = Printer::find($value['printer_id']);
+                $printer = Printer::withTrashed()->find($value['printer_id']);
                 $printer->company_id = $company_id;
                 $printer->name = $value['name'];
                 $printer->model = $value['model'];
@@ -702,7 +702,7 @@ class Admin extends Model
         } 
         if (isset($up['rewards'])){
             foreach ($up['rewards'] as $key => $value) {
-                $reward = Reward::find($value['reward_id']);
+                $reward = Reward::withTrashed()->find($value['reward_id']);
                 $reward->company_id = $company_id;
                 $reward->name = $value['name'];
                 $reward->points = $value['points'];
@@ -719,7 +719,7 @@ class Admin extends Model
         } 
         if (isset($up['reward_transactions'])){
             foreach ($up['reward_transactions'] as $key => $value) {
-                $reward_transaction = RewardTransaction::find($value['reward_id']);
+                $reward_transaction = RewardTransaction::withTrashed()->find($value['reward_id']);
                 $reward_transaction->reward_id = $value['reward_id'];
                 $reward_transaction->transaction_id = $value['transaction_id'];
                 $reward_transaction->customer_id = $value['customer_id'];
@@ -744,7 +744,7 @@ class Admin extends Model
         }
         if (isset($up['schedules'])){
             foreach ($up['schedules'] as $key => $value) {
-                $schedule = Schedule::find($value['schedule_id']);
+                $schedule = Schedule::withTrashed()->find($value['schedule_id']);
                 $schedule->company_id = $company_id;
                 $schedule->customer_id = $value['customer_id'];
                 $schedule->pickup_delivery_id = $value['pickup_delivery_id'];
@@ -766,7 +766,7 @@ class Admin extends Model
         } 
         if (isset($up['taxes'])){
             foreach ($up['taxes'] as $key => $value) {
-                $tax = Tax::find($value['tax_id']);
+                $tax = Tax::withTrashed()->find($value['tax_id']);
                 $tax->company_id = $company_id;
                 $tax->rate = $value['rate'];
                 $tax->status = $value['status'];
@@ -782,7 +782,7 @@ class Admin extends Model
         } 
         if (isset($up['transactions'])){
             foreach ($up['transactions'] as $key => $value) {
-                $transaction = Transaction::find($value['transaction_id']);
+                $transaction = Transaction::withTrashed()->find($value['transaction_id']);
                 $transaction->company_id = $company_id;
                 $transaction->customer_id = $value['customer_id'];
                 $transaction->schedule_id = $value['schedule_id'];
@@ -807,10 +807,10 @@ class Admin extends Model
         } 
         if (isset($up['users'])){
             foreach ($up['users'] as $key => $value) {
-                $users = User::where('user_id',$value['user_id'])->get();
+                $users = User::withTrashed()->where('user_id',$value['user_id'])->get();
                 if($users){
                     foreach ($users as $data) {
-                        $user = User::find($data->id);
+                        $user = User::withTrashed()->find($data->id);
                         $user->username = $value['username'];
                         $user->first_name = $value['first_name'];
                         $user->last_name = $value['last_name'];
