@@ -160,7 +160,7 @@ class Admin extends Model
     	$company_id = $c->id;
     	$last_created_at = $c->created_at;
     	$uploaded_rows = 0;
-    	if(count($up['colors']) > 0){
+    	if(isset($up['colors'])){
     		foreach ($up['colors'] as $key => $value) {
     			$color = new Color();
     			$color->company_id = $company_id;
@@ -173,10 +173,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['colors']);
-    	}
-    	if (count($up['companies']) > 0) {
+    	} 
+    	if (isset($up['companies'])) {
     		foreach ($up['companies'] as $key => $value) {
     			$company = new Company();
     			$company->name = $value['name'];
@@ -194,11 +192,9 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['companies']);
-    	}
+    	} 
 
-    	if (count($up['custids']) > 0){
+    	if (isset($up['custids'])){
     		foreach ($up['custids'] as $key => $value) {
     			$custid = new Custid();
     			$custid->customer_id = $value['customer_id'];
@@ -210,10 +206,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['custids']);
-    	}
-    	if (count($up['deliveries']) > 0){
+    	} 
+    	if (isset($up['deliveries'])){
     		foreach ($up['deliveries'] as $key => $value) {
     			$delivery = new Delivery();
     			$delivery->customer_id = $value['customer_id'];
@@ -224,10 +218,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['deliveries']);
-    	}	
-    	if (count($up['discounts']) > 0){
+    	} 
+    	if (isset($up['discounts'])){
     		foreach ($up['discounts'] as $key => $value) {
     			$discount = new Discount();
     			$discount->company_id = $company_id;
@@ -246,11 +238,9 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['discounts']);
-    	}
+    	} 
 
-    	if (count($up['inventories']) > 0){
+    	if (isset($up['inventories'])){
     		foreach ($up['inventories'] as $key => $value) {
     			$inventory = new Inventory();
     			$inventory->company_id = $company_id;
@@ -263,11 +253,9 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['inventories']);
-    	}
+    	} 
 
-    	if (count($up['inventory_items']) > 0){
+    	if (isset($up['inventory_items'])){
     		foreach ($up['inventory_items'] as $key => $value) {
     			$inventory_item = new InventoryItem();
     			$inventory_item->company_id = $company_id;
@@ -285,10 +273,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['inventory_items']);
-    	}
-    	if (count($up['invoices']) > 0){
+    	} 
+    	if (isset($up['invoices'])){
     		foreach ($up['invoices'] as $key => $value) {
     			$invoice = new Invoice();
     			$invoice->company_id = $company_id;
@@ -308,10 +294,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['invoices']);
-    	}
-    	if (count($up['invoice_items']) > 0){
+    	} 
+    	if (isset($up['invoice_items'])){
     		foreach ($up['invoice_items'] as $key => $value) {
     			$invoice_item = new InvoiceItem();
     			$invoice_item->invoice_id = $value['invoice_id'];
@@ -330,10 +314,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['invoice_items']);
-    	}
-    	if (count($up['memos']) > 0){
+    	} 
+    	if (isset($up['memos'])){
     		foreach ($up['memos'] as $key => $value) {
     			$memo = new Memo();
     			$memo->company_id = $company_id;
@@ -345,10 +327,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['memos']);
-    	}
-    	if (count($up['printers']) > 0){
+    	} 
+    	if (isset($up['printers'])){
     		foreach ($up['printers'] as $key => $value) {
     			$printer = new Printer();
     			$printer->company_id = $company_id;
@@ -362,10 +342,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['printers']);
-    	}
-    	if (count($up['rewards']) > 0){
+    	} 
+    	if (isset($up['rewards'])){
     		foreach ($up['rewards'] as $key => $value) {
     			$reward = new Reward();
     			$reward->company_id = $company_id;
@@ -378,10 +356,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['rewards']);
-    	}
-    	if (count($up['reward_transactions']) > 0){
+    	} 
+    	if (isset($up['reward_transactions'])){
     		foreach ($up['reward_transactions'] as $key => $value) {
     			$reward_transaction = new RewardTransaction();
     			$reward_transaction->reward_id = $value['reward_id'];
@@ -402,10 +378,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['reward_transactions']);
-    	}
-    	if (count($up['schedules']) > 0){
+    	} 
+    	if (isset($up['schedules'])){
     		foreach ($up['schedules'] as $key => $value) {
     			$schedule = new Schedule();
     			$schedule->company_id = $company_id;
@@ -423,10 +397,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['schedules']);
-    	}
-    	if (count($up['taxes']) > 0){
+    	} 
+    	if (isset($up['taxes'])){
     		foreach ($up['taxes'] as $key => $value) {
     			$tax = new Tax();
     			$tax->company_id = $company_id;
@@ -437,10 +409,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['taxes']);
-    	}
-    	if (count($up['transactions']) > 0){
+    	} 
+    	if (isset($up['transactions'])){
     		foreach ($up['transactions'] as $key => $value) {
     			$transaction = new Schedule();
     			$transaction->company_id = $company_id;
@@ -461,10 +431,8 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['transactions']);
-    	}
-    	if (count($up['users']) > 0){
+    	} 
+    	if (isset($up['users'])){
     		foreach ($up['users'] as $key => $value) {
     			$user = new User();
                 $last_user_id = User::where('company_id',$company_id)->orderBy('id','desc')->limit('1')->pluck('id');
@@ -504,15 +472,13 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} else {
-    		unset($up['users']);
-    	}
+    	} 
     	return [$uploaded_rows,$up];
     }
     static function makePut($c,$up){
         $company_id = $c->id;
         $uploaded_rows = 0;
-        if(count($up['colors']) > 0){
+        if(isset($up['colors'])){
             foreach ($up['colors'] as $key => $value) {
                 $color = Color::find($value['color_id']);
                 $color->company_id = $company_id;
@@ -523,7 +489,7 @@ class Admin extends Model
                 $color->save();
             }
         } 
-        if (count($up['companies']) > 0) {
+        if (isset($up['companies'])) {
             foreach ($up['companies'] as $key => $value) {
                 $company = Company::find($value['company_id']);
                 $company->name = $value['name'];
@@ -540,7 +506,7 @@ class Admin extends Model
             }
         } 
 
-        if (count($up['custids']) > 0){
+        if (isset($up['custids'])){
             foreach ($up['custids'] as $key => $value) {
                 $custid = Custid::find($value['cust_id']);
                 $custid->customer_id = $value['customer_id'];
@@ -550,7 +516,7 @@ class Admin extends Model
                 $custid->save();
             }
         } 
-        if (count($up['deliveries']) > 0){
+        if (isset($up['deliveries'])){
             foreach ($up['deliveries'] as $key => $value) {
                 $delivery = Delivery::find($value['delivery_id']);
                 $delivery->customer_id = $value['customer_id'];
@@ -559,7 +525,7 @@ class Admin extends Model
                 $delivery->save();
             }
         }  
-        if (count($up['discounts']) > 0){
+        if (isset($up['discounts'])){
             foreach ($up['discounts'] as $key => $value) {
                 $discount = Discount::find($value['discount_id']);
                 $discount->company_id = $company_id;
@@ -577,7 +543,7 @@ class Admin extends Model
             }
         } 
 
-        if (count($up['inventories']) > 0){
+        if (isset($up['inventories'])){
             foreach ($up['inventories'] as $key => $value) {
                 $inventory = Inventory::find($value['inventory_id']);
                 $inventory->company_id = $company_id;
@@ -589,7 +555,7 @@ class Admin extends Model
             }
         } 
 
-        if (count($up['inventory_items']) > 0){
+        if (isset($up['inventory_items'])){
             foreach ($up['inventory_items'] as $key => $value) {
                 $inventory_item = InventoryItem::find($value['item_id']);
                 $inventory_item->company_id = $company_id;
@@ -605,10 +571,10 @@ class Admin extends Model
                 $inventory_item->save();
             }
         } 
-        if (count($up['invoices']) > 0){
+        if (isset($up['invoices'])){
             foreach ($up['invoices'] as $key => $value) {
                 $invoices = Invoice::where('invoice_id',$value['invoice_id'])->get();
-                if ($invocies){
+                if ($invoices){
                     foreach ($invoices as $data) {
                         $invoice = Invoice::find($data->id);
                         $invoice->company_id = $company_id;
@@ -628,7 +594,7 @@ class Admin extends Model
                 }
             }
         } 
-        if (count($up['invoice_items']) > 0){
+        if (isset($up['invoice_items'])){
             foreach ($up['invoice_items'] as $key => $value) {
                 $invoice_item = InvoiceItem::find($value['invoice_item_id']);
                 $invoice_item->invoice_id = $value['invoice_id'];
@@ -645,7 +611,7 @@ class Admin extends Model
                 $invoice_item->save();
             }
         } 
-        if (count($up['memos']) > 0){
+        if (isset($up['memos'])){
             foreach ($up['memos'] as $key => $value) {
                 $memo = Memo::find($value['memo_id']);
                 $memo->company_id = $company_id;
@@ -655,7 +621,7 @@ class Admin extends Model
                 $memo->save();
             }
         } 
-        if (count($up['printers']) > 0){
+        if (isset($up['printers'])){
             foreach ($up['printers'] as $key => $value) {
                 $printer = Printer::find($value['printer_id']);
                 $printer->company_id = $company_id;
@@ -667,7 +633,7 @@ class Admin extends Model
                 $printer->save();
             }
         } 
-        if (count($up['rewards']) > 0){
+        if (isset($up['rewards'])){
             foreach ($up['rewards'] as $key => $value) {
                 $reward = Reward::find($value['reward_id']);
                 $reward->company_id = $company_id;
@@ -678,7 +644,7 @@ class Admin extends Model
                 $reward->save();
             }
         } 
-        if (count($up['reward_transactions']) > 0){
+        if (isset($up['reward_transactions'])){
             foreach ($up['reward_transactions'] as $key => $value) {
                 $reward_transaction = RewardTransaction::find($value['reward_id']);
                 $reward_transaction->reward_id = $value['reward_id'];
@@ -697,7 +663,7 @@ class Admin extends Model
                 $reward_transaction->save();
             }
         }
-        if (count($up['schedules']) > 0){
+        if (isset($up['schedules'])){
             foreach ($up['schedules'] as $key => $value) {
                 $schedule = Schedule::find($value['schedule_id']);
                 $schedule->company_id = $company_id;
@@ -713,7 +679,7 @@ class Admin extends Model
                 $schedule->save();
             }
         } 
-        if (count($up['taxes']) > 0){
+        if (isset($up['taxes'])){
             foreach ($up['taxes'] as $key => $value) {
                 $tax = Tax::find($value['tax_id']);
                 $tax->company_id = $company_id;
@@ -723,7 +689,7 @@ class Admin extends Model
 
             }
         } 
-        if (count($up['transactions']) > 0){
+        if (isset($up['transactions'])){
             foreach ($up['transactions'] as $key => $value) {
                 $transaction = Transaction::find($value['transaction_id']);
                 $transaction->company_id = $company_id;
@@ -742,7 +708,7 @@ class Admin extends Model
                 $transaction->save();
             }
         } 
-        if (count($up['users']) > 0){
+        if (isset($up['users'])){
             foreach ($up['users'] as $key => $value) {
                 $users = User::where('user_id',$value['user_id'])->get();
                 if($users){
