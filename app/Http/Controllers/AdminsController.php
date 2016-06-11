@@ -338,11 +338,12 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);
     }
 
-    public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null){
+    public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null, $upd = null){
 
         if($server_at){
             $server_at = str_replace('_',' ',$server_at);
             $up =json_decode(str_replace('up=', '', $up),true);
+            $upd = json_decode(str_replace('upd=','',$upd),true);
             $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
             
 
@@ -350,11 +351,9 @@ class AdminsController extends Controller
                 // create items to return
                 $updates = Admin::makeUpdate($authenticate,$server_at);
                 // create list of items with new ids to save in local db
-                if (count($up) > 0) {
-                    $uploads = Admin::makeUpload($authenticate,$up);
-                } else{
-                    $uploads = [0,[]];
-                }
+                $uploads = (count($up) > 0) ? Admin::makeUpload($authenticate,$up) : [0,[]];
+                // update rows on the server only nothing to return
+                $set = Admin::makePut($authenticate,$upd);
                 
                 return response()->json(['status'=>200,
                                          'rows_to_create'=>$updates[1],
