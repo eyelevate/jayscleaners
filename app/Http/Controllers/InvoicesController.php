@@ -91,8 +91,20 @@ class InvoicesController extends Controller
             // what type of print out?
             $print_type = $request->store_copy;
 
+            $last_saved_id = Invoice::where('id','>',0)->orderBy('id','desc')->limit(1)->get();
+            $last_invoice_id = 0;
+            if(count($last_saved_id) > 0){
+                foreach ($last_saved_id as $invoice) {
+                    $last_invoice_id = $invoice->invoice_id;
+                    break;
+                }
+            }
+            $new_invoice_id = $last_invoice_id + 1;
+
+
             foreach ($items as $itms) { // iterate through the first index (inventory group)
                 $invoice = new Invoice();
+                $invoice->invoice_id = $new_invoice_id;
                 $invoice->company_id = Auth::user()->company_id;
                 $invoice->customer_id = $request->customer_id;
                 $invoice->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
@@ -107,7 +119,7 @@ class InvoicesController extends Controller
                         foreach ($i as $ikey => $ivalue) {
                             $qty++;
                             $item = new InvoiceItem();
-                            $item->invoice_id = $invoice->id;
+                            $item->invoice_id = $invoice->invoice_id;
                             $item->item_id = $ivalue['item_id'];
                             $item->pretax = $ivalue['price'];
                             $subtotal += $ivalue['price'];
