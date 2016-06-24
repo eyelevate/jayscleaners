@@ -120,6 +120,7 @@ class InvoicesController extends Controller
                             $qty++;
                             $item = new InvoiceItem();
                             $item->invoice_id = $invoice->invoice_id;
+                            $item->company_id = Auth::user()->company_id;
                             $item->item_id = $ivalue['item_id'];
                             $item->pretax = $ivalue['price'];
                             $subtotal += $ivalue['price'];
