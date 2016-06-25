@@ -21,7 +21,7 @@ class Invoice extends Model
 	    		$total_pcs = 0;
                 $total = 0;
     			if(isset($data[$key]['id'])){
-    				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['id'])->where('status',1)->get();
+    				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['invoice_id'])->where('status',1)->get();
     			}
     			if(isset($data[$key]['items'])){
     				foreach ($data[$key]['items'] as $ikey => $ivalue) {
