@@ -268,22 +268,26 @@ class CustomersController extends Controller
     	$users = User::where('user_id',$id)->get();
         if ($users){
             foreach ($users as $user) {
-               $customers = Customer::prepareView($user);
-               break;
+                $customers = Customer::prepareView($user);
+                $last10 = Customer::prepareLast10($user, $request->session()->get('last10'));
+                $request->session()->put('last10',$last10);
+                $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->where('status',1)->orderBy('id','desc')->get());
+
+                return view('customers.view')
+                ->with('layout',$this->layout)
+                ->with('customers',$customers)
+                ->with('last10',$last10)
+                ->with('invoices',$invoices);
+                break;
             }
         } else {
-            $customers = [];
+            return view('customers.view')
+            ->with('layout',$this->layout)
+            ->with('customers',[])
+            ->with('last10',$request->session()->get('last10'))
+            ->with('invoices',[]);            
         }
 
-    	$last10 = Customer::prepareLast10($users, $request->session()->get('last10'));
-    	$request->session()->put('last10',$last10);
-        $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->where('status',1)->orderBy('id','desc')->get());
-
-    	return view('customers.view')
-    	->with('layout',$this->layout)
-    	->with('customers',$customers)
-    	->with('last10',$last10)
-        ->with('invoices',$invoices);
 
 
     }

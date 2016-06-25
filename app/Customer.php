@@ -11,17 +11,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     use SoftDeletes;
-    public static function prepareLast10($users, $last10) {
+    public static function prepareLast10($user, $last10) {
 
         $last10 = (count($last10) > 0) ? $last10 : [];
 
-        if(count($users) > 0){
+        if($user){
+
             //first check to see if the user is already inside of the array
             //if so then remove the user from the current standing and place him on top 
             if(count($last10) >0) {
                 foreach ($last10 as $key => $value) {
                     foreach ($value as $skey => $svalue) {
-                        if($skey == $users->user_id){
+                        if($skey == $user->user_id){
 
                             unset($last10[$key]);
                             break;
@@ -33,8 +34,10 @@ class Customer extends Model
 
             //next if there are no users add in the user to the top of the array and remove the last user from the list 
             //maintaining a count of 10 always.
-            array_unshift($last10, [$users->user_id=>$users]);
+            $user_id = $user->user_id;
+            array_unshift($last10, [$user_id=>$user]);
             unset($last10[10]);
+
         }
 
 

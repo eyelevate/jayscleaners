@@ -52,7 +52,7 @@
 			        	@if(isset($customers))
 				        	@foreach($customers as $cust)
 				        		<tr>
-				        			<td>{{ $cust->id }}</td>
+				        			<td>{{ $cust->user_id }}</td>
 				        			<td>{{ $cust->company_id }}</td>
 				        			<td>{{ $cust->last_name }}</td>
 				        			<td>{{ $cust->first_name }}</td>
@@ -61,7 +61,7 @@
 				        			<td>{{ $cust->phone }}</td>
 				        			<td>{{ $cust->created_on }}</td>
 				        			<td>
-				        				<a class="btn btn-info" href="{{ route('customers_view',$cust->id) }}">View</a> 
+				        				<a class="btn btn-info" href="{{ route('customers_view',$cust->user_id) }}">View</a> 
 				        			</td>
 				        		</tr>
 				        	@endforeach
