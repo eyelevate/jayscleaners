@@ -645,7 +645,7 @@ class Admin extends Model
         } 
         if (isset($up['invoice_items'])){
             foreach ($up['invoice_items'] as $key => $value) {
-                $invoice_item = InvoiceItem::withTrashed()->find($value['invoice_item_id']);
+                $invoice_item = InvoiceItem::withTrashed()->find($value['invoice_items_id']);
                 $invoice_item->invoice_id = $value['invoice_id'];
                 $invoice_item->item_id = $value['item_id'];
                 $invoice_item->company_id = $company_id;
