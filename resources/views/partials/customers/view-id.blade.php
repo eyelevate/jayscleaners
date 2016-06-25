@@ -146,7 +146,7 @@
                     @if(isset($invoices))
                         @foreach($invoices as $invoice)
                         <tr id="invoiceTr-{{ $invoice->id }}" class="invoiceTr" invoice-id="{{ $invoice->id }}" data-toggle="modal" data-target="#invoiceModal-{{ $invoice->id }}">
-                            <td>{{ str_pad($invoice->id, 6, '0', STR_PAD_LEFT) }}</td>
+                            <td>{{ str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ date('D, n/d',strtotime($invoice->created_at)) }}</td>
                             <td>{{ date('D, n/d',strtotime($invoice->due_date)) }}</td>
                             <td>{{ $invoice->tags }}</td>
