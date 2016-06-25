@@ -136,7 +136,7 @@ class InvoicesController extends Controller
 
                     }
                     // get totals here and update invoice
-                    $edit = Invoice::find($invoice->invoice_id);
+                    $edit = Invoice::find($invoice->id);
                     $edit->quantity = $qty;
                     $edit->pretax = $subtotal;
                     $edit->tax = number_format(round($subtotal * $tax_rate,2),2,'.','');
