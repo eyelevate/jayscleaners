@@ -266,14 +266,7 @@ class CustomersController extends Controller
 
     public function getView(Request $request, $id = null){
     	$users = User::where('user_id',$id)->get();
-        if ($users){
-            foreach ($users as $user) {
-               $customers = Customer::prepareView($user);
-               break;
-            }
-        } else {
-            $customers = [];
-        }
+        $customers = Customer::prepareView($users);
 
     	$last10 = Customer::prepareLast10($users, $request->session()->get('last10'));
     	$request->session()->put('last10',$last10);
