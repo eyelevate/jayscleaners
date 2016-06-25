@@ -21,7 +21,7 @@ class Customer extends Model
             if(count($last10) >0) {
                 foreach ($last10 as $key => $value) {
                     foreach ($value as $skey => $svalue) {
-                        if($skey == $users->id){
+                        if($skey == $users->user_id){
 
                             unset($last10[$key]);
                             break;
@@ -33,7 +33,7 @@ class Customer extends Model
 
             //next if there are no users add in the user to the top of the array and remove the last user from the list 
             //maintaining a count of 10 always.
-            array_unshift($last10, [$users->id=>$users]);
+            array_unshift($last10, [$users->user_id=>$users]);
             unset($last10[10]);
         }
 
