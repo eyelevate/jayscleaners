@@ -37,7 +37,7 @@
 			</div>
 		</a><!-- ./col -->
 		<!-- Pickup -->
-		<a href="{{ (isset($customers)) ? route('invoices_pickup',$customers->user_id) : '#' }}" class="col-lg-3 col-md-3 col-xs-3">
+		<a href="{{ (isset($customers)) ? route('invoices_pickup',$customers->id) : '#' }}" class="col-lg-3 col-md-3 col-xs-3">
 			<!-- small box -->
 			<div class="small-box {{ (isset($customers)) ? 'bg-green' : 'bg-default'}}" style="padding-bottom:10px">
 				<div class="inner">
@@ -51,7 +51,7 @@
 			</div>
 		</a><!-- ./col -->
 		<!-- Drop Off -->
-		<a href="{{ (isset($customers)) ? route('invoices_dropoff',$customers->user_id) : '#' }}" class="col-lg-3 col-md-3 col-xs-3">
+		<a href="{{ (isset($customers)) ? route('invoices_dropoff',$customers->id) : '#' }}" class="col-lg-3 col-md-3 col-xs-3">
 			<!-- small box -->
 			<div class="small-box {{ (isset($customers)) ? 'bg-primary' : 'bg-default'}}" style="padding-bottom:10px">
 				<div class="inner">

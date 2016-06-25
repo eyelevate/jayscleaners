@@ -170,7 +170,7 @@
 </div>
 {!! Form::open(['action' => 'InvoicesController@postAdd','id'=>'invoice-form', 'class'=>'form-horizontal','role'=>"form"]) !!}
 {!! csrf_field() !!}
-{{ Form::hidden('customer_id',$customer->user_id) }}
+{{ Form::hidden('customer_id',$customer->id) }}
 {{ Form::hidden('due_date',$turnaround_date,['id'=>'due_date'])}}
 {{ Form::hidden('subtotal',null,['id'=>'subtotal']) }}
 {{ Form::hidden('tax',null,['id'=>'tax']) }}
