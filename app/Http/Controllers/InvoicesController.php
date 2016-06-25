@@ -121,8 +121,11 @@ class InvoicesController extends Controller
                             $item = new InvoiceItem();
                             $item->invoice_id = $invoice->invoice_id;
                             $item->company_id = Auth::user()->company_id;
+                            $item->customer_id = $request->customer_id;
                             $item->item_id = $ivalue['item_id'];
                             $item->pretax = $ivalue['price'];
+                            $item->tax = number_format(round($ivalue['price'] * $tax_rate,2),2,'.','');
+                            $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
                             $subtotal += $ivalue['price'];
                             $item->quantity = 1;
                             $item->color = $ivalue['color'];
@@ -133,7 +136,7 @@ class InvoicesController extends Controller
 
                     }
                     // get totals here and update invoice
-                    $edit = Invoice::find($invoice->id);
+                    $edit = Invoice::find($invoice->invoice_id);
                     $edit->quantity = $qty;
                     $edit->pretax = $subtotal;
                     $edit->tax = number_format(round($subtotal * $tax_rate,2),2,'.','');
@@ -251,6 +254,8 @@ class InvoicesController extends Controller
                             $item->item_id = $ivalue['item_id'];
                             $item->invoice_id = $request->invoice_id;
                             $item->pretax = $ivalue['price'];
+                            $item->tax = number_format(round($ivalue['price'] * $tax_rate,2),2,'.','');
+                            $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
                             $subtotal += $ivalue['price'];
                             $item->quantity = 1;
                             $item->color = $ivalue['color'];
