@@ -82,7 +82,7 @@ class Company extends Model
     }  
     public static function getTurnaround($data) {
         $turnaround = '';
-        $dow = date('N',strtotime(date('Y-m-d H:i:s')));
+        $dow = date('w',strtotime(date('Y-m-d H:i:s')));
         
         if(isset($data)) {
             foreach ($data as $key => $value) {
