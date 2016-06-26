@@ -88,10 +88,14 @@ class Company extends Model
             foreach ($data as $key => $value) {
                 if(isset($data[$key]['store_hours'])) {
                     $store_hours = json_decode($data[$key]['store_hours'],true);
-                    $today_string = strtotime(date('n/d/Y').' '.$store_hours[$dow]['due_hour'].':'.$store_hours[$dow]['due_minutes'].' '.$store_hours[$dow]['due_ampm']);
-                    $turnaround_days_string = ($store_hours[$dow]['turnaround']==1) ? ' day' : ' days';
-                    $turnaround= $store_hours[$dow]['turnaround'];
-                    break;
+                    if ($store_hours[$dow]['status'] != 1){
+                        $today_string = strtotime(date('n/d/Y').' '.$store_hours[$dow]['due_hour'].':'.$store_hours[$dow]['due_minutes'].' '.$store_hours[$dow]['due_ampm']);
+                        $turnaround_days_string = ($store_hours[$dow]['turnaround']==1) ? ' day' : ' days';
+                        $turnaround= $store_hours[$dow]['turnaround'];
+                        break;
+                    } else {
+                        $turnaround = date('Y-m-d H:i:s',strtotime('NOW + 2 days'));
+                    }
                 }
             }
         }
@@ -100,17 +104,22 @@ class Company extends Model
     }
     public static function getTurnaroundDate($data) {
         $turnaround = '';
-        $dow = date('N',strtotime(date('Y-m-d H:i:s')));
+        $dow = date('w',strtotime(date('Y-m-d H:i:s')));
         
         if(isset($data)) {
             foreach ($data as $key => $value) {
                 if(isset($data[$key]['store_hours'])) {
                     $store_hours = json_decode($data[$key]['store_hours'],true);
-                    $today_string = strtotime(date('n/d/Y').' '.$store_hours[$dow]['due_hour'].':'.$store_hours[$dow]['due_minutes'].' '.$store_hours[$dow]['due_ampm']);
-                    $turnaround_days_string = ($store_hours[$dow]['turnaround']==1) ? ' day' : ' days';
-                    $turnaround_string = '+'.$store_hours[$dow]['turnaround'].$turnaround_days_string;
+                    if ($store_hours[$dow]['status'] != 1){
+                        $today_string = strtotime(date('n/d/Y').' '.$store_hours[$dow]['due_hour'].':'.$store_hours[$dow]['due_minutes'].' '.$store_hours[$dow]['due_ampm']);
+                        $turnaround_days_string = ($store_hours[$dow]['turnaround']==1) ? ' day' : ' days';
+                        $turnaround_string = '+'.$store_hours[$dow]['turnaround'].$turnaround_days_string;
+                        $turnaround = date('Y-m-d H:i:s', strtotime($turnaround_string,$today_string));                    
+                    } else {
+                        $turnaround = date('Y-m-d H:i:s',strtotime('NOW + 2 days'));
+                    }
+                    
 
-                    $turnaround = date('Y-m-d H:i:s', strtotime($turnaround_string,$today_string));
                 }
             }
         }
