@@ -343,9 +343,7 @@ class AdminsController extends Controller
         if($server_at){
             $server_at = str_replace('_',' ',$server_at);
             $up =json_decode(str_replace('up=', '', $up),true);
-            $up = str_replace('__', ' ', $up);
             $upd = json_decode(str_replace('upd=','',$upd),true);
-            $upd = str_replace('__', ' ', $upd);
             $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
 
