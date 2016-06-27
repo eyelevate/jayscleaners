@@ -627,8 +627,8 @@ class Admin extends Model
                         $invoice->reward_id = $value['reward_id'];
                         $invoice->discount_id = $value['discount_id'];
                         $invoice->rack = $value['rack'];
-                        $invoice->rack_date = $value['rack_date'];
-                        $invoice->due_date = $value['due_date'];
+                        $invoice->rack_date = (isset($value['rack_date'])) ? date('Y-m-d H:i:s',$value['rack_date']) : NULL;
+                        $invoice->due_date = (isset($value['due_date'])) ? date('Y-m-d H:i:s', $value['due_date']) : NULL;
                         $invoice->memo = $value['memo'];
                         $invoice->status = $value['status'];
                         if(isset($value['deleted_at'])) {
