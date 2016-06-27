@@ -604,7 +604,7 @@ class Admin extends Model
                 $inventory_item->price = $value['price'];
                 $inventory_item->image = $value['image'];
                 $inventory_item->status = $value['status'];
-                if(isset($value['deleted_at']) {
+                if(isset($value['deleted_at'])) {
                     $inventory_item->delete();
                 } elseif($inventory_item->trashed() && !isset($value['deleted_at'])) {
                     $inventory_item->restore();
@@ -631,7 +631,7 @@ class Admin extends Model
                         $invoice->due_date = (isset($value['due_date'])) ? date('Y-m-d H:i:s', $value['due_date']) : NULL;
                         $invoice->memo = $value['memo'];
                         $invoice->status = $value['status'];
-                        if(isset($value['deleted_at']) {
+                        if(isset($value['deleted_at'])) {
                             $invoice->delete();
                         } elseif($invoice->trashed() && !isset($value['deleted_at'])) {
                             $invoice->restore();
