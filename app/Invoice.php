@@ -53,7 +53,7 @@ class Invoice extends Model
     }
 
     public static function newInvoiceId(){
-        $invoices = Invoice::where('id','>',0)->orderBy('id desc')->limit(1)->get();
+        $invoices = Invoice::where('id','>',0)->orderBy('id','desc')->limit('1')->get();
         if(count($invoices) > 0) {
             foreach ($invoices as $invoice) {
                 $last_invoice_id = $invoice['invoice_id'];
