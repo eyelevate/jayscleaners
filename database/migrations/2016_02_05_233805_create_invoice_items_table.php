@@ -19,7 +19,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->integer('customer_id', false, true)->length(11)->nullable();
             $table->tinyInteger('quantity', false, true)->nullable();
-            $table->tinyInteger('color', false, true)->nullable();
+            $table->string('color',20)->nullable();
             $table->text('memo')->nullable();
             $table->decimal('pretax',11,2)->nullable();
             $table->decimal('tax',11,2)->nullable();

@@ -117,6 +117,9 @@ class InvoicesController extends Controller
                     
                     foreach ($itms as $i) {
                         foreach ($i as $ikey => $ivalue) {
+                            #get color name
+                            $colors = Color::find($ivalue['color']);
+                            $color_name = ($colors) ? $colors->name : $ivalue['color'];
                             $qty++;
                             $item = new InvoiceItem();
                             $item->invoice_id = $invoice->invoice_id;
@@ -128,7 +131,7 @@ class InvoicesController extends Controller
                             $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
                             $subtotal += $ivalue['price'];
                             $item->quantity = 1;
-                            $item->color = $ivalue['color'];
+                            $item->color = $color_name;
                             $item->memo = $ivalue['memo'];
                             $item->status = 1;
                             $item->save();
@@ -250,6 +253,8 @@ class InvoicesController extends Controller
                     foreach ($itms as $i) {
                         foreach ($i as $ikey => $ivalue) {
                             $qty++;
+                            $colors = Color::find($ivalue['color']);
+                            $color_name = ($colors) ? $colors->name : $ivalue['color'];
                             $item = (isset($ivalue['id'])) ? InvoiceItem::find($ivalue['id']) : new InvoiceItem();
                             $item->item_id = $ivalue['item_id'];
                             $item->invoice_id = $request->invoice_id;
@@ -258,7 +263,7 @@ class InvoicesController extends Controller
                             $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
                             $subtotal += $ivalue['price'];
                             $item->quantity = 1;
-                            $item->color = $ivalue['color'];
+                            $item->color = $color_name;
                             $item->memo = $ivalue['memo'];
                             $item->status = 1;
                             $item->save();
