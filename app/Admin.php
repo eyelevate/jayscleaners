@@ -285,6 +285,7 @@ class Admin extends Model
     			$invoice->tax = $value['tax'];
     			$invoice->reward_id = $value['reward_id'];
     			$invoice->discount_id = $value['discount_id'];
+                $invoice->total = $value['total'];
     			$invoice->rack = $value['rack'];
     			$invoice->rack_date = date('Y-m-d H:i:s',$value['rack_date']);
     			$invoice->due_date = date('Y-m-d H:i:s',$value['due_date']);
@@ -311,7 +312,7 @@ class Admin extends Model
     			$invoice_item->total = $value['total'];
     			$invoice_item->status = $value['status'];
     			if($invoice_item->save()){
-    				$up['invoice_items'][$key]['invoice_item_id'] = $invoice_item->id;
+    				$up['invoice_items'][$key]['invoice_items_id'] = $invoice_item->id;
     				$uploaded_rows++;
     			}
     		}
