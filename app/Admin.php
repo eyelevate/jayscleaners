@@ -287,7 +287,7 @@ class Admin extends Model
     			$invoice->discount_id = $value['discount_id'];
                 $invoice->total = $value['total'];
     			$invoice->rack = $value['rack'];
-    			$invoice->rack_date = date('Y-m-d H:i:s',$value['rack_date']);
+    			$invoice->rack_date = ($value['rack_date'] > 0) ? date('Y-m-d H:i:s',$value['rack_date']) : NULL;
     			$invoice->due_date = date('Y-m-d H:i:s',$value['due_date']);
     			$invoice->memo = $value['memo'];
     			$invoice->status = $value['status'];
