@@ -26,7 +26,7 @@ class Invoice extends Model
     			if(isset($data[$key]['items'])){
     				foreach ($data[$key]['items'] as $ikey => $ivalue) {
     					if(isset($data[$key]['items'][$ikey]['color']) && $data[$key]['items'][$ikey]['color']){
-    						$data[$key]['items'][$ikey]['color'] = Color::find($ivalue['color'])->color;
+    						$data[$key]['items'][$ikey]['color'] = $ivalue['color'];
  
     					}
     					if(isset($data[$key]['items'][$ikey]['item_id'])) {
