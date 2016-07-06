@@ -626,6 +626,7 @@ class Admin extends Model
                         $invoice->quantity = $value['quantity'];
                         $invoice->pretax = $value['pretax'];
                         $invoice->tax = $value['tax'];
+                        $invoice->total = $value['total'];
                         $invoice->reward_id = $value['reward_id'];
                         $invoice->discount_id = $value['discount_id'];
                         $invoice->rack = $value['rack'];
