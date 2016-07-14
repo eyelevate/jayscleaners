@@ -414,7 +414,7 @@ class Admin extends Model
     	} 
     	if (isset($up['transactions'])){
     		foreach ($up['transactions'] as $key => $value) {
-    			$transaction = new Schedule();
+    			$transaction = new Transaction();
     			$transaction->company_id = $company_id;
     			$transaction->customer_id = $value['customer_id'];
     			$transaction->schedule_id = $value['schedule_id'];
