@@ -17,6 +17,7 @@ class CreateInventoriesTable extends Migration
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->string('name',50)->nullable();
             $table->text('description')->nullable();
+            $table->tinyInteger('laundry',false,true)->nullable();
             $table->tinyInteger('ordered', false, true)->nullable();
             $table->tinyInteger('status', false, true)->nullable();
             $table->softDeletes();
