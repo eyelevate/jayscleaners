@@ -342,8 +342,8 @@ class AdminsController extends Controller
 
         if($server_at){
             $server_at = date('Y-m-d H:i:s',$server_at);
-            $up =json_decode(str_replace(['up=','%'], ['',' '], $up),true);
-            $upd = json_decode(str_replace(['upd=','%'],['',' '],$upd),true);
+            $up =json_decode(str_replace(['up=','::'], ['',' '], $up),true);
+            $upd = json_decode(str_replace(['upd=','::'],['',' '],$upd),true);
             $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
 
