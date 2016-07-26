@@ -338,6 +338,8 @@ class Admin extends Model
     			$printer->model = $value['model'];
     			$printer->nick_name = $value['nick_name'];
     			$printer->type = $value['type'];
+                $printer->vendor_id = $value['vendor_id'];
+                $printer->product_id = $value['product_id'];
     			$printer->status = $value['status'];
     			if($printer->save()){
     				$up['printers'][$key]['printer_id'] = $printer->id;
@@ -692,6 +694,8 @@ class Admin extends Model
                 $printer->name = $value['name'];
                 $printer->model = $value['model'];
                 $printer->nick_name = $value['nick_name'];
+                $printer->vendor_id = $value['vendor_id'];
+                $printer->product_id = $value['product_id'];
                 $printer->type = $value['type'];
                 $printer->status = $value['status'];
                 if(isset($value['deleted_at'])) {
