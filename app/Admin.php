@@ -187,6 +187,8 @@ class Admin extends Model
     			$company->store_hours = $value['store_hours'];
     			$company->turn_around = $value['turn_around'];
     			$company->api_token = $value['api_token'];
+                $company->payment_gateway_id = $value['payment_gateway_id'];
+                $company->payment_api_login = $value['payment_api_login'];
     			if($company->save()){
     				$up['companies'][$key]['company_id'] = $company->id;
     				$uploaded_rows++;
