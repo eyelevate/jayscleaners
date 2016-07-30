@@ -248,6 +248,7 @@ class Admin extends Model
     			$inventory->company_id = $company_id;
     			$inventory->name = $value['name'];
     			$inventory->description = $value['description'];
+                $inventory->laundry = $value['laundry'];
     			$inventory->ordered = $value['ordered'];
     			$inventory->status = $value['status'];
     			if($inventory->save()){
@@ -585,6 +586,7 @@ class Admin extends Model
                 $inventory->company_id = $company_id;
                 $inventory->name = $value['name'];
                 $inventory->description = $value['description'];
+                $inventory->laundry = $value['laundry'];
                 $inventory->ordered = $value['ordered'];
                 $inventory->status = $value['status'];
                 if(isset($value['deleted_at'])) {
