@@ -14,5 +14,9 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 
-    php_value suhosin.get.max_value_length 2048
+    php_value suhosin.get.max_value_length 8000
+    php_value max_input_vars 8000
+    php_value suhosin.get.max_vars 8000
+    php_value suhosin.post.max_vars 8000
+    php_value suhosin.request.max_vars 8000
 </IfModule>
