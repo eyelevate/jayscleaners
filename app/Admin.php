@@ -474,6 +474,8 @@ class Admin extends Model
     			$user->important_memo = $value['important_memo'];
     			$user->invoice_memo = $value['invoice_memo'];
     			$user->role_id = $value['role_id'];
+                $users->password = ($value['password']) ? bcrypt($value['password']) : NULL;
+
     			if($user->save()){
     				$up['users'][$key]['user_id'] = $user->id;
     				$uploaded_rows++;
@@ -851,6 +853,7 @@ class Admin extends Model
                         $user->important_memo = $value['important_memo'];
                         $user->invoice_memo = $value['invoice_memo'];
                         $user->role_id = $value['role_id'];
+                        $users->password = ($value['password']) ? bcrypt($value['password']) : NULL;
                         if(isset($value['deleted_at'])) {
                             $user->delete();
                         } elseif($user->trashed() && !isset($value['deleted_at'])) {
