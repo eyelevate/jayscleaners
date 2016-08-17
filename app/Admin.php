@@ -474,7 +474,10 @@ class Admin extends Model
     			$user->important_memo = $value['important_memo'];
     			$user->invoice_memo = $value['invoice_memo'];
     			$user->role_id = $value['role_id'];
-                $users->password = ($value['password']) ? bcrypt($value['password']) : NULL;
+                if (isset($value['password'])) {
+                    $users->password = bcrypt($value['password']);
+                }
+                
 
     			if($user->save()){
     				$up['users'][$key]['user_id'] = $user->id;
