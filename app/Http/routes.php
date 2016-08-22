@@ -28,7 +28,7 @@ Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
 Route::group(['middleware' => ['web']], function () {
     //public pages
     Route::auth();
-
+    Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
     Route::get('/home', 'HomeController@index');
     Route::get('/admins/login',  ['as'=>'admins_login', 'uses' => 'AdminsController@getLogin']);
 	Route::post('/admins/login',  ['as'=>'admins_login_post', 'uses' => 'AdminsController@postLogin']);

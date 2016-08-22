@@ -16,6 +16,9 @@ use Laracasts\Flash\Flash;
 use View;
 
 
+use App\Job;
+use App\User;
+use App\Company;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -31,8 +34,9 @@ class PagesController extends Controller
      */
     public function getIndex()
     {
-
+        $auth = (Auth::check()) ? Auth::user() : False;
         return view('pages.index')
-        ->with('layout',$this->layout);
+        ->with('layout',$this->layout)
+        ->with('auth',$auth);
     }
 }
