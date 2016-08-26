@@ -5,99 +5,100 @@
 @stop
 
 @section('scripts')
-
+<script type="text/javascript" src="/js/pages/index.js"></script>
 @stop
 
 @section('navigation')
+	<header id="header" class="alt">
 	@if($auth)
-	<h1 id="logo"><a href="index.html">Jays Cleaners</a></h1>
-	<nav id="nav">
-		<ul>
-			<li class="submenu">
-				<a href="#"><small>Hello </small><strong>{{ $auth->username }}</strong></a>
-				<ul>
-					<li><a href="left-sidebar.html"></a></li>
-					<li><a href="right-sidebar.html">Right Sidebar</a></li>
-					<li><a href="no-sidebar.html">No Sidebar</a></li>
-					<li><a href="contact.html"></a></li>
-					<li class="submenu">
-						<a href="#">Submenu</a>
-						<ul>
-							<li><a href="#">Dolore Sed</a></li>
-							<li><a href="#">Consequat</a></li>
-							<li><a href="#">Lorem Magna</a></li>
-							<li><a href="#">Sed Magna</a></li>
-							<li><a href="#">Ipsum Nisl</a></li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-			<li><a href="#" class="button special">Logout</a></li>
-		</ul>
-	</nav>
-	@else
-	<h1 id="logo"><a href="index.html">Jays Cleaners</a></h1>
-	<nav id="nav">
-		<ul>
-			<li class="current"><a href="index.html">Login</a></li>
-			<li class="submenu">
-				<a href="#">Login</a>
-				<ul>
-					<li><a href="left-sidebar.html">Left Sidebar</a></li>
-					<li><a href="right-sidebar.html">Right Sidebar</a></li>
-					<li><a href="no-sidebar.html">No Sidebar</a></li>
-					<li><a href="contact.html">Contact</a></li>
-					<li class="submenu">
-						<a href="#">Submenu</a>
-						<ul>
-							<li><a href="#">Dolore Sed</a></li>
-							<li><a href="#">Consequat</a></li>
-							<li><a href="#">Lorem Magna</a></li>
-							<li><a href="#">Sed Magna</a></li>
-							<li><a href="#">Ipsum Nisl</a></li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-			<li><a href="#" class="button special">Sign Up</a></li>
-		</ul>
-	</nav>
+
+		<h1 id="logo"><a href="{{ route('pages_index') }}">Jays Cleaners</a></h1>
+		<nav id="nav">
+			<ul>
+				<li class="submenu">
+					<a href="#"><small>Hello </small><strong>{{ $auth->username }}</strong></a>
+					<ul>
+						<li><a href="no-sidebar.html">Your Deliveries</a></li>
+						<li><a href="left-sidebar.html">Services</a></li>
+						<li><a href="right-sidebar.html">Business Hours</a></li>
+						<li><a href="contact.html">Contact Us</a></li>
+						<li class="submenu">
+							<a href="#">{{ $auth->username }} menu</a>
+							<ul>
+								<li><a href="#">Dolore Sed</a></li>
+								<li><a href="#">Consequat</a></li>
+								<li><a href="#">Lorem Magna</a></li>
+								<li><a href="#">Sed Magna</a></li>
+								<li><a href="#">Ipsum Nisl</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a id="logout_button" href="#" class="button special">Logout</a>
+					{!! Form::open(['action' => 'PagesController@postLogout', 'id'=>'logout_form', 'class'=>'form-horizontal','role'=>"form"]) !!}
+					{!! Form::close() !!}
+				</li>
+			</ul>
+		</nav>
+		@else
+		<h1 id="logo"><a href="{{ route('pages_index') }}">Jays Cleaners</a></h1>
+		<nav id="nav">
+			<ul>
+				<li class="current"><a href="{{ route('pages_login') }}">Login</a></li>
+				<li class="submenu">
+					<a href="#">About Us</a>
+					<ul>
+						<li><a href="no-sidebar.html">Schedule Delivery</a></li>
+						<li><a href="left-sidebar.html">Services</a></li>
+						<li><a href="right-sidebar.html">Business Hours</a></li>
+						<li><a href="contact.html">Contact Us</a></li>
+					</ul>
+				</li>
+				<li><a href="{{ route('pages_registration') }}" class="button special">Sign Up</a></li>
+			</ul>
+		</nav>
 	@endif
+	</header>
 @stop
 
 @section('banner')
 	@if($auth)
-	<div class="inner">
 
-		<header>
-			<h2>Jays Cleaners</h2>
-		</header>
-		<p>Welcome back <strong>{{ $auth->username }}</strong>
-		<br />
-		Start your delivery today!
-		<br /><br/>							
-		<ul class="buttons vertical">
-			<li><a href="#main" class="button fit scrolly">Schedule Delivery</a></li>
-		</ul>
+	<header>
+		<h2>Jays Cleaners</h2>
+	</header>
+	<p>Welcome back <strong>{{ $auth->username }}</strong>
+	<br />
+	Start your delivery today!
+	<br /><br/>							
+	<ul class="buttons vertical">
+		<li><a href="{{ route('delivery_form') }}" class="button fit">Schedule Delivery</a></li>
+	</ul>
 
-	</div>
 	@else
-	<div class="inner">
 
-		<header>
-			<h2>Jays Cleaners</h2>
-		</header>
-		<p><strong>Free</strong> delivery and pickup!
-		<br />
-		Start your delivery today!
-		<br /><br/>
-		<header>
-			<input type="text" placeholder="Enter your zipcode" style="background-color:#ffffff; color:#000000;"/>
-		</header>							
-		<ul class="buttons vertical">
-			<li><a href="#main" class="button fit scrolly">Start</a></li>
-		</ul>
-
+	{!! Form::open(['action' => 'PagesController@postZipcodes', 'class'=>'form-horizontal','role'=>"form"]) !!}
+	{!! csrf_field() !!}
+	<header>
+		<h2>Jays Cleaners</h2>
+	</header>
+	<p><strong>Free</strong> delivery and pickup!
+	<br />
+	Start your delivery today!
+	<br /><br/>
+	<header>
+        {!! Form::text('zipcode', old('zipcode'), ['placeholder'=>'Enter your zipcode', 'style'=>'background-color:#ffffff; color:#000000;']) !!}
+        @if ($errors->has('zipcode'))
+            <span class="help-block">
+                <strong style="color:#ffffff">{{ $errors->first('zipcode') }}</strong>
+            </span>
+        @endif
+	</header>							
+	<ul class="buttons vertical">
+		<li><input type="submit" class="button fit scrolly" text="Start"/></li>
+	</ul>
+	{!! Form::close() !!}
 
 	@endif
 

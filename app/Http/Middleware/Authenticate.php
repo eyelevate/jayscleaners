@@ -23,7 +23,7 @@ class Authenticate
         if (!Auth::check()) {
 
             // Check where the user came from, if from admins then redirect accordingly
-            $redirect_path = ($request->is('admins') || $request->is('admins/*')) ? '/admins/login' : '/users/login';
+            $redirect_path = ($request->is('admins') || $request->is('admins/*')) ? '/admins/login' : '/';
             // Set intended page
             Session::put('intended_url',$request->url());
 

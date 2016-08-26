@@ -29,7 +29,16 @@ Route::group(['middleware' => ['web']], function () {
     //public pages
     Route::auth();
     Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
+    Route::get('/login',['as'=>'pages_login','uses'=>'PagesController@getLogin']);
+    Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
+    Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
+    Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
+    Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
+    Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
+
     Route::get('/home', 'HomeController@index');
+
+    // Admins
     Route::get('/admins/login',  ['as'=>'admins_login', 'uses' => 'AdminsController@getLogin']);
 	Route::post('/admins/login',  ['as'=>'admins_login_post', 'uses' => 'AdminsController@postLogin']);
 	Route::post('/admins/logout',  ['as'=>'admins_logout_post', 'uses' => 'AdminsController@postLogout']);
@@ -37,8 +46,25 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/chunk/{id}/{api_token}/{table}/{start}/{end}',['as'=>'admins_api_chunk','uses'=>'AdminsController@getApiChunk']);
 	Route::get('/admins/api/passmanage/{id}/{api_token}/{up}',['as'=>'admins_api_passmanage','uses'=>'AdminsController@getApiPassmanage']);
 	Route::get('/admins/api/authenticate/{username}/{pw}',['as'=>'admins_api_authenticate','uses'=>'AdminsController@getAuthentication']);
+
+	//Frontend Authentication
+	Route::group(['middleware' => ['frontend']], function(){
+		//Address
+		Route::get('/address', ['as'=>'address_index','uses'=>'AddressesController@getIndex']);
+		Route::get('/address/add', ['as'=>'address_add','uses'=>'AddressesController@getAdd']);
+		Route::post('/address/add', ['as'=>'address_add_post','uses'=>'AddressesController@postAdd']);
+		Route::get('/address/edit/{id}', ['as'=>'address_edit','uses'=>'AddressesController@getEdit']);
+		Route::post('/address/edit', ['as'=>'address_edit_post','uses'=>'AddressesController@postEdit']);
+		Route::get('/address/delete/{id}', ['as'=>'address_delete','uses'=>'AddressesController@getDelete']);
+		Route::get('/address/primary/{id}', ['as'=>'address_primary','uses'=>'AddressesController@getPrimary']);
+		//Delivery 
+		Route::get('/delivery/form', ['as'=>'delivery_form','uses'=>'DeliveriesController@getForm']);
+    	Route::post('/delivery/form', ['as'=>'delivery_form_post','uses'=>'DeliveriesController@postForm']);
+	});
+
 	//Authenticated Pages
 	Route::group(['middleware' => ['auth']], function(){
+
 		//Admins
 		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);
@@ -48,7 +74,6 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/settings',['as'=>'admins_settings','uses'=>'AdminsController@getSettings']);
 		Route::get('/admins/view',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
-
 
 		//Customers
 		Route::get('/colors',  ['as'=>'colors_index', 'uses' => 'ColorsController@getIndex']);
@@ -123,8 +148,12 @@ Route::group(['middleware' => ['web']], function () {
 
 		//Users
 		Route::get('/users',  ['as'=>'users_index', 'uses' => 'UsersController@getIndex']);
-		Route::post('/users',['uses' => 'UsersController@postIndex']);		
+		Route::post('/users',['uses' => 'UsersController@postIndex']);	
 
+		//Zipcodes
+		Route::get('/zipcodes', ['as'=>'zipcodes_index', 'uses' => 'ZipcodesController@getIndex']);
+		Route::get('/zipcodes/add', ['as'=>'zipcodes_add', 'uses' => 'ZipcodesController@getAdd']);
+		Route::get('/zipcodes/edit/{id}', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@getEdit']);
 		//ACL Rules
 	});
 

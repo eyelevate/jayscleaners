@@ -2069,6 +2069,14 @@
 			border-color: #005F00;
 			color: #fff !important;
 		}
+		input[type="button"].special-red,
+		input[type="submit"].special-red,
+		input[type="reset"].special-red,
+		.button.special-red {
+			background: #FF0000;
+			border-color: #FF0000;
+			color: #fff !important;
+		}		
 
 			input[type="button"].special:hover,
 			input[type="submit"].special:hover,

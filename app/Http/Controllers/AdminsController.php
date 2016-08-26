@@ -136,7 +136,7 @@ class AdminsController extends Controller
         $users->last_name = $request->last_name;
         $users->role_id = 1; //Admin status
         $users->email = $request->email;
-        $users->phone = $request->phone;
+        $users->phone = Job::strip($request->phone);
         $users->password = bcrypt($request->password);
 
 

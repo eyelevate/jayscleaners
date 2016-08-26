@@ -1,5 +1,22 @@
-@extends('layouts.app')
+@extends('layouts.frontend_basic')
+@section('navigation')
 
+    <h1 id="logo"><a href="{{ route('pages_index') }}">Jays Cleaners</a></h1>
+    <nav id="nav">
+        <ul>
+            <li class="submenu">
+                <a href="#">About Us</a>
+                <ul>
+                    <li><a href="no-sidebar.html">Schedule Delivery</a></li>
+                    <li><a href="left-sidebar.html">Services</a></li>
+                    <li><a href="right-sidebar.html">Business Hours</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </li>
+            <li><a href="#" class="button special">Sign Up</a></li>
+        </ul>
+    </nav>
+@stop
 <!-- Main Content -->
 @section('content')
 <div class="container">
@@ -18,7 +35,7 @@
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
+                            <label class="col-md-4 control-label padding-top-none">E-Mail Address</label>
 
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" value="{{ old('email') }}">
@@ -34,7 +51,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-envelope"></i>Send Password Reset Link
+                                    <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
                                 </button>
                             </div>
                         </div>
