@@ -10,7 +10,7 @@ class Address extends Model
 	use SoftDeletes;
 	
     static public function addressSelect($addresses) {
-    	$addr = [];
+    	$addr = [''=>'Select Address'];
     	if ($addresses) {
     		foreach ($addresses as $address) {
     			$addr[$address->id] = $address['name'].' - '.$address->zipcode;

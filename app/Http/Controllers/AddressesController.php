@@ -74,7 +74,7 @@ class AddressesController extends Controller
         $addresses->concierge_name = $request->concierge_name;
         $addresses->concierge_number = $request->concierge_number;
         $primary_address = Address::where('user_id',Auth::user()->id)->where('primary_address',true)->pluck('id');
-        $primary_address_id = ($primary_address) ? $primary_address[0] : false;
+        $primary_address_id = (count($primary_address) > 0) ? $primary_address[0] : false;
         if ($primary_address_id) {
         	$addresses->primary_address = false;
         } else {

@@ -6,3 +6,16 @@
 .no-background-image {
 	background-image: none !important;
 }
+
+div.active {
+	background-color: #e6ffcc;
+}
+div.notactive {
+	background-color: #f5f5f5;
+}
+
+div.active label{
+	font-weight: bold;
+}
+
+

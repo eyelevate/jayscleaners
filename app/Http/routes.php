@@ -60,6 +60,8 @@ Route::group(['middleware' => ['web']], function () {
 		//Delivery 
 		Route::get('/delivery/form', ['as'=>'delivery_form','uses'=>'DeliveriesController@getForm']);
     	Route::post('/delivery/form', ['as'=>'delivery_form_post','uses'=>'DeliveriesController@postForm']);
+    	Route::post('/delivery/check_address', ['as'=>'delivery_check_address','uses'=>'DeliveriesController@postCheckAddress']);
+    	Route::post('/delivery/set_time', ['as'=>'delivery_set_time','uses'=>'DeliveriesController@postSetTime']);
 	});
 
 	//Authenticated Pages
