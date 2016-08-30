@@ -16,8 +16,11 @@ class CreateSchedulesTable extends Migration
             $table->increments('id');
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->integer('customer_id', false, true)->length(11)->nullable();
+            $table->integer('pickup_address', false, true)->length(11)->nullable();
+            $table->dateTime('pickup_date')->nullable();
             $table->integer('pickup_delivery_id', false, true)->length(11)->nullable();
             $table->dateTime('dropoff_date')->nullable();
+            $table->integer('dropoff_address', false, true)->length(11)->nullable();
             $table->integer('dropoff_delivery_id', false, true)->length(11)->nullable();
             $table->text('special_instructions')->nullable();
             $table->string('type',20)->nullable();

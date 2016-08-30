@@ -16,14 +16,27 @@ form = {
 			request.address_check(option_selected);
 		});
 
-		$("#pickup_body input, #pickup_body radio, #pickup_body checkbox, #pickup_body select").click(function() {
-			$(".panel-body").removeClass('active').addClass('notactive');
-			$("#pickup_body").removeClass('notactive').addClass('active');
+		$("#dropoffmethod").change(function(){
+			var option = $(this).find('option:selected').val();
+			datepicker = $('#dropoffdate').data('Zebra_DatePicker');
+			datepicker.destroy();
+			if (option == 1) {
+				$("#dropoff_section").removeClass('hide');
+				$(document).on('focus',"#dropoffdate", function(){
+					$(this).Zebra_DatePicker({
+						container:$("#dropoff_container"),
+						format:'D m/d/Y'
+					});
+				});
+
+			} else {
+				$("#dropoff_section").addClass('hide');
+			}
+
 		});
-		$("#dropoff_body input, #dropoff_body radio, #dropoff_body checkbox, #dropoff_body select").click(function() {
-			$(".panel-body").removeClass('active').addClass('notactive');
-			$("#dropoff_body").removeClass('notactive').addClass('active');
-		});
+	},
+	update_dropoff: function() {
+		
 	}
 };
 
@@ -49,7 +62,7 @@ request = {
 			}
 		);
 	},
-	set_time: function(b, id) {
+	set_time_pickup: function(b, id) {
 		var token = $('meta[name=csrf-token]').attr('content');
 		$.post(
 			'/delivery/set_time',
@@ -69,9 +82,17 @@ request = {
 					});
 					$('#pickuptime').html(html_options).removeAttr('disabled');
 
+					if ($("#dropofftime option:selected").val() !== '') {
+						$("#pickup_submit").removeAttr('disabled');
+						
+					} else {
+						$("#pickup_submit").attr('disabled',true);
+						
+					}
 				}
 				
 			}
 		);
-	}
+	},
+
 };

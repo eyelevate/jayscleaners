@@ -73,7 +73,7 @@
 	Start your delivery today!
 	<br /><br/>							
 	<ul class="buttons vertical">
-		<li><a href="{{ route('delivery_form') }}" class="button fit">Schedule Delivery</a></li>
+		<li><a href="{{ route('delivery_pickup') }}" class="button fit">Schedule Delivery</a></li>
 	</ul>
 
 	@else

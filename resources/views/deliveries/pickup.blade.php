@@ -7,7 +7,7 @@
 @section('scripts')
 <script type="text/javascript" src="/packages/zebra_datepicker/public/javascript/zebra_datepicker.js"></script>
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
-<script type="text/javascript" src="/js/deliveries/form.js"></script>
+<script type="text/javascript" src="/js/deliveries/pickup.js"></script>
 <script type="text/javascript">
 
     $('#pickupdate').Zebra_DatePicker({
@@ -17,9 +17,10 @@
         direction: [true, false],
         onSelect: function(a, b) {
             var pickup_address_id = $("#pickup_address option:selected").val();
-            request.set_time(b, pickup_address_id);
+            request.set_time_pickup(b, pickup_address_id);
         }
     });
+
 </script>
 @stop
 
@@ -62,10 +63,10 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
             <div class="panel panel-default">
-                {!! Form::open(['action' => 'DeliveriesController@postForm', 'class'=>'form-horizontal','role'=>"form"]) !!}
+                {!! Form::open(['action' => 'DeliveriesController@postPickupForm', 'class'=>'form-horizontal','role'=>"form"]) !!}
                     {!! csrf_field() !!} 
-                    <div class="panel-heading">Delivery Form</div>
-                    <div id="pickup_body" class="panel-body active">                   
+                    <div class="panel-heading"><strong>Pickup Form</strong></div>
+                    <div id="pickup_body" class="panel-body">                   
                         <div class="form-group{{ $errors->has('pickup_address') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
 
@@ -113,63 +114,9 @@
                             </div>
                         </div>
                     </div>
-                    <div id="dropoff_body" class="panel-body notactive">
-                        <div class="form-group{{ $errors->has('dropoff_method') ? ' has-error' : '' }} dropoff_method_div ">
-                            <label class="col-md-4 control-label padding-top-none">Dropoff Method</label>
 
-                            <div class="col-md-6">
-                                
-                                {{ Form::select('dropoff_method',$dropoff_method,'1',['class'=>'form-control']) }}
-                                @if ($errors->has('dropoff_method'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('dropoff_method') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>    
-                        <div class="form-group{{ $errors->has('dropoff_address') ? ' has-error' : '' }} dropoff_address_div ">
-                            <label class="col-md-4 control-label padding-top-none">Dropoff Address</label>
-
-                            <div class="col-md-6">
-                                
-                                {{ Form::select('dropoff_address',$addresses,$primary_address_id,['class'=>'form-control','disabled'=>'true']) }}
-                                @if ($errors->has('dropoff_address'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('dropoff_address') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('dropoff_date') ? ' has-error' : '' }} dropoff_date_div ">
-                            <label class="col-md-4 control-label padding-top-none">Dropoff Date</label>
-
-                            <div id="dropoff_container" class="col-md-6">
-                                <input type="text" class="datepicker form-control" name="dropoff_date" disabled="true" value="{{ old('dropoff_date') }}">
-
-                                @if ($errors->has('dropoff_date'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('dropoff_date') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('dropoff_time') ? ' has-error' : '' }} dropoff_time_div ">
-                            <label class="col-md-4 control-label padding-top-none">Dropoff Time</label>
-
-                            <div class="col-md-6">
-                                
-                                {{ Form::select('dropoff_time',[''=>'select time'],null,['class'=>'form-control','disabled'=>'true']) }}
-                                @if ($errors->has('dropoff_time'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('dropoff_time') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
                     <div class="panel-footer clearfix">
-                        <button type="submit" class="btn btn-lg btn-primary pull-right disabled" disabled="true">Set Delivery</button>
+                        <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" disabled="true">Set Pickup</button>
                     </div>
                 {!! Form::close() !!}
                 </div>
