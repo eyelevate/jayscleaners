@@ -58,12 +58,15 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/address/delete/{id}', ['as'=>'address_delete','uses'=>'AddressesController@getDelete']);
 		Route::get('/address/primary/{id}', ['as'=>'address_primary','uses'=>'AddressesController@getPrimary']);
 		//Delivery 
+		Route::get('/delivery/confirmation', ['as'=>'delivery_confirmation','uses'=>'DeliveriesController@getConfirmation']);
+    	Route::post('/delivery/confirmation', ['as'=>'delivery_confirmation_post','uses'=>'DeliveriesController@postConfirmation']);
 		Route::get('/delivery/pickup', ['as'=>'delivery_pickup','uses'=>'DeliveriesController@getPickupForm']);
     	Route::post('/delivery/pickup', ['as'=>'delivery_pickup_post','uses'=>'DeliveriesController@postPickupForm']);
 		Route::get('/delivery/dropoff', ['as'=>'delivery_dropoff','uses'=>'DeliveriesController@getDropoffForm']);
     	Route::post('/delivery/dropoff', ['as'=>'delivery_dropoff_post','uses'=>'DeliveriesController@postDropoffForm']);
     	Route::post('/delivery/check_address', ['as'=>'delivery_check_address','uses'=>'DeliveriesController@postCheckAddress']);
     	Route::post('/delivery/set_time', ['as'=>'delivery_set_time','uses'=>'DeliveriesController@postSetTime']);
+    	Route::get('/delivery/cancel',['as'=>'delivery_cancel','uses'=>'DeliveriesController@getCancel']);
 	});
 
 	//Authenticated Pages

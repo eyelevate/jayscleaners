@@ -2,6 +2,7 @@
 
 namespace App;
 use App\Delivery;
+use App\Address;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Delivery extends Model
@@ -78,7 +79,7 @@ class Delivery extends Model
     }
 
     static public function setTimeOptions($date,$zips) {
-    	$options = ['pp'=>'select time'];
+    	$options = [''=>'<option>select time</option>'];
 
     	$dow = date('w',strtotime($date));
     	if (count($zips) > 0) {
@@ -121,5 +122,98 @@ class Delivery extends Model
     	}
 
     	return $options;
+    }
+
+    static public function setTimeArray($date,$zips) {
+    	$options = [''=>'select time'];
+
+    	$dow = date('w',strtotime($date));
+    	if (count($zips) > 0) {
+    		foreach ($zips as $key => $value) {
+    			$delivery_id = $value;
+    			$deliveries = Delivery::find($delivery_id);
+    			$day_of_week = $deliveries->day;
+    			$start_time = $deliveries->start_time;
+    			$end_time = $deliveries->end_time;
+    			switch($day_of_week){
+    				case 'Sunday':
+    					$ddow = 0;
+    				break;
+    				case 'Monday':
+    					$ddow = 1;
+    				break;
+    				case 'Tuesday':
+    					$ddow = 2;
+    				break;
+    				case 'Wednesday':
+    					$ddow = 3;
+    				break;
+    				case 'Thursday':
+    					$ddow = 4;
+    				break;
+    				case 'Friday':
+    					$ddow = 5;
+    				break;
+    				case 'Saturday':
+    					$ddow = 6;
+    				break;
+    				default:
+    					$ddow = $day_of_week;
+    				break;
+    			}
+    			if ($dow == $ddow) {
+    				$options[$delivery_id] = $start_time.' - '.$end_time;
+    			}
+    		}
+    	}
+
+    	return $options;    	
+    }
+
+    static public function setBreadcrumbs($data) {
+    	$set = ['pickup_address' =>'Not Set',
+    			'pickup_date' => 'Not Set',
+    			'pickup_time' => 'Not Set',
+    			'dropoff_address' => 'Not Set',
+    			'dropoff_time' => 'Not Set',
+    			'dropoff_date'=> 'Not Set'];
+
+   		if(isset($data)) {
+   			$pickup_address_id = (isset($data['pickup_address'])) ? $data['pickup_address'] : false;
+   			$dropoff_address_id = (isset($data['dropoff_address'])) ? $data['dropoff_address'] : $data['pickup_address'];
+   			$pickup_delivery_id = (isset($data['pickup_delivery_id'])) ? $data['pickup_delivery_id'] : false;
+   			$dropoff_delivery_id = (isset($data['dropoff_delivery_id'])) ? $data['dropoff_delivery_id'] : false;
+   			$pickup_address = Address::find($pickup_address_id);
+   			$dropoff_address = Address::find($dropoff_address_id);
+   			$pickup_delivery = Delivery::find($pickup_delivery_id);
+   			$dropoff_delivery = Delivery::find($dropoff_delivery_id);
+
+   			if (isset($data['pickup_date'])) {
+   				$set['pickup_date'] = date('D m/d/Y',strtotime($data['pickup_date']));
+   			}
+			if (isset($data['dropoff_date'])) {
+   				$set['dropoff_date'] = date('D m/d/Y',strtotime($data['dropoff_date']));
+   			}
+   			if(count($pickup_address)) {
+   				$set['pickup_address'] = $pickup_address['name'].' - '.$pickup_address['zipcode'];
+   			} 
+
+   			if (count($dropoff_address)) {
+   				$set['dropoff_address'] = $dropoff_address['name'].' - '.$dropoff_address['zipcode'];	
+   			}
+
+   			if (count($pickup_delivery)) {
+   				$set['pickup_time'] = $pickup_delivery['start_time'].' - '.$pickup_delivery['end_time'];
+   			}
+
+   			if (count($dropoff_delivery)) {
+   				$set['dropoff_time'] = $dropoff_delivery['start_time'].' - '.$dropoff_delivery['end_time'];
+   			}
+
+
+
+   		} 
+
+   		return $set;
     }
 }

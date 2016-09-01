@@ -15,6 +15,10 @@
         format:'D m/d/Y',
         disabled_dates: ['{{ $calendar_disabled }}'],
         direction: [true, false],
+        show_select_today: false,
+        @if ($selected_date)
+        start_date :'{{ date("D m/d/Y",strtotime($selected_date)) }}',
+        @endif
         onSelect: function(a, b) {
             var pickup_address_id = $("#pickup_address option:selected").val();
             request.set_time_pickup(b, pickup_address_id);
@@ -61,11 +65,52 @@
 
 @section('content')
     <div class="row">
+        <div id="bc1" class="btn-group btn-breadcrumb col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <a href="{{ route('delivery_pickup') }}" class="btn btn-default active col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px;">
+                <h2><span class="badge">1</span> Pickup</h2>
+                <table class="table table-condensed ">
+                    <tbody>
+                        <tr>
+                            <td><p style="margin:0;">{{ $breadcrumb_data['pickup_address'] }}</p></td>
+                        </tr>
+                        <tr>
+                            <td><p style="margin:0">{{ $breadcrumb_data['pickup_date'] }}</p></td>
+                        </tr>
+                        <tr>
+                            <td><p style="margin:0">{{ $breadcrumb_data['pickup_time'] }}</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </a>
+            <a href="{{ route('delivery_dropoff') }}" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12 disabled" disabled="true" style="height:160px">
+                <h2><span class="badge">2</span> Dropoff</h2>
+                <table class="table table-condensed ">
+                    <tbody>
+                        <tr>
+                            <td><p style="margin:0;">{{ $breadcrumb_data['dropoff_address'] }}</p></td>
+                        </tr>
+                        <tr>
+                            <td><p style="margin:0">{{ $breadcrumb_data['dropoff_date'] }}</p></td>
+                        </tr>
+                        <tr>
+                            <td><p style="margin:0">{{ $breadcrumb_data['dropoff_time'] }}</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </a>
+            <a href="{{ route('delivery_confirmation') }}" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12 disabled" disabled="true" style="height:160px">
+                <h2><span class="badge">3</span> Confirm</h2>
+            </a>
+
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
             <div class="panel panel-default">
                 {!! Form::open(['action' => 'DeliveriesController@postPickupForm', 'class'=>'form-horizontal','role'=>"form"]) !!}
                     {!! csrf_field() !!} 
-                    <div class="panel-heading"><strong>Pickup Form</strong></div>
+                    <div class="panel-heading"><strong>Pickup Form</strong> - we pick up from you.</div>
                     <div id="pickup_body" class="panel-body">                   
                         <div class="form-group{{ $errors->has('pickup_address') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
@@ -88,7 +133,7 @@
 
                             <div id="pickup_container" class="col-md-6">
                                 @if ($zipcode_status) 
-                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" style="background-color:#ffffff;">
+                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" style="background-color:#ffffff;">
                                 @else
                                 <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" disabled="true" >
                                 @endif
@@ -104,7 +149,11 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Time</label>
 
                             <div class="col-md-6">
+                                @if ($selected_delivery_id)
+                                {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control']) }}
+                                @else
                                 {{ Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true"]) }}
+                                @endif
                                 
                                 @if ($errors->has('pickup_time'))
                                     <span class="help-block">
@@ -116,7 +165,8 @@
                     </div>
 
                     <div class="panel-footer clearfix">
-                        <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" disabled="true">Set Pickup</button>
+                        <a href="{{ route('delivery_cancel') }}" class="btn btn-danger btn-lg">Cancel</a>
+                        <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" >Set Pickup</button>
                     </div>
                 {!! Form::close() !!}
                 </div>
