@@ -51,7 +51,7 @@
     <div class="row">
         <div id="bc1" class="btn-group btn-breadcrumb col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-            <a href="{{ route('delivery_pickup') }}" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px;">
+            <a href="{{ route('delivery_pickup') }}" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px; overflow:hidden">
             	<h2><span class="badge">1</span> Pickup</h2>
         		<table class="table table-condensed ">
         			<tbody>
@@ -67,7 +67,7 @@
         			</tbody>
         		</table>
             </a>
-            <a href="{{ route('delivery_dropoff') }}" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px">
+            <a href="{{ route('delivery_dropoff') }}" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px; overflow:hidden">
             	<h2><span class="badge">2</span> Dropoff</h2>
             	<table class="table table-condensed ">
         			<tbody>
@@ -90,9 +90,60 @@
 
         </div>
 	</div>
-	<div class="row">
-		
-	</div>
+	<div class="row"><p></p></div>
+	@if (count($cards) > 0)
+    <div class="wrapper style2 special-alt no-background-image">
+    	<div class="row 50%">
+            <div class="8u">
+                <header>
+                    <h2>Outstanding! <strong></strong> is covered by our delivery routes!</h2>
+                </header>
+                <p>Click Here To learn more about our delivery system and how we can provide our quality and price guarantee. </p>
+                <footer>
+                    <ul class="buttons">
+                        <li><a href="{{ route('pages_registration') }}" class="button">Get Started</a></li>
+                    </ul>
+                </footer>
+            </div>
+            <div class="4u">
+                <ul class="featured-icons">
+                    <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
+                    <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
+                    <li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>
+                    <li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li>
+                    <li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>
+                    <li><span class="icon fa-cog"><span class="label">Feature 6</span></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @else
+    <div class="wrapper style3 special-alt no-background-image">
+        <div class="row 50%">
+            <div class="8u">
+                <header>
+                    <h2>No credit card on file!</h2>
+                </header>
+                <p>In order for us to confirm your delivery schedule we must have at least one qualified credit card on file. Please use the link below to setup your stored credit card information.</p>
+                <footer>
+                    <ul class="buttons">
+                        <li><a href="{{ route('cards_index') }}" class="button">Manage Credit Cards</a></li>
+                    </ul>
+                </footer>
+            </div>
+            <div class="4u">
+                <ul class="featured-icons">
+                    <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
+                    <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
+                    <li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>
+                    <li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li>
+                    <li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>
+                    <li><span class="icon fa-cog"><span class="label">Feature 6</span></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	@endif		
 
 
 @stop

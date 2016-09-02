@@ -32,13 +32,15 @@ class AddressesController extends Controller
     	$this->layout = 'layouts.frontend_basic';
     }   
 
-    public function getIndex() {
+    public function getIndex(Request $request) {
     	$addresses = Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get();
         $auth = (Auth::check()) ? Auth::user() : False;
+        $form_previous = ($request->session()->has('form_previous')) ? $request->session()->get('form_previous') : 'delivery_pickup';
         return view('addresses.index')
         ->with('layout',$this->layout)
         ->with('addresses',$addresses)
-        ->with('auth',$auth);
+        ->with('auth',$auth)
+        ->with('form_previous',$form_previous);
     }
 
     public function getAdd() {

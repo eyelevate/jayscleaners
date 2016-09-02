@@ -19,6 +19,7 @@ use App\Http\Controllers\Controller;
 use App\Job;
 use App\Address;
 use App\User;
+use App\Card;
 use App\Company;
 use App\Customer;
 use App\Custid;
@@ -26,6 +27,8 @@ use App\Delivery;
 use App\Layout;
 use App\Schedule;
 use App\Zipcode;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
 
 class DeliveriesController extends Controller
 {
@@ -34,7 +37,8 @@ class DeliveriesController extends Controller
     }
 
     public function getPickupForm(Request $request) {
-        // $request->session()->forget('schedule');
+
+        $request->session()->put('form_previous','delivery_pickup');
     	$auth = (Auth::check()) ? Auth::user() : false;
         $addresses = Address::addressSelect(Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get());
         
@@ -111,6 +115,7 @@ class DeliveriesController extends Controller
     } 
 
     public function getDropoffForm(Request $request) {
+        $request->session()->put('form_previous','delivery_dropoff');
         $pickup_data = $request->session()->get('schedule');
         $check_session = (isset($pickup_data['pickup_address'])) ? true : false;
         if($check_session) {
@@ -202,16 +207,16 @@ class DeliveriesController extends Controller
     }
 
     public function getConfirmation(Request $request) {
+        $request->session()->put('form_previous','delivery_confirmation');
         $schedule_data = $request->session()->get('schedule');
         $breadcrumb_data = Delivery::setBreadCrumbs($schedule_data);
-        $profile_id = Auth::user()->profile_id;
-        $payment_id = Auth::user()->payment_id;
-
+        $cards = Card::where('user_id',Auth::user()->id)->get();
 
         return view('deliveries.confirmation')
         ->with('layout',$this->layout)
         ->with('schedule',$schedule_data)
-        ->with('breadcrumb_data',$breadcrumb_data);
+        ->with('breadcrumb_data',$breadcrumb_data)
+        ->with('cards',$cards);
     }
 
     public function postConfirmation(Request $request) {

@@ -57,6 +57,15 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/address/edit', ['as'=>'address_edit_post','uses'=>'AddressesController@postEdit']);
 		Route::get('/address/delete/{id}', ['as'=>'address_delete','uses'=>'AddressesController@getDelete']);
 		Route::get('/address/primary/{id}', ['as'=>'address_primary','uses'=>'AddressesController@getPrimary']);
+		
+		//Cards
+		Route::get('/cards', ['as'=>'cards_index','uses'=>'CardsController@getIndex']);
+		Route::get('/cards/add',['as'=>'cards_add','uses'=>'CardsController@getAdd']);
+    	Route::post('/cards/add', ['as'=>'cards_add_post','uses'=>'CardsController@postAdd']);
+		Route::get('/cards/edit/{$id}',['as'=>'cards_edit','uses'=>'CardsController@getEdit']);
+    	Route::post('/cards/edit', ['as'=>'cards_edit_post','uses'=>'CardsController@postEdit']);
+    	Route::get('/cards/delete/{$id}',['as'=>'cards_delete','uses'=>'CardsController@getDelete']);
+
 		//Delivery 
 		Route::get('/delivery/confirmation', ['as'=>'delivery_confirmation','uses'=>'DeliveriesController@getConfirmation']);
     	Route::post('/delivery/confirmation', ['as'=>'delivery_confirmation_post','uses'=>'DeliveriesController@postConfirmation']);
