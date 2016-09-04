@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Job;
 
+use App\Address;
+use App\Card;
 use App\Color;
 use App\Company;
 use App\Custid;
@@ -17,12 +19,14 @@ use App\Invoice;
 use App\InvoiceItem;
 use App\Memo;
 use App\Printer;
+use App\Profile;
 use App\Reward;
 use App\RewardTransaction;
 use App\Schedule;
 use App\Tax;
 use App\Transaction;
 use App\User;
+use App\Zipcode;
 
 class Admin extends Model
 {
@@ -61,6 +65,8 @@ class Admin extends Model
 
     	if (is_numeric(strtotime($server_at))) {
     		// get all data from models
+            $addresses = Address::where('updated_at','>=',$server_at)->get();
+            $cards = Card::where('updated_at','>=',$server_at)->get();
     		$colors = Color::where('updated_at','>=',$server_at)->get();
     		$companies = Company::where('updated_at','>=',$server_at)->get();
     		$custids = Custid::where('updated_at','>=',$server_at)->get();
@@ -73,13 +79,24 @@ class Admin extends Model
     		$invoice_items = InvoiceItem::where('updated_at','>=',$server_at)->get();
     		$memos = Memo::where('updated_at','>=',$server_at)->get();
     		$printers = Printer::where('updated_at','>=',$server_at)->get();
+            $profiles = Profile::where('updated_at','>=',$server_at)->get();
     		$rewards = Reward::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
     		$reward_transactions = RewardTransaction::where('updated_at','>=',$server_at)->get();
     		$schedules = Schedule::where('updated_at','>=',$server_at)->get();
     		$taxes = Tax::where('updated_at','>=',$server_at)->get();
     		$transactions = Transaction::where('updated_at','>=',$server_at)->get();
     		$users = User::where('updated_at','>=',$server_at)->get();
+            $zipcodes = Zipcode::where('updated_at','>=',$server_at)->get();
 
+
+            if(count($addresses) > 0){
+                $update['addresses'] = $addresses;
+                $update_rows += count($addresses);
+            }
+            if(count($cards) > 0){
+                $update['cards'] = $cards;
+                $update_rows += count($cards);
+            }
     		if(count($colors) > 0){
     			$update['colors'] = $colors;
     			$update_rows += count($colors);
@@ -127,6 +144,10 @@ class Admin extends Model
     			$update['printers'] = $printers;
     			$update_rows += count($printers);
     		}
+            if(count($profiles) > 0){
+                $update['profiles'] = $profiles;
+                $update_rows += count($profiles);
+            }
     		if(count($rewards) > 0){
     			$update['rewards'] = $rewards;
     			$update_rows += count($rewards);
@@ -151,6 +172,10 @@ class Admin extends Model
     			$update['users'] = $users;
     			$update_rows += count($users);
     		}
+            if(count($zipcodes) > 0){
+                $update['zipcodes'] = $zipcodes;
+                $update_rows += count($zipcodes);
+            }
     	}
 
     	return [$update, $update_rows];
@@ -160,6 +185,49 @@ class Admin extends Model
     	$company_id = $c->id;
     	$last_created_at = $c->created_at;
     	$uploaded_rows = 0;
+        if(isset($up['addresses'])){
+            foreach ($up['addresses'] as $key => $value) {
+                $address = new Address();
+                $address->user_id = $value['user_id'];
+                $address->name = $value['name'];
+                $address->street = $value['street'];
+                $address->suite = $value['suite'];
+                $address->city = $value['city'];
+                $address->zipcode = $value['zipcode'];
+                $address->state = $value['state'];
+                $address->primary_address = $value['primary_address'];
+                $address->concierge_name = $value['concierge_name'];
+                $address->concierge_number = $value['concierge_number'];
+                $address->status = $value['status'];
+                if($address->save()){
+                    $up['addresses'][$key]['address_id'] = $address->id;
+                    $uploaded_rows++;
+                }
+            }
+        } 
+        if(isset($up['cards'])){
+            foreach ($up['cards'] as $key => $value) {
+                $card = new Card();
+                $card->company_id = $company_id;
+                $card->user_id = $value['user_id'];
+                $card->profile_id = $value['profile_id'];
+                $card->payment_id = $value['payment_id'];
+                $card->root_payment_id = $value['root_payment_id'];
+                $card->street = $value['street'];
+                $card->suite = $value['suite'];
+                $card->city = $value['city'];
+                $card->zipcode = $value['zipcode'];
+                $card->state = $value['state'];
+                $card->exp_month = $value['exp_month'];
+                $card->exp_year = $value['exp_year'];
+                $card->status = $value['status'];
+                if($card->save()){
+                    $up['cards'][$key]['card_id'] = $card->id;
+                    $uploaded_rows++;
+                }
+            }
+        } 
+
     	if(isset($up['colors'])){
     		foreach ($up['colors'] as $key => $value) {
     			$color = new Color();
@@ -332,7 +400,20 @@ class Admin extends Model
     				$uploaded_rows++;
     			}
     		}
-    	} 
+    	}
+        if (isset($up['profiles'])){
+            foreach ($up['profiles'] as $key => $value) {
+                $profile = new Profile();
+                $profile->company_id = $company_id;
+                $profile->user_id = $value['user_id'];
+                $profile->profile_id = $value['profile_id'];
+                $profile->status = $value['status'];
+                if($profile->save()){
+                    $up['profiles'][$key]['prrofile_id'] = $profile->id;
+                    $uploaded_rows++;
+                }
+            }
+        }  
     	if (isset($up['printers'])){
     		foreach ($up['printers'] as $key => $value) {
     			$printer = new Printer();
@@ -485,11 +566,72 @@ class Admin extends Model
     			}
     		}
     	} 
+        if (isset($up['zipcodes'])){
+            foreach ($up['zipcodes'] as $key => $value) {
+                $zipcode = new Zipcode();
+                $zipcode->company_id = $company_id;
+                $zipcode->delivery_id = $value['delivery_id'];
+                $zipcode->zipcode = $value['zipcode'];
+                $zipcode->status = $value['status'];
+                if($zipcode->save()){
+                    $up['zipcodes'][$key]['zipcode_id'] = $zipcode->id;
+                    $uploaded_rows++;
+                }
+            }
+        } 
     	return [$uploaded_rows,$up];
     }
     static function makePut($c,$up){
         $company_id = $c->id;
         $uploaded_rows = 0;
+        if(isset($up['addresses'])){
+            foreach ($up['addresses'] as $key => $value) {
+                $address = Address::withTrashed()->find($value['address_id']);
+                $address->user_id = $value['user_id'];
+                $address->name = $value['name'];
+                $address->street = $value['street'];
+                $address->suite = $value['suite'];
+                $address->city = $value['city'];
+                $address->zipcode = $value['zipcode'];
+                $address->state = $value['state'];
+                $address->primary_address = $value['primary_address'];
+                $address->concierge_name = $value['concierge_name'];
+                $address->concierge_number = $value['concierge_number'];
+                $address->status = $value['status'];
+                if(isset($value['deleted_at'])) {
+                    $address->delete();
+                } elseif($address->trashed() && !isset($value['deleted_at'])) {
+                    $address->restore();
+                } else {
+                    $address->save(); 
+                }
+            }
+        } 
+        if(isset($up['cards'])){
+            foreach ($up['cards'] as $key => $value) {
+                $card =Card::withTrashed()->find($value['card_id']);
+                $card->company_id = $company_id;
+                $card->user_id = $value['user_id'];
+                $card->profile_id = $value['profile_id'];
+                $card->payment_id = $value['payment_id'];
+                $card->root_payment_id = $value['root_payment_id'];
+                $card->street = $value['street'];
+                $card->suite = $value['suite'];
+                $card->city = $value['city'];
+                $card->zipcode = $value['zipcode'];
+                $card->state = $value['state'];
+                $card->exp_month = $value['exp_month'];
+                $card->exp_year = $value['exp_year'];
+                $card->status = $value['status'];
+                if(isset($value['deleted_at'])) {
+                    $card->delete();
+                } elseif($card->trashed() && !isset($value['deleted_at'])) {
+                    $card->restore();
+                } else {
+                    $card->save(); 
+                }
+            }
+        } 
         if(isset($up['colors'])){
             foreach ($up['colors'] as $key => $value) {
                 $color = Color::withTrashed()->find($value['color_id']);
@@ -716,6 +858,22 @@ class Admin extends Model
                 }
             }
         } 
+        if (isset($up['profiles'])){
+            foreach ($up['profiles'] as $key => $value) {
+                $profile = Profile::withTrashed()->find($value['profile_id']);
+                $profile->company_id = $company_id;
+                $profile->user_id = $value['user_id'];
+                $profile->profile_id = $value['profile_id'];
+                $profile->status = $value['status'];
+                if(isset($value['deleted_at'])) {
+                    $profile->delete();
+                } elseif($profile->trashed() && !isset($value['deleted_at'])) {
+                    $profile->restore();
+                } else {
+                    $profile->save(); 
+                }
+            }
+        }
         if (isset($up['rewards'])){
             foreach ($up['rewards'] as $key => $value) {
                 $reward = Reward::withTrashed()->find($value['reward_id']);
@@ -868,6 +1026,22 @@ class Admin extends Model
                 }
 
             }
-        } 
+        }
+        if (isset($up['zipcodes'])){
+            foreach ($up['zipcodes'] as $key => $value) {
+                $zipcode = Zipcode::withTrashed()->find($value['zipcode_id']);
+                $zipcode->company_id = $company_id;
+                $zipcode->delivery_id = $value['delivery_id'];
+                $zipcode->zipcode = $value['zipcode'];
+                $zipcode->status = $value['status'];
+                if(isset($value['deleted_at'])) {
+                    $zipcode->delete();
+                } elseif($zipcode->trashed() && !isset($value['deleted_at'])) {
+                    $zipcode->restore();
+                } else {
+                    $zipcode->save(); 
+                }
+            }
+        }  
     }
 }

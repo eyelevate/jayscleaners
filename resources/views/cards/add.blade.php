@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('suite') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label padding-top-none">Billing Suite <span style="color:#ff0000">*</span></label>
+                            <label class="col-md-4 control-label padding-top-none">Billing Suite</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control"  name="suite" value="{{ old('suite') }}" placeholder="e.g. 201A">
@@ -181,7 +181,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4 clearfix">
-                            	<a href="{{ route('address_index') }}" class="btn btn-danger btn-lg">Cancel</a>
+                            	<a href="{{ route('cards_index') }}" class="btn btn-danger btn-lg">Cancel</a>
                                 <button type="submit" class="btn btn-lg btn-primary pull-right">Add</button>
                             </div>
                         </div>

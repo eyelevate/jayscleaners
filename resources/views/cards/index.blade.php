@@ -63,7 +63,7 @@
 									<p class="clearfix"> <strong>Expiration Date:</strong> <i>{{ $card['exp_month'] }} / {{ $card['exp_year'] }} <span class="pull-right">{{ $card['days_remaining']}}</span></p>
 									<ul class="clearfix">
 										<li class="pull-left"><a href="{{ route('cards_delete',$card['id']) }}" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
-										<li class="pull-left"><a href="{{ route('cards_edit',$card['id']) }}" class="btn btn-default" role="button">Edit</a>&nbsp</li>
+										<li class="pull-left"><a href="{!! route('cards_edit',$card['id']) !!}" class="btn btn-default" role="button">Edit</a>&nbsp</li>
 									</ul>
 								</div>
 							</div>

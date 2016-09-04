@@ -62,9 +62,11 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/cards', ['as'=>'cards_index','uses'=>'CardsController@getIndex']);
 		Route::get('/cards/add',['as'=>'cards_add','uses'=>'CardsController@getAdd']);
     	Route::post('/cards/add', ['as'=>'cards_add_post','uses'=>'CardsController@postAdd']);
-		Route::get('/cards/edit/{$id}',['as'=>'cards_edit','uses'=>'CardsController@getEdit']);
-    	Route::post('/cards/edit', ['as'=>'cards_edit_post','uses'=>'CardsController@postEdit']);
-    	Route::get('/cards/delete/{$id}',['as'=>'cards_delete','uses'=>'CardsController@getDelete']);
+    	Route::get('cards/edit/{id}', ['as' => 'cards_edit', 'uses'=>'CardsController@getEdit', function ($id) {}]);
+		Route::post('/cards/edit',['as'=>'cards_edit_post','uses'=>'CardsController@postEdit']);
+    	Route::get('/cards/edit_again',['as'=>'cards_edit_again','uses'=>'CardsController@getEditAgain']);
+    	Route::get('cards/delete/{id}', ['as' => 'cards_delete', 'uses'=>'CardsController@getDelete', function ($id) {}]);
+    	Route::get('/cards/delete_again',['as'=>'cards_delete_again','uses'=>'CardsController@getDeleteAgain']);
 
 		//Delivery 
 		Route::get('/delivery/confirmation', ['as'=>'delivery_confirmation','uses'=>'DeliveriesController@getConfirmation']);
