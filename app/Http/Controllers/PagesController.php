@@ -23,6 +23,8 @@ use App\Customer;
 use App\Custid;
 use App\Delivery;
 use App\Layout;
+use App\Schedule;
+use App\Address;
 use App\Zipcode;
 
 
@@ -39,8 +41,11 @@ class PagesController extends Controller
     public function getIndex()
     {
         $auth = (Auth::check()) ? Auth::user() : False;
+
+        $schedules = ($auth) ? Schedule::prepareSchedule(Schedule::where('customer_id',Auth::user()->id)->orderBy('id','desc')->limit(1)->get()) : false;
         return view('pages.index')
         ->with('layout',$this->layout)
+        ->with('schedules',$schedules)
         ->with('auth',$auth);
     }
 
@@ -142,5 +147,38 @@ class PagesController extends Controller
 
 
         }
+    }
+
+    public function postOneTouch(Request $request) {
+        $schedules = Schedule::prepareSchedule(Schedule::where('customer_id',Auth::user()->id)->orderBy('id','desc')->limit(1)->get());
+        if (count($schedules) > 0) {
+            foreach ($schedules as $schedule) {
+                $today = strtotime(date('Y-m-d 00:00:00'));
+                $company_id = $schedule['company_id'];
+                $last_dropoff_date = strtotime($schedule['dropoff_date']);
+                $start_date = ($today >= $last_dropoff_date) ? $today : $last_dropoff_date;
+                $next_available_pickup = Delivery::prepareNextAvailableDate($schedule['pickup_delivery_id'],date('Y-m-d H:i:s',$start_date));
+                $next_available_dropoff = Delivery::prepareNextAvailableDate($schedule['dropoff_delivery_id'],$next_available_pickup);
+                
+                // set session
+                $request->session()->put('schedule', [
+                    'pickup_delivery_id' => $schedule['pickup_delivery_id'],
+                    'pickup_address' => $schedule['pickup_address'],
+                    'pickup_date'=> $next_available_pickup,            
+                    'dropoff_delivery_id' => $schedule['dropoff_delivery_id'],
+                    'dropoff_address' => $schedule['pickup_address'],
+                    'dropoff_date'=> $next_available_dropoff,
+                    'company_id' => $company_id
+                ]);
+
+                Flash::success('Please review the information set below before confirming your delivery schedule.');
+            }
+            
+        } else {
+            Flash::error('Not enough available data to create a one touch delivery. Please complete form to set delivery.');
+            
+        }
+        return Redirect::route('delivery_confirmation');
+        
     }
 }

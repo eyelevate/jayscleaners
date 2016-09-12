@@ -45,8 +45,9 @@ request = {
 			}
 		);
 	},
+
 	set_time_dropoff: function(b, id) {
-		console.log('here');
+
 		var token = $('meta[name=csrf-token]').attr('content');
 		$.post(
 			'/delivery/set_time',

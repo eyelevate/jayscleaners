@@ -8,11 +8,21 @@
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
 <script type="text/javascript" src="/js/deliveries/dropoff.js"></script>
 <script type="text/javascript">
-
+    disabled_dates = [];
+    <?php
+    if (count($calendar_disabled) > 0) {
+        foreach ($calendar_disabled as $cd) {
+        ?>
+        var item_string = '<?php echo e($cd); ?>';
+        disabled_dates.push(item_string);
+        <?php
+        }
+    }
+    ?>
     $('#dropoffdate').Zebra_DatePicker({
         container:$("#dropoff_container"),
         format:'D m/d/Y',
-        disabled_dates: ['<?php echo e($calendar_disabled); ?>'],
+        disabled_dates: disabled_dates,
         direction: ['<?php echo e($date_start); ?>', false],
         show_select_today: false,
         onSelect: function(a, b) {
@@ -32,7 +42,7 @@
                 <li class="submenu">
                     <a href="#"><small>Hello </small><strong><?php echo e($auth->username); ?></strong></a>
                     <ul>
-                        <li><a href="no-sidebar.html">Your Deliveries</a></li>
+                        <li><a href="<?php echo e(route('delivery_index')); ?>">Your Deliveries</a></li>
                         <li><a href="left-sidebar.html">Services</a></li>
                         <li><a href="right-sidebar.html">Business Hours</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
@@ -65,7 +75,7 @@
     <div class="row">
         <div id="bc1" class="btn-group btn-breadcrumb col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-            <a href="<?php echo e(route('delivery_pickup')); ?>" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px;">
+            <a href="<?php echo e(route('delivery_pickup')); ?>" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px; overflow:hidden;">
             	<h2><span class="badge">1</span> Pickup</h2>
         		<table class="table table-condensed ">
         			<tbody>
@@ -81,7 +91,7 @@
         			</tbody>
         		</table>
             </a>
-            <a href="<?php echo e(route('delivery_dropoff')); ?>" class="btn btn-default active col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px">
+            <a href="<?php echo e(route('delivery_dropoff')); ?>" class="btn btn-default active col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px; overflow:hidden;">
             	<h2><span class="badge">2</span> Dropoff</h2>
             	<table class="table table-condensed ">
         			<tbody>
@@ -97,7 +107,7 @@
         			</tbody>
         		</table>
             </a>
-            <a href="<?php echo e(route('delivery_confirmation')); ?>" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12 disabled" disabled="true" style="height:160px">
+            <a href="<?php echo e(route('delivery_confirmation')); ?>" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12 disabled" disabled="true" style="height:160px; overflow:hidden;">
             	<h2><span class="badge">3</span> Confirm</h2>
             </a>
 
@@ -163,7 +173,7 @@
                     </div>
                     <div class="panel-footer clearfix">
                     	<a href="<?php echo e(route('delivery_pickup')); ?>" class='btn btn-link btn-lg'><i class="ion-arrow-left-c"></i> Back</a>
-                        <button id="dropoff_submit" type="submit" class="btn btn-lg btn-primary pull-right" disabled="true">Set Dropoff</button>
+                        <button id="dropoff_submit" type="submit" class="btn btn-lg btn-primary pull-right" disabled="true">Next</button>
                     </div>
                 <?php echo Form::close(); ?>
 

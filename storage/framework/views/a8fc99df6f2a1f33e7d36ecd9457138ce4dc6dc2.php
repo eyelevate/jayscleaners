@@ -1,13 +1,14 @@
 <?php $__env->startSection('stylesheets'); ?>
 <link rel="stylesheet" href="/packages/zebra_datepicker/public/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/css/deliveries/delivery.css" type="text/css">
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
 <script type="text/javascript" src="/packages/zebra_datepicker/public/javascript/zebra_datepicker.js"></script>
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
-<script type="text/javascript" src="/js/deliveries/pickup.js"></script>
+<script type="text/javascript" src="/js/deliveries/update.js"></script>
 <script type="text/javascript">
-    disabled_dates = [];
+	disabled_dates = [];
     <?php
     if (count($calendar_disabled) > 0) {
         foreach ($calendar_disabled as $cd) {
@@ -29,10 +30,21 @@
         <?php endif; ?>
         onSelect: function(a, b) {
             var pickup_address_id = $("#pickup_address option:selected").val();
-            request.set_time_pickup(b, pickup_address_id);
+            var pickup_delivery_id = $("#pickuptime option:selected").val();
+            request.set_time_pickup(b, pickup_address_id, pickup_delivery_id);
         }
     });
-
+    $('#dropoffdate').Zebra_DatePicker({
+        container:$("#dropoff_container"),
+        format:'D m/d/Y',
+        disabled_dates: disabled_dates,
+        direction: ['<?php echo e(date("D m/d/Y",strtotime($dropoff_date))); ?>', false],
+        show_select_today: false,
+        onSelect: function(a, b) {
+            var dropoff_address_id = $("#pickup_address option:selected").val();
+            request.set_time_dropoff(b, dropoff_address_id);
+        }
+    });
 </script>
 <?php $__env->stopSection(); ?>
 
@@ -42,14 +54,14 @@
         <nav id="nav">
             <ul>
                 <li class="submenu">
-                    <a href="#"><small>Hello </small><strong><?php echo e($auth->username); ?></strong></a>
+                    <a href="#"><small>Hello </small><strong><?php echo e(Auth::user()->username); ?></strong></a>
                     <ul>
-                        <li><a href="no-sidebar.html">Your Deliveries</a></li>
+                        <li><a href="<?php echo e(route('delivery_index')); ?>">Your Deliveries</a></li>
                         <li><a href="left-sidebar.html">Services</a></li>
                         <li><a href="right-sidebar.html">Business Hours</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                         <li class="submenu">
-                            <a href="#"><?php echo e($auth->username); ?> menu</a>
+                            <a href="#"><?php echo e(Auth::user()->username); ?> menu</a>
                             <ul>
                                 <li><a href="#">Dolore Sed</a></li>
                                 <li><a href="#">Consequat</a></li>
@@ -75,53 +87,14 @@
 
 <?php $__env->startSection('content'); ?>
     <div class="row">
-        <div id="bc1" class="btn-group btn-breadcrumb col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-            <a href="<?php echo e(route('delivery_pickup')); ?>" class="btn btn-default active col-lg-4 col-md-4 col-sm-4 col-xs-12" style="height:160px; overflow:hidden;">
-                <h2><span class="badge">1</span> Pickup</h2>
-                <table class="table table-condensed ">
-                    <tbody>
-                        <tr>
-                            <td><p style="margin:0;"><?php echo e($breadcrumb_data['pickup_address']); ?></p></td>
-                        </tr>
-                        <tr>
-                            <td><p style="margin:0"><?php echo e($breadcrumb_data['pickup_date']); ?></p></td>
-                        </tr>
-                        <tr>
-                            <td><p style="margin:0"><?php echo e($breadcrumb_data['pickup_time']); ?></p></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </a>
-            <a href="<?php echo e(route('delivery_dropoff')); ?>" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12 disabled" disabled="true" style="height:160px; overflow:hidden;">
-                <h2><span class="badge">2</span> Dropoff</h2>
-                <table class="table table-condensed ">
-                    <tbody>
-                        <tr>
-                            <td><p style="margin:0;"><?php echo e($breadcrumb_data['dropoff_address']); ?></p></td>
-                        </tr>
-                        <tr>
-                            <td><p style="margin:0"><?php echo e($breadcrumb_data['dropoff_date']); ?></p></td>
-                        </tr>
-                        <tr>
-                            <td><p style="margin:0"><?php echo e($breadcrumb_data['dropoff_time']); ?></p></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </a>
-            <a href="<?php echo e(route('delivery_confirmation')); ?>" class="btn btn-default col-lg-4 col-md-4 col-sm-4 col-xs-12 disabled" disabled="true" style="height:160px; overflow:hidden;">
-                <h2><span class="badge">3</span> Confirm</h2>
-            </a>
-
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
             <div class="panel panel-default">
-                <?php echo Form::open(['action' => 'DeliveriesController@postPickupForm', 'class'=>'form-horizontal','role'=>"form"]); ?>
+                <?php echo Form::open(['action' => 'DeliveriesController@postUpdate', 'class'=>'form-horizontal','role'=>"form"]); ?>
 
                     <?php echo csrf_field(); ?> 
-                    <div class="panel-heading"><strong>Pickup Form</strong> - we pick up from you.</div>
+                    <?php echo Form::hidden('id',$update_id); ?>
+
+                    <div class="panel-heading"><strong>Delivery Update Form</strong></div>
                     <div id="pickup_body" class="panel-body">                   
                         <div class="form-group<?php echo e($errors->has('pickup_address') ? ' has-error' : ''); ?>">
                             <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
@@ -177,10 +150,64 @@
                             </div>
                         </div>
                     </div>
+					<div id="dropoff_body" class="panel-body">  
+                        <div class="form-group<?php echo e($errors->has('dropoff_date') ? ' has-error' : ''); ?> dropoff_date_div">
+                            <label class="col-md-4 control-label padding-top-none">Dropoff Date</label>
+
+                            <div id="dropoff_container" class="col-md-6">
+                                <?php if($zipcode_status): ?> 
+                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e((old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : ''); ?>" style="background-color:#ffffff;">
+                                <?php else: ?>
+                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e(old('dropoff_date')); ?>" disabled="true">
+                                <?php endif; ?>
+                                
+
+                                <?php if($errors->has('dropoff_date')): ?>
+                                    <span class="help-block">
+                                        <strong><?php echo e($errors->first('dropoff_date')); ?></strong>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="form-group<?php echo e($errors->has('dropoff_time') ? ' has-error' : ''); ?> dropoff_time_div">
+                            <label class="col-md-4 control-label padding-top-none">Dropoff Time</label>
+
+                            <div class="col-md-6">
+                                
+								<?php if($dropoff_delivery_id): ?>
+                                <?php echo e(Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control'])); ?>
+
+                                <?php else: ?>
+                                <?php echo e(Form::select('dropoff_time',[''=>'select time'],null,['id'=>'dropofftime','class'=>'form-control', 'disabled'=>"true"])); ?>
+
+                                <?php endif; ?>
+
+                                <?php if($errors->has('dropoff_time')): ?>
+                                    <span class="help-block">
+                                        <strong><?php echo e($errors->first('dropoff_time')); ?></strong>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="form-group<?php echo e($errors->has('special_instructions') ? ' has-error' : ''); ?> dropoff_time_div">
+                            <label class="col-md-4 control-label padding-top-none">Special Instructions</label>
+
+                            <div class="col-md-6">
+                                <?php echo e(Form::textarea('special_instructions',old('special_instructions') ? old('special_instructions') : ($special_instructions) ? $special_instructions : null), ['class'=>'form-control']); ?>
+
+
+                                <?php if($errors->has('dropoff_time')): ?>
+                                    <span class="help-block">
+                                        <strong><?php echo e($errors->first('dropoff_time')); ?></strong>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="panel-footer clearfix">
-                        <a href="<?php echo e(route('delivery_cancel')); ?>" class="btn btn-danger btn-lg">Cancel</a>
-                        <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" >Next</button>
+                        <a href="<?php echo e(route('delivery_index')); ?>" class="btn btn-danger btn-lg">Cancel</a>
+                        <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" >Update</button>
                     </div>
                 <?php echo Form::close(); ?>
 

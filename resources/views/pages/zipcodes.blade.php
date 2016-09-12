@@ -16,7 +16,7 @@
             <li class="submenu">
                 <a href="#">About Us</a>
                 <ul>
-                    <li><a href="no-sidebar.html">Schedule Delivery</a></li>
+                    <li><a href="{{ route('delivery_pickup') }}">Schedule Delivery</a></li>
                     <li><a href="left-sidebar.html">Services</a></li>
                     <li><a href="right-sidebar.html">Business Hours</a></li>
                     <li><a href="contact.html">Contact Us</a></li>

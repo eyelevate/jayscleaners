@@ -15,7 +15,7 @@
                 <li class="submenu">
                     <a href="#"><small>Hello </small><strong><?php echo e($auth->username); ?></strong></a>
                     <ul>
-                        <li><a href="no-sidebar.html">Your Deliveries</a></li>
+                        <li><a href="<?php echo e(route('delivery_index')); ?>">Your Deliveries</a></li>
                         <li><a href="left-sidebar.html">Services</a></li>
                         <li><a href="right-sidebar.html">Business Hours</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
@@ -92,7 +92,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			    <ul>
-			    	<li style="margin-bottom:10px;"><a href="<?php echo e(route($form_previous)); ?>" class="button special-red">Back</a></li>
+			    	<li style="margin-bottom:10px;"><a href="<?php echo e((count($form_previous)> 0) ? route($form_previous[0],$form_previous[1]) : route($form_previous)); ?>" class="button special-red">Back</a></li>
 		            <li><a href="<?php echo e(route('address_add')); ?>" class="button">Add Address</a></li>
 		        </ul>
             </div>

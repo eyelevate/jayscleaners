@@ -20,6 +20,8 @@ class PasswordController extends Controller
 
     use ResetsPasswords;
 
+    protected $redirectTo = '/';
+
     /**
      * Create a new password controller instance.
      *
@@ -28,5 +30,10 @@ class PasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    protected function getSendResetLinkEmailSuccessResponse($response)
+    {
+        return redirect()->route('pages_index')->with('status', trans($response));
     }
 }

@@ -181,6 +181,8 @@ class CardsController extends Controller
 
         $cards_saved = 0;
 
+        $root_payment_id = false;
+
     	// $company_id = 1;
     	$companies = Company::All();
     	if (count($companies) > 0) {
@@ -244,9 +246,10 @@ class CardsController extends Controller
 						$controller = new AnetController\CreateCustomerPaymentProfileController($paymentprofilerequest);
 						$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
 						if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
+							$root_payment_id = ($root_payment_id) ? $root_payment_id : $response->getCustomerPaymentProfileId();
 						  	$cards->profile_id = $prev_profile_id;
 						  	$cards->payment_id = $response->getCustomerPaymentProfileId();
-						  	$cards->root_payment_id = $response->getCustomerPaymentProfileId();
+						  	$cards->root_payment_id = $root_payment_id;
 						  	$cards->status = 1;
 						  	if ($cards->save()) {
 						  		$cards_saved += 1;
@@ -479,23 +482,42 @@ class CardsController extends Controller
 			if(($response != null)) {
 				if ($response->getMessages()->getResultCode() == "Ok") {
 					if ($cards->save()) {
+						$r->session()->put('edit_card_again',[
+				    		"card_id" => $card_id,
+					        "first_name" => $first_name,
+					        "last_name" => $last_name,
+					        "street" => $street,
+					        "city" => $city,
+					        "suite" => $suite,
+					        "zipcode" => $zipcode,
+					        "state" => $state,
+					        "exp_year" => $exp_year,
+					        "exp_month" => $exp_month,
+					        "card_number" => $card_number,
+					        "company_id" => 2, // fix later
+					        "root_payment_id" => $root_payment_id
+						]);
+
 						return Redirect::route('cards_edit_again');
 					}
 					
 				} else {
 					$error_response = "Error: ".$errorMessages[0]->getText();
+					Flash::error($error_response);
+					return Redirect::route('cards_index');
 				}
 			} else {
 				$error_response = "Error: Communication error with authorize.net, please try again";
+				Flash::error($error_response);
+				return Redirect::route('cards_index');
 			}
 
 		} else {
 
 			$error_response = "Error: ".$errorMessages[0]->getText();
+			Flash::error($error_response);
+			return Redirect::route('cards_index');
 		}
-
-		Flash::error($error_response);
-		return Redirect::route('cards_index');
 
     }
 

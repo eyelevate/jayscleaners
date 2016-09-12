@@ -18,7 +18,7 @@
 				<li class="submenu">
 					<a href="#"><small>Hello </small><strong>{{ $auth->username }}</strong></a>
 					<ul>
-						<li><a href="no-sidebar.html">Your Deliveries</a></li>
+						<li><a href="{{ route('delivery_index') }}">Your Deliveries</a></li>
 						<li><a href="left-sidebar.html">Services</a></li>
 						<li><a href="right-sidebar.html">Business Hours</a></li>
 						<li><a href="contact.html">Contact Us</a></li>
@@ -49,7 +49,7 @@
 				<li class="submenu">
 					<a href="#">About Us</a>
 					<ul>
-						<li><a href="no-sidebar.html">Schedule Delivery</a></li>
+						<li><a href="{{ route('delivery_pickup') }}">Schedule Delivery</a></li>
 						<li><a href="left-sidebar.html">Services</a></li>
 						<li><a href="right-sidebar.html">Business Hours</a></li>
 						<li><a href="contact.html">Contact Us</a></li>
@@ -73,7 +73,20 @@
 	Start your delivery today!
 	<br /><br/>							
 	<ul class="buttons vertical">
-		<li><a href="{{ route('delivery_pickup') }}" class="button fit">Schedule Delivery</a></li>
+		<li><a href="{{ route('delivery_start') }}" class="button fit">Schedule Delivery</a></li>
+		@if (count($schedules) > 0)
+		<li>
+			<p><strong>OR</strong></p>
+		</li>
+		<li>
+			{!! Form::open(['action' => 'PagesController@postOneTouch', 'class'=>'form-horizontal','role'=>"form"]) !!}
+  			{!! csrf_field() !!}
+			<ul class="buttons vertical">
+				<li><input type="submit" class="button fit" value="Repeat Last Delivery"/></li>
+			</ul>  			
+			{!! Form::close() !!}
+		</li>
+		@endif
 	</ul>
 
 	@else

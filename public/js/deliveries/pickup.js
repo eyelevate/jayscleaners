@@ -12,6 +12,7 @@ form = {
 	},
 	events: function() {
 		$("#pickup_address").on('change', function() {
+
 			var option_selected = this.value;
 			request.address_check(option_selected);
 		});
@@ -52,7 +53,7 @@ request = {
 				var status = result.status;
 				if (status) {
 					
-					$(".pickup_date_div").find('input').removeAttr('disabled').css({'background-color':'#ffffff'});
+					location.reload();
 					
 				} else {
 					$(".pickup_date_div").find('input').attr('disabled',true).css({'background-color':'#e5e5e5'});

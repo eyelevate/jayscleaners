@@ -20,7 +20,7 @@
                 <li class="submenu">
                     <a href="#"><small>Hello </small><strong>{{ Auth::user()->username }}</strong></a>
                     <ul>
-                        <li><a href="no-sidebar.html">Your Deliveries</a></li>
+                        <li><a href="{{ route('delivery_index') }}">Your Deliveries</a></li>
                         <li><a href="left-sidebar.html">Services</a></li>
                         <li><a href="right-sidebar.html">Business Hours</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
@@ -94,26 +94,129 @@
 	@if (count($cards) > 0)
     <div class="wrapper style2 special-alt no-background-image">
     	<div class="row 50%">
-            <div class="8u">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                 <header>
-                    <h2>Outstanding! <strong></strong> is covered by our delivery routes!</h2>
+                    <h2>Confirmation Of Delivery</h2>
                 </header>
-                <p>Click Here To learn more about our delivery system and how we can provide our quality and price guarantee. </p>
-                <footer>
-                    <ul class="buttons">
-                        <li><a href="{{ route('pages_registration') }}" class="button">Get Started</a></li>
-                    </ul>
-                </footer>
+                <p>Please review your delivery confirmation form data below, then select your desired card on file to finalize the delivery.</p>
+                <section>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label padding-top-none">First Name:</label>
+
+                            <div class="col-md-6">
+                                <strong>    
+                                    <label class="control-label padding-top-none disabled">{{ ucFirst(Auth::user()->first_name) }}</label>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label padding-top-none">Last Name:</label>
+
+                            <div class="col-md-6">
+                                <strong>
+                                    <label class="control-label padding-top-none disabled">{{ ucFirst(Auth::user()->last_name) }}</label>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label padding-top-none">Delivery Address:</label>
+
+                            <div class="col-md-6">
+                                <strong>
+                                    <label class="control-label padding-top-none disabled col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:left; padding-left:0px;">{{ $delivery_address[0] }}</label>
+                                    <label class="control-label passing-top-none disabled">{{ $delivery_address[1] }}</label>
+                                </strong>
+                                <small>
+                                    <a href="{{ route('delivery_pickup') }}" class="btn btn-primary btn-sm">edit</a>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label padding-top-none">Pickup Date:</label>
+
+                            <div class="col-md-6">
+                                <strong>
+                                    <label class="control-label padding-top-none disabled">{{ $pickup_date }}</label>
+                                </strong>
+                                <a href="{{ route('delivery_pickup') }}" class="btn btn-primary btn-sm">edit</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label padding-top-none">Pickup Time:</label>
+
+                            <div class="col-md-6">
+                                <strong>
+                                    <label class="control-label padding-top-none disabled">{{ $pickup_time }}</label>   
+                                </strong>
+                                <small>
+                                    <a href="{{ route('delivery_pickup') }}" class="btn btn-primary btn-sm">edit</a>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label padding-top-none">Dropoff Date:</label>
+
+                            <div class="col-md-6">
+                                <strong>
+                                    <label class="control-label padding-top-none disabled">{{ $dropoff_date }}</label>
+                                </strong>
+                                <small>
+                                    <a href="{{ route('delivery_dropoff') }}" class="btn btn-primary btn-sm">edit</a>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label padding-top-none">Dropoff Time:</label>
+
+                            <div class="col-md-6">
+                                <strong>
+                                    <label class="control-label padding-top-none disabled">{{ $dropoff_time }}</label>
+                                </strong>
+                                <small>
+                                    <a href="{{ route('delivery_dropoff') }}" class="btn btn-primary btn-sm">edit</a>
+                                </small>
+                            </div>
+                        </div>
+                    </form>
+                </section>
             </div>
-            <div class="4u">
-                <ul class="featured-icons">
-                    <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
-                    <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
-                    <li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>
-                    <li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li>
-                    <li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>
-                    <li><span class="icon fa-cog"><span class="label">Feature 6</span></span></li>
-                </ul>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                {!! Form::open(['action' => 'DeliveriesController@postConfirmation', 'class'=>'','role'=>"form"]) !!}
+                    {!! csrf_field() !!}
+                    <div class="form-group{{ $errors->has('payment_id') ? ' has-error' : '' }}">
+                        <label class="col-md-12 control-label padding-top-none">Card on file <span style="color:#ff0000">*</span></label>
+
+                        <div class="col-md-12">
+                            
+                            {{ Form::select('payment_id',$payment_ids,old('payment_id'),['class'=>'form-control']) }}
+                            @if ($errors->has('payment_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('payment_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <a class="btn btn-link" href="{{ route('cards_index') }}" style="color:#ffffff">Manage my cards on file</a>
+                    </div>
+                    <div class="form-group{{ $errors->has('payment_id') ? ' has-error' : '' }} clearfix">
+                        <label class="col-md-12 control-label padding-top-none">Special Instructions (<small>optional</small>)</label>
+
+                        <div class="col-md-12 clearfix">
+                            
+                            {{ Form::textarea('special_instructions',old('special_instructions'),['class'=>'form-control']) }}
+                            @if ($errors->has('special_instructions'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('special_instructions') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <ul class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin:0px;">
+                            <li><input type="submit" href="{{ route('pages_registration') }}" class="button" value="Confirm"/></li>
+                        </ul>
+                    </div>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

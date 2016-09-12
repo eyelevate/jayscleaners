@@ -41,15 +41,16 @@ class AdminsController extends Controller
 {
     public function __construct() {
 
+
         //Set controller variables
     	$this->layout = 'layouts.admin';
 
     }
     
-    public function getIndex() {
-
+    public function getIndex(Request $request) {
         return view('admins.index')
-        ->with('layout',$this->layout);
+        ->with('layout',$this->layout)
+        ->with('role_id',Session::get('role_id'));
     }
 
     public function getLogin() {
@@ -70,7 +71,7 @@ class AdminsController extends Controller
 
                 //redirect to intended page
                 return (Session::has('intended_url')) ? Redirect::to(Session::get('intended_url')) : redirect()->intended('/admins');
-            } else { //LOGING FAILED
+            } else { //LOGIN FAILED
                 Flash::error('Wrong Username or Password!');
                 return view('admins.login')
                 ->with('layout',$this->layout);

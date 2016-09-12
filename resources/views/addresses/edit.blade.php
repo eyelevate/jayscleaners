@@ -18,7 +18,7 @@
                 <li class="submenu">
                     <a href="#"><small>Hello </small><strong>{{ $auth->username }}</strong></a>
                     <ul>
-                        <li><a href="no-sidebar.html">Your Deliveries</a></li>
+                        <li><a href="{{ route('delivery_index') }}">Your Deliveries</a></li>
                         <li><a href="left-sidebar.html">Services</a></li>
                         <li><a href="right-sidebar.html">Business Hours</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
