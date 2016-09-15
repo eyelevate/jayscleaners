@@ -103,7 +103,17 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/settings',['as'=>'admins_settings','uses'=>'AdminsController@getSettings']);
 		Route::get('/admins/view',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
+		Route::get('/admins/sales-data',['as'=>'admins_sales_data','uses'=>'AdminsController@getSalesData']);
 
+		// Address
+		
+		Route::get('/address/admin/{id}', ['as'=>'address_admin_index','uses'=>'AddressesController@getAdminIndex']);
+		Route::get('/address/admin/add/{id}', ['as'=>'address_admin_add','uses'=>'AddressesController@getAdminAdd']);
+		Route::post('/address/admin/add', ['as'=>'address_admin_add_post','uses'=>'AddressesController@postAdminAdd']);
+		Route::get('/address/admin/edit/{id}', ['as'=>'address_admin_edit','uses'=>'AddressesController@getAdminEdit']);
+		Route::post('/address/admin/edit', ['as'=>'address_admin_edit_post','uses'=>'AddressesController@postAdminEdit']);
+		Route::get('/address/admin/delete/{id}', ['as'=>'address_admin_delete','uses'=>'AddressesController@getAdminDelete']);
+		Route::get('/address/admin/primary/{id}', ['as'=>'address_admin_primary','uses'=>'AddressesController@getAdminPrimary']);
 		//Customers
 		Route::get('/colors',  ['as'=>'colors_index', 'uses' => 'ColorsController@getIndex']);
 		Route::get('/colors/add',['as'=>'colors_add','uses'=>'ColorsController@getAdd']);
@@ -133,6 +143,13 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/customers/history/{id}',  ['as'=>'customers_history','uses' => 'CustomersController@getHistory']);
 		Route::get('/customers/view',['as'=>'customers_view','uses'=>'CustomersController@getView']);
 		Route::get('/customers/view/{id}',['as'=>'customers_view','uses'=>'CustomersController@getView']);
+
+
+		// Delivery 
+		Route::get('/delivery/overview',['as'=>'delivery_overview','uses'=>'DeliveriesController@getOverview']);
+		Route::post('/delivery/overview',['as'=>'delivery_overview_post','uses'=>'DeliveriesController@postOverview']);
+		Route::get('/delivery/admin-edit/{id}',  ['as'=>'delivery_admin_edit','uses' => 'DeliveriesController@getAdminEdit']);
+		Route::post('/delivery/admin-edit',['as'=>'delivery_admin_edit_post','uses'=>'DeliveriesController@postAdminEdit']);
 
 		//Invoices
 		Route::get('/invoices',  ['as'=>'invoices_index', 'uses' => 'InvoicesController@getIndex']);
@@ -170,6 +187,27 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/memos/delete',['as'=>'memos_delete_post','uses'=>'MemosController@postDelete']);
 		Route::post('/memos/edit',['uses'=>'MemosController@postEdit']);
 		Route::post('/memos/order',['uses'=>'MemosController@postOrder']);
+
+		// Schedules
+		Route::get('/schedules/checklist',['as'=>'schedules_checklist','uses'=>'SchedulesController@getChecklist']);
+		Route::post('/schedules/checklist',['as'=>'schedules_checklist_post','uses'=>'SchedulesController@postChecklist']);
+		Route::get('/schedules/delivery-route',['as'=>'schedules_delivery_route','uses'=>'SchedulesController@getDeliveryRoute']);
+		Route::post('/schedules/delivery-route',['as'=>'schedules_delivery_route_post','uses'=>'SchedulesController@postDeliveryRoute']);
+		Route::get('/schedules/processing', ['as'=>'schedules_processing','uses' => 'SchedulesController@getProcessing']);
+		Route::get('/schedules/view/{id}', ['as'=>'schedules_view','uses' => 'SchedulesController@getView']);
+		
+
+		Route::post('/schedules/approve-pickup', ['as'=>'schedules_approve_pickup','uses'=>'SchedulesController@postApprovePickup']);
+		Route::post('/schedules/approve-dropoff', ['as'=>'schedules_approve_dropoff','uses'=>'SchedulesController@postApproveDropoff']);
+		Route::post('/schedules/revert-pickup', ['as'=>'schedules_revert_pickup','uses'=>'SchedulesController@postRevertPickup']);
+		Route::post('/schedules/revert-dropoff', ['as'=>'schedules_revert_dropoff','uses'=>'SchedulesController@postRevertDropoff']);
+		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
+		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
+		Route::post('/schedules/approve-pickedup', ['as'=>'schedules_approve_pickedup','uses'=>'SchedulesController@postApprovePickedup']);
+		Route::post('/schedules/approve-delivered', ['as'=>'schedules_approve_delivered','uses'=>'SchedulesController@postApproveDelivered']);
+		Route::post('/schedules/route-options', ['as'=>'schedules_route_options','uses'=>'SchedulesController@postRouteOptions']);
+		
+		
 
 		//Taxes
 		Route::get('/taxes',['as'=>'taxes_index','uses'=>'TaxesController@getIndex']);

@@ -671,7 +671,6 @@ class DeliveriesController extends Controller
     public function getStart(Request $request) {
         if ($request->session()->has('schedule')) {
             $request->session()->forget('schedule');
-            $request->session()->flush();
         }
 
         return Redirect::route('delivery_pickup');
@@ -841,5 +840,183 @@ class DeliveriesController extends Controller
 
     public function getEmailTest() {
         return view('emails.thank_you');        
+    }
+
+    public function getOverview() {
+        $this->layout = 'layouts.dropoff';
+        $today = date('Y-m-d 00:00:00');
+        $schedules = Schedule::where('status','<',12)->where('status','!=',6)->orderBy('id','desc')->get();
+
+        $active_list = Schedule::prepareSchedule($schedules);
+
+        return view('deliveries.overview')
+        ->with('layout',$this->layout)
+        ->with('schedules',$active_list);
+    }
+
+    public function postOverview(Request $request) {
+        $this->validate($request, [
+            'search' => 'required'
+        ]);       
+        
+        $ids = [];
+        if (is_numeric($request->search)) {
+            if (strlen($request->search) < 7) { #search by id
+                $customers = User::find($request->search);
+                array_push($ids,$customers->id);
+            } else { # search by phone number
+                $customers = User::where('phone','LIKE','%'.$request->search.'%')->get();
+                if (count($customers) > 0) {
+                    foreach ($customers as $customer) {
+                        array_push($ids,$customer->id);
+                    }
+                }
+            }
+        } else { # search by last name
+            $customers = User::where('last_name','LIKE','%'.$request->search.'%')->get();
+            if (count($customers) > 0) {
+                foreach ($customers as $customer) {
+                    array_push($ids,$customer->id);
+                }
+            }
+
+        }
+        $this->layout = 'layouts.dropoff';
+        $today = date('Y-m-d 00:00:00');
+        $schedules = Schedule::whereIn('customer_id',$ids)->where('status','!=',6)->orderBy('id','desc')->get();
+
+        $active_list = Schedule::prepareSchedule($schedules);
+
+        return view('deliveries.overview')
+        ->with('layout',$this->layout)
+        ->with('schedules',$active_list);
+    }
+
+
+    public function getAdminEdit($id = null, Request $request) {
+        $schedules = Schedule::find($id);
+        $customer_id = $schedules->customer_id;
+        $request->session()->put('form_previous',['delivery_admin_edit',$id]);
+        $check_address = $request->session()->has('check_address') ? $request->session()->pull('check_address') : false;
+        $auth = (Auth::check()) ? Auth::user() : false;
+        $addresses = Address::addressSelect(Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get());
+        
+        $primary_address = Address::where('user_id',Auth::user()->id)->where('primary_address',true)->get();
+        $primary_address_id = false;
+        $primary_zipcode = false;
+        if (count($primary_address) > 0) {
+            foreach ($primary_address as $pa) {
+                $primary_address_id = $pa['id'];
+                $primary_address_zipcode = $pa['zipcode'];
+            }
+        }
+
+        $special_instructions = $schedules->special_instructions;
+        $selected_date = false;
+        $selected_dropoff_date = false;
+        $selected_delivery_id = false;
+        $selected_dropoff_delivery_id = false;
+        if (!$request->session()->has('schedule')) {
+            $request->session()->put('schedule',[
+                'pickup_delivery_id' => $schedules->pickup_delivery_id,
+                'pickup_address' => $schedules->pickup_address,
+                'pickup_date'=> $schedules->pickup_date,            
+                'dropoff_delivery_id' => $schedules->dropoff_delivery_id,
+                'dropoff_address' => $schedules->dropoff_address,
+                'dropoff_date'=> $schedules->dropoff_date,
+                'company_id' => $schedules->company_id                
+            ]);
+        }
+
+
+        $pickup_data = $request->session()->get('schedule');
+
+        $check_session = (isset($pickup_data['pickup_address'])) ? true : false;
+        if ($check_session) {
+            
+            $primary_address_id = (isset($pickup_data['pickup_address'])) ? $pickup_data['pickup_address'] : false;
+            $primary_address = Address::find($primary_address_id);
+            $primary_address_zipcode = (count($primary_address) > 0) ? $primary_address->zipcode : false;
+            $selected_date = $pickup_data['pickup_date'];
+            $selected_dropoff_date = $pickup_data['dropoff_date'];
+            $selected_delivery_id = $pickup_data['pickup_delivery_id'];
+            $selected_dropoff_delivery_id = $pickup_data['dropoff_delivery_id'];
+
+       }
+
+
+        $zipcodes = Zipcode::where('zipcode',$primary_address_zipcode)->get();
+        $zip_list = [];
+        if (count($zipcodes) > 0) {
+            foreach ($zipcodes as $key => $zip) {
+                $delivery_id = $zip['delivery_id'];
+                $zip_list[$key] = $delivery_id;
+
+            }
+        }
+        $time_options = Delivery::setTimeArray($selected_date,$zip_list);
+
+        $time_options_dropoff = Delivery::setTimeArray($schedules->dropoff_date, $zip_list);
+
+
+        $zipcode_status = (count($zipcodes) > 0) ? true : false;
+        $calendar_dates = [];
+        if ($zipcodes) {
+            foreach ($zipcodes as $zipcode) {
+                $calendar_dates[$zipcode['delivery_id']] = $zipcode['zipcode'];
+            }
+        }
+
+        $calendar_setup = Delivery::makeCalendar($calendar_dates);
+
+        if ($zipcode_status == false) {
+            Flash::error('Your primary address is not set or zipcode is not valid. Please select a new address. ');
+        }
+        $this->layout = 'layouts.dropoff';
+        return view('deliveries.admin-edit')
+        ->with('layout',$this->layout)
+        ->with('addresses',$addresses)
+        ->with('primary_address_id',$primary_address_id)
+        ->with('zipcode_status',$zipcode_status)
+        ->with('calendar_disabled',$calendar_setup)
+        ->with('selected_date',$selected_date)
+        ->with('selected_delivery_id',$selected_delivery_id)
+        ->with('dropoff_date',$selected_dropoff_date)
+        ->with('zip_list',$zip_list)
+        ->with('date_start',$schedules->pickup_date)
+        ->with('time_options',$time_options)
+        ->with('time_options_dropoff',$time_options_dropoff)
+        ->with('dropoff_delivery_id',$selected_dropoff_delivery_id)
+        ->with('special_instructions',$special_instructions)
+        ->with('customer_id',$customer_id)
+        ->with('update_id',$id);   
+    }
+    public function postAdminEdit(Request $request) {
+        $this->validate($request, [
+            'pickup_address' => 'required',
+            'pickup_date'=>'required',
+            'pickup_time'=>'required',
+            'dropoff_date' => 'required',
+            'dropoff_time' => 'required'
+        ]);
+
+        $schedules = Schedule::find($request->id);
+        $schedules->pickup_address = $request->pickup_address;
+        $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
+        $schedules->pickup_delivery_id = $request->pickup_time;
+        $schedules->dropoff_address = $request->pickup_address;
+        $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
+        $schedules->dropoff_delivery_id = $request->dropoff_time;
+        $schedules->special_instructions = $request->special_instructions;
+
+        if ($schedules->save()) {
+            if ($request->session()->has('schedule')) {
+                $request->session()->forget('schedule');
+            }
+            Flash::success('You have successfully updated your delivery.');
+            return Redirect::route('schedules_view',$request->session()->get('address_user_id'));
+        }
+
+
     }
 }

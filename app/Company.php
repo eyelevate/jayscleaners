@@ -169,4 +169,89 @@ class Company extends Model
             6=>'Saturday'
         ];
     }
+
+    public static function getFillColor($company_id){
+        switch ($company_id) {
+            case 1:
+                $fill_color = "rgb(210, 214, 222)";
+                break;
+            
+            default:
+                $fill_color = "rgba(60,141,188,0.9)";
+                break;
+        }
+
+        return $fill_color;
+    }
+
+    public static function getStrokeColor($company_id){
+        switch ($company_id) {
+            case 1:
+                $stroke_color = "rgb(210, 214, 222)";
+                break;
+            
+            default:
+                $stroke_color = "rgba(60,141,188,0.8)";
+                break;
+        }
+
+        return $stroke_color;
+    }
+
+    public static function getPointColor($company_id){
+        switch ($company_id) {
+            case 1:
+                $point_color = "rgb(210, 214, 222)";
+                break;
+            
+            default:
+                $point_color = "#3b8bba";
+                break;
+        }
+
+        return $point_color;
+    }
+
+    public static function getPointStrokeColor($company_id){
+        switch ($company_id) {
+            case 1:
+                $point_stroke_color = "#c1c7d1";
+                break;
+            
+            default:
+                $point_stroke_color = "rgba(60,141,188,1)";
+                break;
+        }
+
+        return $point_stroke_color;
+    }
+
+    public static function getPointHighlightFill($company_id){
+        switch ($company_id) {
+            case 1:
+                $color = "#fff";
+                break;
+            
+            default:
+                $color = "#fff";
+                break;
+        }
+
+        return $color;
+    }
+
+    public static function getPointHighlightStroke($company_id){
+        switch ($company_id) {
+            case 1:
+                $color = "rgb(220,220,220)";
+                break;
+            
+            default:
+                $color = "rgba(60,141,188,1)";
+                break;
+        }
+
+        return $color;
+    }
+
 }

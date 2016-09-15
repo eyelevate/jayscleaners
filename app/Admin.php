@@ -361,6 +361,8 @@ class Admin extends Model
     			$invoice->rack_date = ($value['rack_date'] > 0) ? date('Y-m-d H:i:s',$value['rack_date']) : NULL;
     			$invoice->due_date = date('Y-m-d H:i:s',$value['due_date']);
     			$invoice->memo = $value['memo'];
+                $invoice->transaction_id = $value['transaction_id'];
+                $invoice->schedule_id = $value['schedule_id'];
     			$invoice->status = $value['status'];
     			if($invoice->save()){
     				$up['invoices'][$key]['invoice_id'] = $invoice->invoice_id;
@@ -786,6 +788,8 @@ class Admin extends Model
                         $invoice->rack_date = (isset($value['rack_date'])) ? date('Y-m-d H:i:s',$value['rack_date']) : NULL;
                         $invoice->due_date = (isset($value['due_date'])) ? date('Y-m-d H:i:s', $value['due_date']) : NULL;
                         $invoice->memo = $value['memo'];
+                        $invoice->transaction_id = $value['transaction_id'];
+                        $invoice->schedule_id = $value['schedule_id'];
                         $invoice->status = $value['status'];
                         if(isset($value['deleted_at'])) {
                             $invoice->delete();

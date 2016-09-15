@@ -29,6 +29,7 @@ class CreateInvoicesTable extends Migration
             $table->dateTime('due_date')->nullable();
             $table->text('memo')->nullable();
             $table->integer('transaction_id', false, true)->length(11)->nullable();
+            $table->integer('schedule_id', false, true)->length(11)->nullable();
             $table->tinyInteger('status', false, true)->nullable();
             $table->softDeletes();
             $table->timestamps();

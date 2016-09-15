@@ -4,7 +4,11 @@ namespace App;
 use App\Address;
 use App\Delivery;
 use App\Company;
+use App\User;
+use Auth;
 use App\Job;
+use GuzzleHttp\Client;
+use Geocoder;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,7 +30,7 @@ class Schedule extends Model
     				$zipcode = $addresses->zipcode;
     				$contact_name = $addresses->concierge_name;
     				$contact_number = $addresses->concierge_number;
-    				$pickup_address_1 = (isset($suite)) ? $street.' #'.$suite : $street;
+    				$pickup_address_1 = ($suite) ? $street.' #'.$suite : $street;
     				$pickup_address_2 = ucFirst($city).', '.strtoupper($state).' '.$zipcode;
     				$pickup_delivery_id = $value->pickup_delivery_id;
     				$dropoff_delivery_id = $value->dropoff_delivery_id;
@@ -34,7 +38,12 @@ class Schedule extends Model
     				$pickup_time = $pickup_deliveries->start_time.' - '.$pickup_deliveries->end_time;
     				$dropoff_deliveries = Delivery::find($dropoff_delivery_id);
     				$dropoff_time = $dropoff_deliveries->start_time.' - '.$dropoff_deliveries->end_time;
+                    $customers = User::find($value->customer_id);
     				$schedules[$key]['id'] = $value->id;
+                    $schedules[$key]['customer_id'] = $value->customer_id;
+                    $schedules[$key]['email'] = $customers->email;
+                    $schedules[$key]['first_name'] = ucFirst($customers->first_name);
+                    $schedules[$key]['last_name'] = ucFirst($customers->last_name);
     				$schedules[$key]['company_id'] = $value->company_id;
     				$schedules[$key]['pickup_address'] = $value->pickup_address;
     				$schedules[$key]['pickup_delivery_id'] = $value->pickup_delivery_id;
@@ -50,6 +59,8 @@ class Schedule extends Model
     				$schedules[$key]['dropoff_time'] = $dropoff_time;
     				$schedules[$key]['special_instructions'] = $value->special_instructions;
     				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
+                    $latlong = Schedule::getLatLong($pickup_address_1.' '.$pickup_address_2);
+                    $schedules[$key]['gmap_address'] = 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'];
     				/**
     				* Status Index
     				* 1. Delivery Scheduled
@@ -70,49 +81,61 @@ class Schedule extends Model
     				switch($schedules[$key]['status']) {
     					case 1:
 							$schedules[$key]['status_message'] = 'Delivery Scheduled';
+                            $schedules[$key]['status_html'] = 'label-info';
     					break;
 
     					case 2:
     						$schedules[$key]['status_message'] = 'En-route Pickup';
+                            $schedules[$key]['status_html'] = 'label-info';
     					break;
 
     					case 3:
     						$schedules[$key]['status_message'] = 'Picked Up';
+                            $schedules[$key]['status_html'] = 'label-info';
     					break;
 
     					case 4:
     						$schedules[$key]['status_message'] = 'Processing';
+                            $schedules[$key]['status_html'] = 'label-info';
     					break;
 
     					case 5:
-    						$schedules[$key]['status_message'] = 'En-route Dropoff';
+    						$schedules[$key]['status_message'] = 'En-route Dropoff - invoice not paid';
+                            $schedules[$key]['status_html'] = 'label-info';
     					break;
 
     					case 6:
     						$schedules[$key]['status_message'] = 'Cancelled by customer';
+                            $schedules[$key]['status_html'] = 'label-danger';
     					break;
 
     					case 7:
     						$schedules[$key]['status_message'] = 'Delayed - Processing not complete';
+                            $schedules[$key]['status_html'] = 'label-warning';
     					break;
 
     					case 8:
     						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for pickup';
+                            $schedules[$key]['status_html'] = 'label-warning';
     					break;
 
     					case 9:
     						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for dropoff';
+                            $schedules[$key]['status_html'] = 'label-warning';
     					break;
 
     					case 10:
     						$schedules[$key]['status_message'] = 'Delayed - Card on file processing error';
+                            $schedules[$key]['status_html'] = 'label-warning';
     					break;
 
     					case 11:
-    						$schedules[$key]['status_message'] = 'Delayed - Delivery could not be completed';
+    						$schedules[$key]['status_message'] = 'En-route Dropoff - invoice paid';
+                            $schedules[$key]['status_html'] = 'label-info';
     					break;
      					case 12:
      						$schedules[$key]['status_message'] = 'Dropped Off. Thank You!';
+                            $schedules[$key]['status_html'] = 'label-success';
     					break;
 
 
@@ -124,5 +147,146 @@ class Schedule extends Model
 
 
     	return $schedules;
+    }
+
+    static public function prepareTrip($schedules, $options) {
+        $trip = [
+            'visits'=>[],
+            'fleet'=>[]
+        ];
+        if (count($schedules) > 0) {
+            foreach ($schedules as $schedule) {
+                $address_id = $schedule->pickup_address;
+                $addresses = Address::find($address_id);
+                $address_name = $addresses->name;
+                $address_street = $addresses->street;
+                $address_suite = $addresses->suite;
+                $address_city = $addresses->city;
+                $address_state = $addresses->state;
+                $address_zipcode = $addresses->zipcode;
+                $address_string = $address_street.' '.$address_city.', '.$address_state.' '.$address_zipcode;
+                $latlong = Schedule::getLatLong($address_string);
+
+                $delivery_pickup = Delivery::find($schedule->pickup_delivery_id);
+                $pickup_start_time = Schedule::convertTimeToMilitary($delivery_pickup->start_time);
+                $pickup_end_time = Schedule::convertTimeToMilitary($delivery_pickup->end_time);
+                $delivery_dropoff = Delivery::find($schedule->dropoff_delivery_id);
+                $dropoff_start_time = Schedule::convertTimeToMilitary($delivery_dropoff->start_time);
+                $dropoff_end_time = Schedule::convertTimeToMilitary($delivery_dropoff->end_time);
+
+                // push to the visits array
+                $trip['visits'][$schedule->id] = [
+                    'location' => [
+                        'name' => $address_street,
+                        'lat'=>($latlong['status']) ? $latlong['latitude'] : false,
+                        'lng'=>($latlong['status']) ? $latlong['longitude'] : false
+                    ],
+                    'start' => ($schedule->status == 5) ? $dropoff_start_time : $pickup_start_time,
+                    'end' => ($schedule->status == 5) ? $dropoff_end_time : $pickup_end_time,
+                    'duration' => 20,
+                ];
+
+
+            }
+
+        }
+
+        $user_id = Auth::user()->id;
+        $trip['fleet'] = Schedule::getDrivers();
+
+        // options
+        if($options){
+            $trip['options'] = $options;
+        }
+
+
+        return $trip;
+    }
+
+    static private function getDrivers() {
+        $montlake = [
+            'status'=>true,
+            'latitude'=>47.6400404, 
+            'longitude'=>122.301674
+        ];
+        $roosevelt = [
+            'status'=>true,
+            'latitude'=>47.6756443, 
+            'longitude'=>122.3198168
+        ];
+
+        $drivers = [
+            'vehicle_1'=>[
+                'start_location'=>[
+                    'name'=>'Work',
+                    'lat'=>47.6400404,
+                    'lng'=>-122.301674
+                ],
+                'end_location'=>[
+                    'name'=>'Work',
+                    'lat'=>47.6400404,
+                    'lng'=>-122.301674
+                ],
+                'shift_start'=>'8:00',
+                'shift_end'=>'17:30'
+            ]
+        ];
+
+        return $drivers;
+    }
+
+    static private function getLatLong($address) {
+        $latlong = [];
+
+        try {
+            $geocode = Geocoder::geocode($address);
+            // The GoogleMapsProvider will return a result
+            $latlong = [
+                'status'=>true,
+                'latitude'=>$geocode->getLatitude(),
+                'longitude'=>$geocode->getLongitude()
+            ];
+        } catch (\Exception $e) {
+            // No exception will be thrown here
+            $latlong = [
+                'status'=>false,
+                'error'=>$e
+            ];
+        }
+
+        return $latlong;        
+    }
+
+    static private function convertTimeToMilitary($time) {
+        $time = str_replace(['am','pm'], [' am',' pm'], $time);
+        $time_converted = date('H:i',strtotime($time));
+        return $time_converted;
+    }
+
+    static public function prepareRouteForView($route, $data) {
+        $joined = [];
+        $estimate_travel_time = $route->total_travel_time;
+        $set_route = $route->solution;
+
+
+        if(count($set_route) > 0) {
+            foreach ($set_route as $driver_id => $route_list) {
+                if (count($route_list) > 0 ) {
+                    foreach ($route_list as $rl) {
+                        $check_schedule_id = $rl->location_id;
+                        foreach ($data as $key => $value) {
+                            $schedule_id = $value['id'];
+                            if ($schedule_id == $check_schedule_id) {
+
+                                array_push($joined,$value);
+                            }
+                        }
+                    }
+                }
+
+            }
+        } 
+
+        return $joined;
     }
 }

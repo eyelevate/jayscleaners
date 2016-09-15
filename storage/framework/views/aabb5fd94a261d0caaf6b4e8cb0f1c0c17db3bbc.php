@@ -92,7 +92,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			    <ul>
-			    	<li style="margin-bottom:10px;"><a href="<?php echo e((count($form_previous)> 0) ? route($form_previous[0],$form_previous[1]) : route($form_previous)); ?>" class="button special-red">Back</a></li>
+			    	<li style="margin-bottom:10px;"><a href="<?php echo e((is_array($form_previous)) ? route($form_previous[0],$form_previous[1]) : route($form_previous)); ?>" class="button special-red">Back</a></li>
 		            <li><a href="<?php echo e(route('address_add')); ?>" class="button">Add Address</a></li>
 		        </ul>
             </div>

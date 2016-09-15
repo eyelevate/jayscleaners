@@ -2,7 +2,7 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
-
+<script type="text/javascript" src="/js/admins/index.js"></script>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('header'); ?>
   <h1>
@@ -42,7 +42,7 @@
         <div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
       </div>
     </a><!-- ./col -->
-    <a href="#" class="col-lg-3 col-xs-6">
+    <a href="<?php echo e(route('delivery_overview')); ?>" class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-yellow">
         <div class="inner">
@@ -69,29 +69,118 @@
       </div>
     </a><!-- ./col -->
   </div><!-- /.row -->
-  <!-- Sales -->
-  <!-- Custom tabs (Charts with tabs)-->
-  <div class="nav-tabs-custom">
-    <!-- Tabs within a box -->
-    <ul class="nav nav-tabs pull-right">
-      <li><a href="#sales-other" data-toggle="tab">Other</a></li>
-      <li><a href="#sales-household" data-toggle="tab">Household</a></li>
-      <li><a href="#sales-alteration" data-toggle="tab">Alteration</a></li>
-      <li><a href="#sales-laundry" data-toggle="tab">Laundry</a></li>
-      <li><a href="#sales-dryclean" data-toggle="tab">Dry Clean</a></li>
-      <li class="active"><a href="#revenue-chart" data-toggle="tab">Totals</a></li>
-      <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
-    </ul>
-    <div class="tab-content no-padding">
-      <!-- Morris chart - Sales -->
-      <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-      <div class="chart tab-pane" id="sales-dryclean" style="position: relative; height: 300px;"></div>
-      <div class="chart tab-pane" id="sales-laundry" style="position: relative; height: 300px;"></div>
-      <div class="chart tab-pane" id="sales-alteration" style="position: relative; height: 300px;"></div>
-      <div class="chart tab-pane" id="sales-household" style="position: relative; height: 300px;"></div>
-      <div class="chart tab-pane" id="sales-other" style="position: relative; height: 300px;"></div>
-    </div>
-  </div><!-- /.nav-tabs-custom -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Monthly Recap Report</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-wrench"></i></button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="text-center">
+                    <strong>Sales: <?php echo e(date('d M, Y', strtotime(date('Y-01-01 00:00:00')))); ?> - <?php echo e(date('d M, Y',strtotime(date('Y-m-d H:i:s')))); ?></strong>
+                  </p>
+
+                  <div class="chart">
+                    <!-- Sales Chart Canvas -->
+                    <canvas id="salesChart" style="height: 350px;"></canvas>
+                  </div>
+                  <!-- /.chart-responsive -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- ./box-body -->
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+                  <div class="description-block border-right">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Roosevelt<label>
+                      <h5 class="description-header">&nbsp;$1,210.43</h5>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Montlake<label>
+                      <h5 class="description-header">&nbsp;$5,210.43</h5>
+                    </div>
+                    <span class="description-text">TODAY</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+                  <div class="description-block border-right">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Roosevelt<label>
+                      <h5 class="description-header">&nbsp;$5,210.43</h5>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Montlake<label>
+                      <h5 class="description-header">&nbsp;$7,210.43</h5>
+                    </div>
+                    <span class="description-text">THIS WEEK</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+                  <div class="description-block border-right">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Roosevelt<label>
+                      <h5 class="description-header">&nbsp;$27,210.43</h5>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Montlake<label>
+                      <h5 class="description-header">&nbsp;$35,210.43</h5>
+                    </div>
+                    <span class="description-text">THIS MONTH</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+                  <div class="description-block">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Roosevelt<label>
+                      <h5 class="description-header">&nbsp;$331,210.43</h5>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                      <label>Jays Cleaners Montlake<label>
+                      <h5 class="description-header">&nbsp;$350,210.43</h5>
+                    </div>
+                    <span class="description-text">THIS YEAR</span>
+                  </div>
+                  <!-- /.description-block -->
+                </div>
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
   <!-- TO DO List -->
   <div class="box box-primary">
     <div class="box-header">
@@ -120,7 +209,7 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="<?php echo e(route('delivery_overview')); ?>">
           <!-- Emphasis label -->
           <span class="badge-yellow">10</span>
           <!-- todo text -->
