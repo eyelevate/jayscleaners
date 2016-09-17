@@ -61,7 +61,8 @@ class Schedule extends Model
     				$schedules[$key]['special_instructions'] = $value->special_instructions;
     				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
                     $latlong = Schedule::getLatLong($pickup_address_1.' '.$pickup_address_2);
-                    $schedules[$key]['gmap_address'] = 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'];
+
+                    $schedules[$key]['gmap_address'] = (isset($latlong['latitude'])) ? 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'] : null;
     				/**
     				* Status Index
     				* 1. Delivery Scheduled

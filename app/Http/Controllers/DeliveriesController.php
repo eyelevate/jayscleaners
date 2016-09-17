@@ -57,7 +57,6 @@ class DeliveriesController extends Controller
 
         $request->session()->put('form_previous','delivery_pickup');
         $check_address = $request->session()->has('check_address') ? $request->session()->pull('check_address') : false;
-    	$auth = (Auth::check()) ? Auth::user() : false;
         $addresses = Address::addressSelect(Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get());
         
         $primary_address = Address::where('user_id',Auth::user()->id)->where('primary_address',true)->get();
@@ -119,7 +118,6 @@ class DeliveriesController extends Controller
                            '2'=>'I wish to pick up my order myself.'];
     	return view('deliveries.pickup')
         ->with('layout',$this->layout)
-        ->with('auth',$auth)
         ->with('addresses',$addresses)
         ->with('primary_address_id',$primary_address_id ? $primary_address_id : null)
         ->with('dropoff_method',$dropoff_method ? $dropoff_method : [])

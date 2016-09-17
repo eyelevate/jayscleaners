@@ -6,6 +6,7 @@
 <script type="text/javascript" src="/packages/zebra_datepicker/public/javascript/zebra_datepicker.js"></script>
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
 <script type="text/javascript" src="/js/deliveries/pickup.js"></script>
+<?php if(isset($primary_address_id)): ?>
 <script type="text/javascript">
     disabled_dates = [];
     <?php
@@ -34,6 +35,7 @@
     });
 
 </script>
+<?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('navigation'); ?>
@@ -42,14 +44,14 @@
         <nav id="nav">
             <ul>
                 <li class="submenu">
-                    <a href="#"><small>Hello </small><strong><?php echo e($auth->username); ?></strong></a>
+                    <a href="#"><small>Hello </small><strong><?php echo e(Auth::user()->username); ?></strong></a>
                     <ul>
                         <li><a href="no-sidebar.html">Your Deliveries</a></li>
                         <li><a href="left-sidebar.html">Services</a></li>
                         <li><a href="right-sidebar.html">Business Hours</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                         <li class="submenu">
-                            <a href="#"><?php echo e($auth->username); ?> menu</a>
+                            <a href="#"><?php echo e(Auth::user()->username); ?> menu</a>
                             <ul>
                                 <li><a href="#">Dolore Sed</a></li>
                                 <li><a href="#">Consequat</a></li>
