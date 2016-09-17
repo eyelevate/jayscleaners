@@ -82,54 +82,55 @@ class DeliveriesController extends Controller
             $selected_date = $pickup_data['pickup_date'];
             $selected_delivery_id = $pickup_data['pickup_delivery_id'];
 
-       }
+        }
 
+        if ($primary_address_zipcode) {
+            $zipcodes = Zipcode::where('zipcode',$primary_address_zipcode)->get();
+        
+            $zip_list = [];
+            if (count($zipcodes) > 0) {
+                foreach ($zipcodes as $key => $zip) {
+                    $delivery_id = $zip['delivery_id'];
+                    $zip_list[$key] = $delivery_id;
 
-        $zipcodes = Zipcode::where('zipcode',$primary_address_zipcode)->get();
-        $zip_list = [];
-        if (count($zipcodes) > 0) {
-            foreach ($zipcodes as $key => $zip) {
-                $delivery_id = $zip['delivery_id'];
-                $zip_list[$key] = $delivery_id;
-
+                }
             }
-        }
-        $time_options = Delivery::setTimeArray($selected_date,$zip_list);
+            $time_options = Delivery::setTimeArray($selected_date,$zip_list);
 
 
-        $zipcode_status = (count($zipcodes) > 0) ? true : false;
-        $calendar_dates = [];
-        if ($zipcodes) {
-            foreach ($zipcodes as $zipcode) {
-                $calendar_dates[$zipcode['delivery_id']] = $zipcode['zipcode'];
+            $zipcode_status = (count($zipcodes) > 0) ? true : false;
+            $calendar_dates = [];
+            if ($zipcodes) {
+                foreach ($zipcodes as $zipcode) {
+                    $calendar_dates[$zipcode['delivery_id']] = $zipcode['zipcode'];
+                }
             }
+
+            $calendar_setup = Delivery::makeCalendar($calendar_dates);
+
+            if (!$zipcode_status) {
+                Flash::error('Your primary address is not set or zipcode is not valid. Please select a new address. ');
+            }
+
+            $dropoff_method = [''=>'Select Dropoff Method',
+                               '1'=>'Delivered to the address chosen below.',
+                               '2'=>'I wish to pick up my order myself.'];
+
+            $breadcrumb_data = Delivery::setBreadCrumbs($pickup_data);
         }
-
-        $calendar_setup = Delivery::makeCalendar($calendar_dates);
-
-        if ($zipcode_status == false) {
-            Flash::error('Your primary address is not set or zipcode is not valid. Please select a new address. ');
-        }
-
-        $dropoff_method = [''=>'Select Dropoff Method',
-                           '1'=>'Delivered to the address chosen below.',
-                           '2'=>'I wish to pick up my order myself.'];
-
-        $breadcrumb_data = Delivery::setBreadCrumbs($pickup_data);
-
     	return view('deliveries.pickup')
         ->with('layout',$this->layout)
         ->with('auth',$auth)
         ->with('addresses',$addresses)
-        ->with('primary_address_id',$primary_address_id)
+        ->with('primary_address_id',$primary_address_id ? $primary_address_id : false)
         ->with('dropoff_method',$dropoff_method)
         ->with('zipcode_status',$zipcode_status)
         ->with('calendar_disabled',$calendar_setup)
         ->with('selected_date',$selected_date)
         ->with('selected_delivery_id',$selected_delivery_id)
-        ->with('zip_list',$zip_list)
-        ->with('time_options',$time_options)
-        ->with('breadcrumb_data',$breadcrumb_data);
+        ->with('zip_list',$zip_list ? $zip_list : [])
+        ->with('time_options',$time_options ? $time_options : [])
+        ->with('breadcrumb_data',$breadcrumb_data ? $breadcrumb_data : []);
     } 
 
     public function getDropoffForm(Request $request) {
