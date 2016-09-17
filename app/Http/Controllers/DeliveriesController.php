@@ -124,7 +124,7 @@ class DeliveriesController extends Controller
         ->with('primary_address_id',$primary_address_id ? $primary_address_id : null)
         ->with('dropoff_method',$dropoff_method ? $dropoff_method : [])
         ->with('zipcode_status',$zipcode_status ? $zipcode_status : null)
-        ->with('calendar_disabled',$calendar_setup ? $calendar_setip : null)
+        ->with('calendar_disabled',$calendar_setup ? $calendar_setup : null)
         ->with('selected_date',$selected_date ? $selected_date : null)
         ->with('selected_delivery_id',$selected_delivery_id ? $selected_delivery_id : null)
         ->with('zip_list',$zip_list ? $zip_list : [])
