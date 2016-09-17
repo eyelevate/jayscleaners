@@ -113,18 +113,17 @@ class DeliveriesController extends Controller
                 Flash::error('Your primary address is not set or zipcode is not valid. Please select a new address. ');
             }
 
-            $dropoff_method = [''=>'Select Dropoff Method',
-                               '1'=>'Delivered to the address chosen below.',
-                               '2'=>'I wish to pick up my order myself.'];
-
             $breadcrumb_data = Delivery::setBreadCrumbs($pickup_data);
         }
+        $dropoff_method = [''=>'Select Dropoff Method',
+                           '1'=>'Delivered to the address chosen below.',
+                           '2'=>'I wish to pick up my order myself.'];
     	return view('deliveries.pickup')
         ->with('layout',$this->layout)
         ->with('auth',$auth)
         ->with('addresses',$addresses)
         ->with('primary_address_id',$primary_address_id ? $primary_address_id : false)
-        ->with('dropoff_method',$dropoff_method)
+        ->with('dropoff_method',$dropoff_method ? $dropoff_method : [])
         ->with('zipcode_status',$zipcode_status)
         ->with('calendar_disabled',$calendar_setup)
         ->with('selected_date',$selected_date)
