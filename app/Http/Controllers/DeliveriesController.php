@@ -63,6 +63,7 @@ class DeliveriesController extends Controller
         $primary_address = Address::where('user_id',Auth::user()->id)->where('primary_address',true)->get();
         $primary_address_id = false;
         $primary_zipcode = false;
+        $primary_address_zipcode = false;
         if (count($primary_address) > 0) {
             foreach ($primary_address as $pa) {
                 $primary_address_id = $pa['id'];
