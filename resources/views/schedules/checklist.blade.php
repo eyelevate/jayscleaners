@@ -4,7 +4,7 @@
 @stop
 @section('scripts')
 <script type="text/javascript" src="/packages/zebra_datepicker/public/javascript/zebra_datepicker.js"></script>
-<script type="text/javascript" src="/js/schedules/checklist.js"
+<script type="text/javascript" src="/js/schedules/checklist.js"></script>
 <script type="text/javascript">
     $('#search_data').Zebra_DatePicker({
         container:$("#search_container"),

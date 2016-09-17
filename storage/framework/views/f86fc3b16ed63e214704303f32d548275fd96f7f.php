@@ -115,7 +115,7 @@
         <?php endif; ?>
 	</header>							
 	<ul class="buttons vertical">
-		<li><input type="submit" class="button fit scrolly" text="Start"/></li>
+		<li><input type="submit" class="button fit" text="Start"/></li>
 	</ul>
 	<?php echo Form::close(); ?>
 
@@ -125,7 +125,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-<header class="special container">
+<header class="special container scrolly">
 	<span class="icon fa-bar-chart-o"></span>
 	<h2>As this is my <strong>twentieth</strong> freebie for HTML5 UP
 	<br />
