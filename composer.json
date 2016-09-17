@@ -13,7 +13,7 @@
         "mike42/escpos-php": "^1.1",
         "barryvdh/laravel-cors": "0.7.x",
         "barryvdh/laravel-dompdf": "0.6.*",
-        "ext-curl": "*",
+        "ext-curl": "*"
 
     },
     "require-dev": {
