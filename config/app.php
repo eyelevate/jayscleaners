@@ -158,7 +158,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-
+        Toin0u\Geocoder\GeocoderServiceProvider::class,
 
     ],
 
@@ -211,7 +211,7 @@ return [
         'Flash'     => 'Laracasts\Flash\Flash',
         'UploadHelper'=> App\Helpers\UploadHelper::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        'Geocoder' => Toin0u\Geocoder\Facade\Geocoder::class
 
     ],
 
