@@ -26,11 +26,14 @@ use App\Customer;
 use App\Custid;
 use App\Delivery;
 use App\Layout;
+use App\Transaction;
 use App\Zipcode;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use Geocoder;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
 
 class SchedulesController extends Controller
 {
@@ -53,17 +56,28 @@ class SchedulesController extends Controller
         $company_id = Auth::user()->company_id;
 
         $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
+        $pickups = Schedule::where('pickup_date',$today)
+                             ->whereIn('status',[1,4,5])
+                             ->orderBy('id','desc');
+
         $schedules = Schedule::where('dropoff_date',$today)
-        					   ->orWhere('pickup_date',$today)
-        					   ->whereIn('status',[1,4])
-        					   ->orderBy('id','desc')->get();
+        					   ->whereIn('status',[1,4,5])
+        					   ->union($pickups)
+        					   ->orderBy('id','desc')
+        					   ->get();
         $active_list = Schedule::prepareSchedule($schedules);
 
+
+        $approved_pickup = Schedule::where('pickup_date',$today)
+	    					   ->whereIn('status',[2,11])
+	    					   ->orderBy('id','desc');        
         $approved = Schedule::where('dropoff_date',$today)
-        					   ->orWhere('pickup_date',$today)
-        					   ->whereIn('status',[2,5])
-        					   ->orderBy('id','desc')->get();
+	    					   ->whereIn('status',[2,11])
+	    					   ->orderBy('id','desc')
+	    					   ->union($approved_pickup)
+	    					   ->get();
        	$approved_list = Schedule::prepareSchedule($approved);
+
 
         return view('schedules.checklist')
         ->with('layout',$this->layout)
@@ -85,10 +99,14 @@ class SchedulesController extends Controller
     public function getDeliveryRoute(Request $request) {
         $this->layout = 'layouts.dropoff';
         $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
-        $schedules = Schedule::where('dropoff_date',$today)
-        					   ->orWhere('pickup_date',$today)
+        $pickups = Schedule::where('pickup_date',$today)
         					   ->whereIn('status',[2,5,11])
-        					   ->orderBy('id','desc')->get();
+        					   ->orderBy('id','desc');        
+        $schedules = Schedule::where('dropoff_date',$today)
+        					   ->whereIn('status',[2,5,11])
+        					   ->orderBy('id','desc')
+        					   ->union($pickups)
+        					   ->get();
 
         $active_list = Schedule::prepareSchedule($schedules);
         $options = $request->session()->has('route_options') ? $request->session()->get('route_options') : false;
@@ -109,15 +127,25 @@ class SchedulesController extends Controller
     		$body = false;
     		$delivery_route = false;
     	}
-        $approved = Schedule::where('dropoff_date',$today)
-        					   ->orWhere('pickup_date',$today)
+    	$pickup_approved = Schedule::where('pickup_date',$today)
         					   ->whereIn('status',[3,12])
-        					   ->orderBy('id','desc')->get();
+        					   ->orderBy('id','desc');
+        $approved = Schedule::where('dropoff_date',$today)
+        					   ->whereIn('status',[3,12])
+        					   ->orderBy('id','desc')
+        					   ->union($pickup_approved)
+        					   ->get();
        	$approved_list = Schedule::prepareSchedule($approved);
+
+       	$pickup_delayed = Schedule::where('pickup_date',$today)
+        					   ->whereIn('status',[7,8,9,10])
+        					   ->orderBy('id','desc');
         $delayed = Schedule::where('dropoff_date',$today)
         					   ->orWhere('pickup_date',$today)
         					   ->whereIn('status',[7,8,9,10])
-        					   ->orderBy('id','desc')->get();
+        					   ->orderBy('id','desc')
+        					   ->union($pickup_delayed)
+        					   ->get();
        	$delayed_list = Schedule::prepareSchedule($delayed);
 
        	$traffic = [
@@ -131,6 +159,14 @@ class SchedulesController extends Controller
        	$shortest_distance = [
        		'false' => 'Shortest Time',
        		'true' => 'Shortest Distance'
+       	];
+
+       	$delay_list = [
+       		'' => 'Select Delay Reason',
+       		'7' => 'Delayed - Processing not complete',
+       		'8' => 'Delayed - Customer unavailable for pickup',
+       		'9' => 'Delayed - Customer unavailable for dropoff',
+       		'10'=> 'Delayed - Card on file processing error'
        	];
 
        	$traffic_selected = ($options) ? $options['traffic'] : 'slow';
@@ -149,7 +185,8 @@ class SchedulesController extends Controller
         ->with('traffic_selected',$traffic_selected)
         ->with('shortest_distance_selected',$shortest_distance_selected)
         ->with('route_options_header',$route_options_header)
-        ->with('travel_data',$body);    	
+        ->with('travel_data',$body)
+        ->with('delay_list',$delay_list);    	
     }
 
     public function postDeliveryRoute(Request $request) {
@@ -248,7 +285,106 @@ class SchedulesController extends Controller
     	return Redirect::route('schedules_delivery_route');
     }
 
-    public function getProcessing(Request $request) {
+    public function postDelayDelivery(Request $request) {
+    	$this->validate($request, [
+            'reason' => 'required'
+        ]);    	
+        $schedule_id = $request->id;
+        $status = $request->reason;
+        $schedules = Schedule::find($schedule_id);
+        $schedules->status = $status;
+        if ($schedules->save()) {
+        	// send email
+
+        	//redirect back
+        	Flash::warning('Sent #'.$schedule_id.' to the delayed folder.');
+        	return Redirect::route('schedules_delivery_route'); 
+        }
+
 
     }
+
+    public function postRevertDelay(Request $request) {
+    	$schedule_id = $request->id;
+    	$old_status = $request->status;
+    	switch($old_status) {
+    		case 7: // Delayed - Processing not complete
+    			$new_status = 4;
+    		break;
+
+    		case 8: // Delayed - Customer unavailable for pickup
+    			$new_status = 2;
+    		break;
+
+    		case 9: //Delayed - Customer unavailable for dropoff
+    			$new_status = 5;
+    		break;
+
+    		case 10: //Delayed - Card on file processing error
+    			$new_status = 5;
+    		break;
+    	}
+
+    	$schedules = Schedule::find($schedule_id);
+    	$schedules->status = $new_status;
+    	if ($schedules->save()) {
+    		Flash::warning('Successfully reverted #'.$schedule_id.' back.');
+    		return Redirect::route('schedules_delivery_route');
+    	}
+    }
+
+    public function getProcessing(Request $request) {
+        $this->layout = 'layouts.dropoff';
+        $today = ($request->session()->has('processing_date')) ? $request->session()->get('processing_date') : date('Y-m-d 00:00:00');
+        
+        $schedules = Schedule::where('pickup_date',$today)
+        					   ->where('status',3)
+        					   ->orderBy('id','desc')
+        					   ->get();
+
+        $active_list = Schedule::prepareSchedule($schedules);
+
+        $processing = Schedule::where('pickup_date',$today)
+        					   ->where('status',4)
+        					   ->orderBy('id','desc')
+        					   ->get();
+       	$processing_list = Schedule::prepareSchedule($processing);
+
+        return view('schedules.processing')
+        ->with('layout',$this->layout)
+        ->with('schedules',$active_list)
+        ->with('processing_list',$processing_list)
+        ->with('processing_date',date('D m/d/Y',strtotime($today)));  
+    }
+
+    public function postProcessing(Request $request) {
+    	$this->validate($request, [
+            'search' => 'required'
+        ]);
+
+        $request->session()->put('processing_date',date('Y-m-d 00:00:00',strtotime($request->search)));
+
+        return Redirect::route('schedules_processing');    	
+    }
+
+    public function postApproveProcessing(Request $request){
+    	$schedule_id = $request->id;
+    	$status = 4;
+    	$schedules = Schedule::find($schedule_id);
+    	$schedules->status = $status;
+    	if($schedules->save()) {
+    		Flash::success('Updated #'.$schedule_id.' to being "Processed"');
+    		return Redirect::route('schedules_processing');
+    	}
+    }
+
+    public function postPayment(Request $request) {
+
+    }
+
+    public function postRevertPayment(Request $request) {
+
+    }
+
+
 }

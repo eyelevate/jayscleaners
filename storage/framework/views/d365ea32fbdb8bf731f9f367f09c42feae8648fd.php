@@ -198,6 +198,23 @@
 							<p class="form-control" style="height:100px; overflow:auto;"><?php echo e($schedule['special_instructions']); ?></p>
 						</div>
 					</div>	
+					<hr/>
+					<?php echo Form::open(['action'=>'SchedulesController@postDelayDelivery','role'=>'form']); ?>
+
+					<?php echo Form::hidden('id',$schedule['id']); ?>
+
+					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<label class="control-label" style="text-align:right">Delay Delivery</label>
+						<p>
+						<?php echo e(Form::select('reason',$delay_list,'',['class'=>'form-control'])); ?>
+
+						</p>
+						<div>
+							<input type="submit" class="btn btn-danger" value="Submit Delay"/>
+						</div>
+					</div>						
+					<?php echo Form::close(); ?>
+
 				</div>
 				<div class="clearfix panel-footer" >
 					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$schedule['id'])); ?>">Edit Delivery</a>
@@ -355,34 +372,15 @@
 				</div>
 				<div class="clearfix panel-footer" >
 					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$dl['id'])); ?>">Edit Delivery</a>
-					<?php
-					switch($dl['status']) {
-						case 2:
-						?>
-						<?php echo Form::open(['action' => 'SchedulesController@postRevertPickup','role'=>"form",'class'=>'pull-right']); ?>
+					<?php echo Form::open(['action' => 'SchedulesController@postRevertDelay','role'=>"form",'class'=>'pull-right']); ?>
 
-						<?php echo Form::hidden('id',$dl['id']); ?>
+					<?php echo Form::hidden('id',$dl['id']); ?>
 
-						<input type="submit" class="btn btn-danger" value="Revert Back" />
-						<?php echo Form::close(); ?>
+					<?php echo Form::hidden('status',$dl['status']); ?>
 
-						<?php
-						break;
+					<input type="submit" class="btn btn-danger" value="Revert Back" />
+					<?php echo Form::close(); ?>
 
-						case 5:
-						?>
-						<?php echo Form::open(['action' => 'SchedulesController@postRevertDropoff','role'=>"form",'class'=>'pull-right']); ?>
-
-						<?php echo Form::hidden('id',$dl['id']); ?>
-
-						<input type="submit" class="btn btn-danger" value="Revert Back" />
-						<?php echo Form::close(); ?>
-
-						<?php
-						break;
-					}
-
-					?>
 				</div>
 			</div>
 			<?php endforeach; ?>

@@ -4,6 +4,7 @@ namespace App;
 use App\Address;
 use App\Delivery;
 use App\Company;
+use App\Invoice;
 use App\User;
 use Auth;
 use App\Job;
@@ -77,6 +78,7 @@ class Schedule extends Model
     				* 12. Dropped Off
     				**/
     				$schedules[$key]['status'] = $value->status;
+                    $schedules[$key]['invoices'] = [];
     				// $schedules[$key]['status'] = 12;
     				switch($schedules[$key]['status']) {
     					case 1:
@@ -97,11 +99,26 @@ class Schedule extends Model
     					case 4:
     						$schedules[$key]['status_message'] = 'Processing';
                             $schedules[$key]['status_html'] = 'label-info';
+
+                            $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                 ->where('status','<',5)
+                                                 ->get();
+                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+
+                            $schedules[$key]['invoices'] = $prepared_invoices;
     					break;
 
     					case 5:
-    						$schedules[$key]['status_message'] = 'En-route Dropoff - invoice not paid';
+    						$schedules[$key]['status_message'] = 'Invoice Paid';
                             $schedules[$key]['status_html'] = 'label-info';
+                            $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                 ->where('status','<',5)
+                                                 ->get();
+                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                            Job::dump($prepared_invoices);
+                            $schedules[$key]['invoices'] = $prepared_invoices;
     					break;
 
     					case 6:
@@ -132,10 +149,18 @@ class Schedule extends Model
     					case 11:
     						$schedules[$key]['status_message'] = 'En-route Dropoff - invoice paid';
                             $schedules[$key]['status_html'] = 'label-info';
+                            $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                 ->where('status','<',5)
+                                                 ->get();
+                            $schedules[$key]['invoices'] = $invoices;
     					break;
      					case 12:
      						$schedules[$key]['status_message'] = 'Dropped Off. Thank You!';
                             $schedules[$key]['status_html'] = 'label-success';
+                            $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                 ->where('status','<',5)
+                                                 ->get();
+                            $schedules[$key]['invoices'] = $invoices;
     					break;
 
 
@@ -144,7 +169,6 @@ class Schedule extends Model
     			}
     		}
     	}
-
 
     	return $schedules;
     }

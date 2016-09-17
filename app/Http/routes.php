@@ -194,18 +194,24 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/schedules/delivery-route',['as'=>'schedules_delivery_route','uses'=>'SchedulesController@getDeliveryRoute']);
 		Route::post('/schedules/delivery-route',['as'=>'schedules_delivery_route_post','uses'=>'SchedulesController@postDeliveryRoute']);
 		Route::get('/schedules/processing', ['as'=>'schedules_processing','uses' => 'SchedulesController@getProcessing']);
+		Route::post('/schedules/processing',['as'=>'schedules_processing_post','uses'=>'SchedulesController@postProcessing']);
 		Route::get('/schedules/view/{id}', ['as'=>'schedules_view','uses' => 'SchedulesController@getView']);
 		
 
 		Route::post('/schedules/approve-pickup', ['as'=>'schedules_approve_pickup','uses'=>'SchedulesController@postApprovePickup']);
 		Route::post('/schedules/approve-dropoff', ['as'=>'schedules_approve_dropoff','uses'=>'SchedulesController@postApproveDropoff']);
+		Route::post('/schedules/delay-delivery', ['as'=>'schedules_delay_delivery','uses'=>'SchedulesController@postDelayDelivery']);
 		Route::post('/schedules/revert-pickup', ['as'=>'schedules_revert_pickup','uses'=>'SchedulesController@postRevertPickup']);
+		Route::post('/schedules/revert-delay', ['as'=>'schedules_revert_delay','uses'=>'SchedulesController@postRevertDelay']);
 		Route::post('/schedules/revert-dropoff', ['as'=>'schedules_revert_dropoff','uses'=>'SchedulesController@postRevertDropoff']);
 		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
 		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
 		Route::post('/schedules/approve-pickedup', ['as'=>'schedules_approve_pickedup','uses'=>'SchedulesController@postApprovePickedup']);
 		Route::post('/schedules/approve-delivered', ['as'=>'schedules_approve_delivered','uses'=>'SchedulesController@postApproveDelivered']);
 		Route::post('/schedules/route-options', ['as'=>'schedules_route_options','uses'=>'SchedulesController@postRouteOptions']);
+		Route::post('/schedules/approve-processing', ['as'=>'schedules_approve_processing','uses'=>'SchedulesController@postApproveProcessing']);
+		Route::post('/schedules/payment', ['as'=>'schedules_payment','uses'=>'SchedulesController@postPayment']);
+		Route::post('/schedules/revert-payment', ['as'=>'schedules_revert_payment','uses'=>'SchedulesController@postRevertPayment']);
 		
 		
 

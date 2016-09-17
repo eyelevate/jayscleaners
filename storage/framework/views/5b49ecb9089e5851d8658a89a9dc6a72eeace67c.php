@@ -3,6 +3,7 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
 <script type="text/javascript" src="/packages/zebra_datepicker/public/javascript/zebra_datepicker.js"></script>
+<script type="text/javascript" src="/js/schedules/checklist.js"
 <script type="text/javascript">
     $('#search_data').Zebra_DatePicker({
         container:$("#search_container"),
@@ -153,6 +154,96 @@
 							<p class="form-control" style="height:100px; overflow:auto;"><?php echo e($schedule['special_instructions']); ?></p>
 						</div>
 					</div>	
+
+					<?php if($schedule['status'] == 4 || $schedule['status'] == 11): ?>
+					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<table class="table table-striped table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Qty</th>
+									<th>Items</th>
+									<th>Subtotal</th>
+									<th>A.</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php
+							$invoices = $schedule['invoices'];
+							if (count($invoices) > 0) {
+								foreach ($invoices as $invoice) {
+								?>
+								<tr id="invoice-<?php echo e($invoice->id); ?>" class="invoices" style="cursor:pointer;">
+									<td><?php echo e($invoice->id); ?></td>
+									<td><?php echo e($invoice->quantity); ?></td>
+									<td>
+										<ul style="list-style:none;">
+										<?php if(count($invoice['item_details'])): ?>
+											<?php foreach($invoice['item_details'] as $ids): ?>
+											<li><?php echo e($ids['qty']); ?>-<?php echo e($ids['item']); ?></li>
+												<?php if(count($ids['color']) > 0): ?>
+												<li>
+													<ul>
+													<?php foreach($ids['color'] as $colors_name => $colors_count): ?>
+														<li><?php echo e($colors_count); ?>-<?php echo e($colors_name); ?></li>
+													<?php endforeach; ?>
+													</ul>
+												</li>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										<?php endif; ?>
+										</ul>
+									</td>
+									<td><?php echo e($invoice->pretax_html); ?></td>
+									<td><input type="checkbox" value="<?php echo e($invoice->id); ?>"/></td>
+								</tr>
+								<?php
+								}
+							}
+							
+							?>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4" style="text-align:right">Qty&nbsp;</th>
+									<td id="total_qty-<?php echo e($schedule['id']); ?>">0</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Subtotal&nbsp;</th>
+									<td id="total_subtotal-<?php echo e($schedule['id']); ?>">$0.00</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Tax&nbsp;</th>
+									<td id="total_tax-<?php echo e($schedule['id']); ?>">$0.00</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Total&nbsp;</th>
+									<td id="total_total-<?php echo e($schedule['id']); ?>">$0.00</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
+						<?php if($schedule['status'] == 4): ?>
+						<label class="label label-warning col-xs-12 col-sm-12 col-md-12 col-lg-12">Not Paid</label>
+						<?php echo Form::open(['action' => 'SchedulesController@postApprovePickup','role'=>"form"]); ?>
+
+						<?php echo Form::hidden('id',$schedule['id']); ?>
+
+						<button type="submit" class="btn btn-lg btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"><i class="icon ion-social-usd"></i> Make Payment</button>
+						
+						<?php echo Form::close(); ?>						
+						<?php elseif($schedule['status'] == 11): ?>
+						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
+						<?php echo Form::open(['action' => 'SchedulesController@postApprovePickup','role'=>"form"]); ?>
+
+						<?php echo Form::hidden('id',$schedule['id']); ?>
+
+						<input type="submit" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
+						<?php echo Form::close(); ?>						
+						<?php endif; ?>
+					</div>
+					<?php endif; ?>
 				</div>
 				<div class="clearfix panel-footer" >
 					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$schedule['id'])); ?>">Edit Delivery</a>
@@ -176,7 +267,7 @@
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
-						<input type="submit" class="btn btn-success" value="Approve For Pickup" />
+						<input type="submit" class="btn btn-success" value="Approve For Dropoff" />
 						<?php echo Form::close(); ?>
 
 						<?php

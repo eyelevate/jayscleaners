@@ -193,6 +193,19 @@
 							<p class="form-control" style="height:100px; overflow:auto;">{{ $schedule['special_instructions'] }}</p>
 						</div>
 					</div>	
+					<hr/>
+					{!! Form::open(['action'=>'SchedulesController@postDelayDelivery','role'=>'form']) !!}
+					{!! Form::hidden('id',$schedule['id']) !!}
+					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<label class="control-label" style="text-align:right">Delay Delivery</label>
+						<p>
+						{{ Form::select('reason',$delay_list,'',['class'=>'form-control']) }}
+						</p>
+						<div>
+							<input type="submit" class="btn btn-danger" value="Submit Delay"/>
+						</div>
+					</div>						
+					{!! Form::close() !!}
 				</div>
 				<div class="clearfix panel-footer" >
 					<a class="btn btn-info" href="{{ route('delivery_admin_edit',$schedule['id']) }}">Edit Delivery</a>
@@ -344,28 +357,11 @@
 				</div>
 				<div class="clearfix panel-footer" >
 					<a class="btn btn-info" href="{{ route('delivery_admin_edit',$dl['id']) }}">Edit Delivery</a>
-					<?php
-					switch($dl['status']) {
-						case 2:
-						?>
-						{!! Form::open(['action' => 'SchedulesController@postRevertPickup','role'=>"form",'class'=>'pull-right']) !!}
-						{!! Form::hidden('id',$dl['id']) !!}
-						<input type="submit" class="btn btn-danger" value="Revert Back" />
-						{!! Form::close() !!}
-						<?php
-						break;
-
-						case 5:
-						?>
-						{!! Form::open(['action' => 'SchedulesController@postRevertDropoff','role'=>"form",'class'=>'pull-right']) !!}
-						{!! Form::hidden('id',$dl['id']) !!}
-						<input type="submit" class="btn btn-danger" value="Revert Back" />
-						{!! Form::close() !!}
-						<?php
-						break;
-					}
-
-					?>
+					{!! Form::open(['action' => 'SchedulesController@postRevertDelay','role'=>"form",'class'=>'pull-right']) !!}
+					{!! Form::hidden('id',$dl['id']) !!}
+					{!! Form::hidden('status',$dl['status']) !!}
+					<input type="submit" class="btn btn-danger" value="Revert Back" />
+					{!! Form::close() !!}
 				</div>
 			</div>
 			@endforeach
