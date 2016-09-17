@@ -14,10 +14,7 @@
         "barryvdh/laravel-cors": "0.7.x",
         "barryvdh/laravel-dompdf": "0.6.*",
         "ext-curl": "*",
-        "authorizenet/authorizenet": "1.8.9",
-        "jms/serializer": "serializer-master-dev as 1.0",
-        "guzzlehttp/guzzle": "~6.0",
-        "toin0u/geocoder-laravel": "@stable"
+
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
