@@ -242,7 +242,7 @@ class CardsController extends Controller
 						//Use an existing profile id
 						$paymentprofilerequest->setCustomerProfileId( $prev_profile_id );
 						$paymentprofilerequest->setPaymentProfile( $paymentprofile );
-						$paymentprofilerequest->setValidationMode("liveMode");
+						// $paymentprofilerequest->setValidationMode("liveMode");
 						$controller = new AnetController\CreateCustomerPaymentProfileController($paymentprofilerequest);
 						$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
 						if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
