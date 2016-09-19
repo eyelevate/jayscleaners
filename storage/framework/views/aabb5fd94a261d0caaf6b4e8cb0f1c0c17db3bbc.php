@@ -57,9 +57,9 @@
                 			<?php foreach($addresses as $address): ?>
                 				<?php if($address->primary_address): ?>
 		                		<li>
-									<div class="thumbnail">
+									<div class="thumbnail" style="<?php echo e(($address->zipcode_status) ? '' : 'background-color:#F2DEDE'); ?>">
 										<div class="caption">
-											<h3><strong><?php echo e($address->name); ?></strong> - <a href="#" class="btn btn-sm btn-link">Primary</a></h3>
+											<h3><strong><?php echo e($address->name); ?> </strong> <small><?php echo e(($address->zipcode_status) ? '' : '- zipcode not deliverable'); ?></small> - <a href="#" class="btn btn-sm btn-link">Primary</a></h3>
 											<p><i><?php echo e($address->street); ?> <br/> <?php echo e(ucfirst($address->city)); ?> , <?php echo e(strtoupper($address->state)); ?> <?php echo e($address->zipcode); ?></i></p>
 											<ul class="clearfix">
 												<li class="pull-left"><a href="<?php echo e(route('address_delete',$address->id)); ?>" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
@@ -70,15 +70,17 @@
 		                		</li>
                 				<?php else: ?>
 		                		<li>
-									<div class="thumbnail">
+									<div class="thumbnail" style="<?php echo e(($address->zipcode_status) ? '' : 'background-color:#F2DEDE'); ?>">
 										<div class="caption">
-											<h3><strong><?php echo e($address->name); ?></strong></h3>
+											<h3><strong><?php echo e($address->name); ?></strong> <small><?php echo e(($address->zipcode_status) ? '' : '- zipcode not deliverable'); ?><small></h3>
 											<p><i><?php echo e($address->street); ?> <br/> <?php echo e(ucfirst($address->city)); ?> , <?php echo e(strtoupper($address->state)); ?> <?php echo e($address->zipcode); ?></i></p>
 											<ul class="clearfix">
 												<li class="pull-left"><a href="<?php echo e(route('address_delete',$address->id)); ?>" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
 												<li class="pull-left"><a href="<?php echo e(route('address_edit',$address->id)); ?>" class="btn btn-default" role="button">Edit</a>&nbsp</li>
-												<li class="pull-left"><a href="<?php echo e(route('address_primary',$address->id)); ?>" class="btn btn-primary" role="button">Set Primary</a>&nbsp</li>
-											</ul>
+												<?php if($address->zipcode_status): ?>
+                                                <li class="pull-left"><a href="<?php echo e(route('address_primary',$address->id)); ?>" class="btn btn-primary" role="button">Set Primary</a>&nbsp</li>
+											    <?php endif; ?>
+                                            </ul>
 										</div>
 									</div>
 		                		</li>

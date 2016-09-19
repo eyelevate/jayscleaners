@@ -33,7 +33,7 @@ class AddressesController extends Controller
     }   
 
     public function getIndex(Request $request) {
-    	$addresses = Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get();
+    	$addresses = Address::prepareForView(Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get());
         $auth = (Auth::check()) ? Auth::user() : False;
         $form_previous = ($request->session()->has('form_previous')) ? $request->session()->get('form_previous') : 'delivery_pickup';
         return view('addresses.index')
@@ -248,22 +248,28 @@ class AddressesController extends Controller
     }    
 
     public function getPrimary($id = NULL) {
-    	
-    	$addresses = Address::where('user_id',Auth::user()->id)->get();
-    	if ($addresses) {
-    		foreach ($addresses as $address) {
-    			$addr = Address::find($address->id);
-    			$addr->primary_address = false;
-    			$addr->save();
-    		}
-    	}
-
     	$addresses = Address::find($id);
     	$addresses->primary_address = true;
-    	if ($addresses->save()){
-         	Flash::success('Successfully set "<strong>'.$addresses->name.'</strong>" as primary address!');
-            return Redirect::route('address_index');    		
-    	}
+        $zipcode = $addresses->zipcode;
+        $zipcodes = Zipcode::where('zipcode',$zipcode)->get();
+        if (count($zipcodes) > 0) {
+            $addrs = Address::where('user_id',Auth::user()->id)->get();
+            if ($addrs) {
+                foreach ($addrs as $address) {
+                    $addr = Address::find($address->id);
+                    $addr->primary_address = false;
+                    $addr->save();
+                }
+            }
+            if ($addresses->save()){
+                Flash::success('Successfully set "<strong>'.$addresses->name.'</strong>" as primary address!');
+                return Redirect::route('address_index');            
+            }
+        } else {
+            Flash::error('This process cannot be completed. We do not currently deliver to this zipcode. Please try another address.');
+            return Redirect::route('address_index');
+        }
+
     }
     public function getAdminPrimary($id = NULL, Request $request) {
         

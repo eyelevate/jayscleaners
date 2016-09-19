@@ -196,7 +196,7 @@
                                 </span>
                             @endif
                         </div>
-                        <a class="btn btn-link" href="{{ route('cards_index') }}" style="color:#ffffff">Manage my cards on file</a>
+                        <a href="{{ route('cards_index') }}" class="btn btn-link" style="color:#ffffff">Manage my cards on file</a>
                     </div>
                     <div class="form-group{{ $errors->has('payment_id') ? ' has-error' : '' }} clearfix">
                         <label class="col-md-12 control-label padding-top-none">Special Instructions (<small>optional</small>)</label>
@@ -213,7 +213,7 @@
                     </div>
                     <div class="form-group" >
                         <ul class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin:0px;">
-                            <li><input type="submit" href="{{ route('pages_registration') }}" class="button" value="Confirm"/></li>
+                            <li><input type="submit" data-toggle="modal" data-target="#loading" class="button" value="Confirm"/></li>
                         </ul>
                     </div>
                 {!! Form::close() !!}
@@ -249,4 +249,7 @@
 	@endif		
 
 
+@stop
+@section('modals')
+    {!! View::make('partials.frontend.modals')->render() !!}
 @stop

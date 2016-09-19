@@ -169,11 +169,14 @@
                     </div>
                     <div class="panel-footer clearfix">
                     	<a href="{{ route('delivery_pickup') }}" class='btn btn-link btn-lg'><i class="ion-arrow-left-c"></i> Back</a>
-                        <button id="dropoff_submit" type="submit" class="btn btn-lg btn-primary pull-right" disabled="true">Next</button>
+                        <button id="dropoff_submit" type="submit" data-toggle="modal" data-target="#loading" class="btn btn-lg btn-primary pull-right" disabled="true">Next</button>
                     </div>
                 {!! Form::close() !!}
                 </div>
             </div>
         </div>
     </div>
+@stop
+@section('modals')
+    {!! View::make('partials.frontend.modals')->render() !!}
 @stop

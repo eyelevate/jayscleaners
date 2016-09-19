@@ -19782,3 +19782,549 @@
  Tue, 06 Sep 2016 16:33:19 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1473204797</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
  Tue, 06 Sep 2016 16:33:19 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
  Tue, 06 Sep 2016 16:33:19 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:57:17 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801864945
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300636
+)
+
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300636]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801864945]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300636</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><billTo><firstName>Wondo</firstName><lastName>Choung</lastName><address>2350 24th ave E A</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801864945</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX2760</cardNumber><expirationDate>xxxx</expirationDate><cardType>Visa</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:57:17 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:57:18 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:57:18 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:57:18 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801868564
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300638
+)
+
+ Mon, 19 Sep 2016 08:57:18 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:57:18 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:57:18 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300638]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801868564]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:57:18 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:57:18 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:57:19 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300638</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:57:19 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:57:19 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:58:07 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801864945
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300686
+)
+
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300686]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801864945]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300686</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><billTo><firstName>Wondo</firstName><lastName>Choung</lastName><address>2350 24th ave E A</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801864945</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX2760</cardNumber><expirationDate>xxxx</expirationDate><cardType>Visa</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:58:07 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801868564
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300687
+)
+
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300687]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801868564]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:58:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:58:08 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300687</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:58:08 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:58:08 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:58:28 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:58:28 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801864945
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300708
+)
+
+ Mon, 19 Sep 2016 08:58:28 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:58:28 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:58:28 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300708]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801864945]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:58:28 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:58:28 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300708</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><billTo><firstName>Wondo</firstName><lastName>Choung</lastName><address>2350 24th ave E A</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801864945</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX2760</cardNumber><expirationDate>xxxx</expirationDate><cardType>Visa</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:58:29 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801868564
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300709
+)
+
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300709]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801868564]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:58:29 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:58:30 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300709</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:58:30 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:58:30 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:59:11 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:59:11 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801864945
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300751
+)
+
+ Mon, 19 Sep 2016 08:59:11 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:59:11 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:59:11 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300751]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801864945]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:59:11 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:59:11 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300751</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><billTo><firstName>Wondo</firstName><lastName>Choung</lastName><address>2350 24th ave E A</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801864945</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX2760</cardNumber><expirationDate>xxxx</expirationDate><cardType>Visa</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 08:59:12 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801868564
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300752
+)
+
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300752]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801868564]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 08:59:12 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 08:59:13 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300752</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 08:59:13 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 08:59:13 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 09:00:25 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 09:00:25 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801864945
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300825
+)
+
+ Mon, 19 Sep 2016 09:00:25 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 09:00:25 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 09:00:25 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300825]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801864945]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 09:00:25 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 09:00:25 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300825</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><billTo><firstName>Wondo</firstName><lastName>Choung</lastName><address>2350 24th ave E A</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801864945</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX2760</cardNumber><expirationDate>xxxx</expirationDate><cardType>Visa</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 09:00:26 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801868564
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300826
+)
+
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300826]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801868564]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 09:00:26 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 09:00:27 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300826</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 09:00:27 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 09:00:27 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 09:01:05 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 09:01:05 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801864945
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300865
+)
+
+ Mon, 19 Sep 2016 09:01:05 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 09:01:05 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 09:01:05 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300865]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801864945]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 09:01:05 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 09:01:05 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300865</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><billTo><firstName>Wondo</firstName><lastName>Choung</lastName><address>2350 24th ave E A</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801864945</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX2760</cardNumber><expirationDate>xxxx</expirationDate><cardType>Visa</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 09:01:06 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801868564
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300866
+)
+
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300866]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801868564]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 09:01:06 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 09:01:07 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300866</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 09:01:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 09:01:07 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 09:02:00 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 09:02:00 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801864945
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300920
+)
+
+ Mon, 19 Sep 2016 09:02:00 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 09:02:00 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 09:02:00 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300920]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801864945]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 09:02:00 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 09:02:00 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300920</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><billTo><firstName>Wondo</firstName><lastName>Choung</lastName><address>2350 24th ave E A</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801864945</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX2760</cardNumber><expirationDate>xxxx</expirationDate><cardType>Visa</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 19 Sep 2016 09:02:01 -0700 DEBUG : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest Object
+(
+    [customerProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1806888812
+    [customerPaymentProfileId:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 1801868564
+    [unmaskExpirationDate:net\authorize\api\contract\v1\GetCustomerPaymentProfileRequest:private] => 
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 9Fm2We7L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1474300921
+)
+
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://apitest.authorize.net/xml/v1/request.api
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<getCustomerPaymentProfileRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[9Fm2We7L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1474300921]]></refId>
+  <customerProfileId><![CDATA[1806888812]]></customerProfileId>
+  <customerPaymentProfileId><![CDATA[1801868564]]></customerPaymentProfileId>
+</getCustomerPaymentProfileRequest>
+
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 19 Sep 2016 09:02:01 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 19 Sep 2016 09:02:02 -0700 INFO : [_sendRequest] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><getCustomerPaymentProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1474300921</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><paymentProfile><customerType>individual</customerType><billTo><firstName>wondo</firstName><lastName>choung</lastName><address>2406 24th ave e</address><city>seattle</city><state>WA</state><zip>98112</zip><country>USA</country></billTo><customerProfileId>1806888812</customerProfileId><customerPaymentProfileId>1801868564</customerPaymentProfileId><payment><creditCard><cardNumber>XXXX7524</cardNumber><expirationDate>xxxx</expirationDate><cardType>MasterCard</cardType></creditCard></payment></paymentProfile></getCustomerPaymentProfileResponse>
+ Mon, 19 Sep 2016 09:02:02 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 19 Sep 2016 09:02:02 -0700 INFO : [execute] (/home/vagrant/jayscleaners/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End

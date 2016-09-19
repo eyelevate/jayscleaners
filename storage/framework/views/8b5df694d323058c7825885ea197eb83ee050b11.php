@@ -36,6 +36,7 @@
 					<?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 					</div>
 					<?php echo $__env->yieldContent('content'); ?>
+					
 				</div>
 			</article>
 
@@ -71,7 +72,7 @@
 				</ul>
 
 			</footer>
-
+			<?php echo $__env->yieldContent('modals'); ?>
 		</div>
 
 		<!-- Scripts -->

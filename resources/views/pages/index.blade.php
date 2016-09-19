@@ -1,7 +1,7 @@
 @extends($layout)
 
 @section('stylesheets')
-
+<link rel="stylesheet" href="/css/pages/frontend.css" />
 @stop
 
 @section('scripts')
@@ -14,7 +14,7 @@
 		{!! View::make('partials.layouts.navigation_logged_in')
 			->render()
 		!!}
-		@else
+	@else
 		{!! View::make('partials.layouts.navigation_logged_out')
 			->render()
 		!!}
@@ -28,7 +28,7 @@
 	<header>
 		<h2>Jays Cleaners</h2>
 	</header>
-	<p>Welcome back <strong>{{ $auth->username }}</strong>
+	<p>Welcome back <strong>{{ Auth::user()->username }}</strong>
 	<br />
 	Start your delivery today!
 	<br /><br/>							
@@ -42,7 +42,7 @@
 			{!! Form::open(['action' => 'PagesController@postOneTouch', 'class'=>'form-horizontal','role'=>"form"]) !!}
   			{!! csrf_field() !!}
 			<ul class="buttons vertical">
-				<li><input type="submit" class="button fit" value="Repeat Last Delivery"/></li>
+				<li><input data-toggle="modal" data-target="#loading" type="submit" class="button fit" value="Repeat Last Delivery"/></li>
 			</ul>  			
 			{!! Form::close() !!}
 		</li>
@@ -224,4 +224,8 @@
 	</footer>
 
 </section>
+@stop
+
+@section('modals')
+	{!! View::make('partials.frontend.modals')->render() !!}
 @stop

@@ -183,7 +183,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4 clearfix">
                             	<a href="{{ route('cards_index') }}" class="btn btn-danger btn-lg">Cancel</a>
-                                <button type="submit" class="btn btn-lg btn-primary pull-right">Edit</button>
+                                <button type="submit" data-toggle="modal" data-target="#loading" class="btn btn-lg btn-primary pull-right">Edit</button>
                             </div>
                         </div>
                     </form>
@@ -192,4 +192,7 @@
         </div>
     </div>
 
+@stop
+@section('modals')
+    {!! View::make('partials.frontend.modals')->render() !!}
 @stop

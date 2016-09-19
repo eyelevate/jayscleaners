@@ -57,9 +57,9 @@
                 			@foreach($addresses as $address)
                 				@if ($address->primary_address)
 		                		<li>
-									<div class="thumbnail">
+									<div class="thumbnail" style="{{ ($address->zipcode_status) ? '' : 'background-color:#F2DEDE' }}">
 										<div class="caption">
-											<h3><strong>{{ $address->name }}</strong> - <a href="#" class="btn btn-sm btn-link">Primary</a></h3>
+											<h3><strong>{{ $address->name }} </strong> <small>{{ ($address->zipcode_status) ? '' : '- zipcode not deliverable' }}</small> - <a href="#" class="btn btn-sm btn-link">Primary</a></h3>
 											<p><i>{{ $address->street }} <br/> {{ ucfirst($address->city)}} , {{ strtoupper($address->state) }} {{ $address->zipcode }}</i></p>
 											<ul class="clearfix">
 												<li class="pull-left"><a href="{{ route('address_delete',$address->id) }}" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
@@ -70,15 +70,17 @@
 		                		</li>
                 				@else
 		                		<li>
-									<div class="thumbnail">
+									<div class="thumbnail" style="{{ ($address->zipcode_status) ? '' : 'background-color:#F2DEDE' }}">
 										<div class="caption">
-											<h3><strong>{{ $address->name }}</strong></h3>
+											<h3><strong>{{ $address->name }}</strong> <small>{{ ($address->zipcode_status) ? '' : '- zipcode not deliverable' }}<small></h3>
 											<p><i>{{ $address->street }} <br/> {{ ucfirst($address->city)}} , {{ strtoupper($address->state) }} {{ $address->zipcode }}</i></p>
 											<ul class="clearfix">
 												<li class="pull-left"><a href="{{ route('address_delete',$address->id) }}" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
 												<li class="pull-left"><a href="{{ route('address_edit',$address->id) }}" class="btn btn-default" role="button">Edit</a>&nbsp</li>
-												<li class="pull-left"><a href="{{ route('address_primary',$address->id) }}" class="btn btn-primary" role="button">Set Primary</a>&nbsp</li>
-											</ul>
+												@if ($address->zipcode_status)
+                                                <li class="pull-left"><a href="{{ route('address_primary',$address->id) }}" class="btn btn-primary" role="button">Set Primary</a>&nbsp</li>
+											    @endif
+                                            </ul>
 										</div>
 									</div>
 		                		</li>

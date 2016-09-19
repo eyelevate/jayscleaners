@@ -173,7 +173,7 @@
                     </div>
                     <div class="panel-footer clearfix">
                     	<a href="<?php echo e(route('delivery_pickup')); ?>" class='btn btn-link btn-lg'><i class="ion-arrow-left-c"></i> Back</a>
-                        <button id="dropoff_submit" type="submit" class="btn btn-lg btn-primary pull-right" disabled="true">Next</button>
+                        <button id="dropoff_submit" type="submit" data-toggle="modal" data-target="#loading" class="btn btn-lg btn-primary pull-right" disabled="true">Next</button>
                     </div>
                 <?php echo Form::close(); ?>
 
@@ -181,5 +181,9 @@
             </div>
         </div>
     </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('modals'); ?>
+    <?php echo View::make('partials.frontend.modals')->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

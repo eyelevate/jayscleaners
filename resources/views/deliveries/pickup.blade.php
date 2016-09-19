@@ -7,7 +7,7 @@
 @section('scripts')
 <script type="text/javascript" src="/packages/zebra_datepicker/public/javascript/zebra_datepicker.js"></script>
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
-<script type="text/javascript" src="/js/deliveries/pickup.js"></script>
+<!-- <script type="text/javascript" src="/js/deliveries/pickup.js"></script> -->
 @if(isset($primary_address_id))
 <script type="text/javascript">
     disabled_dates = [];
@@ -185,4 +185,7 @@
             </div>
         </div>
     </div>
+@stop
+@section('modals')
+    {!! View::make('partials.frontend.modals')->render() !!}
 @stop

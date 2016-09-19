@@ -1,5 +1,5 @@
 <?php $__env->startSection('stylesheets'); ?>
-
+<link rel="stylesheet" href="/css/pages/frontend.css" />
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
@@ -12,7 +12,7 @@
 		<?php echo View::make('partials.layouts.navigation_logged_in')
 			->render(); ?>
 
-		<?php else: ?>
+	<?php else: ?>
 		<?php echo View::make('partials.layouts.navigation_logged_out')
 			->render(); ?>
 
@@ -26,7 +26,7 @@
 	<header>
 		<h2>Jays Cleaners</h2>
 	</header>
-	<p>Welcome back <strong><?php echo e($auth->username); ?></strong>
+	<p>Welcome back <strong><?php echo e(Auth::user()->username); ?></strong>
 	<br />
 	Start your delivery today!
 	<br /><br/>							
@@ -42,7 +42,7 @@
   			<?php echo csrf_field(); ?>
 
 			<ul class="buttons vertical">
-				<li><input type="submit" class="button fit" value="Repeat Last Delivery"/></li>
+				<li><input data-toggle="modal" data-target="#loading" type="submit" class="button fit" value="Repeat Last Delivery"/></li>
 			</ul>  			
 			<?php echo Form::close(); ?>
 
@@ -229,5 +229,10 @@
 	</footer>
 
 </section>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('modals'); ?>
+	<?php echo View::make('partials.frontend.modals')->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

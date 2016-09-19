@@ -169,7 +169,7 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 			    <ul>
-		            <li><a href="{{ route('delivery_pickup') }}" class="button">New Delivery</a></li>
+		            <li><a href="{{ route('delivery_start') }}" class="button">New Delivery</a></li>
 		        </ul>
             </div>
         </div>

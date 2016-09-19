@@ -36,6 +36,7 @@
 					@include('flash::message')
 					</div>
 					@yield('content')
+					
 				</div>
 			</article>
 
@@ -71,7 +72,7 @@
 				</ul>
 
 			</footer>
-
+			@yield('modals')
 		</div>
 
 		<!-- Scripts -->

@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use App\Zipcode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -19,5 +19,20 @@ class Address extends Model
 
 
     	return $addr;
+    }
+
+    static public function prepareForView($data) {
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $zipcodes = Zipcode::where('zipcode',$value->zipcode)->get();
+                if (count($zipcodes) > 0) {
+                    $data[$key]['zipcode_status'] = true;
+                } else {
+                    $data[$key]['zipcode_status'] = false;
+                }
+            }
+        }
+
+        return $data;
     }
 }
