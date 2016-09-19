@@ -41,7 +41,7 @@
 		{!! Form::close() !!}
 		<div class="panel-footer clearfix">
 			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-danger pull-left"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
-			<a href="{{ route('schedules_processing') }}" class="btn btn-lg btn-primary pull-right">Process Incoming Orders &nbsp;<i class="ion ion-chevron-right"></i></a>
+			<a href="{{ route('schedules_processing') }}" class="btn btn-lg btn-primary pull-right">Process&nbsp;<i class="ion ion-chevron-right"></i></a>
 		</div>
 	</div>
 
