@@ -308,6 +308,15 @@ class SchedulesController extends Controller
     	$schedule_id = $request->id;
     	$old_status = $request->status;
     	switch($old_status) {
+            case 2:
+                $new_status = 1;
+            break;
+            case 3:
+                $new_status = 2;
+            break;
+            case 4: 
+                $new_status = 3;
+            break;
     		case 7: // Delayed - Processing not complete
     			$new_status = 4;
     		break;
