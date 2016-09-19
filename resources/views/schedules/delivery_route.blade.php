@@ -484,7 +484,7 @@
 					<a class="btn btn-info" href="{{ route('delivery_admin_edit',$al['id']) }}">Edit Delivery</a>
 					<?php
 					switch($al['status']) {
-						case 2:
+						case 3:
 						?>
 						{!! Form::open(['action' => 'SchedulesController@postRevertPickup','role'=>"form",'class'=>'pull-right']) !!}
 						{!! Form::hidden('id',$al['id']) !!}
