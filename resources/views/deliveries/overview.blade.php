@@ -31,7 +31,7 @@
 		{!! Form::close() !!}
 		<div class="panel-footer clearfix">
 			<a href="#" class="btn btn-lg btn-info btn-flat pull-left">New Delivery</a>
-			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-default btn-flat pull-right">Delivery Checklist</a>
+			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-default btn-flat pull-right">Checklist</a>
 		</div>
 	</div>
 
