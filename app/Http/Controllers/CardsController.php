@@ -29,7 +29,7 @@ use App\Profile;
 use App\Zipcode;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
-define("AUTHORIZENET_LOG_FILE", "phplog");
+// define("AUTHORIZENET_LOG_FILE", "phplog");
 class CardsController extends Controller
 {
     public function __construct() {
@@ -242,7 +242,7 @@ class CardsController extends Controller
 						//Use an existing profile id
 						$paymentprofilerequest->setCustomerProfileId( $prev_profile_id );
 						$paymentprofilerequest->setPaymentProfile( $paymentprofile );
-						// $paymentprofilerequest->setValidationMode("liveMode");
+						$paymentprofilerequest->setValidationMode("liveMode");
 						$controller = new AnetController\CreateCustomerPaymentProfileController($paymentprofilerequest);
 						$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
 						if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
