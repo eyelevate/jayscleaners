@@ -344,7 +344,7 @@ class SchedulesController extends Controller
 
     public function getProcessing(Request $request) {
         $this->layout = 'layouts.dropoff';
-        $today = ($request->session()->has('processing_date')) ? $request->session()->get('processing_date') : date('Y-m-d 00:00:00');
+        $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
         
         $schedules = Schedule::where('pickup_date',$today)
         					   ->where('status',3)
