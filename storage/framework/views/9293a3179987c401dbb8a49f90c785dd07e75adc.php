@@ -5,7 +5,7 @@
 <?php $__env->startSection('scripts'); ?>
 <script type="text/javascript" src="/packages/zebra_datepicker/public/javascript/zebra_datepicker.js"></script>
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
-<!-- <script type="text/javascript" src="/js/deliveries/pickup.js"></script> -->
+<script type="text/javascript" src="/js/deliveries/pickup.js"></script>
 <?php if(isset($primary_address_id)): ?>
 <script type="text/javascript">
     disabled_dates = [];
