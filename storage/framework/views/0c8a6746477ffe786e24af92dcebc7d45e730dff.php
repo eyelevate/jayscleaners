@@ -27,7 +27,7 @@
 	            <label class="col-md-12 col-lg-12 col-sm-12 col-xs-12 control-label padding-top-none">Processing Date</label>
 
 	            <div id="search_container" class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-	                <input id="search_data" type="text" class="form-control" name="search" value="<?php echo e(old('search') ? old('search') : $processing_date); ?>" style="background-color:#ffffff">
+	                <input id="search_data" type="text" class="form-control" name="search" value="<?php echo e(old('search') ? old('search') : $processing_date); ?>" readonly="true" style="background-color:#ffffff">
 
 	                <?php if($errors->has('search')): ?>
 	                    <span class="help-block">

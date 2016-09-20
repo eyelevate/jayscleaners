@@ -31,6 +31,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
     Route::get('/login',['as'=>'pages_login','uses'=>'PagesController@getLogin']);
     Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
+    Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
     Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
     Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
     Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);

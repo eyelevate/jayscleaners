@@ -28,7 +28,7 @@
 	            <label class="col-md-12 col-lg-12 col-sm-12 col-xs-12 control-label padding-top-none">Delivery Date</label>
 
 	            <div id="search_container" class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-	                <input id="search_data" type="text" class="form-control" name="search" value="<?php echo e(old('search') ? old('search') : $delivery_date); ?>" style="background-color:#ffffff">
+	                <input id="search_data" type="text" class="form-control" name="search" value="<?php echo e(old('search') ? old('search') : $delivery_date); ?>" readonly="true" style="background-color:#ffffff">
 
 	                <?php if($errors->has('search')): ?>
 	                    <span class="help-block">
@@ -157,7 +157,7 @@
 
 					<?php if($schedule['status'] == 4 || $schedule['status'] == 11): ?>
 					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<table class="table table-striped table-condensed table-hover">
+						<table class="schedule_table table table-striped table-condensed table-hover">
 							<thead>
 								<tr>
 									<th>#</th>
@@ -173,7 +173,7 @@
 							if (count($invoices) > 0) {
 								foreach ($invoices as $invoice) {
 								?>
-								<tr id="invoice-<?php echo e($invoice->id); ?>" class="invoices" style="cursor:pointer;">
+								<tr id="invoice-<?php echo e($invoice->id); ?>" class="invoices_tr" style="cursor:pointer;">
 									<td><?php echo e($invoice->id); ?></td>
 									<td><?php echo e($invoice->quantity); ?></td>
 									<td>
@@ -195,7 +195,10 @@
 										</ul>
 									</td>
 									<td><?php echo e($invoice->pretax_html); ?></td>
-									<td><input type="checkbox" value="<?php echo e($invoice->id); ?>"/></td>
+									<td>
+										<input class="schedule_ids" type="hidden" value="<?php echo e($schedule['id']); ?>"/>
+										<input class="invoice_ids" type="checkbox" value="<?php echo e($invoice->id); ?>"/>
+									</td>
 								</tr>
 								<?php
 								}
@@ -226,7 +229,7 @@
 					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
 						<?php if($schedule['status'] == 4): ?>
 						<label class="label label-warning col-xs-12 col-sm-12 col-md-12 col-lg-12">Not Paid</label>
-						<?php echo Form::open(['action' => 'SchedulesController@postApprovePickup','role'=>"form"]); ?>
+						<?php echo Form::open(['action' => 'SchedulesController@postPayment','role'=>"form"]); ?>
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
@@ -235,7 +238,7 @@
 						<?php echo Form::close(); ?>						
 						<?php elseif($schedule['status'] == 11): ?>
 						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
-						<?php echo Form::open(['action' => 'SchedulesController@postApprovePickup','role'=>"form"]); ?>
+						<?php echo Form::open(['action' => 'SchedulesController@postRevertPayment','role'=>"form"]); ?>
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 

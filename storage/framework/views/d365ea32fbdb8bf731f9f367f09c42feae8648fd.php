@@ -27,7 +27,7 @@
 	            <label class="col-md-12 col-lg-12 col-sm-12 col-xs-12 control-label padding-top-none">Delivery Date</label>
 
 	            <div id="search_container" class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-	                <input id="search_data" type="text" class="form-control" name="search" value="<?php echo e(old('search') ? old('search') : $delivery_date); ?>" style="background-color:#ffffff">
+	                <input id="search_data" type="text" class="form-control" name="search" value="<?php echo e(old('search') ? old('search') : $delivery_date); ?>" readonly="true" style="background-color:#ffffff">
 
 	                <?php if($errors->has('search')): ?>
 	                    <span class="help-block">
@@ -42,7 +42,7 @@
 
 		<div class="panel-footer clearfix">
 			<a href="<?php echo e(route('schedules_checklist')); ?>" class="btn btn-lg btn-danger pull-left"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
-			<a href="<?php echo e(route('schedules_processing')); ?>" class="btn btn-lg btn-primary pull-right">Process Incoming Orders &nbsp;<i class="ion ion-chevron-right"></i></a>
+			<a href="<?php echo e(route('schedules_processing')); ?>" class="btn btn-lg btn-primary pull-right">Process&nbsp;<i class="ion ion-chevron-right"></i></a>
 		</div>
 	</div>
 
@@ -503,7 +503,7 @@
 					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$al['id'])); ?>">Edit Delivery</a>
 					<?php
 					switch($al['status']) {
-						case 2:
+						case 3:
 						?>
 						<?php echo Form::open(['action' => 'SchedulesController@postRevertPickup','role'=>"form",'class'=>'pull-right']); ?>
 

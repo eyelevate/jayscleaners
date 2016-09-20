@@ -72,9 +72,9 @@
 				</ul>
 
 			</footer>
-			@yield('modals')
+			
 		</div>
-
+		@yield('modals')
 		<!-- Scripts -->
 		<!-- jQuery 2.1.4 -->
     	<script src="/packages/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js"></script>

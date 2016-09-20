@@ -156,7 +156,7 @@
 
 					@if ($schedule['status'] == 4 || $schedule['status'] == 11)
 					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<table class="table table-striped table-condensed table-hover">
+						<table class="schedule_table table table-striped table-condensed table-hover">
 							<thead>
 								<tr>
 									<th>#</th>
@@ -172,7 +172,7 @@
 							if (count($invoices) > 0) {
 								foreach ($invoices as $invoice) {
 								?>
-								<tr id="invoice-{{ $invoice->id }}" class="invoices" style="cursor:pointer;">
+								<tr id="invoice-{{ $invoice->id }}" class="invoices_tr" style="cursor:pointer;">
 									<td>{{ $invoice->id }}</td>
 									<td>{{ $invoice->quantity }}</td>
 									<td>
@@ -194,7 +194,10 @@
 										</ul>
 									</td>
 									<td>{{ $invoice->pretax_html }}</td>
-									<td><input type="checkbox" value="{{ $invoice->id }}"/></td>
+									<td>
+										<input class="schedule_ids" type="hidden" value="{{ $schedule['id'] }}"/>
+										<input class="invoice_ids" type="checkbox" value="{{ $invoice->id }}"/>
+									</td>
 								</tr>
 								<?php
 								}
@@ -225,14 +228,14 @@
 					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
 						@if ($schedule['status'] == 4)
 						<label class="label label-warning col-xs-12 col-sm-12 col-md-12 col-lg-12">Not Paid</label>
-						{!! Form::open(['action' => 'SchedulesController@postApprovePickup','role'=>"form"]) !!}
+						{!! Form::open(['action' => 'SchedulesController@postPayment','role'=>"form"]) !!}
 						{!! Form::hidden('id',$schedule['id']) !!}
 						<button type="submit" class="btn btn-lg btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"><i class="icon ion-social-usd"></i> Make Payment</button>
 						
 						{!! Form::close() !!}						
 						@elseif ($schedule['status'] == 11)
 						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
-						{!! Form::open(['action' => 'SchedulesController@postApprovePickup','role'=>"form"]) !!}
+						{!! Form::open(['action' => 'SchedulesController@postRevertPayment','role'=>"form"]) !!}
 						{!! Form::hidden('id',$schedule['id']) !!}
 						<input type="submit" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
 						{!! Form::close() !!}						

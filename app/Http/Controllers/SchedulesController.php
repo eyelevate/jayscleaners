@@ -57,11 +57,11 @@ class SchedulesController extends Controller
 
         $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
         $pickups = Schedule::where('pickup_date',$today)
-                             ->whereIn('status',[1,4,5])
+                             ->where('status',1)
                              ->orderBy('id','desc');
 
         $schedules = Schedule::where('dropoff_date',$today)
-        					   ->whereIn('status',[1,4,5])
+        					   ->whereIn('status',[4,5])
         					   ->union($pickups)
         					   ->orderBy('id','desc')
         					   ->get();
@@ -69,10 +69,10 @@ class SchedulesController extends Controller
 
 
         $approved_pickup = Schedule::where('pickup_date',$today)
-	    					   ->whereIn('status',[2,11])
+	    					   ->where('status',2)
 	    					   ->orderBy('id','desc');        
         $approved = Schedule::where('dropoff_date',$today)
-	    					   ->whereIn('status',[2,11])
+	    					   ->where('status',11)
 	    					   ->orderBy('id','desc')
 	    					   ->union($approved_pickup)
 	    					   ->get();
@@ -387,8 +387,20 @@ class SchedulesController extends Controller
     	}
     }
 
-    public function postPayment(Request $request) {
+    public function postSelectInvoiceRow(Request $request) {
 
+    }
+
+    public function postRemoveInvoiceRow(Request $request) {
+        
+    }
+
+    public function postPayment(Request $r) {
+        $schedule_id = $r->id;
+
+        $schedules = Schedule::find($id);
+
+        // get invoice totals for this schedule_id
     }
 
     public function postRevertPayment(Request $request) {

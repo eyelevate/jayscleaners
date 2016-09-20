@@ -22,11 +22,7 @@
 			</ul>
 		</li>
 		<li>
-			<a id="logout_button" href="#" class="button special">Logout</a>
-			<?php echo Form::open(['action' => 'PagesController@postLogout', 'id'=>'logout_form', 'class'=>'form-horizontal','role'=>"form"]); ?>
-
-			<?php echo Form::close(); ?>
-
+			<a id="logout_button" href="<?php echo e(route('pages_logout')); ?>" class="button special">Logout</a>
 		</li>
 	</ul>
 </nav>

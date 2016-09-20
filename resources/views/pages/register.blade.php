@@ -12,20 +12,9 @@
 @section('navigation')
 
 <header id="header" class="reveal">
-    <h1 id="logo"><a href="{{ route('pages_index') }}" class="nav-colors">Jays Cleaners</a></h1>
-    <nav id="nav">
-        <ul>
-            <li class="submenu nav-colors">
-                <a href="#">About Us</a>
-                <ul>
-                    <li><a href="{{ route('delivery_pickup') }}" >Schedule Delivery</a></li>
-                    <li><a href="left-sidebar.html">Services</a></li>
-                    <li><a href="right-sidebar.html">Business Hours</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+{!! View::make('partials.layouts.navigation_logged_out')
+    ->render()
+!!}
 </header>
 @stop
 
@@ -141,4 +130,7 @@
             </div>
         </div>
     </div>
+@stop
+@section('modals')
+    {!! View::make('partials.frontend.modals')->render() !!}
 @stop

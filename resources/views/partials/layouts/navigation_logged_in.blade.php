@@ -22,9 +22,7 @@
 			</ul>
 		</li>
 		<li>
-			<a id="logout_button" href="#" class="button special">Logout</a>
-			{!! Form::open(['action' => 'PagesController@postLogout', 'id'=>'logout_form', 'class'=>'form-horizontal','role'=>"form"]) !!}
-			{!! Form::close() !!}
+			<a id="logout_button" href="{{ route('pages_logout') }}" class="button special">Logout</a>
 		</li>
 	</ul>
 </nav>

@@ -86,6 +86,11 @@ class PagesController extends Controller
      
     }        
 
+    public function getLogout() {
+        Auth::logout();
+        Flash::success('You have successfully been logged out');
+        return Redirect::action('PagesController@getIndex');        
+    }
     public function postLogout() {
         Auth::logout();
         Flash::success('You have successfully been logged out');
