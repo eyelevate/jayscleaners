@@ -42,8 +42,8 @@
 		<?php echo Form::close(); ?>
 
 		<div class="panel-footer clearfix">
-			<a href="<?php echo e(route('delivery_overview')); ?>" class="btn btn-lg btn-danger pull-left"><i class="ion ion-chevron-left"></i>&nbsp; Back</a>
-			<a href="<?php echo e(route('schedules_delivery_route')); ?>" class="btn btn-lg btn-primary pull-right">View Delivery Route &nbsp;<i class="ion ion-chevron-right"></i></a>
+			<a href="<?php echo e(route('delivery_overview')); ?>" class="btn btn-lg btn-danger pull-left col-lg-1 col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp; Back</a>
+			<a href="<?php echo e(route('schedules_delivery_route')); ?>" class="btn btn-lg btn-primary pull-right col-lg-1 col-md-2 col-sm-6 col-xs-6">View Route &nbsp;<i class="ion ion-chevron-right"></i></a>
 		</div>
 	</div>
 
