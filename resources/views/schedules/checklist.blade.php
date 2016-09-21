@@ -282,7 +282,7 @@
 									</td>
 									<td>{{ $invoice->pretax_html }}</td>
 									<td>
-										<input class="invoice_ids" type="checkbox" value="{{ $invoice->id }}" {{ ($invoice->schedule_id) ? 'checked="true"' : '' }} />
+										<input class="invoice_ids" readonly="true" disabled="true" type="checkbox" value="{{ $invoice->id }}" {{ ($invoice->schedule_id) ? 'checked="true"' : '' }} />
 									</td>
 								</tr>
 								<?php

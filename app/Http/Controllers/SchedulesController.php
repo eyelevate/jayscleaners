@@ -454,9 +454,35 @@ class SchedulesController extends Controller
         $company_id = $schedules->company_id;
         $customer_id = $schedules->customer_id;
         $current_paid = ($r->session()->has('current_paid')) ? $r->session()->get('curent_paid') : [];
-        $cards = Card::find($schedules->card_id);
-        $profile_id = $cards->profile_id;
-        $payment_id = $cards->payment_id;
+        
+
+        $valid_card_check = false; // Check for valid card start with false
+        if (isset($schedules->card_id)) { // use the card selected by customer first
+            $cards = Card::find($schedules->card_id);
+            $profile_id = $cards->profile_id;
+            $payment_id = $cards->payment_id;
+            $valid_card_check = Card::checkValid($company_id, $profile_id, $payment_id);
+        } else { // if no card was selected use an alternate card
+            $cards = Card::where('user_id',$customer_id)->where('company_id',$company_id)->get();
+            if (count($cards) > 0) {
+                foreach ($cards as $card) {
+                    $profile_id = $card->profile_id;
+                    $payment_id = $card->payment_id;
+                    $valid_card_check = Card::checkValid($company_id, $profile_id, $payment_id);
+                    if ($valid_card_check) {
+                        break;
+                    }
+                }
+            }
+            
+        }
+
+        // Card is not valid error
+        if (!$valid_card_check) {
+            Flash::error('Credit card on file did not validate. Please contact customer for new card and reschedule delivery.');
+            return Redirect::route('schedules_checklist');
+        }
+
 
         // get invoice totals for this schedule_id
         $invoices = Invoice::where('schedule_id',$schedule_id)->get();

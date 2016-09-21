@@ -177,5 +177,37 @@ class Card extends Model
 		}
     }
 
+    static public function checkValid($company_id, $profile_id, $payment_id) {
+    	$companies = Company::find($company_id);
+        $payment_api_login = $companies->payment_api_login;
+        $payment_api_password = $companies->payment_gateway_id;
+    	$validated = false;
+		// Common setup for API credentials
+		$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+		$merchantAuthentication->setName($payment_api_login);
+		$merchantAuthentication->setTransactionKey($payment_api_password);
+
+		// Use an existing payment profile ID for this Merchant name and Transaction key
+		//validationmode tests , does not send an email receipt
+		$validationmode = "testMode";
+
+		$request = new AnetAPI\ValidateCustomerPaymentProfileRequest();
+
+		$request->setMerchantAuthentication($merchantAuthentication);
+		$request->setCustomerProfileId($profile_id);
+		$request->setCustomerPaymentProfileId($payment_id);
+		$request->setValidationMode($validationmode);
+
+		$controller = new AnetController\ValidateCustomerPaymentProfileController($request);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+		if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
+			return true;
+		} else {	
+			return false;
+		}
+
+    }
+
 
 }

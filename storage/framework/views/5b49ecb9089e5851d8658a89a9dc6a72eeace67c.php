@@ -287,7 +287,7 @@
 									</td>
 									<td><?php echo e($invoice->pretax_html); ?></td>
 									<td>
-										<input class="invoice_ids" type="checkbox" value="<?php echo e($invoice->id); ?>" <?php echo e(($invoice->schedule_id) ? 'checked="true"' : ''); ?> />
+										<input class="invoice_ids" readonly="true" disabled="true" type="checkbox" value="<?php echo e($invoice->id); ?>" <?php echo e(($invoice->schedule_id) ? 'checked="true"' : ''); ?> />
 									</td>
 								</tr>
 								<?php
@@ -339,18 +339,6 @@
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
 						<input type="submit" class="btn btn-success" value="Approve For Pickup" />
-						<?php echo Form::close(); ?>
-
-						<?php
-						break;
-
-						case 4:
-						?>
-						<?php echo Form::open(['action' => 'SchedulesController@postApproveDropoff','role'=>"form",'class'=>'pull-right']); ?>
-
-						<?php echo Form::hidden('id',$schedule['id']); ?>
-
-						<input type="submit" class="btn btn-success" value="Approve For Dropoff" />
 						<?php echo Form::close(); ?>
 
 						<?php
