@@ -25,6 +25,7 @@ use App\Company;
 use App\Customer;
 use App\Custid;
 use App\Delivery;
+use App\Invoice;
 use App\Layout;
 use App\Transaction;
 use App\Zipcode;
@@ -78,12 +79,14 @@ class SchedulesController extends Controller
 	    					   ->get();
        	$approved_list = Schedule::prepareSchedule($approved);
 
+        $paid_invoices = ($request->session()->has('paid_invoices')) ? $request->session()->get('paid_invoices') : false;
 
         return view('schedules.checklist')
         ->with('layout',$this->layout)
         ->with('delivery_date',date('D m/d/Y',strtotime($today)))
         ->with('schedules',$active_list)
-        ->with('approved_list',$approved_list);
+        ->with('approved_list',$approved_list)
+        ->with('paid_invoices',$paid_invoices);
     }
 
     public function postCheckList(Request $request) {
@@ -110,17 +113,27 @@ class SchedulesController extends Controller
 
         $active_list = Schedule::prepareSchedule($schedules);
         $options = $request->session()->has('route_options') ? $request->session()->get('route_options') : false;
+        
         $trip = Schedule::prepareTrip($schedules, $options);
+
         if (count($schedules) > 0) {
 
 			$client = new Client();
-	        $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
-	        	'headers' => [
-	        		'Content-Type' => 'application/json',
-	        		'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2Q4ODdjZTJjOGE5MGZhNmMyNDY2YTAiLCJpYXQiOjE0NzM4MDgzMzR9.G-wRJ7Prih7MXp15vUv6T_mqDSd-nvzPnR4OA9PzjbY'
-	        	],
-	            'json' => $trip 
-	        ]);
+	        // $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
+	        // 	'headers' => [
+	        // 		'Content-Type' => 'application/json',
+	        // 		'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2Q4ODdjZTJjOGE5MGZhNmMyNDY2YTAiLCJpYXQiOjE0NzM4MDgzMzR9.G-wRJ7Prih7MXp15vUv6T_mqDSd-nvzPnR4OA9PzjbY'
+	        // 	],
+	        //     'json' => $trip 
+	        // ]);
+            $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2UxZGI0MDc2ZGFmYjZhMGE5NmIwNGUiLCJpYXQiOjE0NzQ0MTk1MjB9.6MbKPl0y7a-mWwEtaRwqqmx2pA-6kXGZS8MJlv1gbFE'
+                ],
+                'json' => $trip 
+            ]);
+
 	        $body = json_decode($res->getBody()->read(1024));
 	        $delivery_route = Schedule::prepareRouteForView($body,$active_list);
     	} else {
@@ -204,6 +217,7 @@ class SchedulesController extends Controller
 
     	$schedules = Schedule::find($request->id);
     	$schedules->status = $next_status;
+
 
     	if ($schedules->save()) {
     		Flash::success('Updated #'.$request->id.' to "En-route to pickup"');
@@ -388,19 +402,116 @@ class SchedulesController extends Controller
     }
 
     public function postSelectInvoiceRow(Request $request) {
+        if ($request->ajax()) {
+            $schedule_id = $request->schedule_id;
+            $invoice_id = $request->invoice_id;
 
+
+            $invoices = Invoice::find($invoice_id);
+            $invoices->schedule_id = $schedule_id;
+            if ($invoices->save()) {
+                $status = true;
+                $invs = Invoice::where('schedule_id',$schedule_id)->get();
+                $totals = Invoice::prepareTotals($invs);
+
+            } else {
+                $status = false;
+                $totals = [];
+            }
+            return response()->json(['status'=>$status,
+                                     'totals'=>$totals]);
+        }
+    
     }
 
     public function postRemoveInvoiceRow(Request $request) {
-        
+        if ($request->ajax()) {
+            $schedule_id = $request->schedule_id;
+            $invoice_id = $request->invoice_id;
+
+
+            $invoices = Invoice::find($invoice_id);
+            $invoices->schedule_id = '';
+            if ($invoices->save()) {
+                $status = true;
+                $invs = Invoice::where('schedule_id',$schedule_id)->get();
+                $totals = Invoice::prepareTotals($invs);
+                $paid_invoices = ($request->session()->has('paid_invoices')) ? $request->session()->get('paid_invoices') : [];
+
+            } else {
+                $totals = [];
+                $status = false;
+            }
+            return response()->json(['status'=>$status,
+                                     'totals'=>$totals]);
+        }
     }
 
     public function postPayment(Request $r) {
         $schedule_id = $r->id;
 
-        $schedules = Schedule::find($id);
+        $schedules = Schedule::find($schedule_id);
+        $company_id = $schedules->company_id;
+        $customer_id = $schedules->customer_id;
+        $current_paid = ($r->session()->has('current_paid')) ? $r->session()->get('curent_paid') : [];
+        $cards = Card::find($schedules->card_id);
+        $profile_id = $cards->profile_id;
+        $payment_id = $cards->payment_id;
 
         // get invoice totals for this schedule_id
+        $invoices = Invoice::where('schedule_id',$schedule_id)->get();
+        if (count($invoices) > 0) {
+            $totals = Invoice::prepareTotals($invoices);
+
+            $attempt_payment = Schedule::makePayment($company_id, $profile_id, $payment_id, $totals['total']);
+            
+            if ($attempt_payment['status']) {
+                $schedules->status = 5;
+                if ($schedules->save()) {
+                    // save transaction information
+                    $transactions = new Transaction();
+                    $transactions->company_id = $company_id;
+                    $transactions->customer_id = $customer_id;
+                    $transactions->schedule_id = $schedule_id;
+                    $transactions->pretax = $totals['subtotal'];
+                    $transactions->tax = $totals['tax'];
+                    $transactions->aftertax = $totals['total'];
+                    $transactions->total = $totals['total'];
+                    $transactions->type = 2;
+                    $transactions->tendered = $totals['total'];
+                    $transactions->transaction_id = $attempt_payment['trans_id'];
+                    $transactions->status = 1;
+
+                    // update invoices with transaction id
+                    if ($transactions->save()) {
+                        $transaction_id = $transactions->id;
+                        foreach ($invoices as $invoice) {
+                            $invoice_id = $invoice->id;
+                            $s_invs = Invoice::find($invoice_id);
+                            $s_invs->transaction_id = $transaction_id;
+                            $s_invs->status = 5; // paid and done
+                            $s_invs->save();
+                        }
+
+                        Flash::success('Successfully completed online payment for #'.$schedule_id.'.');
+                        return Redirect::route('schedules_checklist');
+
+                    }
+                }
+            } else {
+                
+                $schedules->status = 10;
+                if ($schedules->save()) {
+                    Flash::error('Error: '.$attempt_payment['error_message']);
+                    return Redirect::route('schedules_checklist');
+                }
+            }
+
+        } else {
+            Flash::error('You have not selected any invoices cannot charge a $0 balance. Please select the appropriate invoice(s) and try again.');
+            return Redirect::route('schedules_checklist');
+        }
+
     }
 
     public function postRevertPayment(Request $request) {

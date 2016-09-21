@@ -444,6 +444,7 @@ class DeliveriesController extends Controller
         $cards = Card::where('payment_id',$payment_id)->where('company_id',$company_id)->get();
         if(count($cards) > 0) {
             foreach ($cards as $card) {
+                $schedules->card_id = $card->id; 
                 $profile_id = $card->profile_id;
                 $exp_month = $card->exp_month;
                 $exp_year = $card->exp_year;

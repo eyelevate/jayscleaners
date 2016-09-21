@@ -12,37 +12,9 @@
 
 <?php $__env->startSection('navigation'); ?>
     <header id="header" class="reveal">
-        <h1 id="logo"><a href="<?php echo e(route('pages_index')); ?>">Jays Cleaners</a></h1>
-        <nav id="nav">
-            <ul>
-                <li class="submenu">
-                    <a href="#"><small>Hello </small><strong><?php echo e(Auth::user()->username); ?></strong></a>
-                    <ul>
-                        <li><a href="<?php echo e(route('delivery_index')); ?>">Your Deliveries</a></li>
-                        <li><a href="left-sidebar.html">Services</a></li>
-                        <li><a href="right-sidebar.html">Business Hours</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li class="submenu">
-                            <a href="#"><?php echo e(Auth::user()->username); ?> menu</a>
-                            <ul>
-                                <li><a href="#">Dolore Sed</a></li>
-                                <li><a href="#">Consequat</a></li>
-                                <li><a href="#">Lorem Magna</a></li>
-                                <li><a href="#">Sed Magna</a></li>
-                                <li><a href="#">Ipsum Nisl</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a id="logout_button" href="#" class="button special">Logout</a>
-                    <?php echo Form::open(['action' => 'PagesController@postLogout', 'id'=>'logout_form', 'class'=>'form-horizontal','role'=>"form"]); ?>
+    <?php echo View::make('partials.layouts.navigation_logged_in')
+        ->render(); ?>
 
-                    <?php echo Form::close(); ?>
-
-                </li>
-            </ul>
-        </nav>
     </header>
 <?php $__env->stopSection(); ?>
 

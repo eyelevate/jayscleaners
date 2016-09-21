@@ -211,10 +211,10 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/schedules/approve-delivered', ['as'=>'schedules_approve_delivered','uses'=>'SchedulesController@postApproveDelivered']);
 		Route::post('/schedules/route-options', ['as'=>'schedules_route_options','uses'=>'SchedulesController@postRouteOptions']);
 		Route::post('/schedules/approve-processing', ['as'=>'schedules_approve_processing','uses'=>'SchedulesController@postApproveProcessing']);
-		Route::post('/schedules/payment', ['as'=>'schedules_payment','uses'=>'SchedulesController@postPayment']);
+		Route::post('/schedules/payment', ['as'=>'schedules_payment','uses'=>'SchedulesController@postPayment']); 
 		Route::post('/schedules/revert-payment', ['as'=>'schedules_revert_payment','uses'=>'SchedulesController@postRevertPayment']);
-		
-		
+		Route::post('/schedules/select-invoice-row', ['as'=>'schedules_select_invoice_row','uses'=>'SchedulesController@postSelectInvoiceRow']); 
+		Route::post('/schedules/remove-invoice-row', ['as'=>'schedules_remove_invoice_row','uses'=>'SchedulesController@postRemoveInvoiceRow']); 
 
 		//Taxes
 		Route::get('/taxes',['as'=>'taxes_index','uses'=>'TaxesController@getIndex']);

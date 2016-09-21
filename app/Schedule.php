@@ -13,6 +13,9 @@ use Geocoder;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
+
 class Schedule extends Model
 {
     use SoftDeletes;
@@ -105,9 +108,10 @@ class Schedule extends Model
                                                  ->where('status','<',5)
                                                  ->get();
                             $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-
-
+                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                            $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
+                            $schedules[$key]['invoice_totals'] = $totals;
     					break;
 
     					case 5:
@@ -118,8 +122,10 @@ class Schedule extends Model
                                                  ->get();
                             $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
 
-                            Job::dump($prepared_invoices);
+                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                            $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
+                            $schedules[$key]['invoice_totals'] = $totals;
     					break;
 
     					case 6:
@@ -179,8 +185,11 @@ class Schedule extends Model
             'visits'=>[],
             'fleet'=>[]
         ];
+
+        $company_id = null;
         if (count($schedules) > 0) {
             foreach ($schedules as $schedule) {
+                $company_id = $schedule->company_id;
                 $address_id = $schedule->pickup_address;
                 $addresses = Address::find($address_id);
                 $address_name = $addresses->name;
@@ -199,14 +208,15 @@ class Schedule extends Model
                 $dropoff_start_time = Schedule::convertTimeToMilitary($delivery_dropoff->start_time);
                 $dropoff_end_time = Schedule::convertTimeToMilitary($delivery_dropoff->end_time);
 
+                $point = [
+                            'name' => $address_street,
+                            'lat'=>($latlong['status']) ? $latlong['latitude'] : false,
+                            'lng'=>($latlong['status']) ? $latlong['longitude'] : false
+                         ];
                 // push to the visits array
                 $trip['visits'][$schedule->id] = [
-                    'location' => [
-                        'name' => $address_street,
-                        'lat'=>($latlong['status']) ? $latlong['latitude'] : false,
-                        'lng'=>($latlong['status']) ? $latlong['longitude'] : false
-                    ],
-                    'start' => ($schedule->status == 5) ? $dropoff_start_time : $pickup_start_time,
+                    'location' => $point,
+                    'start' =>($schedule->status == 5) ? $dropoff_start_time: $pickup_start_time,
                     'end' => ($schedule->status == 5) ? $dropoff_end_time : $pickup_end_time,
                     'duration' => 20,
                 ];
@@ -217,7 +227,7 @@ class Schedule extends Model
         }
 
         $user_id = Auth::user()->id;
-        $trip['fleet'] = Schedule::getDrivers();
+        $trip['fleet'] = Schedule::getDrivers($company_id);        
 
         // options
         if($options){
@@ -228,39 +238,34 @@ class Schedule extends Model
         return $trip;
     }
 
-    static private function getDrivers() {
+    static private function getDrivers($company_id = null) {
         $montlake = [
-            'status'=>true,
-            'latitude'=>47.6400404, 
-            'longitude'=>122.301674
+            'name'=>'Montlake',
+            'lat'=>47.6400404, 
+            'lng'=>-122.301674
         ];
         $roosevelt = [
-            'status'=>true,
-            'latitude'=>47.6756443, 
-            'longitude'=>122.3198168
+            'name'=>'Roosevelt',
+            'lat'=>47.6756443, 
+            'lng'=>-122.3198168
         ];
+
+        $end_point = ($company_id == 2) ? $montlake : $roosevelt;
+        $start_point =($company_id == 2) ? $montlake : $roosevelt;
 
         $drivers = [
             'vehicle_1'=>[
-                'start_location'=>[
-                    'name'=>'Work',
-                    'lat'=>47.6400404,
-                    'lng'=>-122.301674
-                ],
-                'end_location'=>[
-                    'name'=>'Work',
-                    'lat'=>47.6400404,
-                    'lng'=>-122.301674
-                ],
-                'shift_start'=>'8:00',
-                'shift_end'=>'17:30'
+                'start_location'=>$montlake,
+                'end_location'=>$roosevelt,
+                'shift_start'=>'7:00',
+                'shift_end'=>'19:00'
             ]
         ];
 
         return $drivers;
     }
 
-    static private function getLatLong($address) {
+    static public function getLatLong($address) {
         $latlong = [];
 
         try {
@@ -313,5 +318,97 @@ class Schedule extends Model
         } 
 
         return $joined;
+    }
+
+    static public function makePayment($company_id, $profile_id, $payment_id, $total) {
+
+        $re = [];
+
+        $companies = Company::find($company_id);
+        $payment_api_login = $companies->payment_api_login;
+        $payment_api_password = $companies->payment_gateway_id;
+        // Common setup for API credentials
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName($payment_api_login);
+        $merchantAuthentication->setTransactionKey($payment_api_password);
+        $refId = 'ref' . time();
+
+        $profileToCharge = new AnetAPI\CustomerProfilePaymentType();
+        $profileToCharge->setCustomerProfileId($profile_id);
+        $paymentProfile = new AnetAPI\PaymentProfileType();
+        $paymentProfile->setPaymentProfileId($payment_id);
+        $profileToCharge->setPaymentProfile($paymentProfile);
+
+        $transactionRequestType = new AnetAPI\TransactionRequestType();
+        $transactionRequestType->setTransactionType( "authCaptureTransaction"); 
+        $transactionRequestType->setAmount($total);
+        $transactionRequestType->setProfile($profileToCharge);
+
+        $request = new AnetAPI\CreateTransactionRequest();
+        $request->setMerchantAuthentication($merchantAuthentication);
+        $request->setRefId( $refId);
+        $request->setTransactionRequest( $transactionRequestType);
+        $controller = new AnetController\CreateTransactionController($request);
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+        if ($response != null) {
+            if($response->getMessages()->getResultCode() == 'Ok') {
+                $tresponse = $response->getTransactionResponse();
+            
+                if ($tresponse != null && $tresponse->getMessages() != null) {
+                    $re = [
+                        'status'=>true,
+                        'auth_code'=>$tresponse->getAuthCode(),
+                        'trans_id'=>$tresponse->getTransId()
+                    ];
+                    // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
+                    // echo  "Charge Customer Profile APPROVED  :" . "\n";
+                    // echo " Charge Customer Profile AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+                    // echo " Charge Customer Profile TRANS ID  : " . $tresponse->getTransId() . "\n";
+                    // echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
+                    // echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
+                } else {
+                    // echo "Transaction Failed \n";
+                    if($tresponse->getErrors() != null) {
+                        // echo " Error code  : " . $tresponse->getErrors()[0]->getErrorCode() . "\n";
+                        // echo " Error message : " . $tresponse->getErrors()[0]->getErrorText() . "\n";  
+                        $re = [
+                            'status'=>false,
+                            'error_code'=>$tresponse->getErrors()[0]->getErrorCode(),
+                            'error_message'=>$tresponse->getErrors()[0]->getErrorText()
+                        ];          
+                    }
+                }
+            } else {
+                $tresponse = $response->getTransactionResponse();
+
+                if($tresponse != null && $tresponse->getErrors() != null) {
+                    // echo " Error code  : " . $tresponse->getErrors()[0]->getErrorCode() . "\n";
+                    // echo " Error message : " . $tresponse->getErrors()[0]->getErrorText() . "\n";  
+                    $re = [
+                        'status'=>false,
+                        'error_code'=>$tresponse->getErrors()[0]->getErrorCode(),
+                        'error_message'=>$tresponse->getErrors()[0]->getErrorText()
+                    ];                       
+                } else {
+                    // echo " Error code  : " . $response->getMessages()->getMessage()[0]->getCode() . "\n";
+                    // echo " Error message : " . $response->getMessages()->getMessage()[0]->getText() . "\n";
+                    $re = [
+                        'status'=>false,
+                        'error_code'=>$response->getMessages()->getMessage()[0]->getCode(),
+                        'error_message'=>$response->getMessages()->getMessage()[0]->getText()
+                    ];
+                }
+            }
+        } else {
+            $re = [
+                'status'=>false,
+                'error_code'=>false,
+                'error_message'=>"No response returned"
+            ];
+          
+        }
+
+        return $re;
     }
 }

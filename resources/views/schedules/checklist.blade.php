@@ -13,6 +13,7 @@
         	$("#search_form").submit();
         }
     });
+
 </script>
 @stop
 @section('content')
@@ -23,7 +24,6 @@
         {!! Form::open(['action' => 'SchedulesController@postChecklist','role'=>"form",'id'=>'search_form']) !!}
             {!! csrf_field() !!} 
 		<div class="panel-body">
-
 	        <div class="form-group{{ $errors->has('search') ? ' has-error' : '' }} search_div">
 	            <label class="col-md-12 col-lg-12 col-sm-12 col-xs-12 control-label padding-top-none">Delivery Date</label>
 
@@ -154,7 +154,7 @@
 						</div>
 					</div>	
 
-					@if ($schedule['status'] == 4 || $schedule['status'] == 11)
+					@if ($schedule['status'] == 4)
 					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<table class="schedule_table table table-striped table-condensed table-hover">
 							<thead>
@@ -172,7 +172,7 @@
 							if (count($invoices) > 0) {
 								foreach ($invoices as $invoice) {
 								?>
-								<tr id="invoice-{{ $invoice->id }}" class="invoices_tr" style="cursor:pointer;">
+								<tr id="invoice-{{ $invoice->id }}" class="invoices_tr {{ ($invoice->schedule_id) ? 'success' : '' }}" style="cursor:pointer;">
 									<td>{{ $invoice->id }}</td>
 									<td>{{ $invoice->quantity }}</td>
 									<td>
@@ -196,7 +196,7 @@
 									<td>{{ $invoice->pretax_html }}</td>
 									<td>
 										<input class="schedule_ids" type="hidden" value="{{ $schedule['id'] }}"/>
-										<input class="invoice_ids" type="checkbox" value="{{ $invoice->id }}"/>
+										<input class="invoice_ids" type="checkbox" value="{{ $invoice->id }}" {{ ($invoice->schedule_id) ? 'checked="true"' : '' }} />
 									</td>
 								</tr>
 								<?php
@@ -208,19 +208,19 @@
 							<tfoot>
 								<tr>
 									<th colspan="4" style="text-align:right">Qty&nbsp;</th>
-									<td id="total_qty-{{ $schedule['id'] }}">0</td>
+									<td id="total_qty-{{ $schedule['id'] }}">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['quantity'] : '0' }}</td>
 								</tr>
 								<tr>
 									<th colspan="4" style="text-align:right">Subtotal&nbsp;</th>
-									<td id="total_subtotal-{{ $schedule['id'] }}">$0.00</td>
+									<td id="total_subtotal-{{ $schedule['id'] }}">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['subtotal_html'] : '$0.00' }}</td>
 								</tr>
 								<tr>
 									<th colspan="4" style="text-align:right">Tax&nbsp;</th>
-									<td id="total_tax-{{ $schedule['id'] }}">$0.00</td>
+									<td id="total_tax-{{ $schedule['id'] }}">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['tax_html'] : '$0.00' }}</td>
 								</tr>
 								<tr>
 									<th colspan="4" style="text-align:right">Total&nbsp;</th>
-									<td id="total_total-{{ $schedule['id'] }}">$0.00</td>
+									<td id="total_total-{{ $schedule['id'] }}">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['total_html'] : '$0.00' }}</td>
 								</tr>
 							</tfoot>
 						</table>
@@ -230,17 +230,95 @@
 						<label class="label label-warning col-xs-12 col-sm-12 col-md-12 col-lg-12">Not Paid</label>
 						{!! Form::open(['action' => 'SchedulesController@postPayment','role'=>"form"]) !!}
 						{!! Form::hidden('id',$schedule['id']) !!}
-						<button type="submit" class="btn btn-lg btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"><i class="icon ion-social-usd"></i> Make Payment</button>
+						<button type="submit" data-toggle="modal" data-target="#loading" class="btn btn-lg btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"><i class="icon ion-social-usd"></i> Make Payment</button>
 						
 						{!! Form::close() !!}						
 						@elseif ($schedule['status'] == 11)
 						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
 						{!! Form::open(['action' => 'SchedulesController@postRevertPayment','role'=>"form"]) !!}
 						{!! Form::hidden('id',$schedule['id']) !!}
-						<input type="submit" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
+						<input type="submit" data-toggle="modal" data-target="#loading" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
 						{!! Form::close() !!}						
 						@endif
 					</div>
+					@elseif($schedule['status'] == 5)
+					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<table class="schedule_table table table-striped table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Qty</th>
+									<th>Items</th>
+									<th>Subtotal</th>
+									<th>A.</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php
+							$invoices = $schedule['invoices'];
+							if (count($invoices) > 0) {
+								foreach ($invoices as $invoice) {
+								?>
+								<tr class="disabled {{ ($invoice->schedule_id) ? 'warning' : '' }}" >
+									<td>{{ $invoice->id }}</td>
+									<td>{{ $invoice->quantity }}</td>
+									<td>
+										<ul style="list-style:none;">
+										@if (count($invoice['item_details']))
+											@foreach($invoice['item_details'] as $ids)
+											<li>{{ $ids['qty'] }}-{{ $ids['item'] }}</li>
+												@if(count($ids['color']) > 0)
+												<li>
+													<ul>
+													@foreach($ids['color'] as $colors_name => $colors_count)
+														<li>{{ $colors_count }}-{{ $colors_name }}</li>
+													@endforeach
+													</ul>
+												</li>
+												@endif
+											@endforeach
+										@endif
+										</ul>
+									</td>
+									<td>{{ $invoice->pretax_html }}</td>
+									<td>
+										<input class="invoice_ids" type="checkbox" value="{{ $invoice->id }}" {{ ($invoice->schedule_id) ? 'checked="true"' : '' }} />
+									</td>
+								</tr>
+								<?php
+								}
+							}
+							
+							?>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4" style="text-align:right">Qty&nbsp;</th>
+									<td id="total_qty-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['quantity'] : '0' }}</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Subtotal&nbsp;</th>
+									<td id="total_subtotal-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['subtotal_html'] : '$0.00' }}</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Tax&nbsp;</th>
+									<td id="total_tax-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['tax_html'] : '$0.00' }}</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Total&nbsp;</th>
+									<td id="total_total-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['total_html'] : '$0.00' }}</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">					
+						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
+						{!! Form::open(['action' => 'SchedulesController@postRevertPayment','role'=>"form"]) !!}
+						{!! Form::hidden('id',$schedule['id']) !!}
+						<input type="submit" data-toggle="modal" data-target="#loading" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
+						{!! Form::close() !!}						
+					</div>
+
 					@endif
 				</div>
 				<div class="clearfix panel-footer" >
@@ -256,7 +334,7 @@
 						<?php
 						break;
 
-						case 4:
+						case 5:
 						?>
 						{!! Form::open(['action' => 'SchedulesController@postApproveDropoff','role'=>"form",'class'=>'pull-right']) !!}
 						{!! Form::hidden('id',$schedule['id']) !!}
@@ -427,4 +505,5 @@
 		->with('delivery_date',$delivery_date)
 		->render()
 	!!}
+	{!! View::make('partials.frontend.modals')->render() !!}
 @stop

@@ -12,6 +12,7 @@
         	$("#search_form").submit();
         }
     });
+
 </script>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
@@ -23,7 +24,6 @@
 
             <?php echo csrf_field(); ?> 
 		<div class="panel-body">
-
 	        <div class="form-group<?php echo e($errors->has('search') ? ' has-error' : ''); ?> search_div">
 	            <label class="col-md-12 col-lg-12 col-sm-12 col-xs-12 control-label padding-top-none">Delivery Date</label>
 
@@ -155,7 +155,7 @@
 						</div>
 					</div>	
 
-					<?php if($schedule['status'] == 4 || $schedule['status'] == 11): ?>
+					<?php if($schedule['status'] == 4): ?>
 					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<table class="schedule_table table table-striped table-condensed table-hover">
 							<thead>
@@ -173,7 +173,7 @@
 							if (count($invoices) > 0) {
 								foreach ($invoices as $invoice) {
 								?>
-								<tr id="invoice-<?php echo e($invoice->id); ?>" class="invoices_tr" style="cursor:pointer;">
+								<tr id="invoice-<?php echo e($invoice->id); ?>" class="invoices_tr <?php echo e(($invoice->schedule_id) ? 'success' : ''); ?>" style="cursor:pointer;">
 									<td><?php echo e($invoice->id); ?></td>
 									<td><?php echo e($invoice->quantity); ?></td>
 									<td>
@@ -197,7 +197,7 @@
 									<td><?php echo e($invoice->pretax_html); ?></td>
 									<td>
 										<input class="schedule_ids" type="hidden" value="<?php echo e($schedule['id']); ?>"/>
-										<input class="invoice_ids" type="checkbox" value="<?php echo e($invoice->id); ?>"/>
+										<input class="invoice_ids" type="checkbox" value="<?php echo e($invoice->id); ?>" <?php echo e(($invoice->schedule_id) ? 'checked="true"' : ''); ?> />
 									</td>
 								</tr>
 								<?php
@@ -209,19 +209,19 @@
 							<tfoot>
 								<tr>
 									<th colspan="4" style="text-align:right">Qty&nbsp;</th>
-									<td id="total_qty-<?php echo e($schedule['id']); ?>">0</td>
+									<td id="total_qty-<?php echo e($schedule['id']); ?>"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['quantity'] : '0'); ?></td>
 								</tr>
 								<tr>
 									<th colspan="4" style="text-align:right">Subtotal&nbsp;</th>
-									<td id="total_subtotal-<?php echo e($schedule['id']); ?>">$0.00</td>
+									<td id="total_subtotal-<?php echo e($schedule['id']); ?>"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['subtotal_html'] : '$0.00'); ?></td>
 								</tr>
 								<tr>
 									<th colspan="4" style="text-align:right">Tax&nbsp;</th>
-									<td id="total_tax-<?php echo e($schedule['id']); ?>">$0.00</td>
+									<td id="total_tax-<?php echo e($schedule['id']); ?>"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['tax_html'] : '$0.00'); ?></td>
 								</tr>
 								<tr>
 									<th colspan="4" style="text-align:right">Total&nbsp;</th>
-									<td id="total_total-<?php echo e($schedule['id']); ?>">$0.00</td>
+									<td id="total_total-<?php echo e($schedule['id']); ?>"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['total_html'] : '$0.00'); ?></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -233,7 +233,7 @@
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
-						<button type="submit" class="btn btn-lg btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"><i class="icon ion-social-usd"></i> Make Payment</button>
+						<button type="submit" data-toggle="modal" data-target="#loading" class="btn btn-lg btn-success col-lg-12 col-md-12 col-sm-12 col-xs-12"><i class="icon ion-social-usd"></i> Make Payment</button>
 						
 						<?php echo Form::close(); ?>						
 						<?php elseif($schedule['status'] == 11): ?>
@@ -242,10 +242,90 @@
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
-						<input type="submit" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
+						<input type="submit" data-toggle="modal" data-target="#loading" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
 						<?php echo Form::close(); ?>						
 						<?php endif; ?>
 					</div>
+					<?php elseif($schedule['status'] == 5): ?>
+					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<table class="schedule_table table table-striped table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Qty</th>
+									<th>Items</th>
+									<th>Subtotal</th>
+									<th>A.</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php
+							$invoices = $schedule['invoices'];
+							if (count($invoices) > 0) {
+								foreach ($invoices as $invoice) {
+								?>
+								<tr class="disabled <?php echo e(($invoice->schedule_id) ? 'warning' : ''); ?>" >
+									<td><?php echo e($invoice->id); ?></td>
+									<td><?php echo e($invoice->quantity); ?></td>
+									<td>
+										<ul style="list-style:none;">
+										<?php if(count($invoice['item_details'])): ?>
+											<?php foreach($invoice['item_details'] as $ids): ?>
+											<li><?php echo e($ids['qty']); ?>-<?php echo e($ids['item']); ?></li>
+												<?php if(count($ids['color']) > 0): ?>
+												<li>
+													<ul>
+													<?php foreach($ids['color'] as $colors_name => $colors_count): ?>
+														<li><?php echo e($colors_count); ?>-<?php echo e($colors_name); ?></li>
+													<?php endforeach; ?>
+													</ul>
+												</li>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										<?php endif; ?>
+										</ul>
+									</td>
+									<td><?php echo e($invoice->pretax_html); ?></td>
+									<td>
+										<input class="invoice_ids" type="checkbox" value="<?php echo e($invoice->id); ?>" <?php echo e(($invoice->schedule_id) ? 'checked="true"' : ''); ?> />
+									</td>
+								</tr>
+								<?php
+								}
+							}
+							
+							?>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4" style="text-align:right">Qty&nbsp;</th>
+									<td id="total_qty-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['quantity'] : '0'); ?></td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Subtotal&nbsp;</th>
+									<td id="total_subtotal-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['subtotal_html'] : '$0.00'); ?></td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Tax&nbsp;</th>
+									<td id="total_tax-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['tax_html'] : '$0.00'); ?></td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Total&nbsp;</th>
+									<td id="total_total-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['total_html'] : '$0.00'); ?></td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">					
+						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
+						<?php echo Form::open(['action' => 'SchedulesController@postRevertPayment','role'=>"form"]); ?>
+
+						<?php echo Form::hidden('id',$schedule['id']); ?>
+
+						<input type="submit" data-toggle="modal" data-target="#loading" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
+						<?php echo Form::close(); ?>						
+					</div>
+
 					<?php endif; ?>
 				</div>
 				<div class="clearfix panel-footer" >
@@ -265,6 +345,18 @@
 						break;
 
 						case 4:
+						?>
+						<?php echo Form::open(['action' => 'SchedulesController@postApproveDropoff','role'=>"form",'class'=>'pull-right']); ?>
+
+						<?php echo Form::hidden('id',$schedule['id']); ?>
+
+						<input type="submit" class="btn btn-success" value="Approve For Dropoff" />
+						<?php echo Form::close(); ?>
+
+						<?php
+						break;
+
+						case 5:
 						?>
 						<?php echo Form::open(['action' => 'SchedulesController@postApproveDropoff','role'=>"form",'class'=>'pull-right']); ?>
 
@@ -443,6 +535,8 @@
 		->with('schedules',$approved_list)
 		->with('delivery_date',$delivery_date)
 		->render(); ?>
+
+	<?php echo View::make('partials.frontend.modals')->render(); ?>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

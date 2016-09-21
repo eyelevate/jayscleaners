@@ -72,9 +72,9 @@
 				</ul>
 
 			</footer>
-			<?php echo $__env->yieldContent('modals'); ?>
+			
 		</div>
-
+		<?php echo $__env->yieldContent('modals'); ?>
 		<!-- Scripts -->
 		<!-- jQuery 2.1.4 -->
     	<script src="/packages/AdminLTE-2.3.0/plugins/jQuery/jQuery-2.1.4.min.js"></script>

@@ -474,6 +474,7 @@ class Admin extends Model
     			$schedule = new Schedule();
     			$schedule->company_id = $company_id;
     			$schedule->customer_id = $value['customer_id'];
+                $schedule->card_id = $value['card_id'];
     			$schedule->pickup_delivery_id = $value['pickup_delivery_id'];
     			$schedule->pickup_date = $value['pickup_date'];
     			$schedule->dropoff_delivery_id = $value['dropoff_delivery_id'];
@@ -925,6 +926,7 @@ class Admin extends Model
                 $schedule = Schedule::withTrashed()->find($value['schedule_id']);
                 $schedule->company_id = $company_id;
                 $schedule->customer_id = $value['customer_id'];
+                $schedule->card_id = $value['card_id'];
                 $schedule->pickup_delivery_id = $value['pickup_delivery_id'];
                 $schedule->pickup_date = $value['pickup_date'];
                 $schedule->dropoff_delivery_id = $value['dropoff_delivery_id'];

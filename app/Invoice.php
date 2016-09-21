@@ -32,6 +32,7 @@ class Invoice extends Model
 	    		$qty = 0;
 	    		$total_pcs = 0;
                 $total = 0;
+                $tax_total = 0;
     			if(isset($data[$key]['id'])){
     				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['invoice_id'])->where('status',1)->get();
     			}
@@ -74,6 +75,7 @@ class Invoice extends Model
     						$data[$key]['items'][$ikey]['tags'] = $inventoryItem->tags;
                             $total += $inventoryItem->price;
     						$qty++;
+
                             
 
     					}  
@@ -97,6 +99,27 @@ class Invoice extends Model
     		}
     	}
     	return $data;
+    }
+
+    public static function prepareTotals($data) {
+        $totals = ['quantity'=>0,
+                   'subtotal'=>0,
+                   'tax'=>0,
+                   'total'=>0];
+        if (count($data) > 0 ) {
+            foreach ($data as $key => $value) {
+                $totals['quantity'] += $value->quantity;
+                $totals['subtotal'] += $value->pretax;
+                $totals['tax'] += $value->tax;
+                $totals['total'] += $value->total;
+            }
+        }
+        $totals['quantity'] = $totals['quantity'];
+        $totals['subtotal_html'] = money_format('$%i',$totals['subtotal']);
+        $totals['tax_html'] =  money_format('$%i',$totals['tax']);
+        $totals['total_html'] =  money_format('$%i',$totals['total']);
+
+        return $totals;
     }
 
     public static function newInvoiceId(){
