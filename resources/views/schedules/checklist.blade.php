@@ -42,7 +42,7 @@
 		{!! Form::close() !!}
 		<div class="panel-footer clearfix">
 			<a href="{{ route('delivery_overview') }}" class="btn btn-lg btn-danger pull-left"><i class="ion ion-chevron-left"></i>&nbsp; Back</a>
-			<a href="{{ route('schedules_delivery_route') }}" class="btn btn-lg btn-primary pull-right">View Delivery Route &nbsp;<i class="ion ion-chevron-right"></i></a>
+			<a href="{{ route('schedules_delivery_route') }}" class="btn btn-lg btn-primary pull-right">View Route &nbsp;<i class="ion ion-chevron-right"></i></a>
 		</div>
 	</div>
 
