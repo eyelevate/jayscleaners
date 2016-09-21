@@ -208,6 +208,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
 		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
 		Route::post('/schedules/approve-pickedup', ['as'=>'schedules_approve_pickedup','uses'=>'SchedulesController@postApprovePickedup']);
+		Route::post('/schedules/approve-droppedoff', ['as'=>'schedules_approve_droppedoff','uses'=>'SchedulesController@postApproveDroppedOff']);
 		Route::post('/schedules/approve-delivered', ['as'=>'schedules_approve_delivered','uses'=>'SchedulesController@postApproveDelivered']);
 		Route::post('/schedules/route-options', ['as'=>'schedules_route_options','uses'=>'SchedulesController@postRouteOptions']);
 		Route::post('/schedules/approve-processing', ['as'=>'schedules_approve_processing','uses'=>'SchedulesController@postApproveProcessing']);

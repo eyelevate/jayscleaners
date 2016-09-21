@@ -78,14 +78,25 @@ class SchedulesController extends Controller
 	    					   ->union($approved_pickup)
 	    					   ->get();
        	$approved_list = Schedule::prepareSchedule($approved);
+        $pickup_delayed = Schedule::where('pickup_date',$today)
+                               ->whereIn('status',[7,8,9,10])
+                               ->orderBy('id','desc');
+        $delayed = Schedule::where('dropoff_date',$today)
+                               ->whereIn('status',[7,8,9,10])
+                               ->orderBy('id','desc')
+                               ->union($pickup_delayed)
+                               ->get();
+        $delayed_list = Schedule::prepareSchedule($delayed);
 
         $paid_invoices = ($request->session()->has('paid_invoices')) ? $request->session()->get('paid_invoices') : false;
+
 
         return view('schedules.checklist')
         ->with('layout',$this->layout)
         ->with('delivery_date',date('D m/d/Y',strtotime($today)))
         ->with('schedules',$active_list)
         ->with('approved_list',$approved_list)
+        ->with('delayed_list',$delayed_list)
         ->with('paid_invoices',$paid_invoices);
     }
 
@@ -154,7 +165,6 @@ class SchedulesController extends Controller
         					   ->whereIn('status',[7,8,9,10])
         					   ->orderBy('id','desc');
         $delayed = Schedule::where('dropoff_date',$today)
-        					   ->orWhere('pickup_date',$today)
         					   ->whereIn('status',[7,8,9,10])
         					   ->orderBy('id','desc')
         					   ->union($pickup_delayed)
@@ -174,13 +184,6 @@ class SchedulesController extends Controller
        		'true' => 'Shortest Distance'
        	];
 
-       	$delay_list = [
-       		'' => 'Select Delay Reason',
-       		'7' => 'Delayed - Processing not complete',
-       		'8' => 'Delayed - Customer unavailable for pickup',
-       		'9' => 'Delayed - Customer unavailable for dropoff',
-       		'10'=> 'Delayed - Card on file processing error'
-       	];
 
        	$traffic_selected = ($options) ? $options['traffic'] : 'slow';
        	$shortest_distance_selected = ($options) ? $options['shortest_distance'] : 'false';
@@ -191,7 +194,6 @@ class SchedulesController extends Controller
         ->with('layout',$this->layout)
         ->with('schedules',$delivery_route)
         ->with('approved_list',$approved_list)
-        ->with('delayed_list',$delayed_list)
         ->with('delivery_date',date('D m/d/Y',strtotime($today)))
         ->with('traffic',$traffic)
         ->with('shortest_distance',$shortest_distance)
@@ -199,7 +201,7 @@ class SchedulesController extends Controller
         ->with('shortest_distance_selected',$shortest_distance_selected)
         ->with('route_options_header',$route_options_header)
         ->with('travel_data',$body)
-        ->with('delay_list',$delay_list);    	
+        ->with('delayed_list',$delayed_list);    	
     }
 
     public function postDeliveryRoute(Request $request) {
@@ -226,7 +228,7 @@ class SchedulesController extends Controller
 
     }
     public function postApproveDropoff(Request $request){
-    	$next_status = 5;
+    	$next_status = 11;
     	$schedules = Schedule::find($request->id);
     	$schedules->status = $next_status;
 
@@ -248,7 +250,7 @@ class SchedulesController extends Controller
 
     }
     public function postRevertDropoff(Request $request){
-    	$next_status = 4;
+    	$next_status = 5;
     	$schedules = Schedule::find($request->id);
     	$schedules->status = $next_status;
 
@@ -271,6 +273,16 @@ class SchedulesController extends Controller
     		Flash::success('Updated #'.$request->id.' to "Picked Up"');
     		return Redirect::route('schedules_delivery_route');
     	}
+    }
+    public function postApproveDroppedOff(Request $request){
+        $next_status = 12;
+        $schedules = Schedule::find($request->id);
+        $schedules->status = $next_status;
+
+        if ($schedules->save()) {
+            Flash::success('Updated #'.$request->id.' to "Dropped Off / Completed"');
+            return Redirect::route('schedules_delivery_route');
+        }
     }
     public function postApproveDelivered(Request $request){
     	$next_status = 5;
@@ -312,7 +324,7 @@ class SchedulesController extends Controller
 
         	//redirect back
         	Flash::warning('Sent #'.$schedule_id.' to the delayed folder.');
-        	return Redirect::route('schedules_delivery_route'); 
+        	return Redirect::back(); 
         }
 
 
@@ -340,11 +352,11 @@ class SchedulesController extends Controller
     		break;
 
     		case 9: //Delayed - Customer unavailable for dropoff
-    			$new_status = 5;
+    			$new_status = 11;
     		break;
 
     		case 10: //Delayed - Card on file processing error
-    			$new_status = 5;
+    			$new_status = 4;
     		break;
     	}
 
@@ -352,7 +364,7 @@ class SchedulesController extends Controller
     	$schedules->status = $new_status;
     	if ($schedules->save()) {
     		Flash::warning('Successfully reverted #'.$schedule_id.' back.');
-    		return Redirect::route('schedules_delivery_route');
+    		return Redirect::back();
     	}
     }
 
@@ -431,7 +443,7 @@ class SchedulesController extends Controller
 
 
             $invoices = Invoice::find($invoice_id);
-            $invoices->schedule_id = '';
+            $invoices->schedule_id = NULL;
             if ($invoices->save()) {
                 $status = true;
                 $invs = Invoice::where('schedule_id',$schedule_id)->get();
@@ -480,7 +492,7 @@ class SchedulesController extends Controller
         // Card is not valid error
         if (!$valid_card_check) {
             Flash::error('Credit card on file did not validate. Please contact customer for new card and reschedule delivery.');
-            return Redirect::route('schedules_checklist');
+            return Redirect::back();
         }
 
 
@@ -490,7 +502,7 @@ class SchedulesController extends Controller
             $totals = Invoice::prepareTotals($invoices);
 
             $attempt_payment = Schedule::makePayment($company_id, $profile_id, $payment_id, $totals['total']);
-            
+
             if ($attempt_payment['status']) {
                 $schedules->status = 5;
                 if ($schedules->save()) {
@@ -520,7 +532,7 @@ class SchedulesController extends Controller
                         }
 
                         Flash::success('Successfully completed online payment for #'.$schedule_id.'.');
-                        return Redirect::route('schedules_checklist');
+                        return Redirect::back();
 
                     }
                 }
@@ -529,19 +541,79 @@ class SchedulesController extends Controller
                 $schedules->status = 10;
                 if ($schedules->save()) {
                     Flash::error('Error: '.$attempt_payment['error_message']);
-                    return Redirect::route('schedules_checklist');
+                    return Redirect::back();
                 }
             }
 
         } else {
             Flash::error('You have not selected any invoices cannot charge a $0 balance. Please select the appropriate invoice(s) and try again.');
-            return Redirect::route('schedules_checklist');
+            return Redirect::back();
         }
 
     }
 
     public function postRevertPayment(Request $request) {
+        $schedule_id = $request->id;
+        $schedules = Schedule::find($schedule_id);
+        $company_id = $schedules->company_id;
+        $customer_id = $schedules->customer_id;
+        $transactions = Transaction::where('schedule_id',$schedule_id)->get();
+        
+        if (count($transactions) > 0) {
+            foreach ($transactions as $transaction) {
+                $trans = Transaction::find($transaction->id);
+                $transaction_status = false;
+                $transaction_id = $transaction->id;
+                $total = $transaction->total;
+                $payment_transaction_id = $transaction->transaction_id;
 
+                // void the payment
+                $void = Card::makeVoid($company_id, $payment_transaction_id);
+
+                if ($void['status']) {
+                    $transaction_status = true;
+                    $trans->status = 2; // voided
+                } else {
+                    Flash::error('Void failure: '.$void['message']);
+                    return Redirect::route('schedules_checklist');
+                    $refund = Card::makeRefund($company_id, $payment_transaction_id);
+                    if ($refund) {
+                        $transaction_status = true;
+                        $trans->status = 2; // refunded
+                    } else {
+                        Flash::error('Transaction could not be voided / refunded. Please manually refund.');
+                        return Redirect::back();
+                    }
+                }
+                // revert the status and remove the transaction
+                // $transaction_status = true;
+                if ($transaction_status) {
+                    if ($trans->save()) {
+                        // update invoices remove transaction_ids and change status back to 1
+                        $invs = Invoice::where('transaction_id',$transaction_id)->get();
+                        if (count($invs) > 0 ) {
+                            foreach ($invs as $inv) {
+                                $invoice_id = $inv->id;
+                                $in = Invoice::find($invoice_id);
+                                $in->status = 1;
+                                $in->transaction_id = NULL;
+                                $in->save();
+                            }
+                        }
+
+                        // update schedule set staus to 4
+                        $schedules->status = 4;
+                        if ($schedules->save()) {
+                            // successfully reverted back payment
+                            Flash::success('Successfully voided / refunded '.money_format('$%i', $total).' to schedule #'.$schedule_id.'!');
+                            return Redirect::back();
+                        }
+
+
+                    }
+                }
+            }
+        }
     }
 
 

@@ -193,13 +193,92 @@
 							<p class="form-control" style="height:100px; overflow:auto;">{{ $schedule['special_instructions'] }}</p>
 						</div>
 					</div>	
+					@if($schedule['status'] == 11)
+					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<table class="schedule_table table table-striped table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Qty</th>
+									<th>Items</th>
+									<th>Subtotal</th>
+									<th>A.</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php
+							$invoices = $schedule['invoices'];
+							if (count($invoices) > 0) {
+								foreach ($invoices as $invoice) {
+								?>
+								<tr class="disabled {{ ($invoice->schedule_id) ? 'warning' : '' }}" >
+									<td>{{ $invoice->id }}</td>
+									<td>{{ $invoice->quantity }}</td>
+									<td>
+										<ul style="list-style:none;">
+										@if (count($invoice['item_details']))
+											@foreach($invoice['item_details'] as $ids)
+											<li>{{ $ids['qty'] }}-{{ $ids['item'] }}</li>
+												@if(count($ids['color']) > 0)
+												<li>
+													<ul>
+													@foreach($ids['color'] as $colors_name => $colors_count)
+														<li>{{ $colors_count }}-{{ $colors_name }}</li>
+													@endforeach
+													</ul>
+												</li>
+												@endif
+											@endforeach
+										@endif
+										</ul>
+									</td>
+									<td>{{ $invoice->pretax_html }}</td>
+									<td>
+										<input class="invoice_ids" readonly="true" disabled="true" type="checkbox" value="{{ $invoice->id }}" {{ ($invoice->schedule_id) ? 'checked="true"' : '' }} />
+									</td>
+								</tr>
+								<?php
+								}
+							}
+							
+							?>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4" style="text-align:right">Qty&nbsp;</th>
+									<td id="total_qty-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['quantity'] : '0' }}</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Subtotal&nbsp;</th>
+									<td id="total_subtotal-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['subtotal_html'] : '$0.00' }}</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Tax&nbsp;</th>
+									<td id="total_tax-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['tax_html'] : '$0.00' }}</td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Total&nbsp;</th>
+									<td id="total_total-{{ $schedule['id'] }}" class="disabled">{{ ($schedule['invoice_totals']) ? $schedule['invoice_totals']['total_html'] : '$0.00' }}</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">					
+						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
+						{!! Form::open(['action' => 'SchedulesController@postRevertPayment','role'=>"form"]) !!}
+						{!! Form::hidden('id',$schedule['id']) !!}
+						<input type="submit" data-toggle="modal" data-target="#loading" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
+						{!! Form::close() !!}						
+					</div>
+
+					@endif
 					<hr/>
 					{!! Form::open(['action'=>'SchedulesController@postDelayDelivery','role'=>'form']) !!}
 					{!! Form::hidden('id',$schedule['id']) !!}
 					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<label class="control-label" style="text-align:right">Delay Delivery</label>
 						<p>
-						{{ Form::select('reason',$delay_list,'',['class'=>'form-control']) }}
+						{{ Form::select('reason',$schedule['delay_list'],'',['class'=>'form-control']) }}
 						</p>
 						<div>
 							<input type="submit" class="btn btn-danger" value="Submit Delay"/>
@@ -221,18 +300,13 @@
 						<?php
 						break;
 
-						case 5:
-						?>
-						{!! Form::open(['action' => 'SchedulesController@postApproveDelivered','role'=>"form",'class'=>'pull-right']) !!}
-						{!! Form::hidden('id',$schedule['id']) !!}
-						<input type="submit" class="btn btn-primary" value="Delivered" />
-						{!! Form::close() !!}
-						<?php
-						break;
 
 						case 11:
 						?>
-						<a class="btn btn-success disabled" href="#">Invoice Paid</a>
+						{!! Form::open(['action' => 'SchedulesController@postApproveDroppedOff','role'=>"form",'class'=>'pull-right']) !!}
+						{!! Form::hidden('id',$schedule['id']) !!}						
+						<button type="submit" class="btn btn-success " href="#">Dropped Off</button>
+						{!! Form::close() !!}
 						<?php
 						break;
 					}

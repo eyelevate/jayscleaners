@@ -83,42 +83,73 @@ class Schedule extends Model
     				**/
     				$schedules[$key]['status'] = $value->status;
                     $schedules[$key]['invoices'] = [];
+                    // $delay_list = [
+                    //     '' => 'Select Delay Reason',
+                    //     '7' => 'Delayed - Processing not complete',
+                    //     '8' => 'Delayed - Customer unavailable for pickup',
+                    //     '9' => 'Delayed - Customer unavailable for dropoff',
+                    //     '10'=> 'Delayed - Card on file processing error'
+                    // ];
     				// $schedules[$key]['status'] = 12;
     				switch($schedules[$key]['status']) {
     					case 1:
 							$schedules[$key]['status_message'] = 'Delivery Scheduled';
                             $schedules[$key]['status_html'] = 'label-info';
+                            $schedules[$key]['delay_list'] = [
+                                '' => 'Select Delay Reason',
+                                '8' => 'Delayed - Customer unavailable for pickup',
+                            ];
     					break;
 
     					case 2:
     						$schedules[$key]['status_message'] = 'En-route Pickup';
                             $schedules[$key]['status_html'] = 'label-info';
+                            $schedules[$key]['delay_list'] = [
+                                '' => 'Select Delay Reason',
+                                '8' => 'Delayed - Customer unavailable for pickup',
+                            ];
     					break;
 
     					case 3:
     						$schedules[$key]['status_message'] = 'Picked Up';
                             $schedules[$key]['status_html'] = 'label-info';
+                            $schedules[$key]['delay_list'] = [
+                                '' => 'Select Delay Reason',
+                                '7' => 'Delayed - Processing not complete',
+                            ];
     					break;
 
     					case 4:
     						$schedules[$key]['status_message'] = 'Processing';
                             $schedules[$key]['status_html'] = 'label-info';
-
+                            $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
                             $invoices = Invoice::where('customer_id',$value->customer_id)
                                                  ->where('status','<',5)
+                                                 ->where('schedule_id',NULL)
+                                                 ->union($invoices_selected)
                                                  ->get();
                             $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
                             $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
                             $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
                             $schedules[$key]['invoice_totals'] = $totals;
+                            $schedules[$key]['delay_list'] = [
+                                '' => 'Select Delay Reason',
+                                '7' => 'Delayed - Processing not complete',
+                                '10'=> 'Delayed - Card on file processing error'
+                            ];
     					break;
 
     					case 5:
     						$schedules[$key]['status_message'] = 'Invoice Paid';
                             $schedules[$key]['status_html'] = 'label-info';
+                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                                           ->where('status',5)
+                                                           ->where('schedule_id',$schedules[$key]['id']);
                             $invoices = Invoice::where('customer_id',$value->customer_id)
                                                  ->where('status','<',5)
+                                                 ->where('schedule_id',NULL)
+                                                 ->union($completed_invoices)
                                                  ->get();
                             $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
 
@@ -126,6 +157,10 @@ class Schedule extends Model
                             $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
                             $schedules[$key]['invoice_totals'] = $totals;
+                            $schedules[$key]['delay_list'] = [
+                                '' => 'Select Delay Reason',
+                                '9' => 'Delayed - Customer unavailable for dropoff'
+                            ];
     					break;
 
     					case 6:
@@ -136,6 +171,17 @@ class Schedule extends Model
     					case 7:
     						$schedules[$key]['status_message'] = 'Delayed - Processing not complete';
                             $schedules[$key]['status_html'] = 'label-warning';
+                            $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
+                            $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                 ->where('status','<',5)
+                                                 ->where('schedule_id',NULL)
+                                                 ->union($invoices_selected)
+                                                 ->get();
+                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                            $totals = Invoice::prepareTotals($invs);
+                            $schedules[$key]['invoices'] = $prepared_invoices;
+                            $schedules[$key]['invoice_totals'] = $totals;
     					break;
 
     					case 8:
@@ -146,28 +192,77 @@ class Schedule extends Model
     					case 9:
     						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for dropoff';
                             $schedules[$key]['status_html'] = 'label-warning';
+                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                               ->where('status',5)
+                                               ->where('schedule_id',$schedules[$key]['id']);
+                            $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                 ->where('status','<',5)
+                                                 ->where('schedule_id',NULL)
+                                                 ->union($completed_invoices)
+                                                 ->get();
+                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                            $totals = Invoice::prepareTotals($invs);
+                            $schedules[$key]['invoices'] = $prepared_invoices;
+                            $schedules[$key]['invoice_totals'] = $totals;
     					break;
 
     					case 10:
     						$schedules[$key]['status_message'] = 'Delayed - Card on file processing error';
                             $schedules[$key]['status_html'] = 'label-warning';
+                                        $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
+                            $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                 ->where('status','<',5)
+                                                 ->where('schedule_id',NULL)
+                                                 ->union($invoices_selected)
+                                                 ->get();
+                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                            $totals = Invoice::prepareTotals($invs);
+                            $schedules[$key]['invoices'] = $prepared_invoices;
+                            $schedules[$key]['invoice_totals'] = $totals;
     					break;
 
     					case 11:
     						$schedules[$key]['status_message'] = 'En-route Dropoff - invoice paid';
                             $schedules[$key]['status_html'] = 'label-info';
+                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                                           ->where('status',5)
+                                                           ->where('schedule_id',$schedules[$key]['id']);
                             $invoices = Invoice::where('customer_id',$value->customer_id)
                                                  ->where('status','<',5)
+                                                 ->where('schedule_id',NULL)
+                                                 ->union($completed_invoices)
                                                  ->get();
-                            $schedules[$key]['invoices'] = $invoices;
+                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                            $totals = Invoice::prepareTotals($invs);
+                            $schedules[$key]['invoices'] = $prepared_invoices;
+                            $schedules[$key]['invoice_totals'] = $totals;
+                            $schedules[$key]['delay_list'] = [
+                                '' => 'Select Delay Reason',
+                                '9' => 'Delayed - Customer unavailable for dropoff'
+                            ];
     					break;
      					case 12:
      						$schedules[$key]['status_message'] = 'Dropped Off. Thank You!';
                             $schedules[$key]['status_html'] = 'label-success';
+                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                                           ->where('status',5)
+                                                           ->where('schedule_id',$schedules[$key]['id']);
                             $invoices = Invoice::where('customer_id',$value->customer_id)
                                                  ->where('status','<',5)
+                                                 ->where('schedule_id',NULL)
+                                                 ->union($completed_invoices)
                                                  ->get();
-                            $schedules[$key]['invoices'] = $invoices;
+                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                            $totals = Invoice::prepareTotals($invs);
+                            $schedules[$key]['invoices'] = $prepared_invoices;
+                            $schedules[$key]['invoice_totals'] = $totals;
     					break;
 
 
@@ -361,6 +456,7 @@ class Schedule extends Model
                         'auth_code'=>$tresponse->getAuthCode(),
                         'trans_id'=>$tresponse->getTransId()
                     ];
+                    return $re;
                     // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
                     // echo  "Charge Customer Profile APPROVED  :" . "\n";
                     // echo " Charge Customer Profile AUTH CODE : " . $tresponse->getAuthCode() . "\n";

@@ -198,6 +198,87 @@
 							<p class="form-control" style="height:100px; overflow:auto;"><?php echo e($schedule['special_instructions']); ?></p>
 						</div>
 					</div>	
+					<?php if($schedule['status'] == 11): ?>
+					<div class="table-responsive form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<table class="schedule_table table table-striped table-condensed table-hover">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Qty</th>
+									<th>Items</th>
+									<th>Subtotal</th>
+									<th>A.</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php
+							$invoices = $schedule['invoices'];
+							if (count($invoices) > 0) {
+								foreach ($invoices as $invoice) {
+								?>
+								<tr class="disabled <?php echo e(($invoice->schedule_id) ? 'warning' : ''); ?>" >
+									<td><?php echo e($invoice->id); ?></td>
+									<td><?php echo e($invoice->quantity); ?></td>
+									<td>
+										<ul style="list-style:none;">
+										<?php if(count($invoice['item_details'])): ?>
+											<?php foreach($invoice['item_details'] as $ids): ?>
+											<li><?php echo e($ids['qty']); ?>-<?php echo e($ids['item']); ?></li>
+												<?php if(count($ids['color']) > 0): ?>
+												<li>
+													<ul>
+													<?php foreach($ids['color'] as $colors_name => $colors_count): ?>
+														<li><?php echo e($colors_count); ?>-<?php echo e($colors_name); ?></li>
+													<?php endforeach; ?>
+													</ul>
+												</li>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										<?php endif; ?>
+										</ul>
+									</td>
+									<td><?php echo e($invoice->pretax_html); ?></td>
+									<td>
+										<input class="invoice_ids" readonly="true" disabled="true" type="checkbox" value="<?php echo e($invoice->id); ?>" <?php echo e(($invoice->schedule_id) ? 'checked="true"' : ''); ?> />
+									</td>
+								</tr>
+								<?php
+								}
+							}
+							
+							?>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th colspan="4" style="text-align:right">Qty&nbsp;</th>
+									<td id="total_qty-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['quantity'] : '0'); ?></td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Subtotal&nbsp;</th>
+									<td id="total_subtotal-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['subtotal_html'] : '$0.00'); ?></td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Tax&nbsp;</th>
+									<td id="total_tax-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['tax_html'] : '$0.00'); ?></td>
+								</tr>
+								<tr>
+									<th colspan="4" style="text-align:right">Total&nbsp;</th>
+									<td id="total_total-<?php echo e($schedule['id']); ?>" class="disabled"><?php echo e(($schedule['invoice_totals']) ? $schedule['invoice_totals']['total_html'] : '$0.00'); ?></td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">					
+						<label class="label label-success col-xs-12 col-sm-12 col-md-12 col-lg-12">Paid</label>
+						<?php echo Form::open(['action' => 'SchedulesController@postRevertPayment','role'=>"form"]); ?>
+
+						<?php echo Form::hidden('id',$schedule['id']); ?>
+
+						<input type="submit" data-toggle="modal" data-target="#loading" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Revert Payment" />
+						<?php echo Form::close(); ?>						
+					</div>
+
+					<?php endif; ?>
 					<hr/>
 					<?php echo Form::open(['action'=>'SchedulesController@postDelayDelivery','role'=>'form']); ?>
 
@@ -206,7 +287,7 @@
 					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<label class="control-label" style="text-align:right">Delay Delivery</label>
 						<p>
-						<?php echo e(Form::select('reason',$delay_list,'',['class'=>'form-control'])); ?>
+						<?php echo e(Form::select('reason',$schedule['delay_list'],'',['class'=>'form-control'])); ?>
 
 						</p>
 						<div>
@@ -233,21 +314,15 @@
 						<?php
 						break;
 
-						case 5:
-						?>
-						<?php echo Form::open(['action' => 'SchedulesController@postApproveDelivered','role'=>"form",'class'=>'pull-right']); ?>
-
-						<?php echo Form::hidden('id',$schedule['id']); ?>
-
-						<input type="submit" class="btn btn-primary" value="Delivered" />
-						<?php echo Form::close(); ?>
-
-						<?php
-						break;
 
 						case 11:
 						?>
-						<a class="btn btn-success disabled" href="#">Invoice Paid</a>
+						<?php echo Form::open(['action' => 'SchedulesController@postApproveDroppedOff','role'=>"form",'class'=>'pull-right']); ?>
+
+						<?php echo Form::hidden('id',$schedule['id']); ?>						
+						<button type="submit" class="btn btn-success " href="#">Dropped Off</button>
+						<?php echo Form::close(); ?>
+
 						<?php
 						break;
 					}

@@ -209,5 +209,84 @@ class Card extends Model
 
     }
 
+    static public function makeVoid($company_id, $transaction_id) {
+    	$void_status = ['status'=>false,'message'=>''];
+    	$companies = Company::find($company_id);
+        $payment_api_login = $companies->payment_api_login;
+        $payment_api_password = $companies->payment_gateway_id;
+		// Common setup for API credentials
+		$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+		$merchantAuthentication->setName($payment_api_login);
+		$merchantAuthentication->setTransactionKey($payment_api_password);
+		$refId = 'ref' . time();
+
+		// Create the payment data for a credit card
+		// $creditCard = new AnetAPI\CreditCardType();
+		// $creditCard->setCardNumber("4111111111111111" );
+		// $creditCard->setExpirationDate("2038-12");
+		// $paymentOne = new AnetAPI\PaymentType();
+		// $paymentOne->setCreditCard($creditCard);
+		//create a transaction
+		$transactionRequestType = new AnetAPI\TransactionRequestType();
+		$transactionRequestType->setTransactionType( "voidTransaction"); 
+		// $transactionRequestType->setPayment($paymentOne);
+		$transactionRequestType->setRefTransId($transaction_id);
+
+		$request = new AnetAPI\CreateTransactionRequest();
+		$request->setMerchantAuthentication($merchantAuthentication);
+		$request->setRefId($refId);
+		$request->setTransactionRequest( $transactionRequestType);
+		$controller = new AnetController\CreateTransactionController($request);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+		if ($response != null) {
+			if($response->getMessages()->getResultCode() == "Ok") {
+				$tresponse = $response->getTransactionResponse();
+
+		  		if ($tresponse != null && $tresponse->getMessages() != null) {
+					// echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
+					// echo "Void transaction SUCCESS AUTH CODE: " . $tresponse->getAuthCode() . "\n";
+					// echo "Void transaction SUCCESS TRANS ID  : " . $tresponse->getTransId() . "\n";
+					// echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
+					// echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
+					$void_status['status'] = true;
+				} else {
+					$void_status['status'] = false;
+					$void_status['message'] = $tresponse->getErrors()[0]->getErrorCode().' '.$tresponse->getErrors()[0]->getErrorText();
+		  			// echo "Transaction Failed \n";
+		  			// if($tresponse->getErrors() != null) {
+					  //   // echo " Error code  : " . $tresponse->getErrors()[0]->getErrorCode() . "\n";
+					  //   // echo " Error message : " . $tresponse->getErrors()[0]->getErrorText() . "\n";    
+					  //   // Job::dump('Error message: '.$tresponse->getErrors()[0]->getErrorText())        
+		  			// }
+				}
+			} else {
+				$void_status['status'] = false;
+				
+				// echo "Transaction Failed \n";
+				$tresponse = $response->getTransactionResponse();
+				if($tresponse != null && $tresponse->getErrors() != null) {
+					// echo " Error code  : " . $tresponse->getErrors()[0]->getErrorCode() . "\n";
+					// echo " Error message : " . $tresponse->getErrors()[0]->getErrorText() . "\n"; 
+					$void_status['message'] =  $tresponse->getErrors()[0]->getErrorCode().' '.$tresponse->getErrors()[0]->getErrorText();                    
+				} else {
+					$void_status['message'] = $response->getMessages()->getMessage()[0]->getCode().' '.$response->getMessages()->getMessage()[0]->getText();
+					// echo " Error code  : " . $response->getMessages()->getMessage()[0]->getCode() . "\n";
+					// echo " Error message : " . $response->getMessages()->getMessage()[0]->getText() . "\n";
+				}
+			}      
+		} else {
+			// echo  "No response returned \n";
+			$void_status['status'] = false;
+			$void_status['message'] = "No response returned.";
+		}
+
+		return $void_status;
+    }
+
+    static public function makeRefund($company_id, $transaction_id) {
+
+    }
+
 
 }
