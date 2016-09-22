@@ -220,6 +220,11 @@ class CardsController extends Controller
 
     public function getEdit($id = NULL) {
     	$cards = Card::find($id);
+    	$user_id = $cards->user_id;
+    	if (Auth::user()->id != $user_id) {
+    		Flash::error('You are not allowed to view/edit this card.');
+    		return Redirect::route('pages_index');
+    	}
     	$profile_id = $cards->profile_id;
     	$payment_id = $cards->payment_id;
     	$company_id = 1;
