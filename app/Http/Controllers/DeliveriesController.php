@@ -818,11 +818,20 @@ class DeliveriesController extends Controller
                 'dropoff_date' => 'required',
                 'dropoff_time' => 'required'
             ]);
+            $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
+            $schedules->pickup_delivery_id = $request->pickup_time;
+            $schedules->dropoff_address = $request->pickup_address;
+            $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
+            $schedules->dropoff_delivery_id = $request->dropoff_time;
+            $schedules->special_instructions = $request->special_instructions;
         } elseif($status == 3 || $status == 4 || $status = 5 || $status == 7 || $status == 9 || $status == 10 || $status == 11) {
             $this->validate($request, [
                 'dropoff_date' => 'required',
                 'dropoff_time' => 'required'
             ]);
+            $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
+            $schedules->dropoff_delivery_id = $request->dropoff_time;
+            $schedules->special_instructions = $request->special_instructions;
         } else {
             $this->validate($request, [
                 'pickup_address' => 'required',
@@ -831,15 +840,16 @@ class DeliveriesController extends Controller
                 'dropoff_date' => 'required',
                 'dropoff_time' => 'required'
             ]);
+            $schedules->pickup_address = $request->pickup_address;
+            $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
+            $schedules->pickup_delivery_id = $request->pickup_time;
+            $schedules->dropoff_address = $request->pickup_address;
+            $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
+            $schedules->dropoff_delivery_id = $request->dropoff_time;
+            $schedules->special_instructions = $request->special_instructions;
         }
 
-        $schedules->pickup_address = $request->pickup_address;
-        $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
-        $schedules->pickup_delivery_id = $request->pickup_time;
-        $schedules->dropoff_address = $request->pickup_address;
-        $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
-        $schedules->dropoff_delivery_id = $request->dropoff_time;
-        $schedules->special_instructions = $request->special_instructions;
+
 
         if ($schedules->save()) {
             if ($request->session()->has('schedule')) {
