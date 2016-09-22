@@ -200,7 +200,7 @@ class Schedule extends Model
                             $schedules[$key]['email_body'] = 'Your delivery has been delayed due your contact not being available during pickup.';
                             $schedules[$key]['email_body'] .= ' In order to finish this pickup we will need to reschedule to another available delivery date.';
                             $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
-                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="/delivery/update/'.$schedules[$key]['id'].'">Reschedule Pickup</a>';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule Pickup</a>';
     					break;
 
     					case 9:
