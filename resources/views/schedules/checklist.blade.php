@@ -335,15 +335,14 @@
 					{!! Form::close() !!}
 				</div>
 				<div class="clearfix panel-footer" >
-					<a class="btn btn-info col-xs-4 col-sm-4 col-md-4" href="{{ route('delivery_admin_edit',$schedule['id']) }}">Edit Delivery</a>
-					<a class="btn btn-warning col-xs-4 col-sm-4 col-md-4">Email</a>
+					<a class="btn btn-info" href="{{ route('delivery_admin_edit',$schedule['id']) }}">Edit Delivery</a>
 					<?php
 					switch($schedule['status']) {
 						case 1:
 						?>
 						{!! Form::open(['action' => 'SchedulesController@postApprovePickup','role'=>"form",'class'=>'pull-right']) !!}
 						{!! Form::hidden('id',$schedule['id']) !!}
-						<input type="submit" class="btn btn-success col-xs-4 col-sm-4 col-md-4" value="Approve For Pickup" />
+						<input type="submit" class="btn btn-success" value="Approve" />
 						{!! Form::close() !!}
 						<?php
 						break;
@@ -352,7 +351,7 @@
 						?>
 						{!! Form::open(['action' => 'SchedulesController@postApproveDropoff','role'=>"form",'class'=>'pull-right']) !!}
 						{!! Form::hidden('id',$schedule['id']) !!}
-						<input type="submit" class="btn btn-success col-xs-4 col-sm-4 col-md-4" value="Approve For Dropoff" />
+						<input type="submit" class="btn btn-success" value="Approve" />
 						{!! Form::close() !!}
 						<?php
 						break;
