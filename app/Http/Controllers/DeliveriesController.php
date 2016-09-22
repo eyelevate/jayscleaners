@@ -805,15 +805,34 @@ class DeliveriesController extends Controller
     }
 
     public function postUpdate(Request $request) {
-        $this->validate($request, [
-            'pickup_address' => 'required',
-            'pickup_date'=>'required',
-            'pickup_time'=>'required',
-            'dropoff_date' => 'required',
-            'dropoff_time' => 'required'
-        ]);
+
 
         $schedules = Schedule::find($request->id);
+
+        $status = $schedules->id;
+
+        if($status == 2 || $status == 8) {
+            $this->validate($request, [
+                'pickup_date'=>'required',
+                'pickup_time'=>'required',
+                'dropoff_date' => 'required',
+                'dropoff_time' => 'required'
+            ]);
+        } elseif($status == 3 || $status == 4 || $status = 5 || $status == 7 || $status == 9 || $status == 10 || $status == 11) {
+            $this->validate($request, [
+                'dropoff_date' => 'required',
+                'dropoff_time' => 'required'
+            ]);
+        } else {
+            $this->validate($request, [
+                'pickup_address' => 'required',
+                'pickup_date'=>'required',
+                'pickup_time'=>'required',
+                'dropoff_date' => 'required',
+                'dropoff_time' => 'required'
+            ]);
+        }
+
         $schedules->pickup_address = $request->pickup_address;
         $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
         $schedules->pickup_delivery_id = $request->pickup_time;
