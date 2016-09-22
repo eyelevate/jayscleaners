@@ -850,6 +850,22 @@ class DeliveriesController extends Controller
         }
 
 
+        switch ($status) {
+            case 7:
+                $schedules->status = 4;
+                break;
+            case 8:
+                $schedules->status = 1;
+                break;
+            case 9:
+                $schedules->status = 11;
+                break;            
+
+            case 10:
+                $schdules->status = 4;
+                break;
+        }
+
 
         if ($schedules->save()) {
             if ($request->session()->has('schedule')) {
