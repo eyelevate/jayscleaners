@@ -258,7 +258,7 @@ class Schedule extends Model
                             $schedules[$key]['email_body'] = 'Your delivery has been delayed due to a processing error on your card ending in "'.$card_last_four.'"';
                             $schedules[$key]['email_body'] .= ' In order to finish processing this delivery and have it delivered to you we will need to fix the issue with the card and process it successfully.';
                             $schedules[$key]['email_body'] .= ' Please click on the button below to make the appropriate adjustments.';
-                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('cards_index').'">Update Card Info</a>';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('cards_edit',$value->card_id).'">Update Card Info</a>';
                             $schedules[$key]['email_body_2'] = 'Once you have updated your card information. Click on the "Reschedule" button below to reschedule your drop off.';
                             $schedules[$key]['email_button_2'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule</a>';
     					break;
