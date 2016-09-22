@@ -40,8 +40,8 @@
 
 		{!! Form::close() !!}
 		<div class="panel-footer clearfix">
-			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-danger pull-left col-lg-2 col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
-			<a href="#" class="btn btn-lg btn-primary pull-right disabled col-lg-2 col-md-2 col-sm-6 col-xs-6">Finished</a>
+			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-danger pull-left col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
+			<a href="#" class="btn btn-lg btn-primary pull-right disabled col-md-2 col-sm-6 col-xs-6">Finished</a>
 		</div>
 	</div>
 

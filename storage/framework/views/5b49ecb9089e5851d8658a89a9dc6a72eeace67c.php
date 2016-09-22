@@ -42,8 +42,8 @@
 		<?php echo Form::close(); ?>
 
 		<div class="panel-footer clearfix">
-			<a href="<?php echo e(route('delivery_overview')); ?>" class="btn btn-lg btn-danger pull-left col-lg-1 col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp; Back</a>
-			<a href="<?php echo e(route('schedules_delivery_route')); ?>" class="btn btn-lg btn-primary pull-right col-lg-1 col-md-2 col-sm-6 col-xs-6">View Route &nbsp;<i class="ion ion-chevron-right"></i></a>
+			<a href="<?php echo e(route('delivery_overview')); ?>" class="btn btn-lg btn-danger pull-left col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp; Back</a>
+			<a href="<?php echo e(route('schedules_delivery_route')); ?>" class="btn btn-lg btn-primary pull-right col-md-2 col-sm-6 col-xs-6">View Route &nbsp;<i class="ion ion-chevron-right"></i></a>
 		</div>
 	</div>
 
@@ -346,7 +346,8 @@
 
 				</div>
 				<div class="clearfix panel-footer" >
-					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$schedule['id'])); ?>">Edit Delivery</a>
+					<a class="btn btn-info col-xs-4 col-sm-4 col-md-4" href="<?php echo e(route('delivery_admin_edit',$schedule['id'])); ?>">Edit Delivery</a>
+					<a class="btn btn-warning col-xs-4 col-sm-4 col-md-4">Email</a>
 					<?php
 					switch($schedule['status']) {
 						case 1:
@@ -355,7 +356,7 @@
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
-						<input type="submit" class="btn btn-success" value="Approve For Pickup" />
+						<input type="submit" class="btn btn-success col-xs-4 col-sm-4 col-md-4" value="Approve For Pickup" />
 						<?php echo Form::close(); ?>
 
 						<?php
@@ -367,7 +368,7 @@
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
-						<input type="submit" class="btn btn-success" value="Approve For Dropoff" />
+						<input type="submit" class="btn btn-success col-xs-4 col-sm-4 col-md-4" value="Approve For Dropoff" />
 						<?php echo Form::close(); ?>
 
 						<?php
@@ -648,7 +649,8 @@
 					<?php endif; ?>
 				</div>
 				<div class="clearfix panel-footer" >
-					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$dl['id'])); ?>">Edit Delivery</a>
+					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$dl['id'])); ?>">Edit</a>
+					<a class="btn btn-warning" data-toggle="modal" data-target="#email-<?php echo e($dl['id']); ?>">Email</a>
 					<?php echo Form::open(['action' => 'SchedulesController@postRevertDelay','role'=>"form",'class'=>'pull-right']); ?>
 
 					<?php echo Form::hidden('id',$dl['id']); ?>
@@ -875,7 +877,8 @@
 
 				</div>
 				<div class="clearfix panel-footer" >
-					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$al['id'])); ?>">Edit Delivery</a>
+					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$al['id'])); ?>">Edit</a>
+					<a class="btn btn-warning" data-toggle="modal" data-target="#email-<?php echo e($al['id']); ?>">Email</a>
 					<?php
 					switch($al['status']) {
 						case 2:
@@ -910,18 +913,38 @@
 		<?php endif; ?>
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-			<a href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#status_change">Email Status Change</a>
+
 		</div><!-- /.box-footer -->
 	</div>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('modals'); ?>
-	<?php echo View::make('partials.schedules.status_change')
-		->with('schedules',$approved_list)
-		->with('delivery_date',$delivery_date)
-		->render(); ?>
+	<?php if(count($schedules) > 0): ?>
+		<?php foreach($schedules as $schedule): ?>
+		<?php echo View::make('partials.schedules.email')
+			->with('schedule_id',$schedule['id'])
+			->render(); ?>
 
+		<?php endforeach; ?>
+	<?php endif; ?>
+	<?php if(count($delayed_list) > 0): ?>
+		<?php foreach($delayed_list as $dl): ?>
+		<?php echo View::make('partials.schedules.email')
+			->with('schedule_id',$dl['id'])
+			->render(); ?>
+
+		<?php endforeach; ?>
+	<?php endif; ?>
+	<?php if(count($approved_list) > 0): ?>
+		<?php foreach($approved_list as $al): ?>
+		<?php echo View::make('partials.schedules.email')
+			->with('schedule_id',$al['id'])
+			->render(); ?>
+
+		<?php endforeach; ?>
+	<?php endif; ?>
 	<?php echo View::make('partials.frontend.modals')->render(); ?>
+
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

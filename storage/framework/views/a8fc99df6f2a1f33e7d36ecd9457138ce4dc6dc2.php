@@ -50,37 +50,9 @@
 
 <?php $__env->startSection('navigation'); ?>
     <header id="header" class="reveal">
-        <h1 id="logo"><a href="<?php echo e(route('pages_index')); ?>">Jays Cleaners</a></h1>
-        <nav id="nav">
-            <ul>
-                <li class="submenu">
-                    <a href="#"><small>Hello </small><strong><?php echo e(Auth::user()->username); ?></strong></a>
-                    <ul>
-                        <li><a href="<?php echo e(route('delivery_index')); ?>">Your Deliveries</a></li>
-                        <li><a href="left-sidebar.html">Services</a></li>
-                        <li><a href="right-sidebar.html">Business Hours</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li class="submenu">
-                            <a href="#"><?php echo e(Auth::user()->username); ?> menu</a>
-                            <ul>
-                                <li><a href="#">Dolore Sed</a></li>
-                                <li><a href="#">Consequat</a></li>
-                                <li><a href="#">Lorem Magna</a></li>
-                                <li><a href="#">Sed Magna</a></li>
-                                <li><a href="#">Ipsum Nisl</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a id="logout_button" href="#" class="button special">Logout</a>
-                    <?php echo Form::open(['action' => 'PagesController@postLogout', 'id'=>'logout_form', 'class'=>'form-horizontal','role'=>"form"]); ?>
+    <?php echo View::make('partials.layouts.navigation_logged_in')
+        ->render(); ?>
 
-                    <?php echo Form::close(); ?>
-
-                </li>
-            </ul>
-        </nav>
     </header>
 <?php $__env->stopSection(); ?>
 
@@ -100,9 +72,13 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
 
                             <div class="col-md-6">
-                                
-                                <?php echo e(Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address'])); ?>
+                                <?php if($status > 1): ?>
+                                    <?php echo e(Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address','disabled'=>'true'])); ?>
 
+                                <?php else: ?>
+                                    <?php echo e(Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address'])); ?>
+
+                                <?php endif; ?>
                                 <?php if($errors->has('pickup_address')): ?>
                                     <span class="help-block">
                                         <strong><?php echo e($errors->first('pickup_address')); ?></strong>
@@ -112,16 +88,20 @@
                                 <a href="<?php echo e(route('address_index')); ?>" class="btn btn-link">Manage your address(es)</a>
                             </div>
                         </div>
-
                         <div class="form-group<?php echo e($errors->has('pickup_date') ? ' has-error' : ''); ?> pickup_date_div ">
                             <label class="col-md-4 control-label padding-top-none">Pickup Date</label>
 
                             <div id="pickup_container" class="col-md-6">
-                                <?php if($zipcode_status): ?> 
-                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;">
+                                <?php if($status > 3): ?>
+                                    <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" disabled="true">
                                 <?php else: ?>
-                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="<?php echo e(old('pickup_date')); ?>" disabled="true">
+                                    <?php if($zipcode_status): ?> 
+                                    <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;">
+                                    <?php else: ?>
+                                    <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="<?php echo e(old('pickup_date')); ?>" disabled="true">
+                                    <?php endif; ?>
                                 <?php endif; ?>
+
                                 <?php if($errors->has('pickup_date')): ?>
                                     <span class="help-block">
                                         <strong><?php echo e($errors->first('pickup_date')); ?></strong>
@@ -134,14 +114,18 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Time</label>
 
                             <div class="col-md-6">
-                                <?php if($selected_delivery_id): ?>
-                                <?php echo e(Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control'])); ?>
+                                <?php if($status > 3): ?>
+                                <?php echo e(Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>'true'])); ?>
 
                                 <?php else: ?>
-                                <?php echo e(Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true"])); ?>
+                                    <?php if($selected_delivery_id): ?>
+                                    <?php echo e(Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control'])); ?>
 
+                                    <?php else: ?>
+                                    <?php echo e(Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true"])); ?>
+
+                                    <?php endif; ?>
                                 <?php endif; ?>
-                                
                                 <?php if($errors->has('pickup_time')): ?>
                                     <span class="help-block">
                                         <strong><?php echo e($errors->first('pickup_time')); ?></strong>
@@ -155,12 +139,15 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Date</label>
 
                             <div id="dropoff_container" class="col-md-6">
-                                <?php if($zipcode_status): ?> 
-                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e((old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : ''); ?>" style="background-color:#ffffff;">
-                                <?php else: ?>
-                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e(old('dropoff_date')); ?>" disabled="true">
+                                <?php if($status > 11): ?>
+                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e((old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : ''); ?>" disabled="true">
+                                <?php else: ?> 
+                                    <?php if($zipcode_status): ?> 
+                                    <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e((old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : ''); ?>" style="background-color:#ffffff;">
+                                    <?php else: ?>
+                                    <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e(old('dropoff_date')); ?>" disabled="true">
+                                    <?php endif; ?>
                                 <?php endif; ?>
-                                
 
                                 <?php if($errors->has('dropoff_date')): ?>
                                     <span class="help-block">
@@ -173,15 +160,18 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Time</label>
 
                             <div class="col-md-6">
-                                
-								<?php if($dropoff_delivery_id): ?>
-                                <?php echo e(Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control'])); ?>
+                                <?php if($status > 11): ?>
+                                <?php echo e(Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control','disabled'=>'true'])); ?>
 
                                 <?php else: ?>
-                                <?php echo e(Form::select('dropoff_time',[''=>'select time'],null,['id'=>'dropofftime','class'=>'form-control', 'disabled'=>"true"])); ?>
+    								<?php if($dropoff_delivery_id): ?>
+                                    <?php echo e(Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control'])); ?>
 
+                                    <?php else: ?>
+                                    <?php echo e(Form::select('dropoff_time',[''=>'select time'],null,['id'=>'dropofftime','class'=>'form-control', 'disabled'=>"true"])); ?>
+
+                                    <?php endif; ?>
                                 <?php endif; ?>
-
                                 <?php if($errors->has('dropoff_time')): ?>
                                     <span class="help-block">
                                         <strong><?php echo e($errors->first('dropoff_time')); ?></strong>

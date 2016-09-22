@@ -21,6 +21,10 @@ class Job extends Model
 		return $string;
 	}
 
+	static public function formatPhoneString($data) {
+		return "(".substr($data, 0, 3).") ".substr($data, 3, 3)."-".substr($data,6);
+	}
+
 	static public function states() {
 		return $states = [''=>'Select State',
 						'AL'=>'Alabama',

@@ -260,8 +260,43 @@ class SchedulesController extends Controller
     	}
     }
 
-    public function postEmailEnroute(Request $request) {
-    	$delivery_date = date('Y-m-d 00:00:00', strtotime($request->delivery_date));
+    public function postEmailStatus(Request $request) {
+        $schedules = Schedule::where('id',$request->id)->get();
+        $adjust = Schedule::prepareSchedule($schedules);
+        if (count($adjust) > 0) {
+            foreach ($adjust as $schedule) {
+                $send_to = $schedule['email'];
+                $from = 'noreply@jayscleaners.com';
+                $subject = $schedule['email_subject'];
+
+                $optional = ($request->content) ? $request->content : false;
+                // Email customer
+                if (Mail::send('emails.status_update', [
+                    'company_name' => $schedule['company_name'],
+                    'status_message' => $schedule['status_message'],
+                    'greeting' => $schedule['email_greetings'],
+                    'body' => $schedule['email_body'],
+                    'button' => $schedule['email_button'],
+                    'optional' => $optional
+                ], function($message) use ($send_to,$subject)
+                {
+                    $message->to($send_to);
+                    $message->subject($subject);
+                })) {
+                    // redirect with flash
+                    Flash::success('Sent status update email.');
+                    
+                } else {
+                    Flash::error('Failed email. Please try again.');
+                }
+
+                
+            }
+        } else {
+            Flash::error('No such delivery on file. Could not send status update email.');
+        } 
+
+        return Redirect::back();
 
     }
     public function postApprovePickedup(Request $request){
@@ -615,6 +650,8 @@ class SchedulesController extends Controller
             }
         }
     }
+
+
 
 
 }

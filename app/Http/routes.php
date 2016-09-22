@@ -205,8 +205,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/schedules/revert-pickup', ['as'=>'schedules_revert_pickup','uses'=>'SchedulesController@postRevertPickup']);
 		Route::post('/schedules/revert-delay', ['as'=>'schedules_revert_delay','uses'=>'SchedulesController@postRevertDelay']);
 		Route::post('/schedules/revert-dropoff', ['as'=>'schedules_revert_dropoff','uses'=>'SchedulesController@postRevertDropoff']);
-		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
-		Route::post('/schedules/email-enroute', ['as'=>'schedules_email_enroute','uses'=>'SchedulesController@postEmailEnroute']);
+		Route::post('/schedules/email-status', ['as'=>'schedules_email_status','uses'=>'SchedulesController@postEmailStatus']);
+		
 		Route::post('/schedules/approve-pickedup', ['as'=>'schedules_approve_pickedup','uses'=>'SchedulesController@postApprovePickedup']);
 		Route::post('/schedules/approve-droppedoff', ['as'=>'schedules_approve_droppedoff','uses'=>'SchedulesController@postApproveDroppedOff']);
 		Route::post('/schedules/approve-delivered', ['as'=>'schedules_approve_delivered','uses'=>'SchedulesController@postApproveDelivered']);

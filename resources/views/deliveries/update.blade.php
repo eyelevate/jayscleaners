@@ -72,8 +72,11 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
 
                             <div class="col-md-6">
-                                
-                                {{ Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address']) }}
+                                @if ($status > 1)
+                                    {{ Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address','disabled'=>'true']) }}
+                                @else
+                                    {{ Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address']) }}
+                                @endif
                                 @if ($errors->has('pickup_address'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('pickup_address') }}</strong>
@@ -83,16 +86,20 @@
                                 <a href="{{ route('address_index') }}" class="btn btn-link">Manage your address(es)</a>
                             </div>
                         </div>
-
                         <div class="form-group{{ $errors->has('pickup_date') ? ' has-error' : '' }} pickup_date_div ">
                             <label class="col-md-4 control-label padding-top-none">Pickup Date</label>
 
                             <div id="pickup_container" class="col-md-6">
-                                @if ($zipcode_status) 
-                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" style="background-color:#ffffff;">
+                                @if ($status > 3)
+                                    <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" disabled="true">
                                 @else
-                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" disabled="true">
+                                    @if ($zipcode_status) 
+                                    <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" style="background-color:#ffffff;">
+                                    @else
+                                    <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" disabled="true">
+                                    @endif
                                 @endif
+
                                 @if ($errors->has('pickup_date'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('pickup_date') }}</strong>
@@ -105,12 +112,15 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Time</label>
 
                             <div class="col-md-6">
-                                @if ($selected_delivery_id)
-                                {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control']) }}
+                                @if ($status > 3)
+                                {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>'true']) }}
                                 @else
-                                {{ Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true"]) }}
+                                    @if ($selected_delivery_id)
+                                    {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control']) }}
+                                    @else
+                                    {{ Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true"]) }}
+                                    @endif
                                 @endif
-                                
                                 @if ($errors->has('pickup_time'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('pickup_time') }}</strong>
@@ -124,12 +134,15 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Date</label>
 
                             <div id="dropoff_container" class="col-md-6">
-                                @if ($zipcode_status) 
-                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ (old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : '' }}" style="background-color:#ffffff;">
-                                @else
-                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ old('dropoff_date') }}" disabled="true">
+                                @if ($status > 11)
+                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ (old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : '' }}" disabled="true">
+                                @else 
+                                    @if ($zipcode_status) 
+                                    <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ (old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : '' }}" style="background-color:#ffffff;">
+                                    @else
+                                    <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ old('dropoff_date') }}" disabled="true">
+                                    @endif
                                 @endif
-                                
 
                                 @if ($errors->has('dropoff_date'))
                                     <span class="help-block">
@@ -142,13 +155,15 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Time</label>
 
                             <div class="col-md-6">
-                                
-								@if ($dropoff_delivery_id)
-                                {{ Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control']) }}
+                                @if ($status > 11)
+                                {{ Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control','disabled'=>'true']) }}
                                 @else
-                                {{ Form::select('dropoff_time',[''=>'select time'],null,['id'=>'dropofftime','class'=>'form-control', 'disabled'=>"true"]) }}
+    								@if ($dropoff_delivery_id)
+                                    {{ Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control']) }}
+                                    @else
+                                    {{ Form::select('dropoff_time',[''=>'select time'],null,['id'=>'dropofftime','class'=>'form-control', 'disabled'=>"true"]) }}
+                                    @endif
                                 @endif
-
                                 @if ($errors->has('dropoff_time'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('dropoff_time') }}</strong>

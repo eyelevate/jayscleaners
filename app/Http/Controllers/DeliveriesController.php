@@ -793,6 +793,7 @@ class DeliveriesController extends Controller
             ->with('time_options_dropoff',$time_options_dropoff)
             ->with('dropoff_delivery_id',$selected_dropoff_delivery_id)
             ->with('special_instructions',$special_instructions)
+            ->with('status',$schedules->status)
             ->with('update_id',$id);
 
         } else {

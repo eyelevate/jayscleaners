@@ -30,8 +30,8 @@
 		</div>
 		{!! Form::close() !!}
 		<div class="panel-footer clearfix">
-			<a href="#" class="btn btn-lg btn-info btn-flat pull-left col-lg-2 col-md-2 col-sm-6 col-xs-6">New Delivery</a>
-			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-default btn-flat pull-right col-lg-2 col-md-2 col-sm-6 col-xs-6">Checklist</a>
+			<a href="#" class="btn btn-lg btn-info btn-flat pull-left col-md-2 col-sm-6 col-xs-6">New Delivery</a>
+			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-default btn-flat pull-right col-md-2 col-sm-6 col-xs-6">Checklist</a>
 		</div>
 	</div>
 

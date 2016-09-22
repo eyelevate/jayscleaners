@@ -177,6 +177,55 @@ class Card extends Model
 		}
     }
 
+
+    static public function getCardInfo($company_id, $profile_id, $payment_id) {
+    	$info = [];
+
+    	$companies = Company::find($company_id);
+        $payment_api_login = $companies->payment_api_login;
+        $payment_api_password = $companies->payment_gateway_id;
+		// Common setup for API credentials (merchant)
+		$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+		$merchantAuthentication->setName($payment_api_login);
+		$merchantAuthentication->setTransactionKey($payment_api_password);
+		$refId = 'ref' . time();
+
+		//request requires customerProfileId and customerPaymentProfileId
+		$request = new AnetAPI\GetCustomerPaymentProfileRequest();
+		$request->setMerchantAuthentication($merchantAuthentication);
+		$request->setRefId( $refId);
+		$request->setCustomerProfileId($profile_id);
+		$request->setCustomerPaymentProfileId($payment_id);
+
+		$controller = new AnetController\GetCustomerPaymentProfileController($request);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		if(($response != null)){
+			if ($response->getMessages()->getResultCode() == "Ok") {
+				$info = [
+					'status' => true,
+					'last_4' => $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber()
+				];
+			} else {
+				$errorMessages = $response->getMessages()->getMessage();
+				$info = [
+					'status' => false,
+					'message' => $errorMessages[0]->getText()
+				];
+				// echo "GetCustomerPaymentProfile ERROR :  Invalid response\n";
+				// $errorMessages = $response->getMessages()->getMessage();
+			 //    echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+			}
+		} else {  
+			echo "NULL Response Error";
+			$info = [
+				'status' => false,
+				'message' => 'Response Error'
+			];
+		}
+
+		return $info;
+    }
+
     static public function checkValid($company_id, $profile_id, $payment_id) {
     	$companies = Company::find($company_id);
         $payment_api_login = $companies->payment_api_login;

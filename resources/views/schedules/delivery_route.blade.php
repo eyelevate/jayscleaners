@@ -40,8 +40,8 @@
 
 		{!! Form::close() !!}
 		<div class="panel-footer clearfix">
-			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-danger pull-left col-lg-2 col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
-			<a href="{{ route('schedules_processing') }}" class="btn btn-lg btn-primary pull-right col-lg-2 col-md-2 col-sm-6 col-xs-6">Process&nbsp;<i class="ion ion-chevron-right"></i></a>
+			<a href="{{ route('schedules_checklist') }}" class="btn btn-lg btn-danger pull-left col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
+			<a href="{{ route('schedules_processing') }}" class="btn btn-lg btn-primary pull-right col-md-2 col-sm-6 col-xs-6">Process&nbsp;<i class="ion ion-chevron-right"></i></a>
 		</div>
 	</div>
 
@@ -431,6 +431,7 @@
 				</div>
 				<div class="clearfix panel-footer" >
 					<a class="btn btn-info" href="{{ route('delivery_admin_edit',$dl['id']) }}">Edit Delivery</a>
+					<a class="btn btn-warning" data-toggle="modal" data-target="#email-{{ $dl['id'] }}">Email</a>
 					{!! Form::open(['action' => 'SchedulesController@postRevertDelay','role'=>"form",'class'=>'pull-right']) !!}
 					{!! Form::hidden('id',$dl['id']) !!}
 					{!! Form::hidden('status',$dl['status']) !!}
@@ -442,7 +443,7 @@
 		@endif
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-			<a href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#status_change">Email Status Change</a>
+			
 		</div><!-- /.box-footer -->
 	</div>
 
@@ -556,6 +557,7 @@
 				</div>
 				<div class="clearfix panel-footer" >
 					<a class="btn btn-info" href="{{ route('delivery_admin_edit',$al['id']) }}">Edit Delivery</a>
+					<a class="btn btn-warning" data-toggle="modal" data-target="#email-{{ $al['id'] }}">Email</a>
 					<?php
 					switch($al['status']) {
 						case 3:
@@ -584,15 +586,28 @@
 		@endif
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-			<a href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#status_change">Email Status Change</a>
+
 		</div><!-- /.box-footer -->
 	</div>
 @stop
 
 @section('modals')
-	{!! View::make('partials.schedules.status_change')
-		->with('schedules',$approved_list)
-		->with('delivery_date',$delivery_date)
-		->render()
-	!!}
+
+	@if(count($delayed_list) > 0)
+		@foreach($delayed_list as $dl)
+		{!! View::make('partials.schedules.email')
+			->with('schedule_id',$dl['id'])
+			->render()
+		!!}
+		@endforeach
+	@endif
+	@if(count($approved_list) > 0)
+		@foreach($approved_list as $al)
+		{!! View::make('partials.schedules.email')
+			->with('schedule_id',$al['id'])
+			->render()
+		!!}
+		@endforeach
+	@endif
+
 @stop

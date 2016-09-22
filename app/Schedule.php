@@ -25,6 +25,8 @@ class Schedule extends Model
     	if (count($data) > 0) {
     		foreach ($data as $key => $value) {
     			if(isset($data[$key]['pickup_address'])) {
+                    $company_id = $value->company_id;
+                    $companies = Company::find($company_id);
     				$pickup_address_id = $data[$key]['pickup_address'];
     				$addresses = Address::find($pickup_address_id);
     				$street = $addresses->street;
@@ -49,6 +51,7 @@ class Schedule extends Model
                     $schedules[$key]['first_name'] = ucFirst($customers->first_name);
                     $schedules[$key]['last_name'] = ucFirst($customers->last_name);
     				$schedules[$key]['company_id'] = $value->company_id;
+                    $schedules[$key]['company_name'] = $companies->name;
     				$schedules[$key]['pickup_address'] = $value->pickup_address;
     				$schedules[$key]['pickup_delivery_id'] = $value->pickup_delivery_id;
     				$schedules[$key]['dropoff_delivery_id'] = $value->dropoff_delivery_id;
@@ -108,6 +111,11 @@ class Schedule extends Model
                                 '' => 'Select Delay Reason',
                                 '8' => 'Delayed - Customer unavailable for pickup',
                             ];
+                            $schedules[$key]['email_subject'] = 'En-route to Pickup!';
+                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                            $schedules[$key]['email_body'] = 'Your delivery request has been accepted and we are on the way!';
+                            $schedules[$key]['email_body'] .= ' Please have you or your contact person(s) be available between the hours of '.$pickup_time.' today.';
+                            $schedules[$key]['email_body'] .= ' If you or your contact cannot be available during these hours, please contact us at '.Job::formatPhoneString($companies->phone).' click on the "Reschedule" link below to cancel or make a change to your delivery date.';
     					break;
 
     					case 3:
@@ -187,6 +195,12 @@ class Schedule extends Model
     					case 8:
     						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for pickup';
                             $schedules[$key]['status_html'] = 'label-warning';
+                            $schedules[$key]['email_subject'] = 'Delivery delayed due contact not available during pickup!';
+                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                            $schedules[$key]['email_body'] = 'Your delivery has been delayed due your contact not being available during pickup.';
+                            $schedules[$key]['email_body'] .= ' In order to finish this pickup we will need to reschedule to another available delivery date.';
+                            $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="/delivery/update/'.$schedules[$key]['id'].'">Reschedule Pickup</a>';
     					break;
 
     					case 9:
@@ -206,6 +220,12 @@ class Schedule extends Model
                             $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
                             $schedules[$key]['invoice_totals'] = $totals;
+                            $schedules[$key]['email_subject'] = 'Delivery delayed due contact not available during dropoff!';
+                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                            $schedules[$key]['email_body'] = 'Your delivery has been delayed due your contact not being available during dropoff.';
+                            $schedules[$key]['email_body'] .= ' In order to finish processing this delivery and have it delivered to you we will need to reschedule the dropoff to another available delivery date.';
+                            $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule Dropoff</a>';
     					break;
 
     					case 10:
@@ -222,6 +242,23 @@ class Schedule extends Model
                             $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
                             $schedules[$key]['invoice_totals'] = $totals;
+
+
+                            // gather card information
+                            $cards = Card::find($value->card_id);
+                            $profile_id = $cards->profile_id;
+                            $payment_id = $cards->payment_id;
+
+                            $card_info = Card::getCardInfo($company_id, $profile_id, $payment_id);
+
+                            $card_last_four = ($card_info['status']) ? $card_info['last_four'] : 'XXXX';
+
+                            $schedules[$key]['email_subject'] = 'Delivery delayed due to credit card on file error!';
+                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                            $schedules[$key]['email_body'] = 'Your delivery has been delayed due to a processing error on your card ending in "'.$card_last_four.'"';
+                            $schedules[$key]['email_body'] .= ' In order to finish processing this delivery and have it delivered to you we will need to fix the issue with the card and process it successfully.';
+                            $schedules[$key]['email_body'] .= ' Please click on the button below to make the appropriate adjustments.';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('cards_index').'">Update Card Info</a>';
     					break;
 
     					case 11:
@@ -245,7 +282,13 @@ class Schedule extends Model
                                 '' => 'Select Delay Reason',
                                 '9' => 'Delayed - Customer unavailable for dropoff'
                             ];
-    					break;
+                            $schedules[$key]['email_subject'] = 'En-route to Dropoff!';
+                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                            $schedules[$key]['email_body'] = 'Your delivery has been processed, paid and is ready to be dropped off at your address.';
+                            $schedules[$key]['email_body'] .= ' Please have you or your contact person(s) be available between the hours of '.$dropoff_time.' today.';
+                            $schedules[$key]['email_body'] .= ' If you or your contact cannot be available during these hours, please contact us at '.Job::formatPhoneString($companies->phone).' OR click on the "Reschedule" link below to cancel or make a change to your delivery date.';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule</a>';
+                        break;
      					case 12:
      						$schedules[$key]['status_message'] = 'Dropped Off. Thank You!';
                             $schedules[$key]['status_html'] = 'label-success';
@@ -263,6 +306,12 @@ class Schedule extends Model
                             $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
                             $schedules[$key]['invoice_totals'] = $totals;
+                            $schedules[$key]['email_subject'] = 'Delivery Successful!';
+                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                            $schedules[$key]['email_body'] = 'Your delivery was successfully';
+                            $schedules[$key]['email_body'] .= ' Congratulations! Your delivery was successfully completed.';
+                            $schedules[$key]['email_body'] .= ' If you would like to schedule your next delivery you may click on the link below to reschedule. Thank you for your business!';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_start').'">New Delivery</a>';
     					break;
 
 
