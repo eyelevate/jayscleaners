@@ -346,8 +346,7 @@
 
 				</div>
 				<div class="clearfix panel-footer" >
-					<a class="btn btn-info col-xs-4 col-sm-4 col-md-4" href="<?php echo e(route('delivery_admin_edit',$schedule['id'])); ?>">Edit Delivery</a>
-					<a class="btn btn-warning col-xs-4 col-sm-4 col-md-4">Email</a>
+					<a class="btn btn-info" href="<?php echo e(route('delivery_admin_edit',$schedule['id'])); ?>">Edit Delivery</a>
 					<?php
 					switch($schedule['status']) {
 						case 1:
@@ -356,7 +355,7 @@
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
-						<input type="submit" class="btn btn-success col-xs-4 col-sm-4 col-md-4" value="Approve For Pickup" />
+						<input type="submit" class="btn btn-success" value="Approve" />
 						<?php echo Form::close(); ?>
 
 						<?php
@@ -368,7 +367,7 @@
 
 						<?php echo Form::hidden('id',$schedule['id']); ?>
 
-						<input type="submit" class="btn btn-success col-xs-4 col-sm-4 col-md-4" value="Approve For Dropoff" />
+						<input type="submit" class="btn btn-success" value="Approve" />
 						<?php echo Form::close(); ?>
 
 						<?php
@@ -666,7 +665,7 @@
 		<?php endif; ?>
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-			<a href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#status_change">Email Status Change</a>
+			
 		</div><!-- /.box-footer -->
 	</div>
 

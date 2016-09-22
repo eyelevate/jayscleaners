@@ -809,9 +809,9 @@ class DeliveriesController extends Controller
 
         $schedules = Schedule::find($request->id);
 
-        $status = $schedules->id;
+        $schedule_id = $schedules->id;
 
-        if($status == 2 || $status == 8) {
+        if($schedule_id == 2 || $schedule_id == 8) {
             $this->validate($request, [
                 'pickup_date'=>'required',
                 'pickup_time'=>'required',
@@ -824,7 +824,7 @@ class DeliveriesController extends Controller
             $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
             $schedules->dropoff_delivery_id = $request->dropoff_time;
             $schedules->special_instructions = $request->special_instructions;
-        } elseif($status == 3 || $status == 4 || $status = 5 || $status == 7 || $status == 9 || $status == 10 || $status == 11) {
+        } elseif($schedule_id == 3 || $schedule_id == 4 || $schedule_id = 5 || $schedule_id == 7 || $schedule_id == 9 || $schedule_id == 10 || $schedule_id == 11) {
             $this->validate($request, [
                 'dropoff_date' => 'required',
                 'dropoff_time' => 'required'
@@ -849,23 +849,26 @@ class DeliveriesController extends Controller
             $schedules->special_instructions = $request->special_instructions;
         }
 
-
-        switch ($status) {
-            case 7:
-                $schedules->status = 4;
+        switch ($schedules->status) {
+            case '7':
+                $new_status = 4;
                 break;
-            case 8:
-                $schedules->status = 1;
+            case '8':
+                $new_status = 1;
                 break;
-            case 9:
-                $schedules->status = 11;
+            case '9':
+                $new_status = 5;
                 break;            
 
-            case 10:
-                $schdules->status = 4;
+            case '10':
+                $new_status = 4;
+                break;
+            default:
+                $new_status = $schedules->status;
                 break;
         }
-
+        
+        $schedules->status = $new_status;
 
         if ($schedules->save()) {
             if ($request->session()->has('schedule')) {

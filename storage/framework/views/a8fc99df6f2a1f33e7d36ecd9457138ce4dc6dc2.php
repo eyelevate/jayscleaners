@@ -92,7 +92,7 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Date</label>
 
                             <div id="pickup_container" class="col-md-6">
-                                <?php if($status > 3): ?>
+                                <?php if($status > 3 && $status != 8): ?>
                                     <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" disabled="true">
                                 <?php else: ?>
                                     <?php if($zipcode_status): ?> 
@@ -114,7 +114,7 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Time</label>
 
                             <div class="col-md-6">
-                                <?php if($status > 3): ?>
+                                <?php if($status > 3 && $status != 8): ?>
                                 <?php echo e(Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>'true'])); ?>
 
                                 <?php else: ?>
@@ -139,7 +139,7 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Date</label>
 
                             <div id="dropoff_container" class="col-md-6">
-                                <?php if($status > 11): ?>
+                                <?php if($status > 11 && $status != 9): ?>
                                 <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="<?php echo e((old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : ''); ?>" disabled="true">
                                 <?php else: ?> 
                                     <?php if($zipcode_status): ?> 
@@ -160,7 +160,7 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Time</label>
 
                             <div class="col-md-6">
-                                <?php if($status > 11): ?>
+                                <?php if($status > 11 && status != 9): ?>
                                 <?php echo e(Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control','disabled'=>'true'])); ?>
 
                                 <?php else: ?>

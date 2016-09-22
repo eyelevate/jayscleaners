@@ -463,7 +463,7 @@
 		<?php endif; ?>
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-			<a href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#status_change">Email Status Change</a>
+			
 		</div><!-- /.box-footer -->
 	</div>
 
@@ -612,7 +612,7 @@
 		<?php endif; ?>
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-			<a href="#" class="btn btn-lg btn-primary pull-right" data-toggle="modal" data-target="#status_change">Email Status Change</a>
+
 		</div><!-- /.box-footer -->
 	</div>
 <?php $__env->stopSection(); ?>

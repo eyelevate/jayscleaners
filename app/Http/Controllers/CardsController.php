@@ -541,6 +541,11 @@ class CardsController extends Controller
 
     public function getDelete($id = NULL, Request $r) {
     	$cards = Card::find($id);
+    	$user_id = $cards->user_id;
+    	if (Auth::user()->id != $user_id) {
+    		Flash::error('You are not allowed to view/edit/delete this card.');
+    		return Redirect::back();
+    	}
     	$root_payment_id = $cards->root_payment_id;
     	$company_id = $cards->company_id;
     	$companies = Company::find($company_id);
