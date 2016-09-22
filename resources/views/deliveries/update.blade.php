@@ -90,7 +90,7 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Date</label>
 
                             <div id="pickup_container" class="col-md-6">
-                                @if ($status > 3)
+                                @if ($status > 3 && $status != 8)
                                     <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" disabled="true">
                                 @else
                                     @if ($zipcode_status) 
@@ -112,7 +112,7 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Time</label>
 
                             <div class="col-md-6">
-                                @if ($status > 3)
+                                @if ($status > 3 && $status != 8)
                                 {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>'true']) }}
                                 @else
                                     @if ($selected_delivery_id)
@@ -134,7 +134,7 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Date</label>
 
                             <div id="dropoff_container" class="col-md-6">
-                                @if ($status > 11)
+                                @if ($status > 11 && $status != 9)
                                 <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ (old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : '' }}" disabled="true">
                                 @else 
                                     @if ($zipcode_status) 
@@ -155,7 +155,7 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Time</label>
 
                             <div class="col-md-6">
-                                @if ($status > 11)
+                                @if ($status > 11 && status != 9)
                                 {{ Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control','disabled'=>'true']) }}
                                 @else
     								@if ($dropoff_delivery_id)
