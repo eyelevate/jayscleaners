@@ -277,7 +277,9 @@ class SchedulesController extends Controller
                     'greeting' => $schedule['email_greetings'],
                     'body' => $schedule['email_body'],
                     'button' => $schedule['email_button'],
-                    'optional' => $optional
+                    'optional' => $optional,
+                    'body_2' => (isset($schedule['email_body_2'])) ? $schedule['email_body_2'] : false
+                    'button_2' => (isset($schedule['email_button_2'])) ? $schedule['email_button_2'] : false
                 ], function($message) use ($send_to,$subject)
                 {
                     $message->to($send_to);
