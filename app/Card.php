@@ -203,7 +203,7 @@ class Card extends Model
 			if ($response->getMessages()->getResultCode() == "Ok") {
 				$info = [
 					'status' => true,
-					'last_4' => $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber()
+					'last_four' => $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber()
 				];
 			} else {
 				$errorMessages = $response->getMessages()->getMessage();
