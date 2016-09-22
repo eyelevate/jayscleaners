@@ -291,8 +291,19 @@
                      <!-- button -->
                      <!-- content -->
                      <tr>
-                        <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                           {{ $body_2 }}
+                        <td>
+                           <table width="540" align="center" cellspacing="0" cellpadding="0" border="0" class="devicewidthinner">
+                              <tbody>
+                                 <!-- Spacing -->
+                                 <!-- content -->
+                                 <tr>
+                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
+                                       {{ $body_2 }}
+                                    </td>
+                                 </tr>
+                     
+                              </tbody>
+                           </table>
                         </td>
                      </tr>
                      <!-- Spacing -->
