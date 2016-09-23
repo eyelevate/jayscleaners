@@ -11,13 +11,15 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        if (!\App::environment('local')) {
-          \URL::forceSchema('https');
-        }
+    // public function boot()
+    // {
+    //     if (!\App::environment('local')) {
+    //       \URL::forceSchema('https');
+    //     }
+    // }
+    public function boot() {
+        
     }
-
     /**
      * Register any application services.
      *
