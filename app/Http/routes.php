@@ -189,6 +189,10 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/memos/edit',['uses'=>'MemosController@postEdit']);
 		Route::post('/memos/order',['uses'=>'MemosController@postOrder']);
 
+		// Reports
+		Route::get('/reports',  ['as'=>'reports_index', 'uses' => 'ReportsController@getIndex']);
+		Route::post('/reports', ['as'=>'reports_index_post', 'uses'=>'ReportsController@postIndex']);
+		Route::get('/reports/make/{start}/{end}/{company_id}', ['as'=>'reports_make', 'uses'=>'ReportsController@getMake']);
 		// Schedules
 		Route::get('/schedules/checklist',['as'=>'schedules_checklist','uses'=>'SchedulesController@getChecklist']);
 		Route::post('/schedules/checklist',['as'=>'schedules_checklist_post','uses'=>'SchedulesController@postChecklist']);

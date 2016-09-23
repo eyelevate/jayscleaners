@@ -9,7 +9,6 @@ admin = {
 	},
 	sales: function() {
 		$.getJSON("/admins/sales-data", function (json) {
-			console.log(json);
 			//-----------------------
 			//- MONTHLY SALES CHART -
 			//-----------------------
