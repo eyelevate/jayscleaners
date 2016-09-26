@@ -25,6 +25,7 @@ use App\Company;
 use App\Customer;
 use App\Custid;
 use App\Delivery;
+use App\Profile;
 use App\Layout;
 use App\Schedule;
 use App\Zipcode;
@@ -1067,4 +1068,61 @@ class DeliveriesController extends Controller
 
 
     }
+
+    public function getNew(Request $request, $id = null) {
+        $this->layout = 'layouts.dropoff';
+        if ($id) {
+            $request->session()->put('new_form_back',['route'=>'delivery_new',
+                                                      'param'=>$id]);
+            $customers = User::find($id);
+            $addresses = Address::where('user_id',$customers->id)->get();
+            $address_check = Address::prepareForView($addresses);
+            $cards = Card::prepareForAdminView(Card::where('user_id',$customers->id)->where('company_id',1)->get());
+            $profiles = Profile::where('user_id',$customers->id)->get();
+            return view('deliveries.new_profile')
+            ->with('layout',$this->layout)
+            ->with('customer_id',$id)
+            ->with('addresses',$addresses)
+            ->with('cards',$cards)
+            ->with('profiles',$profiles)
+            ->with('customers',$customers);             
+        } else {
+            $customers = ($request->session()->has('new_delivery_customers')) ? $request->session()->pull('new_delivery_customers') : [];
+            return view('deliveries.new')
+            ->with('layout',$this->layout)
+            ->with('customer_id',$id)
+            ->with('customers',$customers); 
+        }
+
+        // Job::dump($customers);
+
+ 
+    }
+
+    public function postNew() {
+
+    }
+
+    public function postFindCustomer(Request $request) {
+        $this->validate($request, [
+            'search' => 'required'
+        ]);
+        $search = preg_replace("/[^A-Za-z0-9 ]/", '', $request->search);
+        // Search has validated start searching
+        $phones = User::where('phone','LIKE','%'.$search.'%');
+        $ids = User::where('id',$search);
+        $usernames = User::where('username','LIKE','%'.$search.'%');
+        $results = User::where('last_name','LIKE','%'.$search.'%')
+                            ->union($phones)
+                            ->union($ids)
+                            ->union($usernames)
+                            ->orderBy('last_name','asc')
+                            ->get();
+
+        $request->session()->put('new_delivery_customers',$results);
+
+        return Redirect::route('delivery_new',0);
+    }
+
+
 }

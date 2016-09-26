@@ -153,7 +153,7 @@ class Customer extends Model
     **/
 
 
-    private static function searchByQuery($query) {
+    public static function searchByQuery($query) {
         $results = [];
         if(is_numeric($query)) { //Is a number so start checking for lengths
             if(strlen($query) > 6) { // Must be a phone number

@@ -123,6 +123,17 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/colors/delete',  ['as'=>'colors_delete','uses' => 'ColorsController@postDelete']);
 		Route::post('/colors/order',['uses'=>'ColorsController@postOrder']);
 
+		//Cards
+		Route::get('/cards/admins/{id}',  ['as'=>'cards_admins_index', 'uses' => 'CardsController@getAdminsIndex']);
+		Route::get('/cards/admins/add/{id}',['as'=>'cards_admins_add','uses'=>'CardsController@getAdminsAdd']);
+		Route::post('/cards/admins/add',['as'=>'cards_admins_add_post','uses'=>'CardsController@postAdminsAdd']);
+		Route::get('/cards/admins/edit/{id}',['as'=>'cards_admins_edit','uses'=>'CardsController@getAdminsEdit']);
+		Route::post('/cards/admins-edit',['as'=>'cards_admins_edit_post','uses'=>'CardsController@postAdminsEdit']);		
+		Route::get('/cards/admins-edit-again',['as'=>'cards_admins_edit_again','uses'=>'CardsController@getAdminsEditAgain']);		
+		Route::get('/cards/admins-delete/{id}', ['as' => 'cards_admins_delete', 'uses'=>'CardsController@getAdminsDelete']);
+    	Route::get('/cards/admins-delete-again',['as'=>'cards_admins_delete_again','uses'=>'CardsController@getAdminsDeleteAgain']);
+
+
 		//Customers
 		Route::get('/companies',  ['as'=>'companies_index', 'uses' => 'CompaniesController@getIndex']);
 		Route::get('/companies/add',['as'=>'companies_add','uses'=>'CompaniesController@getAdd']);
@@ -151,6 +162,9 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/delivery/overview',['as'=>'delivery_overview_post','uses'=>'DeliveriesController@postOverview']);
 		Route::get('/delivery/admin-edit/{id}',  ['as'=>'delivery_admin_edit','uses' => 'DeliveriesController@getAdminEdit']);
 		Route::post('/delivery/admin-edit',['as'=>'delivery_admin_edit_post','uses'=>'DeliveriesController@postAdminEdit']);
+		Route::get('/delivery/new/{id}',  ['as'=>'delivery_new','uses' => 'DeliveriesController@getNew']);
+		Route::post('/delivery/new',['as'=>'delivery_new_post','uses'=>'DeliveriesController@postNew']);
+		Route::post('/delivery/find-customer',['as'=>'delivery_find_customer','uses'=>'DeliveriesController@postFindCustomer']);
 
 		//Invoices
 		Route::get('/invoices',  ['as'=>'invoices_index', 'uses' => 'InvoicesController@getIndex']);

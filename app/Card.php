@@ -109,7 +109,7 @@ class Card extends Model
 				  	$cards->root_payment_id = $root_payment_id;
 				  	$cards->status = 1;
 				  	if ($cards->save()) {
-				  		return true;
+				  		return $root_payment_id;
 				  	}
 				} else {
 					// echo "Create Customer Payment Profile: ERROR Invalid response\n";
@@ -177,6 +177,124 @@ class Card extends Model
 		}
     }
 
+    static public function getUserId($root_payment_id) {
+    	$user_id = false;
+    	$cards = Card::where('root_payment_id',$root_payment_id)->get();
+    	if (count($cards) > 0) {
+    		foreach ($cards as $card) {
+    			$user_id = $card->user_id;
+    		}
+    	}
+
+    	return $user_id;
+    }
+
+    static public function prepareForAdminView($data) {
+    	$companies = Company::find(1);
+    	$cards_data = [];
+    	if (count($data) > 0) {
+    		foreach ($data as $key => $card) {
+    			$profile_id = $card->profile_id;
+    			$payment_id = $card->payment_id;
+    			$exp_month = $card->exp_month;
+    			$exp_year = $card->exp_year;
+    			$street = $card->street;
+    			$suite = $card->suite;
+    			$city = $card->city;
+    			$state = $card->state;
+    			$status = $card->status;
+    			// make exp status
+    			$exp_status = 1; // good
+
+    			$exp_full_time = strtotime($exp_year.'-'.$exp_month.'-01 00:00:00');
+    			$today = strtotime(date('Y-m-d H:i:s'));
+    			$difference = $exp_full_time - $today;
+    			$days_remaining = floor($difference/60/60/24);
+    			$days_comment = ($days_remaining > 0) ? $days_remaining.' day(s) remaining.' : 'Expired!';
+    			if ($difference < 0) {
+    				$exp_status = 3; // expired
+    			} elseif(($exp_full_time < strtotime('+1 month'))) {
+    				$exp_status = 2; // Within a month
+    			}
+
+    			switch($exp_status) {
+    				case 2:
+    				$background_color = '#FCF8E3';
+    				break;
+
+    				case 3:
+    				$background_color = '#F2DEDE';
+    				break;
+
+    				default:
+    				$background_color = '';
+    				break;
+    			}
+    			$cards_data[$key] = [
+    				'id' => $card->id,
+    				'profile_id' => $profile_id,
+    				'payment_id' => $payment_id,
+    				'exp_month' => $exp_month,
+    				'exp_year' => $exp_year,
+    				'exp_status' => $exp_status,
+    				'status' => $status,
+    				'days_remaining' => $days_comment,
+    				'background_color'=>$background_color
+    			];
+
+				// Common setup for API credentials (merchant)
+				$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+				$merchantAuthentication->setName($companies->payment_api_login);
+				$merchantAuthentication->setTransactionKey($companies->payment_gateway_id);
+				$refId = 'ref' . time();
+
+				//request requires customerProfileId and customerPaymentProfileId
+				$request = new AnetAPI\GetCustomerPaymentProfileRequest();
+				$request->setMerchantAuthentication($merchantAuthentication);
+				$request->setRefId( $refId);
+				$request->setCustomerProfileId($profile_id);
+				$request->setCustomerPaymentProfileId($payment_id);
+
+				$controller = new AnetController\GetCustomerPaymentProfileController($request);
+				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+				if(($response != null)){
+					if ($response->getMessages()->getResultCode() == "Ok")
+					{
+						$card_number = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber();
+						$card_type = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardType();
+						$cards_data[$key]['card_number'] = $card_number;
+						$cards_data[$key]['card_type'] = $card_type;
+						$card_first_name = $response->getPaymentProfile()->getBillTo()->getFirstName();
+						$card_last_name = $response->getPaymentProfile()->getBillTo()->getLastName();
+						$cards_data[$key]['first_name'] = $card_first_name;
+						$cards_data[$key]['last_name'] = $card_last_name;
+						switch($card_type) {
+							case 'Visa':
+								$cards_data[$key]['card_image'] = '/imgs/icons/visa.jpg';
+							break;
+							case 'MasterCard':
+								$cards_data[$key]['card_image'] = '/imgs/icons/master.jpg';
+							break;
+							case 'Amex':
+								$cards_data[$key]['card_image'] = '/imgs/icons/amex.jpg';
+							break;
+
+							case 'Discover':
+								$cards_data[$key]['card_image'] = '/imgs/icons/discover.jpg';
+							break;
+
+							default:
+								$cards_data[$key]['card_image'] = '';
+							break;
+						}
+						// Job::dump($response->getPaymentProfile());
+					}
+				}    			
+    		}
+    	}  
+
+    	return $cards_data;  	
+    }
 
     static public function getCardInfo($company_id, $profile_id, $payment_id) {
     	$info = [];

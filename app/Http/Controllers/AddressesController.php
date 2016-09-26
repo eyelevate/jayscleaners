@@ -46,6 +46,7 @@ class AddressesController extends Controller
     public function getAdminIndex($id = null, Request $request) {
 
         $request->session()->put('address_user_id',$id);
+        $request->session()->pull('new_form_back');
         $addresses = Address::where('user_id',$id)->orderby('primary_address','desc')->get();
         $form_previous = ($request->session()->has('form_previous')) ? $request->session()->get('form_previous') : 'delivery_pickup';
         $this->layout = 'layouts.dropoff';
@@ -70,10 +71,12 @@ class AddressesController extends Controller
 
         $states = Job::states();
         $this->layout = 'layouts.dropoff';
+        $back_redirect = ($request->session()->has('new_form_back')) ? $request->session()->get('new_form_back') : false;
         return view('addresses.admin-add')
         ->with('layout',$this->layout)
         ->with('customer_id',$id)
-        ->with('states',$states);       
+        ->with('states',$states)
+        ->with('back_redirect',$back_redirect);       
     }
     public function postAdd(Request $request) {
         $this->validate($request, [
@@ -99,15 +102,12 @@ class AddressesController extends Controller
         $addresses->concierge_number = $request->concierge_number;
         $primary_address = Address::where('user_id',Auth::user()->id)->where('primary_address',true)->pluck('id');
         $primary_address_id = (count($primary_address) > 0) ? $primary_address[0] : false;
-        if ($primary_address_id) {
-        	$addresses->primary_address = false;
-        } else {
-        	$addresses->primary_address = true;
-        }
+        $addresses->primary_address = ($primary_address_id) ? false : true;
 
         if ($addresses->save()){
         	Flash::success('Successfully added a new address!');
             return Redirect::route('address_index');
+            
         }
     }
 
@@ -135,15 +135,18 @@ class AddressesController extends Controller
         $addresses->concierge_number = $request->concierge_number;
         $primary_address = Address::where('user_id',$request->customer_id)->where('primary_address',true)->pluck('id');
         $primary_address_id = (count($primary_address) > 0) ? $primary_address[0] : false;
-        if ($primary_address_id) {
-            $addresses->primary_address = false;
-        } else {
-            $addresses->primary_address = true;
-        }
+        $addresses->primary_address = ($primary_address_id) ? false : true;
 
         if ($addresses->save()){
             Flash::success('Successfully added a new address!');
-            return Redirect::route('address_admin_index',$request->customer_id);
+            if ($request->session()->has('new_form_back')) {
+                $route_back = $request->session()->pull('new_form_back');
+                return Redirect::route($route_back['route'],$route_back['param']);
+            } else {
+                return Redirect::route('address_admin_index',$request->customer_id);
+            }
+            
+            
         }
     }
 
@@ -165,11 +168,13 @@ class AddressesController extends Controller
         $states = Job::states();
 
         $addresses = Address::find($id);
+        $back_redirect = ($request->session()->has('new_form_back')) ? $request->session()->get('new_form_back') : false;
         $this->layout = 'layouts.dropoff';
         return view('addresses.admin-edit')
         ->with('layout',$this->layout)
         ->with('auth',$auth)
         ->with('states',$states)
+        ->with('back_redirect',$back_redirect)
         ->with('addresses',$addresses);    
     }
 
@@ -225,7 +230,13 @@ class AddressesController extends Controller
 
         if ($addresses->save()){
             Flash::success('Successfully edited address!');
-            return Redirect::route('address_admin_index', $request->session()->get('address_user_id'));
+            if ($request->session()->has('new_form_back')) {
+                $route_back = $request->session()->pull('new_form_back');
+                return Redirect::route($route_back['route'],$route_back['param']);
+            } else {
+                return Redirect::route('address_admin_index', $request->session()->get('address_user_id'));
+            }
+            
         }       
     }
 
@@ -234,6 +245,7 @@ class AddressesController extends Controller
 
     	if ($addresses->delete()) {
         	Flash::success('Successfully deleted "'.$addresses->name.'"!');
+
             return Redirect::route('address_index');    		
     	}
     }

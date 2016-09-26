@@ -145,7 +145,7 @@
                                 @endif
                             </div>
                             <div class="col-md-2">
-                                <input type="text" class="form-control" name="month" value="{{ old('month') ? old('month') : $cards->exp_month }}" placeholder="format. MM">
+                                <input type="text" class="form-control" name="month" value="{{ old('month') ? old('month') : sprintf('%02d', $cards->exp_month) }}" placeholder="format. MM">
 
                                 @if ($errors->has('month'))
                                     <span class="help-block">

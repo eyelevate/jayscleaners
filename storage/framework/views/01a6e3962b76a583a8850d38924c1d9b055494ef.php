@@ -129,7 +129,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4 clearfix">
-                            	<a href="<?php echo e(route('address_index')); ?>" class="btn btn-danger btn-lg">Cancel</a>
+                                <a href="<?php echo e(($back_redirect) ? route($back_redirect['route'],$back_redirect['param']) : route('address_admin_index',$customer_id)); ?>" class="btn btn-danger btn-lg">Cancel</a>
                                 <button type="submit" class="btn btn-lg btn-primary pull-right">Edit</button>
                             </div>
                         </div>
