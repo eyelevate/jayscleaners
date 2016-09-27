@@ -93,10 +93,10 @@
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('delivery') ? ' has-error' : '' }}">
-                        <label class="col-md-4 control-label"><a href="#" style="cursor:pointer;">Delivery</a></label>
+                        <label class="col-md-4 control-label"><a href="{{ route('schedules_view',$customers->id) }}" style="cursor:pointer;">Delivery</a></label>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="delivery" value="{{ $customers->delivery }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                            <input type="text" class="form-control" name="delivery" value="{{ count($schedules) }} active schedule(s) " disabled="true" style="font-size:20px; background-color:#ffffff;">
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('important_memo') ? ' has-error' : '' }}">
@@ -161,6 +161,9 @@
             <div class="panel-footer">
                 <a class="btn btn-lg btn-info" href="#">
                     <div class="icon"><i class="ion-filing"></i> History</div>
+                </a>
+                <a class="btn btn-lg btn-info" href="{{ route('delivery_new',$customers->id) }}">
+                    <div class="icon"><i class="ion-android-car"></i> Set Delivery</div>
                 </a>
             </div>  
 		</div>

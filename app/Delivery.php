@@ -84,7 +84,7 @@ class Delivery extends Model
             }
         }
 
-        $cutoff = Delivery::getCutoff($data, 12);
+        $cutoff = Delivery::getCutoff($data, 6);
         if (count($cutoff) > 0) {
             foreach ($cutoff as $key => $value) {
                 array_push($final, $value);
@@ -94,6 +94,34 @@ class Delivery extends Model
 
 
     	return $final;
+    }
+
+    static public function calendarPickupHtml() {
+
+        $html = '<div class="form-group pickup_date_div ">';
+        $html .= '<label class="control-label padding-top-none">Pickup Date</label>';
+        $html .= '<div id="pickup_container">';
+        $html .= '<input id="pickupdate" type="text" class="form-control" name="pickup_date" value="" style="background-color:#ffffff;">';
+        $html .= '<div>';
+        $html .= '</div>';
+        return $html;
+    }
+    static public function calendarDropoffHtml() {
+        $html = '<div class="form-group dropoff_date_div ">';
+        $html .= '<label class="control-label padding-top-none">Dropoff Date</label>';
+        $html .= '<div id="dropoff_container">';
+        $html .= '<input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="" style="background-color:#ffffff;">';
+        $html .= '<div>';
+        $html .= '</div>';
+        return $html;
+    }
+
+    static public function calendarPickupTimeHtml() {
+
+    }
+
+    static public function calendarDropoffTimeHtml() {
+        
     }
 
     static private function getBlackoutDates($data){

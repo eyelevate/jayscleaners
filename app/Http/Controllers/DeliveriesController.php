@@ -944,6 +944,7 @@ class DeliveriesController extends Controller
 
     public function getAdminEdit($id = null, Request $request) {
         $schedules = Schedule::find($id);
+        $card_id = $schedules->card_id;
         $customer_id = $schedules->customer_id;
         $request->session()->put('form_previous',['delivery_admin_edit',$id]);
         $check_address = $request->session()->has('check_address') ? $request->session()->pull('check_address') : false;
@@ -1021,6 +1022,16 @@ class DeliveriesController extends Controller
         if ($zipcode_status == false) {
             Flash::error('Your primary address is not set or zipcode is not valid. Please select a new address. ');
         }
+
+
+        $cards = Card::prepareForAdminView(Card::where('user_id',$customer_id)->where('company_id',1)->get());
+        $cards_select = [];
+        if (count($cards) > 0) {
+            foreach ($cards as $card) {
+                $cards_select[$card['id']] = $card['card_number'].' - '.$card['exp_month'].'/'.$card['exp_year'];
+            }
+        }
+
         $this->layout = 'layouts.dropoff';
         return view('deliveries.admin-edit')
         ->with('layout',$this->layout)
@@ -1038,6 +1049,8 @@ class DeliveriesController extends Controller
         ->with('dropoff_delivery_id',$selected_dropoff_delivery_id)
         ->with('special_instructions',$special_instructions)
         ->with('customer_id',$customer_id)
+        ->with('cards', $cards_select)
+        ->with('card_id',$card_id)
         ->with('update_id',$id);   
     }
     public function postAdminEdit(Request $request) {
@@ -1046,10 +1059,12 @@ class DeliveriesController extends Controller
             'pickup_date'=>'required',
             'pickup_time'=>'required',
             'dropoff_date' => 'required',
-            'dropoff_time' => 'required'
+            'dropoff_time' => 'required',
+            'card_id'=>'required'
         ]);
 
         $schedules = Schedule::find($request->id);
+        $schedules->card_id = $request->card_id;
         $schedules->pickup_address = $request->pickup_address;
         $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
         $schedules->pickup_delivery_id = $request->pickup_time;
@@ -1063,7 +1078,7 @@ class DeliveriesController extends Controller
                 $request->session()->forget('schedule');
             }
             Flash::success('You have successfully updated your delivery.');
-            return Redirect::route('schedules_view',$request->session()->get('address_user_id'));
+            return Redirect::route('schedules_view',$schedules->customer_id);
         }
 
 
@@ -1099,8 +1114,46 @@ class DeliveriesController extends Controller
  
     }
 
-    public function postNew() {
+    public function postNew(Request $request) {
+        $customer_id = $request->customer_id;
+        $address_id = $request->address_id;
+        $addresses = Address::find($address_id);
+        $zipcode = $addresses->zipcode;
+        $zipcodes = Zipcode::where('zipcode',$zipcode)->get();
+        $company_id = 1;
+        if (count($zipcodes) > 0 ) {
+            foreach ($zipcodes as $zip) {
+                $company_id = $zip->company_id;
+            }
+        }
+        $card_id = $request->card_id;
+        $picking_up = $request->pickingup;
+        $dropping_off = $request->droppingoff;
+        $pickup_date = ($picking_up == 1) ? date('Y-m-d H:i:s',strtotime($request->pickup_date)) : NULL;
+        $pickup_delivery_id = ($picking_up == 1) ? $request->pickup_delivery_id : NULL;
+        $dropoff_date = ($dropping_off == 1) ? date('Y-m-d H:i:s',strtotime($request->dropoff_date)) : NULL;
+        $dropoff_delivery_id = ($dropping_off == 1) ? $request->dropoff_delivery_id : NULL;
+        $special_instructions = $request->special_instructions;
 
+        $schedules = new Schedule;
+        $schedules->company_id = $company_id;
+        $schedules->customer_id = $customer_id;
+        $schedules->pickup_address = $address_id;
+        $schedules->pickup_date = $pickup_date;
+        $schedules->pickup_delivery_id = $pickup_delivery_id;
+        $schedules->dropoff_address = $address_id;
+        $schedules->dropoff_date = $dropoff_date;
+        $schedules->dropoff_delivery_id = $dropoff_delivery_id;
+        $schedules->special_instructions = $special_instructions;
+        $schedules->type = 2;
+        $schedules->status = 1;
+        if ($schedules->save()) {
+            Flash::success('You have successfully saved a new delivery schedule');
+            return Redirect::route('customers_view',$customer_id);
+        } else {
+            Flash::error('There was an issue with saving your delivery schedule. Please try again.');
+            return Redirect::back();
+        }
     }
 
     public function postFindCustomer(Request $request) {
@@ -1122,6 +1175,123 @@ class DeliveriesController extends Controller
         $request->session()->put('new_delivery_customers',$results);
 
         return Redirect::route('delivery_new',0);
+    }
+
+    public function postMakeSchedule(Request $request) {
+        if ($request->ajax()) {
+            $address_id = $request->address_id;
+
+            $addresses = Address::find($address_id);
+
+            $zipcodes = Zipcode::where('zipcode',$addresses->zipcode)->get();
+            $delivery_rows = [];
+            if (count($zipcodes) > 0) {
+                foreach ($zipcodes as $zip) {
+                    $delivery_rows[$zip->delivery_id] = $zip->zipcode;
+                }
+            }
+
+            $calendar_dates = Delivery::makeCalendar($delivery_rows);
+
+            $make_pickup_calendar = Delivery::calendarPickupHtml();
+            $make_dropoff_calendar = Delivery::calendarDropoffHtml();
+
+            
+
+
+            return Response::json(['status'=>true,
+                                   'pickup_calendar'=>$make_pickup_calendar,
+                                   'dropoff_calendar'=>$make_dropoff_calendar,
+                                   'dates'=>$calendar_dates]);
+
+        }
+    }
+
+    public function postRedoDropoffSchedule(Request $request) {
+         if ($request->ajax()) {
+            $date = $request->d;
+            $delivery_id = $request->delivery_id;
+            $next_available_date = Delivery::prepareNextAvailableDate($delivery_id, $date);
+
+            return Response::json(['status'=>true,
+                                   'next_available_date'=>$next_available_date]);
+
+        }       
+    }
+
+    public function postMakePickupTime(Request $request) {
+        if ($request->ajax()) {
+            $address_id = $request->address_id;
+            $date = $request->d;
+            $addresses = Address::find($address_id);
+            $zipcode = false;
+            if ($addresses) {
+                $zipcode = $addresses->zipcode;
+            }
+
+            $zipcodes = Zipcode::where('zipcode',$zipcode)->get();
+            $zip_list = [];
+            if (count($zipcodes) > 0) {
+                foreach ($zipcodes as $key => $zip) {
+                    $delivery_id = $zip['delivery_id'];
+                    $zip_list[$key] = $delivery_id;
+
+                }
+            }
+
+            $time_select = '<div class="form-group pickup_time_div">';
+            $time_select .= '<label class="control-label padding-top-none">Pickup Time</label>';
+            $time_select .= '<div>';
+            $time_select .= '<select id="pickuptime" class="form-control" name="pickup_delivery_id">';
+            $time_options = Delivery::setTimeOptions($date,$zip_list);
+            if (count($time_options) > 0) {
+                foreach ($time_options as $key => $value) {
+                    $time_select .= $value;
+                }
+            }            
+            $time_select .= '</select>';
+            $time_select .= '</div></div>';
+            return Response::json(['status'=>true,
+                                   'time_select'=>$time_select]);
+
+        }
+    }
+    public function postMakeDropoffTime(Request $request) {
+        if ($request->ajax()) {
+            $address_id = $request->address_id;
+            $date = date('Y-m-d H:i:s',strtotime($request->d));
+            $addresses = Address::find($address_id);
+            $zipcode = false;
+            if ($addresses) {
+                $zipcode = $addresses->zipcode;
+            }
+
+            $zipcodes = Zipcode::where('zipcode',$zipcode)->get();
+            $zip_list = [];
+            if (count($zipcodes) > 0) {
+                foreach ($zipcodes as $key => $zip) {
+                    $delivery_id = $zip['delivery_id'];
+                    $zip_list[$key] = $delivery_id;
+
+                }
+            }
+
+            $time_select = '<div class="form-group dropoff_time_div">';
+            $time_select .= '<label class="control-label padding-top-none">Dropoff Time</label>';
+            $time_select .= '<div>';
+            $time_select .= '<select id="dropofftime" class="form-control" name="dropoff_delivery_id">';
+            $time_options = Delivery::setTimeOptions($date,$zip_list);
+            if (count($time_options) > 0) {
+                foreach ($time_options as $key => $value) {
+                    $time_select .= $value;
+                }
+            }            
+            $time_select .= '</select>';
+            $time_select .= '</div></div>';
+            return Response::json(['status'=>true,
+                                   'time_select'=>$time_select]);
+
+        }
     }
 
 

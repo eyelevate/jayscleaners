@@ -70,6 +70,7 @@
 	<?php if(isset($customers)): ?>
 		<?php echo View::make('partials.customers.view-id')
 			->with('customers',$customers)
+			->with('schedules',$schedules)
 			->with('invoices',$invoices)
 			->render(); ?>		
 	<?php else: ?>

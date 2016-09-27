@@ -162,7 +162,7 @@
 
 					<?php echo Form::hidden('id',$schedule['id']); ?>
 
-					<input type="submit" class="btn btn-success" value="Update Status" />
+					<input type="submit" class="btn btn-success" value="At Processing" />
 					<?php echo Form::close(); ?>
 
 				</div>

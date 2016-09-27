@@ -49,6 +49,7 @@ class SchedulesController extends Controller
 
         return view('schedules.view')
         ->with('layout',$this->layout)
+        ->with('customer_id',$id)
         ->with('schedules',$active_list);
     }
 

@@ -51,6 +51,7 @@
 @stop
 
 @section('content')
+    <br/>
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
             <div class="panel panel-default">
@@ -58,7 +59,24 @@
                     {!! csrf_field() !!} 
                     {!! Form::hidden('id',$update_id) !!}
                     <div class="panel-heading"><strong>Delivery Update Form</strong></div>
-                    <div id="pickup_body" class="panel-body">                   
+                    <div id="pickup_body" class="panel-body">   
+                        <div class="form-group{{ $errors->has('pickup_address') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
+
+                            <div class="col-md-6">
+                                
+                                {{ Form::select('card_id',$cards,$card_id,['class'=>'form-control']) }}
+                                @if ($errors->has('pickup_address'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('pickup_address') }}</strong>
+                                    </span>
+                                @endif
+
+                                <a href="{{ route('cards_admins_index',$customer_id) }}" class="btn btn-link">Manage your credit card(s)</a>
+                            </div>
+                        </div>
+
+
                         <div class="form-group{{ $errors->has('pickup_address') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
 

@@ -165,7 +165,10 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/delivery/new/{id}',  ['as'=>'delivery_new','uses' => 'DeliveriesController@getNew']);
 		Route::post('/delivery/new',['as'=>'delivery_new_post','uses'=>'DeliveriesController@postNew']);
 		Route::post('/delivery/find-customer',['as'=>'delivery_find_customer','uses'=>'DeliveriesController@postFindCustomer']);
-
+		Route::post('delivery/make-schedule',['as'=>'delivery_make_schedule','uses'=>'DeliveriesController@postMakeSchedule']);
+		Route::post('delivery/make-pickup-time',['as'=>'delivery_make_pickup_time','uses'=>'DeliveriesController@postMakePickupTime']);
+		Route::post('delivery/make-dropoff-time',['as'=>'delivery_make_dropoff_time','uses'=>'DeliveriesController@postMakeDropoffTime']);
+		Route::post('delivery/redo-dropoff-schedule',['as'=>'delivery_redo_dropoff_schedule','uses'=>'DeliveriesController@postRedoDropoffSchedule']);
 		//Invoices
 		Route::get('/invoices',  ['as'=>'invoices_index', 'uses' => 'InvoicesController@getIndex']);
 		Route::get('/invoices/dropoff/{id}',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);

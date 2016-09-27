@@ -75,14 +75,14 @@
 					<li class="chart tab-pane <?php echo e(($idx == 0) ? 'active' : ''); ?>" id="sales-<?php echo e($key); ?>" style="position: relative; min-height: 300px; padding-top:5px;">
 					<?php if(isset($value['items'])): ?>
 						<?php foreach($value['items'] as $item): ?>
-						<a id="item-<?php echo e($item->id); ?>" href="#" class="items col-lg-3 col-md-4 col-xs-6 ">
+						<a id="item-<?php echo e($item->id); ?>" href="#" class="items col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
 							<!-- small box -->
-							<div class="small-box bg-gray clearfix" style="max-height:125px; overflow:hidden">
+							<div class="small-box bg-gray clearfix" style="height:125px; overflow:hidden">
 								<div class="inner" style="padding-bottom:50px;">
 									<h4><strong><?php echo e($item->name); ?></strong></h4>
 									<small><strong><?php echo e($item->description); ?></strong></small>
 							        <div class="icon" style="z-index:0">
-							          <img src="/<?php echo e($item->image); ?>" style="max-width:64px; opacity:0.8"/>
+							          <img src="<?php echo e($item->image); ?>" style="max-width:64px; opacity:0.8"/>
 							        </div>
 								</div>
 						        <div class="small-box-footer" style="position:absolute; width:100%; bottom:0px; background:rgba(0,0,0,0.6); font-size:15px;"><strong><?php echo e($item->price); ?></strong></i></div>

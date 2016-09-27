@@ -159,7 +159,7 @@
 					<a class="btn btn-info" href="{{ route('delivery_admin_edit',$schedule['id']) }}">Edit Delivery</a>
 					{!! Form::open(['action' => 'SchedulesController@postApproveProcessing','role'=>"form",'class'=>'pull-right']) !!}
 					{!! Form::hidden('id',$schedule['id']) !!}
-					<input type="submit" class="btn btn-success" value="Update Status" />
+					<input type="submit" class="btn btn-success" value="At Processing" />
 					{!! Form::close() !!}
 				</div>
 			</div>

@@ -85,6 +85,12 @@
 				</table>	
 			</div>	
 		</div>
+	</div>
+	<?php echo Form::open(['action' => 'DeliveriesController@postNew','role'=>"form"]); ?>
+
+	<?php echo Form::hidden('customer_id',$customer_id); ?>
+
+	<div class="panel panel-primary">
 		<div class="panel-heading" style="border-radius:0px;"><h4>Card Selection</h4></div>
 		<div class="panel-body">
 			<div class="table-responsive">
@@ -104,13 +110,13 @@
 					<tbody>
 					<?php if(count($cards)): ?>
 						<?php foreach($cards as $card): ?>
-						<tr style="cursor:pointer;">
+						<tr class="cards_tr" style="cursor:pointer;">
 							<td><?php echo e($card['id']); ?></td>
 							<td><?php echo e($card['card_number']); ?></td>
 							<td><?php echo e($card['exp_month']); ?>/<?php echo e($card['exp_year']); ?></td>
 							<td><?php echo e($card['days_remaining']); ?></td>
 							<td><?php echo e($card['card_type']); ?></td>
-							<td><input class="card_id" type="checkbox" value="<?php echo e($card['id']); ?>"/></td>
+							<td><input class="card_ids" type="checkbox" value="<?php echo e($card['id']); ?>"/></td>
 							<td><a href="<?php echo e(route('cards_admins_edit',$card['id'])); ?>">update</a></td>
 						</tr>
 						<?php endforeach; ?>
@@ -171,43 +177,53 @@
 		<div class="panel-body">
 			<div class="form-group <?php echo e($errors->has('pickingup') ? ' has-error' : ''); ?>">
 				<label class="control-label">Are you picking up?</label>
-				<?php echo e(Form::select('pickingup',['1'=>'Yes','0'=>'No'],0,['id'=>'pickingup','class'=>"form-control"])); ?>
+				<?php echo e(Form::select('pickingup',['1'=>'Yes','0'=>'No'],1,['id'=>'pickingup','class'=>"form-control"])); ?>
 
-                <?php if($errors->has('search')): ?>
+                <?php if($errors->has('pickingup')): ?>
                     <span class="help-block">
                         <strong><?php echo e($errors->first('pickingup')); ?></strong>
                     </span>
                 <?php endif; ?>
 			</div>		
-			<div >
-
-			</div>	
+			<div id="pickup_div" class="form-group"></div>	
+			<div id="pickup_time_div" class="form-group"></div>
 		</div>
 		<div class="panel-heading" style="border-radius:0px;"><h4>Dropoff Form</h4></div>
 		<div class="panel-body">
 			<div class="form-group <?php echo e($errors->has('droppingoff') ? ' has-error' : ''); ?>">
 				<label class="control-label">Are you dropping off?</label>
-				<?php echo e(Form::select('droppingoff',['1'=>'Yes','0'=>'No'],0,['id'=>'droppingoff','class'=>"form-control"])); ?>
+				<?php echo e(Form::select('droppingoff',['1'=>'Yes','0'=>'No'],1,['id'=>'droppingoff','class'=>"form-control"])); ?>
 
-                <?php if($errors->has('search')): ?>
+                <?php if($errors->has('droppingoff')): ?>
                     <span class="help-block">
                         <strong><?php echo e($errors->first('droppingoff')); ?></strong>
                     </span>
                 <?php endif; ?>
 			</div>		
-			<div >
+			<div id="dropoff_div" class="form-group"></div>	
+			<div id="dropoff_time_div" class="form-group"></div>
+		</div>
+		<div class="panel-heading" style="border-radius:0px;"><h4>Special Instructions</h4></div>
+		<div class="panel-body">
+			<div class="form-group <?php echo e($errors->has('special_instructions') ? ' has-error' : ''); ?>">
+				<label class="control-label">Special Instructions</label>
+				<?php echo e(Form::textarea('special_instructions','',['class'=>"form-control"])); ?>
 
-			</div>	
+                <?php if($errors->has('special_instructions')): ?>
+                    <span class="help-block">
+                        <strong><?php echo e($errors->first('special_instructions')); ?></strong>
+                    </span>
+                <?php endif; ?>
+			</div>		
 		</div>
 		<?php endif; ?>
-		<div class="panel-footer">
-			<button>Set Delivery</button>
+		<div class="panel-footer clearfix">
+			<button type="submit" class="btn btn-lg btn-primary">Set Delivery</button>
 		</div>
-
 	</div>
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('modals'); ?>
-	<?php echo View::make('partials.deliveries.cards_form')->render(); ?>
+	<?php echo Form::close(); ?>
+
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

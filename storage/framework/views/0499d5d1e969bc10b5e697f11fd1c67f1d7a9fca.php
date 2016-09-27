@@ -6,6 +6,7 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
+	<br/>
 	<div class="box box-info">
 		<div class="box-header with-border clearfix">
 			<h3 class="box-title">Active Delivery List &nbsp;<span class="label label-default pull-right"><?php echo e(count($schedules)); ?></span></h3>
@@ -45,7 +46,9 @@
 			</div><!-- /.table-responsive -->
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-
+			<a class="btn btn-info" href="<?php echo e(route('customers_view',$customer_id)); ?>">Customer View</a>
+			<a class="btn btn-info" href="<?php echo e(route('delivery_overview')); ?>">Delivery Overview</a>
+			<a class="btn btn-primary" href="<?php echo e(route('delivery_new',$customer_id)); ?>">New Delivery</a>
 		</div><!-- /.box-footer -->
 	</div>
 <?php $__env->stopSection(); ?>

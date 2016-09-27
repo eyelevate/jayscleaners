@@ -83,6 +83,10 @@
 				</table>	
 			</div>	
 		</div>
+	</div>
+	{!! Form::open(['action' => 'DeliveriesController@postNew','role'=>"form"]) !!}
+	{!! Form::hidden('customer_id',$customer_id) !!}
+	<div class="panel panel-primary">
 		<div class="panel-heading" style="border-radius:0px;"><h4>Card Selection</h4></div>
 		<div class="panel-body">
 			<div class="table-responsive">
@@ -102,13 +106,13 @@
 					<tbody>
 					@if (count($cards))
 						@foreach($cards as $card)
-						<tr style="cursor:pointer;">
+						<tr class="cards_tr" style="cursor:pointer;">
 							<td>{{ $card['id'] }}</td>
 							<td>{{ $card['card_number'] }}</td>
 							<td>{{ $card['exp_month'] }}/{{ $card['exp_year'] }}</td>
 							<td>{{ $card['days_remaining'] }}</td>
 							<td>{{ $card['card_type'] }}</td>
-							<td><input class="card_id" type="checkbox" value="{{ $card['id'] }}"/></td>
+							<td><input class="card_ids" type="checkbox" value="{{ $card['id'] }}"/></td>
 							<td><a href="{{ route('cards_admins_edit',$card['id']) }}">update</a></td>
 						</tr>
 						@endforeach
@@ -169,39 +173,47 @@
 		<div class="panel-body">
 			<div class="form-group {{ $errors->has('pickingup') ? ' has-error' : '' }}">
 				<label class="control-label">Are you picking up?</label>
-				{{ Form::select('pickingup',['1'=>'Yes','0'=>'No'],0,['id'=>'pickingup','class'=>"form-control"]) }}
-                @if ($errors->has('search'))
+				{{ Form::select('pickingup',['1'=>'Yes','0'=>'No'],1,['id'=>'pickingup','class'=>"form-control"]) }}
+                @if ($errors->has('pickingup'))
                     <span class="help-block">
                         <strong>{{ $errors->first('pickingup') }}</strong>
                     </span>
                 @endif
 			</div>		
-			<div >
-
-			</div>	
+			<div id="pickup_div" class="form-group"></div>	
+			<div id="pickup_time_div" class="form-group"></div>
 		</div>
 		<div class="panel-heading" style="border-radius:0px;"><h4>Dropoff Form</h4></div>
 		<div class="panel-body">
 			<div class="form-group {{ $errors->has('droppingoff') ? ' has-error' : '' }}">
 				<label class="control-label">Are you dropping off?</label>
-				{{ Form::select('droppingoff',['1'=>'Yes','0'=>'No'],0,['id'=>'droppingoff','class'=>"form-control"]) }}
-                @if ($errors->has('search'))
+				{{ Form::select('droppingoff',['1'=>'Yes','0'=>'No'],1,['id'=>'droppingoff','class'=>"form-control"]) }}
+                @if ($errors->has('droppingoff'))
                     <span class="help-block">
                         <strong>{{ $errors->first('droppingoff') }}</strong>
                     </span>
                 @endif
 			</div>		
-			<div >
-
-			</div>	
+			<div id="dropoff_div" class="form-group"></div>	
+			<div id="dropoff_time_div" class="form-group"></div>
+		</div>
+		<div class="panel-heading" style="border-radius:0px;"><h4>Special Instructions</h4></div>
+		<div class="panel-body">
+			<div class="form-group {{ $errors->has('special_instructions') ? ' has-error' : '' }}">
+				<label class="control-label">Special Instructions</label>
+				{{ Form::textarea('special_instructions','',['class'=>"form-control"]) }}
+                @if ($errors->has('special_instructions'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('special_instructions') }}</strong>
+                    </span>
+                @endif
+			</div>		
 		</div>
 		@endif
-		<div class="panel-footer">
-			<button>Set Delivery</button>
+		<div class="panel-footer clearfix">
+			<button type="submit" class="btn btn-lg btn-primary">Set Delivery</button>
 		</div>
-
 	</div>
-@stop
-@section('modals')
-	{!! View::make('partials.deliveries.cards_form')->render() !!}
+	{!! Form::close() !!}
+
 @stop
