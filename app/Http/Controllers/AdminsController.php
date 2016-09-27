@@ -49,8 +49,10 @@ class AdminsController extends Controller
     
     public function getIndex(Request $request) {
         $this->layout = 'layouts.admin';
+        $role = User::role(Auth::user()->role_id);
         return view('admins.index')
         ->with('layout',$this->layout)
+        ->with('role',$role)
         ->with('role_id',Session::get('role_id'));
     }
 

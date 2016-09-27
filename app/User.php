@@ -30,5 +30,30 @@ class User extends Authenticatable
     ];
 
 
+    static public function role($role_id) {
+        switch ($role_id) {
+            case 1: // Superadmin
+                return 'Superadmin';
+            break;
+
+            case 2: // Admin
+                return 'Admin';
+            break;
+
+            case 3: // Employee
+                return 'Employee';
+            break;
+
+            case 4: 
+
+            break;
+
+            case 5: // member
+                return 'Member';
+            break;
+        }
+    }
+
+
 
 }
