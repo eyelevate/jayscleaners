@@ -44,7 +44,43 @@ class InvoicesController extends Controller
 
     public function getIndex(){
 
-        return view('invoices.index')
+    }
+
+    public function getReport($id = null) {
+        $start = date('Y-m-d 00:00:00');
+        $end = date('Y-m-d 23:59:59');
+        $due_time = date('Y-m-d 16:00:00');
+        $now = date('Y-m-d H:i:s');
+        $company_id = Auth::user()->company_id;
+        switch($id) {
+            case 1:
+            $invoices = Invoice::whereBetween('due_date',[$start,$end])
+                                        ->where('status','<',5)
+                                        ->get();
+            break;
+
+            case 2:
+            $invoices = Invoice::where('due_date','>=',$start)
+                                ->where('due_date','<',$now)
+                                ->where('status','<',5)
+                                ->get();
+            break;
+
+            case 3:
+            $invoices = Invoice::whereBetween('due_date',[date('Y-01-01 00:00:00'),date('Y-m-d 00:00:00',strtotime($start.' -1 days'))])
+                                            ->where('status','!=',5)
+                                            ->where('transaction_id',NULL)
+                                            ->get();
+            break;
+
+            default:
+            $invoices = [];
+            break;
+        }
+        $invoices = Invoice::prepareInvoice($company_id, $invoices);
+        $this->layout = 'layouts.dropoff';
+        return view('invoices.report')
+        ->with('invoices',$invoices)
         ->with('layout',$this->layout);
     }
 
@@ -183,7 +219,9 @@ class InvoicesController extends Controller
         $tax_rate = Tax::where('company_id',Auth::user()->company_id)->where('status',1)->first();
 
         $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$id)->where('status',1)->get());
+
         $invoice_grouped = InvoiceItem::prepareGroup($invoice_items);
+
         return view('invoices.edit')
         ->with('layout',$this->layout)
         ->with('customer',$customer)
@@ -213,76 +251,89 @@ class InvoicesController extends Controller
             $print_type = $request->store_copy;
 
             foreach ($items as $itms) { // iterate through the first index (inventory group)
-                $invoice = Invoice::find($request->invoice_id);
-                $invoice->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
-                $invoice->status = 1;   
-                $qty = 0;
-                $subtotal = 0;
-                $tax = 0;
-                $total = 0;   
-                if($invoice->save()){ // save the invoice
-                    // Get all the previously saved invoice items. remove any deleted ones by comparing existing items
-                    $previous = InvoiceItem::where('invoice_id',$request->invoice_id)->where('status',1)->get();
-                    if(isset($previous)) {
-                        foreach ($previous as $pkey => $pvalue) {
-                            $rmv = true;
-                            //compare to new items
-                            foreach ($items as $itms) {
-                                foreach ($itms as $i) {
+                $invoices = Invoice::where('invoice_id',$request->invoice_id)->get();
+                if (count($invoices) > 0) {
+                    foreach ($invoices as $inv) {
+                        $invoice = Invoice::find($inv->id);
+                        $invoice->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
+                        $invoice->status = 1;   
+                        $qty = 0;
+                        $subtotal = 0;
+                        $tax = 0;
+                        $total = 0;
+                        if($invoice->save()){ // save the invoice
+                            // Get all the previously saved invoice items. remove any deleted ones by comparing existing items
+                            $previous = InvoiceItem::where('invoice_id',$request->invoice_id)->where('status',1)->get();
+                            if(isset($previous)) {
+                                foreach ($previous as $pkey => $pvalue) {
+                                    $rmv = true;
+                                    //compare to new items
+                                    foreach ($items as $itms) {
+                                        foreach ($itms as $i) {
 
-                                    foreach ($i as $ikey => $ivalue) {
-                                        if(isset($ivalue['id'])){
+                                            foreach ($i as $ikey => $ivalue) {
+                                                if(isset($ivalue['id'])){
 
-                                            if($ivalue['id'] == $pvalue->id){ 
-                                                $rmv = false;
-                                                break;
-    
-                                            } 
+                                                    if($ivalue['id'] == $pvalue->id){ 
+                                                        $rmv = false;
+                                                        break;
+            
+                                                    } 
+                                                }
+                                            }
                                         }
                                     }
+                                    if($rmv) {
+                                        $del = InvoiceItem::find($pvalue->id);
+                                        $del->delete();
+                                    }
+
                                 }
                             }
-                            if($rmv) {
-                                $del = InvoiceItem::find($pvalue->id);
-                                $del->delete();
+                            // update and save the rest
+                            foreach ($itms as $i) {
+                                foreach ($i as $ikey => $ivalue) {
+                                    $qty++;
+                                    if (is_numeric($ivalue['color'])) {
+                                        $colors = Color::find($ivalue['color']);
+                                        $color_name = ($colors) ? $colors->name : $ivalue['color'];
+                                    } else {
+                                        $color_name = $ivalue['color'];
+                                    }
+
+                                    $item = (isset($ivalue['id'])) ? InvoiceItem::find($ivalue['id']) : new InvoiceItem();
+                                    $item->item_id = $ivalue['item_id'];
+                                    $item->invoice_id = $request->invoice_id;
+                                    $item->pretax = $ivalue['price'];
+                                    $item->tax = number_format(round($ivalue['price'] * $tax_rate,2),2,'.','');
+                                    $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
+                                    $subtotal += $ivalue['price'];
+                                    $item->quantity = 1;
+                                    $item->color = $color_name;
+                                    $item->memo = $ivalue['memo'];
+                                    $item->status = 1;
+                                    $item->save();
+                                }
+
+                            }
+                            // get totals here and update invoice
+                            $edits = Invoice::where('invoice_id',$request->invoice_id)->get();
+                            if (count($edits)> 0) {
+                                foreach ($edits as $e) {
+                                    $edit = Invoice::find($e->id);
+                                    $edit->quantity = $qty;
+                                    $edit->pretax = $subtotal;
+                                    $edit->tax = number_format(round($subtotal * $tax_rate,2),2,'.','');
+                                    $edit->total = number_format(round($subtotal * (1+$tax_rate),2),2,'.','');
+                                    $edit->save();
+                                }
                             }
 
-                        }
+                            // Do printer logic here
+                        }  
                     }
-                    // update and save the rest
-                    foreach ($itms as $i) {
-                        foreach ($i as $ikey => $ivalue) {
-                            $qty++;
-                            $colors = Color::find($ivalue['color']);
-                            $color_name = ($colors) ? $colors->name : $ivalue['color'];
-                            $item = (isset($ivalue['id'])) ? InvoiceItem::find($ivalue['id']) : new InvoiceItem();
-                            $item->item_id = $ivalue['item_id'];
-                            $item->invoice_id = $request->invoice_id;
-                            $item->pretax = $ivalue['price'];
-                            $item->tax = number_format(round($ivalue['price'] * $tax_rate,2),2,'.','');
-                            $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
-                            $subtotal += $ivalue['price'];
-                            $item->quantity = 1;
-                            $item->color = $color_name;
-                            $item->memo = $ivalue['memo'];
-                            $item->status = 1;
-                            $item->save();
-                        }
-
-                    }
-                    // get totals here and update invoice
-                    $edit = Invoice::find($request->invoice_id);
-                    $edit->quantity = $qty;
-                    $edit->pretax = $subtotal;
-                    $edit->tax = number_format(round($subtotal * $tax_rate,2),2,'.','');
-                    $edit->total = number_format(round($subtotal * (1+$tax_rate),2),2,'.','');
-                    $edit->save();
-
-                    // Do printer logic here
-
-
-             
-                }          
+                }   
+        
             }
             // all finished
             Flash::success('Successfully added a new inventory!');

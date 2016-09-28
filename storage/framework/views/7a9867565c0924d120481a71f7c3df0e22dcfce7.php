@@ -145,11 +145,11 @@
                     <tbody>
                     <?php if(isset($invoices)): ?>
                         <?php foreach($invoices as $invoice): ?>
-                        <tr id="invoiceTr-<?php echo e($invoice->id); ?>" class="invoiceTr" invoice-id="<?php echo e($invoice->id); ?>" data-toggle="modal" data-target="#invoiceModal-<?php echo e($invoice->id); ?>">
+                        <tr id="invoiceTr-<?php echo e($invoice->invoice_id); ?>" class="invoiceTr" invoice-id="<?php echo e($invoice->invoice_id); ?>" data-toggle="modal" data-target="#invoiceModal-<?php echo e($invoice->invoice_id); ?>">
                             <td><?php echo e(str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT)); ?></td>
                             <td><?php echo e(date('D, n/d',strtotime($invoice->created_at))); ?></td>
                             <td><?php echo e(date('D, n/d',strtotime($invoice->due_date))); ?></td>
-                            <td><?php echo e($invoice->tags); ?></td>
+                            <td><?php echo e($invoice->quantity); ?></td>
                             <td><?php echo e($invoice->rack); ?></td>
                             <td><?php echo e($invoice->total); ?></td>
                         </tr>

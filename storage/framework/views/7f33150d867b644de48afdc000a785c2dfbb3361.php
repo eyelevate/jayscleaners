@@ -22,9 +22,9 @@
 						<tr>
 							<td><?php echo e($item->id); ?></td>
 							<td><?php echo e($item->item_name); ?></td>
-							<td><?php echo ($item->color) ? '<input type="color" value="'.$item->color.'"/>' : '';?></td>
+							<td><?php echo e($item->color); ?></td>
 							<td><?php echo e($item->memo); ?></td>
-							<td><?php echo e($item->pretax); ?></td>
+							<td><?php echo e(money_format('$%i',$item->pretax)); ?></td>
 						</tr>
 
 						<?php endforeach; ?>

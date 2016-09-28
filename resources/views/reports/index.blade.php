@@ -7,6 +7,9 @@
 <script type="text/javascript" src="/js/admins/index.js"></script>
 <script type="text/javascript" src="/js/reports/index.js"></script>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 <div class="row">
 	<div class="col-md-12">

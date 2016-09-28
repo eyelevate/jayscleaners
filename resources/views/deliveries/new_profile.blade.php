@@ -7,7 +7,9 @@
 <script type="text/javascript" src="/js/deliveries/new.js"></script>
 
 @stop
-
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 	<br/>
 	<div class="panel panel-primary">

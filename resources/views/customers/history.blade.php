@@ -7,6 +7,9 @@
 <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jq-2.2.0,dt-1.10.11,af-2.1.1,b-1.1.2,r-2.0.2/datatables.min.js"></script>
 <script type="text/javascript" src="/js/admins/overview.js"></script>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('header')
 	<h1> Customer History <small>Control panel</small></h1>
 	<ol class="breadcrumb">

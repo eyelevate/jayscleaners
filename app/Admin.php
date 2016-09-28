@@ -1050,4 +1050,44 @@ class Admin extends Model
             }
         }  
     }
+
+
+    public static function getTodaysTotals() {
+        $start = date('Y-m-d 00:00:00');
+        $end = date('Y-m-d 23:59:59');
+        $due_time = date('Y-m-d 16:00:00');
+        $now = date('Y-m-d H:i:s');
+        $totals = [];
+        $delivery_pickup_today = Schedule::whereBetween('pickup_date',[$start,$end])
+                                           ->where('status','<',12);
+        $delivery_dropoff_today = Schedule::whereBetween('dropoff_date',[$start,$end])
+                                           ->where('status','<',12)
+                                           ->union($delivery_pickup_today)
+                                           ->get();
+        $totals['deliveries'] = count($delivery_dropoff_today);
+
+        $invoices_today = Invoice::whereBetween('due_date',[$start,$end])
+                            ->where('status','<',5)
+                            ->get();
+        $totals['invoices_today'] = count($invoices_today);
+
+        $invoices_overdue = Invoice::where('due_date','>=',$start)
+                            ->where('due_date','<',$now)
+                            ->where('status','<',5)
+                            ->get();
+        $totals['invoices_overdue'] = count($invoices_overdue);
+
+        $invoices_wayoverdue = Invoice::whereBetween('due_date',['2016-01-01 00:00:00',date('Y-m-d 00:00:00',strtotime($start.' -30 days'))])
+                                        ->where('status','<',5)
+                                        ->where('transaction_id',NULL)
+                                        ->get();
+        $totals['invoices_wayoverdue'] = count($invoices_wayoverdue);
+
+        $totals['invoices_voided'] = count(Invoice::whereBetween('deleted_at',[$start,$end])->get());
+
+
+
+
+        return $totals;
+    }
 }

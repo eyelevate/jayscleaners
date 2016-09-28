@@ -8,7 +8,9 @@
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
 
 @stop
-
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 
 @section('content')
 <br/>

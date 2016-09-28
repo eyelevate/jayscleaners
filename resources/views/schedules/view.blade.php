@@ -6,6 +6,9 @@
 @section('header')
 
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 	<br/>
 	<div class="box box-info">

@@ -14,6 +14,9 @@
 		<li class="active">Edit</li>
 	</ol>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 <!-- Add Company Form -->
 {!! Form::open(['action' => 'CompaniesController@postEdit', 'class'=>'form-horizontal','role'=>"form"]) !!}

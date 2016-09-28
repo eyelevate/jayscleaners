@@ -17,7 +17,7 @@ invoices = {
 		});
 
 		//repopulate invoice table based on form data
-		invoices.repopulateInvoiceTable();
+
 		invoices.recalculateTotals();
 		
 	},
@@ -548,7 +548,6 @@ generate = {
 		var success = (e === 0) ? 'success' : '';
 		var rows = '';
 		if(status === true){
-			// TODO after editing the color for 2 rows stays on the last color edited. 
 			var color = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').attr('color-name');
 			var color_id = $("#invoice-form").find('.invoiceItem-color[item-id="'+item_id+'"][item-idx="'+idx+'"]').val();
 			var hex = $(".colorsId[value='"+color_id+"']").parents('button:first').find('.colorsColor').val();
@@ -568,7 +567,7 @@ generate = {
 		return rows;
 	},
 	colorItem: function(idx, color, hex, id){
-		return (parseInt(id, false) === 0 || id === '') ? '' : '<input name="colorSelected-'+idx+'" type="color" value="'+hex+'" color_id="'+id+'" color="'+color+'" disabled="true"/>';
+		return (parseInt(id, false) === 0 || id === '') ? '' : color+'<input name="colorSelected-'+idx+'" type="hidden" value="'+hex+'" color_id="'+id+'" color="'+color+'" disabled="true"/>';
 	},
 	createMemo: function() {
 		var memo_string = '';

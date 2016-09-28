@@ -27,13 +27,52 @@ class InvoiceItem extends Model
     public static function prepareGroup($data){
     	$group = [];
     	if(isset($data)){
-    		$idx = 0;
+    		$idx = -1;
+            $color = [];
+            $memo = '';
+            $color_string = [];
+
+            foreach($data as $key => $value) {
+                if (isset($value->color)) {
+                    if (isset($color[$value->item_id][$value->color]))
+                        $color[$value->item_id][$value->color] += 1;
+                    else {
+                        $color[$value->item_id][$value->color] = 1;
+                    }                    
+                }
+
+            } 
+
+            if (count($color)) {
+                foreach ($color as $key => $value) {
+                    $color_string[$key] = '';
+                    foreach ($value as $ckey => $cvalue) {
+                        $color_string[$key] .= $cvalue.'-'.$ckey.', ';
+                    }
+                }
+            }
+
 
     		foreach ($data as $key => $value) {
     			$idx++;
-    			$group[$data[$key]['item_id']] = $value->item_name;
+                $name = $value->item_name;
+                if (isset($group[$data[$key]['item_id']])) {
+                    $qty += 1;
+                    $memo .= (isset($value->memo)) ? ', '.$value->memo : '';
+                } else {
+                    $qty = 1;
+                    $memo = (isset($value->memo)) ? $value->memo : '';
+                }
+
+                $group[$data[$key]['item_id']] = [
+                    'name' => $name,
+                    'colors'=>(isset($color_string[$value->item_id])) ? $color_string[$value->item_id] : '',
+                    'memos'=>($memo) ? $memo : '',
+                    'qty'=>$qty
+                ];
     		}
     	}
+
 
     	return $group;
     }

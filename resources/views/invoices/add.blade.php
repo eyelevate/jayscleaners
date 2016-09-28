@@ -16,6 +16,9 @@
 @section('header')
 
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 <div class=" clearfix">
 	<div class="row">

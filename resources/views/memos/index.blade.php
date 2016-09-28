@@ -8,7 +8,9 @@
 
 <script src="/js/memos/index.js" type="text/javascript"></script>
 @stop
-
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('header')
 	<h1> Memos <small>Control panel</small></h1>
 	<br/>

@@ -84,16 +84,8 @@
 
 <?php $__env->startSection('content'); ?>
 <header class="special container scrolly">
-	<span class="icon fa-bar-chart-o"></span>
-	<h2>As this is my <strong>twentieth</strong> freebie for HTML5 UP
-	<br />
-	I decided to give it a really creative name.</h2>
-	<p>Turns out <strong>Twenty</strong> was the best I could come up with. Anyway, lame name aside,
-	<br />
-	it's minimally designed, fully responsive, built on HTML5/CSS3/<strong>skel</strong>,
-	and, like all my stuff,
-	<br />
-	released for free under the <a href="http://html5up.net/license">Creative Commons Attribution 3.0</a> license. Have fun!</p>
+	<span class="icon fa fa-home fa-fw"></span>
+	<h2>Welcome to Jays Cleaners. With over <strong>35 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>
 
 <!-- One -->
@@ -102,9 +94,21 @@
 		<div class="8u 12u(narrower)">
 
 			<header>
-				<h2>Behold the <strong>icons</strong> that visualize what you’re all about. or just take up space. your call bro.</h2>
+				<h5>Where to find us</h5>
 			</header>
-			<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu comteger ut fermentum lorem. Lorem ipsum dolor sit amet. Sed tristique purus vitae volutpat ultrices. eu elit eget commodo. Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo.</p>
+			<p>We proudly serve the Seattle region at 2 prime locations in the Montlake and Roosevelt neighborhoods. With the ability to deliver if these locations are not suitable to your current location.</p>
+			<?php if(count($companies) > 0): ?>
+				<?php foreach($companies as $company): ?>
+				<address>
+					<strong><?php echo e($company->name); ?></strong><br/>
+					<?php echo e($company->street); ?> <br/>
+					<?php echo e($company->city); ?>, <?php echo e($company->state); ?> <?php echo e($company->zipcode); ?> <br/>
+					<?php echo e($company->phone); ?>
+
+				</address>
+				<?php endforeach; ?>
+			<?php endif; ?>
+
 			<footer>
 				<ul class="buttons">
 					<li><a href="#" class="button">Find Out More</a></li>
@@ -116,11 +120,11 @@
 
 			<ul class="featured-icons">
 				<li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
-				<li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
+				<li><span class="icon fa fa-car"><span class="label">Feature 2</span></span></li>
 				<li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>
 				<li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li>
 				<li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>
-				<li><span class="icon fa-cog"><span class="label">Feature 6</span></span></li>
+				<li><span class="icon fa-calendar-check-o"><span class="label">Feature 6</span></span></li>
 			</ul>
 
 		</div>

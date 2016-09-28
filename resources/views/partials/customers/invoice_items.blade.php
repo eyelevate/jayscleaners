@@ -22,9 +22,9 @@
 						<tr>
 							<td>{{ $item->id }}</td>
 							<td>{{ $item->item_name }}</td>
-							<td><?php echo ($item->color) ? '<input type="color" value="'.$item->color.'"/>' : '';?></td>
+							<td>{{ $item->color }}</td>
 							<td>{{ $item->memo }}</td>
-							<td>{{ $item->pretax }}</td>
+							<td>{{ money_format('$%i',$item->pretax) }}</td>
 						</tr>
 
 						@endforeach

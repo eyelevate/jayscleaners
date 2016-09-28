@@ -16,6 +16,9 @@
 @section('header')
 
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 <div class=" clearfix">
 	<div class="row">
@@ -74,12 +77,12 @@
 						@foreach($value['items'] as $item)
 						<a id="item-{{ $item->id }}" href="#" class="items col-lg-3 col-md-4 col-xs-6 ">
 							<!-- small box -->
-							<div class="small-box bg-gray clearfix" style="max-height:125px; overflow:hidden">
+							<div class="small-box bg-gray clearfix" style="height:125px; overflow:hidden">
 								<div class="inner" style="padding-bottom:50px;">
 									<h4><strong>{{ $item->name }}</strong></h4>
 									<small><strong>{{ $item->description }}</strong></small>
 							        <div class="icon" style="z-index:0">
-							          <img src="/{{ $item->image }}" style="max-width:64px; opacity:0.8"/>
+							          <img src="{{ $item->image }}" style="max-width:64px; opacity:0.8"/>
 							        </div>
 								</div>
 						        <div class="small-box-footer" style="position:absolute; width:100%; bottom:0px; background:rgba(0,0,0,0.6); font-size:15px;"><strong>{{ $item->price }}</strong></i></div>
@@ -124,10 +127,10 @@
 						@foreach($invoice_grouped as $key => $value)
 						<?php $idx++; ?>
 						<tr id="invoiceTr-{{ $key }}" class="invoiceTr {{ ($idx == 1) ? 'success' : '' }}" item-id="{{ $key }}" qty="" style="cursor:pointer;">
-							<td class="itemTr-qty"></td>
-							<td class="itemTr-name">{{ $value }}</td>
-							<td class="itemTr-color"></td>
-							<td class="itemTr-memo"></td>
+							<td class="itemTr-qty">{{ $value['qty'] }}</td>
+							<td class="itemTr-name">{{ $value['name'] }}</td>
+							<td class="itemTr-color">{{ trim($value['colors'],", ") }}</td>
+							<td class="itemTr-memo">{{ trim($value['memos'],", ") }}</td>
 							<td class="itemTr-price"></td>
 						</tr>
 						@endforeach
@@ -198,7 +201,7 @@
 		<input name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][id]" type="hidden" value="{{ $item->id }}"/>
 		<input class="invoiceItem-id" type="hidden" value="{{ $item->item_id }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][item_id]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}"/>
 		<input class="invoiceItem-price" type="hidden" value="{{ $item->pretax }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][price]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}"/>
-		<input class="invoiceItem-color" type="hidden" value="{{ $item->color }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][color]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}" color-name=""/>
+		<input class="invoiceItem-color" type="hidden" value="{{ $item->color }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][color]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}" color-name="{{ $item->color }}"/>
 		<input class="invoiceItem-memo" type="hidden" value="{{ $item->memo }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][memo]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}"/>
 		<ul class="memoFormUl"></ul>
 	</div>

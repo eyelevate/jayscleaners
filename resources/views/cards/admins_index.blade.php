@@ -7,7 +7,9 @@
 @section('scripts')
 
 @stop
-
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
  	<br/>
     <section class="panel panel-default">

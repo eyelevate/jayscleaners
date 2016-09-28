@@ -145,11 +145,11 @@
                     <tbody>
                     @if(isset($invoices))
                         @foreach($invoices as $invoice)
-                        <tr id="invoiceTr-{{ $invoice->id }}" class="invoiceTr" invoice-id="{{ $invoice->id }}" data-toggle="modal" data-target="#invoiceModal-{{ $invoice->id }}">
+                        <tr id="invoiceTr-{{ $invoice->invoice_id }}" class="invoiceTr" invoice-id="{{ $invoice->invoice_id }}" data-toggle="modal" data-target="#invoiceModal-{{ $invoice->invoice_id }}">
                             <td>{{ str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ date('D, n/d',strtotime($invoice->created_at)) }}</td>
                             <td>{{ date('D, n/d',strtotime($invoice->due_date)) }}</td>
-                            <td>{{ $invoice->tags }}</td>
+                            <td>{{ $invoice->quantity }}</td>
                             <td>{{ $invoice->rack }}</td>
                             <td>{{ $invoice->total }}</td>
                         </tr>

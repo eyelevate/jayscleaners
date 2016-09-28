@@ -8,7 +8,9 @@
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
 
 @stop
-
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
     <div class="panel panel-default">

@@ -6,6 +6,9 @@
 <script src="/packages/ddslick/ddslick.min.js"></script>
 <script src="/js/inventories/index.js" type="text/javascript"></script>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('header')
 <h1> Inventory <small>Control panel</small></h1>
 <br/>

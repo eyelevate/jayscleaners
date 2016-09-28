@@ -4,6 +4,10 @@
 <?php $__env->startSection('scripts'); ?>
 <script type="text/javascript" src="/js/customers/view.js"></script>
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
+
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('header'); ?>
 	<div class="row clearfix">
 		<!-- last 10 -->
@@ -95,7 +99,7 @@
 	<?php if(isset($invoices)): ?>
 		<?php foreach($invoices as $invoice): ?>
 		<?php echo View::make('partials.customers.invoice_items')
-			->with('invoice_id',$invoice->id)
+			->with('invoice_id',$invoice->invoice_id)
 			->with('items',$invoice->items)
 			->render(); ?>	
 		<?php endforeach; ?>

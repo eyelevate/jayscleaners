@@ -13,6 +13,10 @@
     });
 </script>
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
+
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 	<div class="panel panel-default">
 		<div class="panel-heading">

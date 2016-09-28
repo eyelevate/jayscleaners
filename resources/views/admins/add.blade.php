@@ -13,6 +13,9 @@
 		<li class="active">Add</li>
 	</ol>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 	{!! Form::open(['action' => 'AdminsController@postAdd', 'class'=>'form-horizontal','role'=>"form"]) !!}
 		{!! csrf_field() !!}

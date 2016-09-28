@@ -13,6 +13,9 @@
 	<li class="active">Taxes</li>
 </ol>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
 <!-- quick email widget -->
 <div class="box box-info">

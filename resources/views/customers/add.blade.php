@@ -5,6 +5,9 @@
 @section('scripts')
 
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('header')
 	<h1> Add A Customer <small>Control panel</small></h1>
 	<ol class="breadcrumb">

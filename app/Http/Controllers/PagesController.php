@@ -41,11 +41,12 @@ class PagesController extends Controller
     public function getIndex()
     {
         $auth = (Auth::check()) ? Auth::user() : False;
-
+        $companies = Company::all();
         $schedules = ($auth) ? Schedule::prepareSchedule(Schedule::where('customer_id',Auth::user()->id)->orderBy('id','desc')->limit(1)->get()) : false;
         return view('pages.index')
         ->with('layout',$this->layout)
         ->with('schedules',$schedules)
+        ->with('companies',$companies)
         ->with('auth',$auth);
     }
 

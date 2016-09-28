@@ -50,9 +50,13 @@ class AdminsController extends Controller
     public function getIndex(Request $request) {
         $this->layout = 'layouts.admin';
         $role = User::role(Auth::user()->role_id);
+
+        $today_totals = Admin::getTodaysTotals();
+
         return view('admins.index')
         ->with('layout',$this->layout)
         ->with('role',$role)
+        ->with('today_totals',$today_totals)
         ->with('role_id',Session::get('role_id'));
     }
 

@@ -6,6 +6,9 @@
 @section('scripts')
 <script type="text/javascript" src="/js/customers/view.js"></script>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('header')
 	<div class="row clearfix">
 		<!-- last 10 -->
@@ -95,7 +98,7 @@
 	@if(isset($invoices))
 		@foreach($invoices as $invoice)
 		{!! View::make('partials.customers.invoice_items')
-			->with('invoice_id',$invoice->id)
+			->with('invoice_id',$invoice->invoice_id)
 			->with('items',$invoice->items)
 			->render()
 		!!}	

@@ -15,6 +15,9 @@
 
   </ol>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
  <!-- Small boxes (Stat box) -->
           <div class="row">

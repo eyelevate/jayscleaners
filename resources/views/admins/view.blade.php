@@ -15,6 +15,9 @@
 
   </ol>
 @stop
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
 @section('content')
   <div class="row">
     <a href="{{ route('customers_view','') }}" class="col-lg-3 col-xs-6">

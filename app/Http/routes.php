@@ -170,7 +170,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('delivery/make-dropoff-time',['as'=>'delivery_make_dropoff_time','uses'=>'DeliveriesController@postMakeDropoffTime']);
 		Route::post('delivery/redo-dropoff-schedule',['as'=>'delivery_redo_dropoff_schedule','uses'=>'DeliveriesController@postRedoDropoffSchedule']);
 		//Invoices
-		Route::get('/invoices',  ['as'=>'invoices_index', 'uses' => 'InvoicesController@getIndex']);
+		Route::get('/invoices',['as'=>'invoices_index','uses'=>'InvoicesController@getIndex']);
 		Route::get('/invoices/dropoff/{id}',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);
 		Route::post('/invoices/dropoff',['uses'=>'InvoicesController@postAdd']);
 		Route::get('/invoices/edit/{id}',['as'=>'invoices_edit','uses'=>'InvoicesController@getEdit']);
@@ -181,6 +181,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/invoices/pickup',['uses'=>'InvoicesController@postPickup']);
 		Route::get('/invoices/rack',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
 		Route::post('/invoices/rack',['uses'=>'InvoicesController@postRack']);
+		Route::get('/invoices/report/{id}',['as'=>'invoices_report','uses'=>'InvoicesController@getReport']);
 		Route::get('/invoices/test',['as'=>'invoices_test','uses'=>'InvoicesController@getTest']);
 
 		//Inventory
