@@ -136,23 +136,55 @@ class PagesController extends Controller
             'password_confirmation'=>'required|min:6'
         ]);
 
-        $users = new User();
-        $users->first_name = $request->first_name;
-        $users->last_name = $request->last_name;
-        $users->phone = Job::strip($request->phone);
-        $users->email = $request->email;
-        $users->username = $request->username;
-        $users->password = bcrypt($request->password);
-        $users->role_id = 5; //Customer status
+        // check users phone number if exists edit their account info with the new info
+        $check = User::where('phone',Job::strip($request->phone))->get();
+        if (count($check) > 0) {
+            foreach ($check as $ch) {
+                $user_id = $ch->id;
+                $username = $ch->username;
+                if (!isset($username)) {
+                    $edit = User::find($user_id);
+                    $edit->first_name = $request->first_name;
+                    $edit->last_name = $request->last_name;
+                    $edit->phone = Job::strip($request->phone);
+                    $edit->email = $request->email;
+                    $edit->username = $request->username;
+                    $edit->password = bcrypt($request->password);
+                    $edit->role_id = 5;
+                    if ($edit->save()) {
+                        if (Auth::attempt(['username' => $request->username, 'password' => $request->password], true)) {
+                            $request->session()->put('registered',true);
+                            Flash::success(ucfirst($request->first_name).' '.ucfirst($request->last_name).', thank you for your registration! Please fill out the form below to start the delivery process.');
+                            return Redirect::route('delivery_pickup');
+                        }                         
+                    }
+                } else {
+                    Flash::warning('A user with with the phone number of "'.$request->phone.'" already exist and has an active account. Please use another username and phone number and try again.');
+                    return Redirect::back();
+                }
 
-        if ($users->save()) {
-            if (Auth::attempt(['username' => $request->username, 'password' => $request->password], true)) {
-                $request->session()->put('registered',true);
-                Flash::success(ucfirst($request->first_name).' '.ucfirst($request->last_name).', thank you for your registration! Please fill out the form below to start the delivery process.');
-                return Redirect::route('delivery_pickup');
-            } 
+            }
+        } else {
+            // otherwise save a new profile
+
+            $users = new User();
+            $users->first_name = $request->first_name;
+            $users->last_name = $request->last_name;
+            $users->phone = Job::strip($request->phone);
+            $users->email = $request->email;
+            $users->username = $request->username;
+            $users->password = bcrypt($request->password);
+            $users->role_id = 5; //Customer status
+
+            if ($users->save()) {
+                if (Auth::attempt(['username' => $request->username, 'password' => $request->password], true)) {
+                    $request->session()->put('registered',true);
+                    Flash::success(ucfirst($request->first_name).' '.ucfirst($request->last_name).', thank you for your registration! Please fill out the form below to start the delivery process.');
+                    return Redirect::route('delivery_pickup');
+                } 
 
 
+            }
         }
     }
 
