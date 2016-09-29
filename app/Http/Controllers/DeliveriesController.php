@@ -108,8 +108,10 @@ class DeliveriesController extends Controller
 
         $calendar_setup = Delivery::makeCalendar($calendar_dates);
 
-        if (!$zipcode_status) {
+        if (!$zipcode_status && !$request->session()->has('register')) {
             Flash::error('Your primary address is not set or zipcode is not valid. Please select a new address. ');
+        } else {
+            $request->session()->pull('register');
         }
 
         $breadcrumb_data = Delivery::setBreadCrumbs($pickup_data);

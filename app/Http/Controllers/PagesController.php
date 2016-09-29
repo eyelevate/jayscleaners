@@ -147,6 +147,7 @@ class PagesController extends Controller
 
         if ($users->save()) {
             if (Auth::attempt(['username' => $request->username, 'password' => $request->password], true)) {
+                $request->session()->put('registered',true);
                 Flash::success(ucfirst($request->first_name).' '.ucfirst($request->last_name).', thank you for your registration! Please fill out the form below to start the delivery process.');
                 return Redirect::route('delivery_pickup');
             } 
