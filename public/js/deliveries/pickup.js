@@ -8,6 +8,7 @@ form = {
 		$.ajaxSetup({
 			headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content') }
 		});
+		$('[data-toggle="tooltip"]').tooltip();
 
 	},
 	events: function() {
