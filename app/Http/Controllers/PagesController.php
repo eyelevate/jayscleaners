@@ -130,7 +130,7 @@ class PagesController extends Controller
             'first_name' => 'required',
             'last_name'=>'required',
             'phone'=>'required|min:10',
-            'email' => 'email|required|max:255',
+            'email' => 'email|required|unique:users|max:255',
             'username'=>'required|unique:users|alpha_num',
             'password'=>'required|min:6|confirmed',
             'password_confirmation'=>'required|min:6'

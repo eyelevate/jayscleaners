@@ -165,7 +165,7 @@
     @else
     <br/>
     <div class="wrapper style3 special-alt no-background-image clearfix">
-        <div class="">
+        <div class="clearfix">
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 <header>
                     <h2>No Address on File!</h2>
