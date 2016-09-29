@@ -101,11 +101,11 @@
                     <div class="panel-heading"><strong>Pickup Form</strong> - we pick up from you.</div>
                     <div id="pickup_body" class="panel-body">                   
                         <div class="form-group<?php echo e($errors->has('pickup_address') ? ' has-error' : ''); ?>">
-                            <label class="col-md-4 control-label padding-top-none" >Pickup Address</label>
+                            <label class="col-md-4 control-label padding-top-none" ><a data-toggle="tooltip" data-placement="top" title="The address you wish for us to pick up your clothes at.">Pickup Address</a></label>
 
                             <div class="col-md-6">
                                 
-                                <?php echo e(Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address', 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'select where you wish us to pick up your clothes.'])); ?>
+                                <?php echo e(Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address'])); ?>
 
                                 <?php if($errors->has('pickup_address')): ?>
                                     <span class="help-block">
@@ -118,13 +118,13 @@
                         </div>
 
                         <div class="form-group<?php echo e($errors->has('pickup_date') ? ' has-error' : ''); ?> pickup_date_div ">
-                            <label class="col-md-4 control-label padding-top-none">Pickup Date</label>
+                            <label class="col-md-4 control-label padding-top-none" ><a data-toggle="tooltip" data-placement="top" title="The date you wish for us to pick up your clothes.">Pickup Date</a></label>
 
                             <div id="pickup_container" class="col-md-6">
                                 <?php if($zipcode_status): ?> 
-                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;" readonly="true" data-toggle="tooltip" data-placement="top" title="Please select which date you wish us to pickup your clothes.">
+                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;" readonly="true" >
                                 <?php else: ?>
-                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="<?php echo e(old('pickup_date')); ?>" disabled="true" data-toggle="tooltip" data-placement="top" title="Pickup date selection is not available. Please first select an address above.">
+                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="<?php echo e(old('pickup_date')); ?>" disabled="true">
                                 <?php endif; ?>
                                 <?php if($errors->has('pickup_date')): ?>
                                     <span class="help-block">
@@ -135,14 +135,14 @@
                             
                         </div>
                         <div class="form-group<?php echo e($errors->has('pickup_time') ? ' has-error' : ''); ?> pickup_time_div">
-                            <label class="col-md-4 control-label padding-top-none">Pickup Time</label>
+                            <label class="col-md-4 control-label padding-top-none"><a data-toggle="tooltip" data-placement="right" title="The time frame most suitable to your schedule.">Pickup Time</a></label>
 
                             <div class="col-md-6">
                                 <?php if($selected_delivery_id): ?>
-                                <?php echo e(Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control', 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Please select a time frame suitable to your needs.'])); ?>
+                                <?php echo e(Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control' ])); ?>
 
                                 <?php else: ?>
-                                <?php echo e(Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true", 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Please select a time frame suitable to your needs.'])); ?>
+                                <?php echo e(Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true"])); ?>
 
                                 <?php endif; ?>
                                 
