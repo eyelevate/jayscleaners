@@ -22,7 +22,7 @@
 			</ul>
 		</li>
 		<li>
-			<a  href="<?php echo e(route('pages_logout')); ?>" class="button special">Logout</a>
+			<a href="<?php echo e(route('pages_logout')); ?>" class="button special">Logout</a>
 		</li>
 	</ul>
 </nav>

@@ -8,21 +8,9 @@
 
 <?php $__env->startSection('navigation'); ?>
 <header id="header" class="reveal">
-    <h1 id="logo"><a href="<?php echo e(route('pages_index')); ?>">Jays Cleaners</a></h1>
-    <nav id="nav">
-        <ul>
-            <li class="submenu">
-                <a href="#">About Us</a>
-                <ul>
-                    <li><a href="<?php echo e(route('delivery_pickup')); ?>">Schedule Delivery</a></li>
-                    <li><a href="left-sidebar.html">Services</a></li>
-                    <li><a href="right-sidebar.html">Business Hours</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-            </li>
-            <li><a href="<?php echo e(route('pages_registration')); ?>" class="button special">Sign Up</a></li>
-        </ul>
-    </nav>
+<?php echo View::make('partials.layouts.navigation_logged_out')
+    ->render(); ?>
+
 </header>
 <?php $__env->stopSection(); ?>
 
@@ -30,8 +18,8 @@
 <?php $__env->startSection('content'); ?>
     <?php if($status): ?>
     <section class="wrapper style2 container special-alt no-background-image">
-        <div class="row 50%">
-            <div class="8u">
+        <div class="">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                 <header>
                     <h2>Outstanding! <strong>"<?php echo e($zipcode); ?>"</strong> is covered by our delivery routes!</h2>
                 </header>
@@ -42,7 +30,7 @@
                     </ul>
                 </footer>
             </div>
-            <div class="4u">
+            <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                 <ul class="featured-icons">
                     <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
                     <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
@@ -56,8 +44,8 @@
     </section>
     <?php else: ?>
     <section class="wrapper style3 container special-alt no-background-image">
-        <div class="row 50%">
-            <div class="8u">
+        <div class="">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 <header>
                     <h2>Bummer! <strong><?php echo e($zipcode); ?></strong> is not covered by our delivery routes!</h2>
                 </header>
@@ -68,7 +56,7 @@
                     </ul>
                 </footer>
             </div>
-            <div class="4u">
+            <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                 <ul class="featured-icons">
                     <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
                     <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
@@ -82,5 +70,9 @@
     </section>
 
     <?php endif; ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('modals'); ?>
+    <?php echo View::make('partials.frontend.modals')->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

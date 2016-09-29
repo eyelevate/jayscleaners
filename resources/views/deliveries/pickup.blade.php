@@ -165,8 +165,8 @@
     @else
     <br/>
     <div class="wrapper style3 special-alt no-background-image">
-        <div class="row 50%">
-            <div class="8u">
+        <div class="">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 <header>
                     <h2>No Address on File!</h2>
                 </header>
@@ -177,7 +177,7 @@
                     </ul>
                 </footer>
             </div>
-            <div class="4u">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <ul class="featured-icons">
                     <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
                     <li><span class="icon fa-car"><span class="label">Feature 2</span></span></li>

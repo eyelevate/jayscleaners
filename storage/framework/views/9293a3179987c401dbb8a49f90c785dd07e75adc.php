@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="form-group<?php echo e($errors->has('pickup_date') ? ' has-error' : ''); ?> pickup_date_div ">
-                            <label class="col-md-4 control-label padding-top-none" ><a data-toggle="tooltip" data-placement="top" title="The date you wish for us to pick up your clothes.">Pickup Date</a></label>
+                            <label class="col-md-4 control-label padding-top-none" ><a data-toggle="tooltip" data-placement="top" title="The date you wish for us to pick up your clothes on.">Pickup Date</a></label>
 
                             <div id="pickup_container" class="col-md-6">
                                 <?php if($zipcode_status): ?> 
@@ -135,7 +135,7 @@
                             
                         </div>
                         <div class="form-group<?php echo e($errors->has('pickup_time') ? ' has-error' : ''); ?> pickup_time_div">
-                            <label class="col-md-4 control-label padding-top-none"><a data-toggle="tooltip" data-placement="right" title="The time frame most suitable to your schedule.">Pickup Time</a></label>
+                            <label class="col-md-4 control-label padding-top-none"><a data-toggle="tooltip" data-placement="top" title="The time frame most suitable to your schedule on the date selected above.">Pickup Time</a></label>
 
                             <div class="col-md-6">
                                 <?php if($selected_delivery_id): ?>

@@ -20,8 +20,8 @@
 @section('content')
     @if ($status)
     <section class="wrapper style2 container special-alt no-background-image">
-        <div class="row 50%">
-            <div class="8u">
+        <div class="">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                 <header>
                     <h2>Outstanding! <strong>"{{ $zipcode }}"</strong> is covered by our delivery routes!</h2>
                 </header>
@@ -32,7 +32,7 @@
                     </ul>
                 </footer>
             </div>
-            <div class="4u">
+            <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                 <ul class="featured-icons">
                     <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
                     <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
@@ -46,8 +46,8 @@
     </section>
     @else
     <section class="wrapper style3 container special-alt no-background-image">
-        <div class="row 50%">
-            <div class="8u">
+        <div class="">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 <header>
                     <h2>Bummer! <strong>{{ $zipcode }}</strong> is not covered by our delivery routes!</h2>
                 </header>
@@ -58,7 +58,7 @@
                     </ul>
                 </footer>
             </div>
-            <div class="4u">
+            <div class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
                 <ul class="featured-icons">
                     <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
                     <li><span class="icon fa-volume-up"><span class="label">Feature 2</span></span></li>
