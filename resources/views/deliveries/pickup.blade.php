@@ -91,6 +91,8 @@
 
         </div>
     </div>
+    @if ($address_count > 0)
+
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
             <div class="panel panel-default">
@@ -159,6 +161,34 @@
             </div>
         </div>
     </div>
+    @else
+    <br/>
+    <div class="wrapper style3 special-alt no-background-image">
+        <div class="row 50%">
+            <div class="8u">
+                <header>
+                    <h2>No Address on File!</h2>
+                </header>
+                <p>In order for us to start your delivery schedule we must have at least one qualified address on file. Please use the link below to setup your delivery addresses.</p>
+                <footer>
+                    <ul class="buttons">
+                        <li><a href="{{ route('address_index') }}" class="button">Manage Address(es)</a></li>
+                    </ul>
+                </footer>
+            </div>
+            <div class="4u">
+                <ul class="featured-icons">
+                    <li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
+                    <li><span class="icon fa-car"><span class="label">Feature 2</span></span></li>
+                    <li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>
+                    <li><span class="icon fa-calendar"><span class="label">Feature 4</span></span></li>
+                    <li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>
+                    <li><span class="icon fa-map"><span class="label">Feature 6</span></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @endif
 @stop
 @section('modals')
     {!! View::make('partials.frontend.modals')->render() !!}

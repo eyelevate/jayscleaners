@@ -10,20 +10,9 @@
 <?php $__env->startSection('navigation'); ?>
 
 <header id="header" class="reveal">
-    <h1 id="logo"><a href="<?php echo e(route('pages_index')); ?>" class="nav-colors">Jays Cleaners</a></h1>
-    <nav id="nav">
-        <ul>
-            <li class="submenu nav-colors">
-                <a href="#">About Us</a>
-                <ul>
-                    <li><a href="<?php echo e(route('delivery_pickup')); ?>" >Schedule Delivery</a></li>
-                    <li><a href="left-sidebar.html">Services</a></li>
-                    <li><a href="right-sidebar.html">Business Hours</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+<?php echo View::make('partials.layouts.navigation_logged_out')
+    ->render(); ?>
+
 </header>
 <?php $__env->stopSection(); ?>
 
@@ -141,5 +130,9 @@
             </div>
         </div>
     </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('modals'); ?>
+    <?php echo View::make('partials.frontend.modals')->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

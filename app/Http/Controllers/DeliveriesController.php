@@ -59,7 +59,7 @@ class DeliveriesController extends Controller
         $request->session()->put('form_previous','delivery_pickup');
         $check_address = $request->session()->has('check_address') ? $request->session()->pull('check_address') : false;
         $addresses = Address::addressSelect(Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get());
-        
+        $address_count = count(Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get());
         $primary_address = Address::where('user_id',Auth::user()->id)->where('primary_address',true)->get();
         $primary_address_id = false;
         $primary_zipcode = false;
@@ -117,9 +117,11 @@ class DeliveriesController extends Controller
         $dropoff_method = [''=>'Select Dropoff Method',
                            '1'=>'Delivered to the address chosen below.',
                            '2'=>'I wish to pick up my order myself.'];
+
     	return view('deliveries.pickup')
         ->with('layout',$this->layout)
         ->with('addresses',$addresses)
+        ->with('address_count',$address_count)
         ->with('primary_address_id',$primary_address_id ? $primary_address_id : null)
         ->with('dropoff_method',$dropoff_method ? $dropoff_method : [])
         ->with('zipcode_status',$zipcode_status ? $zipcode_status : null)
