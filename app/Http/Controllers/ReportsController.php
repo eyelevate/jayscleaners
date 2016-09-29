@@ -72,7 +72,7 @@ class ReportsController extends Controller
     }
 
     public function getMake($start = null, $end = null, $company_id = null) {
-        $reports = Report::makeQueryReport($start, $end, $company_id);
+        $reports = Report::prepareQueryReport($start, $end, $company_id);
 
         return view('reports.index')
         ->with('layout',$this->layout)

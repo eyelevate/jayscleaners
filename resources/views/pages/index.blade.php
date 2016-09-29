@@ -78,7 +78,7 @@
 @stop
 
 @section('content')
-<header class="special container scrolly">
+<header class="special container">
 	<span class="icon fa fa-home fa-fw"></span>
 	<h2>Welcome to Jays Cleaners. With over <strong>35 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>

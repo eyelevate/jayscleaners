@@ -84,12 +84,13 @@
 			<!-- Bootstrap 3.3.5 -->
 	    	<script src="/packages/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js"></script>
 			<script src="/packages/html5up-twenty/assets/js/jquery.dropotron.min.js"></script>
-			<script src="/packages/html5up-twenty/assets/js/jquery.scrolly.min.js"></script>
-			<script src="/packages/html5up-twenty/assets/js/jquery.scrollgress.min.js"></script>
 			<script src="/packages/html5up-twenty/assets/js/skel.min.js"></script>
 			<script src="/packages/html5up-twenty/assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="/packages/html5up-twenty/assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="/packages/html5up-twenty/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/packages/html5up-twenty/assets/js/jquery.scrollgress.min.js"></script>
 			<script src="/packages/html5up-twenty/assets/js/main.js"></script>
+
 			@yield('scripts')
 
 	</body>
