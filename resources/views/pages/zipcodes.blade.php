@@ -54,7 +54,7 @@
                 <p>However, we may still offer service in your area. Request a service route, and we will contact you on availability!</p>
                 <footer>
                     <ul class="buttons">
-                        <li><a href="#" class="button">Make Request</a></li>
+                        <li><a href="{{ route('zipcodes_request',$zipcode) }}" class="button">Make Request</a></li>
                     </ul>
                 </footer>
             </div>

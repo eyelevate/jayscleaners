@@ -36,7 +36,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
     Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
     Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
-
+    Route::get('/zipcodes/request/{id}',['as'=>'zipcodes_request','uses'=>'ZipcodesController@getRequest']);
+    Route::post('/zipcodes/request',['as'=>'zipcodes_request_post','uses'=>'ZipcodesController@postRequest']);
     Route::get('/home', 'HomeController@index');
 
     // Admins
