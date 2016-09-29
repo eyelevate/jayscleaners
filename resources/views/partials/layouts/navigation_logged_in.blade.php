@@ -12,7 +12,7 @@
 				<li class="submenu">
 					<a href="#">{{ Auth::user()->username }} menu</a>
 					<ul>
-						<li><a href="#">Dolore Sed</a></li>
+						<li><a href="#">Update Contact Information</a></li>
 						<li><a href="#">Consequat</a></li>
 						<li><a href="#">Lorem Magna</a></li>
 						<li><a href="#">Sed Magna</a></li>
@@ -22,7 +22,7 @@
 			</ul>
 		</li>
 		<li>
-			<a id="logout_button" href="{{ route('pages_logout') }}" class="button special">Logout</a>
+			<a href="{{ route('pages_logout') }}" class="button special">Logout</a>
 		</li>
 	</ul>
 </nav>
