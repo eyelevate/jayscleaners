@@ -149,10 +149,12 @@ class CardsController extends Controller
     	->with('cards_data',$cards_data);
     }
 
-    public function getAdd() {
+    public function getAdd(Request $request) {
     	$states = Job::states();
+    	$card_form_data = $request->session()->has('card_form_data') ? $request->session()->pull('card_form_data') : false;
     	return view('cards.add')
         ->with('layout',$this->layout)
+        ->with('card_form_data',$card_form_data)
         ->with('states',$states);
     }
 
@@ -201,14 +203,22 @@ class CardsController extends Controller
 
         $add_card_store_1 = Card::addCard($form_data, $company_id, $root_payment_id);
 
-        if ($add_card_store_1) {
+        if ($add_card_store_1['status']) {
         	$company_id = 2;
-        	$add_card_store_2 = Card::addCard($form_data, $company_id, $add_card_store_1);
+        	$add_card_store_2 = Card::addCard($form_data, $company_id, $add_card_store_1['root_payment_id']);
         	if ($add_card_store_2) {
         		
 	    		Flash::success('Successfully saved a new card!');
 	    		return Redirect::route('cards_index');
+        	} else {
+        		$r->session()->put('card_form_data',$form_data);
+	        	Flash::error($add_card_store_2['message']);
+	        	return Redirect::route('cards_add');        		
         	}
+        } else {
+        	$r->session()->put('card_form_data', $form_data);
+        	Flash::error($add_card_store_1['message']);
+        	return Redirect::route('cards_add');
         }
 
     	// if (count($companies)>0) {
@@ -399,19 +409,19 @@ class CardsController extends Controller
 				} else {
 					$error_response = "Error: ".$errorMessages[0]->getText();
 					Flash::error($error_response);
-					return Redirect::route('cards_index');
+					return Redirect::route('cards_edit',$card_id);
 				}
 			} else {
 				$error_response = "Error: Communication error with authorize.net, please try again";
 				Flash::error($error_response);
-				return Redirect::route('cards_index');
+				return Redirect::route('cards_edit',$card_id);
 			}
 
 		} else {
 
 			$error_response = "Error: ".$errorMessages[0]->getText();
 			Flash::error($error_response);
-			return Redirect::route('cards_index');
+			return Redirect::route('cards_edit',$card_id);
 		}
 
     }
@@ -535,7 +545,7 @@ class CardsController extends Controller
 
     	} else {
     		Flash::error('Could not save card. Please try again!');
-    		return Redirect::route('cards_index');
+    		return Redirect::route('cards_edit',$card_id);
     	}
     }
 
@@ -694,16 +704,22 @@ class CardsController extends Controller
 
         $add_card_store_1 = Card::addCard($form_data, $company_id, $root_payment_id);
 
-        if ($add_card_store_1) {
+        if ($add_card_store_1['status']) {
         	$company_id = 2;
         	$card_user_id = Card::getUserId($add_card_store_1);
-        	$add_card_store_2 = Card::addCard($form_data, $company_id, $add_card_store_1);
-        	if ($add_card_store_2) {
+        	$add_card_store_2 = Card::addCard($form_data, $company_id, $add_card_store_1['root_payment_id']);
+        	if ($add_card_store_2['status']) {
         		
 	    		Flash::success('Successfully saved a new card!');
 	    		return Redirect::route('cards_admins_index',$card_user_id);
         	}
+        } else {
+        	$r->session()->put('card_form_data', $form_data);
+        	Flash::error($add_card_store_1['message']);
+        	return Redirect::route('cards_admins_index',$card_user_id);
         }
+
+
     }
 
     public function getAdminsEdit($id = null) {

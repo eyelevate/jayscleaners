@@ -99,6 +99,7 @@ class Card extends Model
 				//Use an existing profile id
 				$paymentprofilerequest->setCustomerProfileId( $prev_profile_id );
 				$paymentprofilerequest->setPaymentProfile( $paymentprofile );
+				$paymentprofilerequest->setValidationMode("liveMode");
 				// $paymentprofilerequest->setValidationMode("liveMode");
 				$controller = new AnetController\CreateCustomerPaymentProfileController($paymentprofilerequest);
 				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
@@ -109,14 +110,16 @@ class Card extends Model
 				  	$cards->root_payment_id = $root_payment_id;
 				  	$cards->status = 1;
 				  	if ($cards->save()) {
-				  		return $root_payment_id;
+				  		return ['status'=>true,
+				  				'root_payment_id'=>$root_payment_id];
 				  	}
 				} else {
 					// echo "Create Customer Payment Profile: ERROR Invalid response\n";
 					$errorMessages = $response->getMessages()->getMessage();
 					// echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
-				 	Flash::error("Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n");
-				 	return Redirect::route('cards_add');
+				 	
+				 	return ['status'=>false,
+				 			'message'=>"Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText()]; 
 				}			
 				
 
@@ -165,14 +168,18 @@ class Card extends Model
 			  	$prof->status = 1;
 			  	$prof->save();
 			  	if ($cards->save()) {
-			  		return ($root_payment_id) ? $root_payment_id : $payment_id;
+			  		
+			  		return ['status'=>true,
+			  				'root_payment_id'=>($root_payment_id) ? $root_payment_id : $payment_id];
 			  	}
 			  
 			} else {
 				$errorMessages = $response->getMessages()->getMessage();
-				Flash::error("Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n");
+				
 				// Job::dump("Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n");
 				return Redirect::route('cards_add');
+				return ['status'=>false,
+						'message'=>"Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText()];
 			}					
 		}
     }
