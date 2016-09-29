@@ -34,7 +34,7 @@
 									<p style="margin-bottom:5px;"><?php echo e($card['first_name']); ?> <?php echo e($card['last_name']); ?></p>
 									<p class="clearfix"> <strong>Expiration Date:</strong> <i><?php echo e($card['exp_month']); ?> / <?php echo e($card['exp_year']); ?> <span class="pull-right"><?php echo e($card['days_remaining']); ?></span></p>
 									<ul class="clearfix">
-										<li class="pull-left"><a href="<?php echo e(route('cards_delete',$card['id'])); ?>" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
+										<li class="pull-left"><a class="btn btn-danger" role="button" data-toggle="modal" data-target="#card_delete-<?php echo e($card['id']); ?>">Delete</a>&nbsp</li>
 										<li class="pull-left"><a href="<?php echo route('cards_edit',$card['id']); ?>" class="btn btn-default" role="button">Edit</a>&nbsp</li>
 									</ul>
 								</div>
@@ -59,5 +59,13 @@
 <?php $__env->startSection('modals'); ?>
     <?php echo View::make('partials.frontend.modals')->render(); ?>
 
+    <?php if(count($cards_data) > 0): ?>
+        <?php foreach($cards_data as $card): ?>
+        <?php echo View::make('partials.frontend.card-confirm-delete')
+            ->with('card_id',$card['id'])
+            ->render(); ?>
+
+        <?php endforeach; ?>
+    <?php endif; ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

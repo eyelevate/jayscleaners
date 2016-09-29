@@ -47,7 +47,7 @@
 											<h3><strong><?php echo e($address->name); ?></strong> <small><?php echo e(($address->zipcode_status) ? '' : '- zipcode not deliverable'); ?><small></h3>
 											<p><i><?php echo e($address->street); ?> <br/> <?php echo e(ucfirst($address->city)); ?> , <?php echo e(strtoupper($address->state)); ?> <?php echo e($address->zipcode); ?></i></p>
 											<ul class="clearfix">
-												<li class="pull-left"><a href="<?php echo e(route('address_delete',$address->id)); ?>" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
+												<li class="pull-left"><a class="btn btn-danger" role="button" data-toggle="modal" data-target="#address_delete-<?php echo e($address['id']); ?>">Delete</a>&nbsp</li>
 												<li class="pull-left"><a href="<?php echo e(route('address_edit',$address->id)); ?>" class="btn btn-default" role="button">Edit</a>&nbsp</li>
 												<?php if($address->zipcode_status): ?>
                                                 <li class="pull-left"><a href="<?php echo e(route('address_primary',$address->id)); ?>" class="btn btn-primary" role="button">Set Primary</a>&nbsp</li>
@@ -77,5 +77,13 @@
 <?php $__env->startSection('modals'); ?>
     <?php echo View::make('partials.frontend.modals')->render(); ?>
 
+    <?php if(count($addresses) > 0): ?>
+        <?php foreach($addresses as $address): ?>
+        <?php echo View::make('partials.frontend.address-confirm-delete')
+            ->with('address_id',$address->id)
+            ->render(); ?>
+
+        <?php endforeach; ?>
+    <?php endif; ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

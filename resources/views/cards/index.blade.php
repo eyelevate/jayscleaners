@@ -36,7 +36,7 @@
 									<p style="margin-bottom:5px;">{{ $card['first_name'] }} {{ $card['last_name'] }}</p>
 									<p class="clearfix"> <strong>Expiration Date:</strong> <i>{{ $card['exp_month'] }} / {{ $card['exp_year'] }} <span class="pull-right">{{ $card['days_remaining']}}</span></p>
 									<ul class="clearfix">
-										<li class="pull-left"><a href="{{ route('cards_delete',$card['id']) }}" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
+										<li class="pull-left"><a class="btn btn-danger" role="button" data-toggle="modal" data-target="#card_delete-{{ $card['id'] }}">Delete</a>&nbsp</li>
 										<li class="pull-left"><a href="{!! route('cards_edit',$card['id']) !!}" class="btn btn-default" role="button">Edit</a>&nbsp</li>
 									</ul>
 								</div>
@@ -60,4 +60,12 @@
 @stop
 @section('modals')
     {!! View::make('partials.frontend.modals')->render() !!}
+    @if (count($cards_data) > 0)
+        @foreach($cards_data as $card)
+        {!! View::make('partials.frontend.card-confirm-delete')
+            ->with('card_id',$card['id'])
+            ->render()
+        !!}
+        @endforeach
+    @endif
 @stop
