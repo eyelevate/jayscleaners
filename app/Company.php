@@ -254,4 +254,15 @@ class Company extends Model
         return $color;
     }
 
+    public static function prepareSelect($data) {
+        $companies = [''=>'select company'];
+        if (count($data) >0) {
+            foreach ($data as $company) {
+                $companies[$company->id] = $company->name;
+            }
+        }
+
+        return $companies;
+    }
+
 }

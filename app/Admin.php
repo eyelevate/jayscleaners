@@ -1078,7 +1078,7 @@ class Admin extends Model
         $totals['invoices_overdue'] = count($invoices_overdue);
 
         $invoices_wayoverdue = Invoice::whereBetween('due_date',['2016-01-01 00:00:00',date('Y-m-d 00:00:00',strtotime($start.' -30 days'))])
-                                        ->where('status','<',5)
+                                        ->where('status','!=',5)
                                         ->where('transaction_id',NULL)
                                         ->get();
         $totals['invoices_wayoverdue'] = count($invoices_wayoverdue);

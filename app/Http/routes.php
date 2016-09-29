@@ -169,6 +169,12 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('delivery/make-pickup-time',['as'=>'delivery_make_pickup_time','uses'=>'DeliveriesController@postMakePickupTime']);
 		Route::post('delivery/make-dropoff-time',['as'=>'delivery_make_dropoff_time','uses'=>'DeliveriesController@postMakeDropoffTime']);
 		Route::post('delivery/redo-dropoff-schedule',['as'=>'delivery_redo_dropoff_schedule','uses'=>'DeliveriesController@postRedoDropoffSchedule']);
+		Route::get('/delivery/setup',['as'=>'delivery_setup','uses'=>'DeliveriesController@getSetup']);
+		Route::get('/delivery/setup/add',['as'=>'delivery_setup_add','uses'=>'DeliveriesController@getSetupAdd']);
+		Route::post('/delivery/setup/add',['as'=>'delivery_setup_add_post','uses'=>'DeliveriesController@postSetupAdd']);
+		Route::get('/delivery/setup/edit/{id}',['as'=>'delivery_setup_edit','uses'=>'DeliveriesController@getSetupEdit']);
+		Route::post('/delivery/setup/edit',['as'=>'delivery_setup_edit_post','uses'=>'DeliveriesController@postSetupEdit']);
+		Route::get('/delivery/setup/delete/{id}',['as'=>'delivery_setup_delete','uses'=>'DeliveriesController@getSetupDelete']);
 		//Invoices
 		Route::get('/invoices',['as'=>'invoices_index','uses'=>'InvoicesController@getIndex']);
 		Route::get('/invoices/dropoff/{id}',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);
@@ -250,7 +256,10 @@ Route::group(['middleware' => ['web']], function () {
 		//Zipcodes
 		Route::get('/zipcodes', ['as'=>'zipcodes_index', 'uses' => 'ZipcodesController@getIndex']);
 		Route::get('/zipcodes/add', ['as'=>'zipcodes_add', 'uses' => 'ZipcodesController@getAdd']);
+		Route::post('/zipcodes/add', ['as'=>'zipcodes_add', 'uses' => 'ZipcodesController@postAdd']);
 		Route::get('/zipcodes/edit/{id}', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@getEdit']);
+		Route::post('/zipcodes/edit/{id}', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@postEdit']);
+		Route::get('/zipcodes/delete/{id}', ['as'=>'zipcodes_delete', 'uses' => 'ZipcodesController@getDelete']);
 		//ACL Rules
 	});
 

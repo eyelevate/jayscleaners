@@ -48,10 +48,12 @@ class ReportsController extends Controller
     public function getIndex() {
     	$dates = Report::prepareDates();
     	$companies = Report::prepareCompanies(Company::all());
+        $summaries = Report::prepareGlimpse();
 
         return view('reports.index')
         ->with('layout',$this->layout)
         ->with('dates',$dates)
+        ->with('summaries',$summaries)
         ->with('companies',$companies);
     }
 
@@ -70,10 +72,11 @@ class ReportsController extends Controller
     }
 
     public function getMake($start = null, $end = null, $company_id = null) {
-    	
-    	Job::dump($start);
-    	Job::dump($end);
-    	Job::dump($company_id);
+        $reports = Report::makeQueryReport($start, $end, $company_id);
+
+        return view('reports.index')
+        ->with('layout',$this->layout)
+        ->with('reports',$reports);
 
     }
 }

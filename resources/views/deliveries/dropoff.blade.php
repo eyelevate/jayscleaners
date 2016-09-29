@@ -118,7 +118,7 @@
                             <label class="col-md-4 control-label padding-top-none">Dropoff Date</label>
 
                             <div id="dropoff_container" class="col-md-6">
-                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ old('dropoff_date') }}" style="background-color:#ffffff">
+                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ old('dropoff_date') }}" style="background-color:#ffffff" readonly="true">
 
                                 @if ($errors->has('dropoff_date'))
                                     <span class="help-block">

@@ -56,20 +56,18 @@
 			</div>
 			<!-- ./box-body -->
 			<div class="box-footer">
-				<div class="row">
+				<div class="row clearfix">
 					<div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
 						<p class="description-text" style="text-align:center;">TODAY</p>
 						<div class="description-block border-right">
-							
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Roosevelt<label>
-								<h5 class="description-header">&nbsp;$1,210.43</h5>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Montlake<label>
-								<h5 class="description-header">&nbsp;$5,210.43</h5>
-							</div>
-							
+							@if (count($summaries))
+								@foreach($summaries as $summary)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $summary['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $summary['today'] }}</h5>
+								</div>
+								@endforeach
+							@endif
 						</div>
 						<!-- /.description-block -->
 					</div>
@@ -78,14 +76,14 @@
 						<p class="description-text" style="text-align:center;">THIS WEEK</p>
 						<div class="description-block border-right">
 							
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Roosevelt<label>
-								<h5 class="description-header">&nbsp;$5,210.43</h5>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Montlake<label>
-								<h5 class="description-header">&nbsp;$7,210.43</h5>
-							</div>
+							@if (count($summaries))
+								@foreach($summaries as $summary)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $summary['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $summary['this_week'] }}</h5>
+								</div>
+								@endforeach
+							@endif
 							
 						</div>
 					<!-- /.description-block -->
@@ -95,14 +93,14 @@
 						<p class="description-text" style="text-align:center;">THIS MONTH</p>
 						<div class="description-block border-right">
 							
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Roosevelt<label>
-								<h5 class="description-header">&nbsp;$27,210.43</h5>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Montlake<label>
-								<h5 class="description-header">&nbsp;$35,210.43</h5>
-							</div>
+							@if (count($summaries))
+								@foreach($summaries as $summary)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $summary['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $summary['this_month'] }}</h5>
+								</div>
+								@endforeach
+							@endif
 							
 						</div>
 						<!-- /.description-block -->
@@ -112,14 +110,14 @@
 						<p class="description-text" style="text-align:center;">THIS YEAR</p>
 						<div class="description-block">
 						
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Roosevelt<label>
-								<h5 class="description-header">&nbsp;$331,210.43</h5>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								<label>Jays Cleaners Montlake<label>
-								<h5 class="description-header">&nbsp;$350,210.43</h5>
-							</div>
+							@if (count($summaries))
+								@foreach($summaries as $summary)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $summary['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $summary['this_year'] }}</h5>
+								</div>
+								@endforeach
+							@endif
 							
 						</div>
 						<!-- /.description-block -->

@@ -1294,5 +1294,212 @@ class DeliveriesController extends Controller
         }
     }
 
+    public function getSetup(){
+        $deliveries = Delivery::prepareForView(Delivery::all());
+        $this->layout = 'layouts.dropoff';
+        return view('deliveries.setup')
+        ->with('layout',$this->layout)
+        ->with('deliveries',$deliveries);
+    }
+
+    public function getSetupAdd(){
+        $companies = Company::prepareSelect(Company::all());
+        $zipcodes = Zipcode::getAllZipcodes();
+        $day = Delivery::prepareDow();
+        $limits = Delivery::prepareLimit(5);
+        $hours = Delivery::prepareHours();
+        $minutes = Delivery::prepareMinutes();
+        $ampm = Delivery::prepareAmpm();
+        $this->layout = 'layouts.dropoff';
+        return view('deliveries.setup-add')
+        ->with('zipcodes',$zipcodes)
+        ->with('companies',$companies)
+        ->with('day',$day)
+        ->with('limits',$limits)
+        ->with('hours',$hours)
+        ->with('minutes',$minutes)
+        ->with('ampm',$ampm)
+        ->with('layout',$this->layout);
+    }
+
+    public function postSetupAdd(Request $request) {
+        $this->validate($request, [
+            'company_id' =>'required',
+            'route_name' => 'required',
+            'day'=>'required',
+            'limit'=>'required',
+        ]);
+
+        $start_time = $request->start_hours.':'.str_pad($request->start_minutes,2,'0',STR_PAD_LEFT).' '.$request->start_ampm;
+        $end_time = $request->end_hours.':'.str_pad($request->start_minutes,2,'0',STR_PAD_LEFT).' '.$request->end_ampm;
+        $zipcodes = $request->zipcode;
+        $blackout = $request->blackout;
+
+        $zipcodes_string = ($request->zipcode) ? json_encode($zipcodes) : NULL;
+        $blackout_string = ($request->blackout) ? json_encode($blackout) : NULL;
+        $deliveries = new Delivery();
+        $deliveries->company_id = $request->company_id;
+        $deliveries->route_name = $request->route_name;
+        $deliveries->day = $request->day;
+        $deliveries->limit = $request->limit;
+        $deliveries->start_time = $start_time;
+        $deliveries->end_time = $end_time;
+        $deliveries->zipcode = $zipcodes_string;
+        $deliveries->blackout = $blackout_string;
+        $deliveries->status = 1;
+        if ($deliveries->save()) {
+            if (count($zipcodes) > 0){
+                foreach ($zipcodes as $key => $value) {
+                    $zips = new Zipcode();
+                    $zips->zipcode = $value;
+                    $zips->company_id = $request->company_id;
+                    $zips->delivery_id = $deliveries->id;
+                    $zips->status = 1;
+                    $zips->save();
+
+                }
+            }
+
+            Flash::success('Successfully added a new delivery route!');
+            return Redirect::route('delivery_setup');
+
+        }
+
+    
+    }
+
+    public function getSetupEdit($id = null){
+        $deliveries = Delivery::find($id);
+
+        $start_time = $deliveries->start_time;
+        $start_hour = date('g',strtotime(date('Y-m-d ').$start_time));
+        $start_minutes = date('i',strtotime(date('Y-m-d ').$start_time));
+        $start_ampm = date('a',strtotime(date('Y-m-d ').$start_time));
+        $end_time = $deliveries->end_time;
+        $end_hour = date('g',strtotime(date('Y-m-d ').$end_time));
+        $end_minutes = date('i',strtotime(date('Y-m-d ').$end_time));
+        $end_ampm = date('a',strtotime(date('Y-m-d ').$end_time));
+
+        $blackout_dates = (json_decode( $deliveries->blackout)) ? json_decode($deliveries->blackout) : false;
+
+        $zipcodes_selected = Zipcode::where('delivery_id',$id)->get();
+
+        $companies = Company::prepareSelect(Company::all());
+        $zipcodes = Zipcode::getAllZipcodes();
+        $day = Delivery::prepareDow();
+        $limits = Delivery::prepareLimit(5);
+        $hours = Delivery::prepareHours();
+        $minutes = Delivery::prepareMinutes();
+        $ampm = Delivery::prepareAmpm();
+        $this->layout = 'layouts.dropoff';
+        return view('deliveries.setup-edit')
+        ->with('delivery_id',$id)
+        ->with('deliveries',$deliveries)
+        ->with('start_hour',$start_hour)
+        ->with('start_minutes',$start_minutes)
+        ->with('start_ampm',$start_ampm)
+        ->with('end_hour',$end_hour)
+        ->with('end_minutes',$end_minutes)
+        ->with('end_ampm',$end_ampm)
+        ->with('zipcodes_selected',$zipcodes_selected)
+        ->with('blackout_dates',$blackout_dates)
+        ->with('zipcodes',$zipcodes)
+        ->with('companies',$companies)
+        ->with('day',$day)
+        ->with('limits',$limits)
+        ->with('hours',$hours)
+        ->with('minutes',$minutes)
+        ->with('ampm',$ampm)
+        ->with('layout',$this->layout);
+    }
+
+    public function postSetupEdit(Request $request) {
+        $this->validate($request, [
+            'company_id' =>'required',
+            'route_name' => 'required',
+            'day'=>'required',
+            'limit'=>'required',
+        ]);
+        $company_id = $request->company_id;
+        $delivery_id = $request->id;
+        $start_time = $request->start_hours.':'.str_pad($request->start_minutes,2,'0',STR_PAD_LEFT).' '.$request->start_ampm;
+        $end_time = $request->end_hours.':'.str_pad($request->start_minutes,2,'0',STR_PAD_LEFT).' '.$request->end_ampm;
+        $zipcodes = $request->zipcode;
+        $blackout = $request->blackout;
+
+        $zipcodes_string = ($request->zipcode) ? json_encode($zipcodes) : NULL;
+        $blackout_string = ($request->blackout) ? json_encode($blackout) : NULL;
+        $deliveries = Delivery::find($delivery_id);
+        $deliveries->company_id = $request->company_id;
+        $deliveries->route_name = $request->route_name;
+        $deliveries->day = $request->day;
+        $deliveries->limit = $request->limit;
+        $deliveries->start_time = $start_time;
+        $deliveries->end_time = $end_time;
+        $deliveries->zipcode = $zipcodes_string;
+        $deliveries->blackout = $blackout_string;
+        $deliveries->status = 1;
+        if ($deliveries->save()) {
+            $down = [];
+            $original_zips = Zipcode::where('delivery_id',$delivery_id)->get();
+            if (count($original_zips) > 0) {
+                foreach ($original_zips as $zz) {
+                    $down[$zz->zipcode] = $zz->id;
+                }
+            }
+
+            // Add in new zipcodes
+            if (count($zipcodes) > 0){
+                foreach ($zipcodes as $key => $value) {
+                    if (isset($down[$value])) {
+                        unset($down[$value]);
+                    } else {
+                        $insert_zip = new Zipcode();
+                        $insert_zip->company_id = $company_id;
+                        $insert_zip->delivery_id = $delivery_id;
+                        $insert_zip->zipcode = $value;
+                        $insert_zip->status = 1;
+                        $insert_zip->save();
+                    }
+                }
+            }
+            // Remove unused zips
+            if (count($down) > 0) {
+                foreach ($down as $key => $value) {
+                    $remove = Zipcode::find($value);
+                    $remove->delete();
+                }
+            }
+
+
+
+            Flash::success('Successfully updated your delivery route!');
+            return Redirect::route('delivery_setup');
+
+        }
+    }
+
+    public function getSetupDelete($id = null) {
+        if (isset($id)) {
+            $deliveries = Delivery::find($id);
+            if ($deliveries->delete()) {
+                // delete all references in zipcodes
+                $zipcodes = Zipcode::where('delivery_id',$id)->get();
+                if (count($zipcodes)> 0) {
+                    foreach ($zipcodes as $zipcode) {
+                        $zip = Zipcode::find($zipcode->id);
+                        $zip->delete();
+                    }
+                }
+
+                Flash::success('Successfully deleted your delivery route.');
+                return Redirect::route('delivery_setup');
+            }
+
+        }
+    }
+
+
+
 
 }

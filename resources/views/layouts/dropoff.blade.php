@@ -95,28 +95,51 @@
 			{{ Form::close() }}
 			<!-- /.search form -->
 			<!-- sidebar menu: : style can be found in sidebar.less -->
-			<ul class="sidebar-menu">
-				<li class="header">MAIN NAVIGATION</li>
-				<li class="{{ (Request::is('invoices') || Request::is('invoices/add') || Request::is('invoices/rack')) ? 'active' : '' }} treeview">
-					<a href="#">
-						<i class="fa fa-files-o"></i> <span>Invoice</span> <i class="fa fa-angle-left pull-right"></i>
-					</a>
-					<ul class="treeview-menu">
-						<li class="{{ Request::is('invoices/dropoff') ? 'active' : '' }}"><a href="{{ route('invoices_dropoff', NULL) }}"><i class="fa fa-circle-o"></i> New Invoice</a></li>
-						<li class="{{ Request::is('invoices/rack') ? 'active' : '' }}"><a href="{{ route('invoices_rack') }}"><i class="fa fa-circle-o"></i> Rack</a></li>
-						<li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{ route('invoices_index') }}"><i class="fa fa-circle-o"></i> History</a></li>
-					</ul>
-				</li>
-				<li class="{{ (Request::is('admins/overview') || Request::is('admins/add')) ? 'active' : '' }} treeview">
-					<a href="#">
-						<i class="fa fa-dashboard"></i> <span>Admins</span> <i class="fa fa-angle-left pull-right"></i>
-					</a>
-					<ul class="treeview-menu">
-						<li class="{{ Request::is('admins/overview') ? 'active' : '' }}"><a href="{{ route('admins_overview') }}"><i class="fa fa-circle-o"></i> Overview</a></li>
-						<li class="{{ Request::is('admins/add') ? 'active' : '' }}"><a href="{{ route('admins_add') }}"><i class="fa fa-circle-o"></i> Add</a></li>
-					</ul>
-				</li>
-			</ul>
+          <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="{{ (Request::is('invoices') || Request::is('invoices/add') || Request::is('invoices/rack')) ? 'active' : '' }} treeview">
+              <a href="#">
+                <i class="fa fa-files-o"></i> <span>Invoice</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="{{ Request::is('invoices/dropoff') ? 'active' : '' }}"><a href="{{ route('invoices_dropoff',NULL) }}"><i class="fa fa-circle-o"></i> New Invoice</a></li>
+                <li class="{{ Request::is('invoices/rack') ? 'active' : '' }}"><a href="{{ route('invoices_rack') }}"><i class="fa fa-circle-o"></i> Rack</a></li>
+                <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{ route('invoices_index') }}"><i class="fa fa-circle-o"></i> History</a></li>
+              </ul>
+            </li>
+            <li class="{{ (Request::is('admins/overview') || Request::is('admins/add')) ? 'active' : '' }} treeview">
+              <a href="#">
+                <i class="fa fa-user"></i> <span>Admins</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="{{ Request::is('admins/overview') ? 'active' : '' }}"><a href="{{ route('admins_overview') }}"><i class="fa fa-circle-o"></i> Overview</a></li>
+                <li class="{{ Request::is('admins/add') ? 'active' : '' }}"><a href="{{ route('admins_add') }}"><i class="fa fa-circle-o"></i> Add</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa fa-users"></i> <span>Customers</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li class="{{ Request::is('customers') ? 'active' : '' }}"><a href="{{ route('customers_index') }}"><i class="fa fa-circle-o"></i> View</a></li>
+                <li class="{{ Request::is('customers/add') ? 'active' : '' }}"><a href="{{ route('customers_add') }}"><i class="fa fa-circle-o"></i> Add</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-truck"></i>
+                <span>Delivery</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route('delivery_overview') }}"><i class="fa fa-circle-o"></i> Overview</a></li>
+                <li><a href="{{ route('delivery_new',0)}}"><i class="fa fa-circle-o"></i> New Delivery</a></li>
+                <li><a href="{{ route('zipcodes_index') }}"><i class="fa fa-circle-o"></i> Zipcodes</a></li>
+                <li><a href="{{ route('delivery_setup') }}"><i class="fa fa-circle-o"></i> Setup</a></li>
+              </ul>
+            </li>
+            
+          </ul>
 		</section>
 		<!-- /.sidebar -->
 	</aside>

@@ -400,4 +400,73 @@ class Delivery extends Model
     }
 
 
+    public static function prepareForView($data) {
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $delivery_id = $value->id;
+                $zipcodes = Zipcode::where('delivery_id',$delivery_id)->orderBy('zipcode','ASC')->get();
+                $zips = [];
+                if (count($zipcodes) > 0) { 
+                    foreach ($zipcodes as $zipcode) {
+                        
+                        array_push($zips, $zipcode->zipcode);
+                    }
+                    $data[$key]['zipcode'] = $zips;
+                }
+
+                if (isset($data[$key]['blackout'])) {
+                    $data[$key]['blackout'] = json_decode($data[$key]['blackout']);
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    public static function prepareDow() {
+        return [
+            ''=>'Select day of the week',
+            'Sunday' => 'Sunday',
+            'Monday' => 'Monday',
+            'Tuesday' => 'Tuesday',
+            'Wednesday' => 'Wednesday',
+            'Thursday' => 'Thursday',
+            'Friday' => 'Friday',
+            'Saturday' => 'Saturday',
+        ];
+    }
+
+    public static function prepareLimit($interval) {
+        $limit = [''=>'Select limit'];
+        for ($i=0; $i <= 100; $i+= $interval) { 
+            $limit[$i] = $i.' trip(s) / day';
+        }
+
+        return $limit;
+    }
+
+    public static function prepareHours(){
+        $hours = [];
+        for ($i=1; $i <=12; $i++) { 
+            $hours[$i] = $i;
+        }
+
+        return $hours;
+    }
+
+    public static function prepareMinutes(){
+        $minutes = [];
+        for ($i=0; $i <=59; $i++) { 
+            $minutes[$i] = str_pad($i, 2, '0', STR_PAD_LEFT);
+        }
+
+        return $minutes;
+    }
+
+    public static function prepareAmpm(){
+        $ampm = ['am'=> 'AM',
+                 'pm'=>'PM'];
+
+        return $ampm;
+    }
 }
