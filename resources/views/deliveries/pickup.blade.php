@@ -141,7 +141,7 @@
                                 @if ($selected_delivery_id)
                                 {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control', 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Please select a time frame suitable to your needs.']) }}
                                 @else
-                                {{ Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true", 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Pickup time is not available. Please first select an address above.']) }}
+                                {{ Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true", 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Please select a time frame suitable to your needs.']) }}
                                 @endif
                                 
                                 @if ($errors->has('pickup_time'))

@@ -142,7 +142,7 @@
                                 <?php echo e(Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control', 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Please select a time frame suitable to your needs.'])); ?>
 
                                 <?php else: ?>
-                                <?php echo e(Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true", 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Pickup time is not available. Please first select an address above.'])); ?>
+                                <?php echo e(Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true", 'data-toggle'=>'tooltip','data-placement'=>'top','title'=>'Please select a time frame suitable to your needs.'])); ?>
 
                                 <?php endif; ?>
                                 
