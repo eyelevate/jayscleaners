@@ -32,7 +32,7 @@
         				<li>
 							<div class="thumbnail" style="background-color:{{ $card['background_color'] }}">
 								<div class="caption">
-									<h3><strong>{{ ($card['card_type']) ? $card['card_type'] : '' }} {{ $card['card_number'] }}</strong> <span class="pull-right"><img src="{{ $card['card_image'] }}" /></span></h3>
+									<h3><strong>{{ $card['card_type'] }} {{ $card['card_number'] }}</strong> <span class="pull-right"><img src="{{ $card['card_image'] }}" /></span></h3>
 									<p style="margin-bottom:5px;">{{ $card['first_name'] }} {{ $card['last_name'] }}</p>
 									<p class="clearfix"> <strong>Expiration Date:</strong> <i>{{ $card['exp_month'] }} / {{ $card['exp_year'] }} <span class="pull-right">{{ $card['days_remaining']}}</span></p>
 									<ul class="clearfix">
