@@ -220,4 +220,34 @@ class PagesController extends Controller
         return Redirect::route('delivery_confirmation');
         
     }
+
+    public function getServices() {
+        $this->layout = 'layouts.frontend_basic';
+
+        return view('pages.services')
+        ->with('layout',$this->layout);
+    }
+
+    public function getBusinessHours() {
+        $this->layout = 'layouts.frontend_basic';
+
+        return view('pages.business-hours')
+        ->with('layout',$this->layout);
+    }
+
+    public function getContactUs() {
+        $this->layout = 'layouts.frontend_basic';
+
+        return view('pages.contact-us')
+        ->with('layout',$this->layout);        
+    }
+
+    public function getUpdateContact() {
+        $this->layout = 'layouts.frontend_basic';
+
+        $customer_id = Auth::user()->id;
+
+        return view('pages.update-contact')
+        ->with('layout',$this->layout);          
+    }
 }

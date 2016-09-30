@@ -29,6 +29,9 @@ Route::group(['middleware' => ['web']], function () {
     //public pages
     Route::auth();
     Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
+    Route::get('/services',['as'=>'pages_services','uses'=>'PagesController@getServices']);
+    Route::get('/business-hours',['as'=>'pages_business_hours','uses'=>'PagesController@getBusinessHours']);
+    Route::get('/contact-us',['as'=>'pages_contact_us','uses'=>'PagesController@getContactUs']);
     Route::get('/login',['as'=>'pages_login','uses'=>'PagesController@getLogin']);
     Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
     Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
@@ -90,6 +93,7 @@ Route::group(['middleware' => ['web']], function () {
     	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
     	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
 
+    	Route::get('/update-contact', ['as'=>'pages_update_contact','uses'=>'PagesController@getUpdateContact']);
     	Route::post('/pages/one-touch',['as'=>'pages_onetouch','uses'=>'PagesController@postOneTouch']);
 	});
 

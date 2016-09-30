@@ -7,9 +7,9 @@
 			<a href="#">About Us</a>
 			<ul>
 				<li><a href="{{ route('delivery_pickup') }}">Schedule Delivery</a></li>
-				<li><a href="">Services</a></li>
-				<li><a href="">Business Hours</a></li>
-				<li><a href="">Contact Us</a></li>
+				<li><a href="{{ route('pages_services') }}">Services</a></li>
+				<li><a href="{{ route('pages_business_hours') }}">Business Hours</a></li>
+				<li><a href="{{ route('pages_contact_us') }}">Contact Us</a></li>
 			</ul>
 		</li>
 		<li><a href="{{ route('pages_registration') }}" class="button special">Sign Up</a></li>

@@ -6,17 +6,15 @@
 			<a href="#"><small>Hello </small><strong>{{ Auth::user()->username }}</strong></a>
 			<ul>
 				<li><a href="{{ route('delivery_index') }}">Your Deliveries</a></li>
-				<li><a href="left-sidebar.html">Services</a></li>
-				<li><a href="right-sidebar.html">Business Hours</a></li>
-				<li><a href="contact.html">Contact Us</a></li>
+				<li><a href="{{ route('pages_services') }}">Services</a></li>
+				<li><a href="{{ route('pages_business_hours') }}">Business Hours</a></li>
+				<li><a href="{{ route('pages_contact_us') }}">Contact Us</a></li>
 				<li class="submenu">
 					<a href="#">{{ Auth::user()->username }} menu</a>
 					<ul>
-						<li><a href="#">Update Contact Information</a></li>
-						<li><a href="#">Consequat</a></li>
-						<li><a href="#">Lorem Magna</a></li>
-						<li><a href="#">Sed Magna</a></li>
-						<li><a href="#">Ipsum Nisl</a></li>
+						<li><a href="{{ route('pages_update_contact') }}">Update Contact Information</a></li>
+						<li><a href="{{ route('address_index') }}">Manage your address(es)</a></li>
+						<li><a href="{{ route('cards_index') }}">Manage your card(s) on file</a></li>
 					</ul>
 				</li>
 			</ul>
