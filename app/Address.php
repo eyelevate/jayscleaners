@@ -4,6 +4,8 @@ namespace App;
 use App\Zipcode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use GuzzleHttp\Client;
+use Geocoder;
 
 class Address extends Model
 {

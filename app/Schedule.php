@@ -426,7 +426,7 @@ class Schedule extends Model
             // No exception will be thrown here
             $latlong = [
                 'status'=>false,
-                'error'=>$e
+                'error'=>'Could not locate address. Please enter a valid address and try again.'
             ];
         }
 

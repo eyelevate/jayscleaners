@@ -24,6 +24,7 @@ use App\Customer;
 use App\Custid;
 use App\Delivery;
 use App\Layout;
+use App\Schedule;
 use App\Zipcode;
 
 class AddressesController extends Controller
@@ -104,10 +105,19 @@ class AddressesController extends Controller
         $primary_address_id = (count($primary_address) > 0) ? $primary_address[0] : false;
         $addresses->primary_address = ($primary_address_id) ? false : true;
 
-        if ($addresses->save()){
-        	Flash::success('Successfully added a new address!');
-            return Redirect::route('address_index');
-            
+        // check address with lat long 
+        $address_string = $request->street.' '.$request->city.', '.$request->state.' '.$request->zipcode;
+        $check_lat_long = Schedule::getLatLong($address_string);
+
+        if ($check_lat_long['status']) {
+            if ($addresses->save()){
+                Flash::success('Successfully added a new address!');
+                return Redirect::route('address_index');
+                
+            }
+        } else {
+            Flash::error($check_lat_long['error']);
+            return Redirect::back();
         }
     }
 
@@ -198,12 +208,20 @@ class AddressesController extends Controller
         $addresses->zipcode = $request->zipcode;
         $addresses->concierge_name = $request->concierge_name;
         $addresses->concierge_number = $request->concierge_number;
+        // check address with lat long 
+        $address_string = $request->street.' '.$request->city.', '.$request->state.' '.$request->zipcode;
+        $check_lat_long = Schedule::getLatLong($address_string);
 
-
-        if ($addresses->save()){
-        	Flash::success('Successfully edited address!');
-            return Redirect::route('address_index');
-        }    	
+        if ($check_lat_long['status']) {
+            if ($addresses->save()){
+                Flash::success('Successfully edited address!');
+                return Redirect::route('address_index');
+                
+            }
+        } else {
+            Flash::error($check_lat_long['error']);
+            return Redirect::back();
+        }  	
     }
 
     public function postAdminEdit(Request $request) {
@@ -227,17 +245,25 @@ class AddressesController extends Controller
         $addresses->concierge_name = $request->concierge_name;
         $addresses->concierge_number = $request->concierge_number;
 
+        // check address with lat long 
+        $address_string = $request->street.' '.$request->city.', '.$request->state.' '.$request->zipcode;
+        $check_lat_long = Schedule::getLatLong($address_string);
 
-        if ($addresses->save()){
-            Flash::success('Successfully edited address!');
-            if ($request->session()->has('new_form_back')) {
-                $route_back = $request->session()->pull('new_form_back');
-                return Redirect::route($route_back['route'],$route_back['param']);
-            } else {
-                return Redirect::route('address_admin_index', $request->session()->get('address_user_id'));
+        if ($check_lat_long['status']) {
+            if ($addresses->save()){
+                Flash::success('Successfully edited address!');
+                if ($request->session()->has('new_form_back')) {
+                    $route_back = $request->session()->pull('new_form_back');
+                    return Redirect::route($route_back['route'],$route_back['param']);
+                } else {
+                    return Redirect::route('address_admin_index', $request->session()->get('address_user_id'));
+                }
+                
             }
-            
-        }       
+        } else {
+            Flash::error($check_lat_long['error']);
+            return Redirect::back();
+        }     
     }
 
     public function getDelete($id = NULL) {
