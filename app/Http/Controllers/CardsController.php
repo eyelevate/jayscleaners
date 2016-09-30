@@ -141,7 +141,7 @@ class CardsController extends Controller
 				}    			
     		}
     	}
-    	Job::dump($card_data);
+    	Job::dump($cards_data);
 
     	return view('cards.index')
     	->with('layout',$this->layout)
