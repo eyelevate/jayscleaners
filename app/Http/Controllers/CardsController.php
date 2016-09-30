@@ -137,12 +137,16 @@ class CardsController extends Controller
 							break;
 						}
 						// Job::dump($response->getPaymentProfile());
+					} else {
+						$cards_data[$key]['card_type'] = null;
+						$cards_data[$key]['card_number'] = null;
+						$cards_data[$key]['first_name']  = null;
+						$cards_data[$key]['last_name']  = null;
+						$cards_data[$key]['card_image']  = null;
 					}
 				}    			
     		}
     	}
-    	Job::dump($cards_data);
-
     	return view('cards.index')
     	->with('layout',$this->layout)
     	->with('form_previous',$form_previous)
