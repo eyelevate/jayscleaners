@@ -584,16 +584,15 @@ class CardsController extends Controller
 		$request->setCustomerPaymentProfileId($payment_id);
 		$controller = new AnetController\DeleteCustomerPaymentProfileController($request);
 		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
-		if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
-			if($cards->delete()) {
+		if($cards->delete()) {
+			if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 				// Flash::success('Successfully removed card!');
 				return Redirect::route('cards_delete_again');
+			} else {
+				$errorMessages = $response->getMessages()->getMessage();
+				Flash::error('ERROR: '.$errorMessages[0]->getText());
+				return Redirect::route('cards_index');
 			}
-			
-		} else {
-			$errorMessages = $response->getMessages()->getMessage();
-			Flash::error('ERROR: '.$errorMessages[0]->getText());
-			return Redirect::route('cards_index');
 		}
     }
 
@@ -623,16 +622,17 @@ class CardsController extends Controller
 					$request->setCustomerPaymentProfileId($payment_id);
 					$controller = new AnetController\DeleteCustomerPaymentProfileController($request);
 					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
-					if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
-						if($card_find->delete()) {
+					if($card_find->delete()) {
+						if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
+						
 							Flash::success('Successfully removed card!');
 							return Redirect::route('cards_index');
+							
+						} else {
+							$errorMessages = $response->getMessages()->getMessage();
+							Flash::error('ERROR: '.$errorMessages[0]->getText());
+							return Redirect::route('cards_index');
 						}
-						
-					} else {
-						$errorMessages = $response->getMessages()->getMessage();
-						Flash::error('ERROR: '.$errorMessages[0]->getText());
-						return Redirect::route('cards_index');
 					}
     			}
     		}
