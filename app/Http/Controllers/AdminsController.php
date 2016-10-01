@@ -32,6 +32,7 @@ use App\Delivery;
 use App\Schedule;
 use App\Tax;
 use App\Transaction;
+use App\ZipcodeRequest;
 // use App\Role;
 // use App\RoleUser;
 // use App\Permission;
@@ -53,10 +54,13 @@ class AdminsController extends Controller
 
         $today_totals = Admin::getTodaysTotals();
 
+        $zipcode_requests = ZipcodeRequest::where('status',1)->get();
+
         return view('admins.index')
         ->with('layout',$this->layout)
         ->with('role',$role)
         ->with('today_totals',$today_totals)
+        ->with('zipcode_requests',$zipcode_requests)
         ->with('role_id',Session::get('role_id'));
     }
 

@@ -134,10 +134,20 @@
               <ul class="treeview-menu">
                 <li><a href="{{ route('delivery_overview') }}"><i class="fa fa-circle-o"></i> Overview</a></li>
                 <li><a href="{{ route('delivery_new',0)}}"><i class="fa fa-circle-o"></i> New Delivery</a></li>
-                <li><a href="{{ route('zipcodes_index') }}"><i class="fa fa-circle-o"></i> Zipcodes</a></li>
                 <li><a href="{{ route('delivery_setup') }}"><i class="fa fa-circle-o"></i> Setup</a></li>
               </ul>
             </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-map-o"></i>
+                <span>Zipcodes</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route('zipcodes_index') }}"><i class="fa fa-circle-o"></i> Overview</a></li>
+                <li><a href="{{ route('zipcode_request_index')}}"><i class="fa fa-circle-o"></i> Requests</a></li>
+              </ul>
+            </li>  
             
           </ul>
 		</section>

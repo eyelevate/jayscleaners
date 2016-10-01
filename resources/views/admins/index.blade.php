@@ -133,4 +133,43 @@
       
     </div>
   </div><!-- /.box -->
+  <!-- Zipcode Requests -->
+  <div class="box box-info">
+    <div class="box-header">
+      <i class="ion ion-clipboard"></i>
+      <h3 class="box-title">Today's Zipcode Request</h3>
+      <div class="box-tools pull-right"></div>
+    </div><!-- /.box-header -->
+    <div class="box-body table-responsive">
+      <table class="table table-condensed table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Zipcode</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Comment</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        @if (count($zipcode_requests)> 0)
+          @foreach($zipcode_requests as $zr)
+          <tr>
+            <td>{{ $zr->zipcode }}</td>
+            <td>{{ $zr->name }}</td>
+            <td>{{ $zr->email }}</td>
+            <td>{{ $zr->comment }}</td>
+            <td>{{ date('D n/d/Y', strtotime($zr->created_at)) }}</td>
+            <td><a>Reply</a></td>
+          </tr>
+          @endforeach
+        @endif
+        </tbody>
+      </table>
+    </div>
+    <div class="box-footer clearfix">
+      <a href="" class="btn btn-info">Zipcode Requests<a/>
+    </div>
+  </div>
 @stop

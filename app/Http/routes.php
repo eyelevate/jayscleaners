@@ -265,6 +265,9 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/zipcodes/edit/{id}', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@getEdit']);
 		Route::post('/zipcodes/edit/{id}', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@postEdit']);
 		Route::get('/zipcodes/delete/{id}', ['as'=>'zipcodes_delete', 'uses' => 'ZipcodesController@getDelete']);
+		
+		Route::get('/zipcode-requests',['as'=>'zipcode_request_index','uses'=>'ZipcodeRequestsController@getIndex']);
+		Route::get('/zipcode-requests/request-data',['as'=>'zipcode_request_request_data','uses'=>'ZipcodeRequestsController@getRequestData']);
 		//ACL Rules
 	});
 
