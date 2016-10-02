@@ -87,7 +87,7 @@ class ZipcodesController extends Controller
 
     public function getRequest($id = null){
     	$zipcodes = Zipcode::getAllZipcodes();
-
+        Job::dump($id);
         return view('zipcodes.request')
         ->with('zipcode',$id)
         ->with('layout',$this->layout);
@@ -105,16 +105,23 @@ class ZipcodesController extends Controller
     	$comment = $request->comment;
     	$email = $request->email;
 
-    	$zipcode_requests = new ZipcodeRequest();
-    	$zipcode_requests->ip = $user_ip;
-    	$zipcode_requests->zipcode = $zipcode;
-    	$zipcode_requests->name = $full_name;
-    	$zipcode_requests->comment = $request->comment;
-    	$zipcode_requests->email = $request->email; 
-        $zipcode_requests->status = 1;
-        if ($zipcode_requests->save()) {
-            Flash::success('Thank you. We will review this request and email you a response. In the meanwhile feel free to give us a call or come stop by for a visit!');
-            return Redirect::route('pages_index');
+        $check_list = ZipcodeList::where('zipcode',$zipcode)->get();
+        if (count($check_list) == 0) {
+            $zipcode_requests = new ZipcodeRequest();
+            $zipcode_requests->ip = $user_ip;
+            $zipcode_requests->zipcode = $zipcode;
+            $zipcode_requests->name = $full_name;
+            $zipcode_requests->comment = $request->comment;
+            $zipcode_requests->email = $request->email; 
+            $zipcode_requests->status = 1;
+            if ($zipcode_requests->save()) {
+                Flash::success('Thank you. We will review this request and email you a response. In the meanwhile feel free to give us a call or come stop by for a visit!');
+                return Redirect::route('pages_index');
+            }
+        } else {
+            Flash::error('The zipcode ('.$zipcode.') already exists. Please request another zipcode and try again.');
+            return Redirect::back();
         }
+
     }
 }

@@ -23,7 +23,31 @@
 		</div>
 	</div>
 	<div class="box-footer">
-		<button>Accept Zipcode Request</button>
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>Zipcode</th>
+						<th>Count</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				@if (count($requests['labels']) > 0)
+					@foreach($requests['labels'] as $key => $value)
+					<tr>
+						<td>{{ $value }}</td>
+						<td>{{ $requests['datasets']['data'][$key] }}</td>
+						<td>
+							<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deny-{{ $value }}">Deny</a>
+							<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#accept-{{ $value }}">Accept</a>
+						</td>
+					</tr>
+					@endforeach
+				@endif
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 <div class="panel panel-info">
@@ -57,6 +81,24 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="panel-footer"></div>
+	<div class="panel-footer">
+
+
+	</div>
 </div>
+@stop
+@section('modals')
+@if (count($requests['labels']) > 0)
+	@foreach($requests['labels'] as $key => $value)
+	{!! View::make('partials.zipcode_requests.deny')
+	    ->with('zipcode',$value)
+	    ->render() 
+	!!}
+	{!! View::make('partials.zipcode_requests.accept')
+	    ->with('zipcode',$value)
+	    ->render() 
+	!!}
+	@endforeach
+@endif
+
 @stop

@@ -263,11 +263,13 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/zipcodes/add', ['as'=>'zipcodes_add', 'uses' => 'ZipcodesController@getAdd']);
 		Route::post('/zipcodes/add', ['as'=>'zipcodes_add', 'uses' => 'ZipcodesController@postAdd']);
 		Route::get('/zipcodes/edit/{id}', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@getEdit']);
-		Route::post('/zipcodes/edit/{id}', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@postEdit']);
+		Route::post('/zipcodes/edit', ['as'=>'zipcodes_edit', 'uses' => 'ZipcodesController@postEdit']);
 		Route::get('/zipcodes/delete/{id}', ['as'=>'zipcodes_delete', 'uses' => 'ZipcodesController@getDelete']);
 		
 		Route::get('/zipcode-requests',['as'=>'zipcode_request_index','uses'=>'ZipcodeRequestsController@getIndex']);
 		Route::get('/zipcode-requests/request-data',['as'=>'zipcode_request_request_data','uses'=>'ZipcodeRequestsController@getRequestData']);
+		Route::post('/zipcode-requests/accept', ['as'=>'zipcode_request_accept', 'uses' => 'ZipcodeRequestsController@postAccept']);
+		Route::post('/zipcode-requests/deny', ['as'=>'zipcode_request_deny', 'uses' => 'ZipcodeRequestsController@postDeny']);
 		//ACL Rules
 	});
 

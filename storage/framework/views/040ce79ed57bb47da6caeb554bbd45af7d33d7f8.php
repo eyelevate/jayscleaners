@@ -23,7 +23,31 @@
 		</div>
 	</div>
 	<div class="box-footer">
-		<button>Accept Zipcode Request</button>
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>Zipcode</th>
+						<th>Count</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php if(count($requests['labels']) > 0): ?>
+					<?php foreach($requests['labels'] as $key => $value): ?>
+					<tr>
+						<td><?php echo e($value); ?></td>
+						<td><?php echo e($requests['datasets']['data'][$key]); ?></td>
+						<td>
+							<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deny-<?php echo e($value); ?>">Deny</a>
+							<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#accept-<?php echo e($value); ?>">Accept</a>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 <div class="panel panel-info">
@@ -57,7 +81,25 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="panel-footer"></div>
+	<div class="panel-footer">
+
+
+	</div>
 </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('modals'); ?>
+<?php if(count($requests['labels']) > 0): ?>
+	<?php foreach($requests['labels'] as $key => $value): ?>
+	<?php echo View::make('partials.zipcode_requests.deny')
+	    ->with('zipcode',$value)
+	    ->render(); ?>
+
+	<?php echo View::make('partials.zipcode_requests.accept')
+	    ->with('zipcode',$value)
+	    ->render(); ?>
+
+	<?php endforeach; ?>
+<?php endif; ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
