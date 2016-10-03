@@ -54,7 +54,9 @@ class AdminsController extends Controller
 
         $today_totals = Admin::getTodaysTotals();
 
-        $zipcode_requests = ZipcodeRequest::where('status',1)->get();
+        $start = date('Y-m-d 00:00:00');
+        $end = date('Y-m-d 23:59:59');
+        $zipcode_requests = ZipcodeRequest::where('status',1)->whereBetween('created_at',[$start,$end])->get();
 
         return view('admins.index')
         ->with('layout',$this->layout)

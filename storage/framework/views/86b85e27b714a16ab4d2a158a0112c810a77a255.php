@@ -13,19 +13,7 @@
 				<h4 class="modal-title">Deny Zipcode</h4>
 			</div>
 			<div class="modal-body">
-                <div class="form-group<?php echo e($errors->has('message') ? ' has-error' : ''); ?>">
-                    <label class="col-md-4 control-label">Message To Customer(s)</label>
-
-                    <div class="col-md-6">
-                        <?php echo Form::textarea('message', old('message'), ['class'=>'form-control', 'placeholder'=>'']); ?>
-
-                        <?php if($errors->has('message')): ?>
-                            <span class="help-block">
-                                <strong><?php echo e($errors->first('message')); ?></strong>
-                            </span>
-                        <?php endif; ?>
-                    </div>
-                </div>				        
+		        <p>Will deny zipcode and remove all requests from database.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

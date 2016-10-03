@@ -85,7 +85,7 @@
 <?php $__env->startSection('content'); ?>
 <header class="special container">
 	<span class="icon fa fa-home fa-fw"></span>
-	<h2>Welcome to Jays Cleaners. With over <strong>35 years</strong> of experience, <strong>let us work for you</strong>.</h2>
+	<h2>Welcome to Jays Cleaners. With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>
 
 <!-- One -->
@@ -94,25 +94,74 @@
 		<div class="8u 12u(narrower)">
 
 			<header>
-				<h5>Where to find us</h5>
+				<h5><strong>Where to find us</strong></h5>
 			</header>
+			<section class="clearfix">
 			<p>We proudly serve the Seattle region at 2 prime locations in the Montlake and Roosevelt neighborhoods. With the ability to deliver if these locations are not suitable to your current location.</p>
 			<?php if(count($companies) > 0): ?>
 				<?php foreach($companies as $company): ?>
-				<address>
-					<strong><?php echo e($company->name); ?></strong><br/>
-					<?php echo e($company->street); ?> <br/>
-					<?php echo e($company->city); ?>, <?php echo e($company->state); ?> <?php echo e($company->zipcode); ?> <br/>
-					<?php echo e($company->phone); ?>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:30px;">
+					<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+						<address>
+							<strong><?php echo e($company->name); ?></strong><br/>
+							<?php echo e($company->street); ?> <br/>
+							<?php echo e($company->city); ?>, <?php echo e($company->state); ?> <?php echo e($company->zipcode); ?> <br/>
+							<?php echo e($company->phone); ?>
 
-				</address>
+
+						</address>
+						
+					</div>
+					<a href="<?php echo e($company->map); ?>" class="col-lg-3 col-md-3 col-sm-12 col-xs-12 btn btn-warning btn-lg"><i class="fa fa-map-o"></i>&nbsp;Directions</a>
+				</div>
 				<?php endforeach; ?>
 			<?php endif; ?>
+			</section>
+			<hr/>
+			<header>
+				<h5><strong>Store Hours</strong></h5>
+			</header>
+			<section class="clearfix">
 
+				<div class="table-responsive">
+					<table class="table table-condensed">	
+						<thead>
+							<tr style="color:#ffffff;">
+								<th><strong>Day</strong></th>
+								<th><strong>Hours</strong></th>
+								<th><strong>Currently</strong></th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php if(count($companies) > 0): ?>
+							<?php foreach($companies as $company): ?>
+								<?php if(count($company->store_hours) > 0 && $company->id == 1): ?>
+									<?php foreach($company->store_hours as $key => $value): ?>
+										<?php if(date('l') == $key): ?>
+										<tr class="warning" style="color:#5e5e5e; font-weight:bold;">
+											<th><strong><?php echo e($key); ?></strong></th>
+											<td><strong><?php echo e($value); ?></strong></td>
+											<td><strong style="color:<?php echo e($company['open_status'] ? 'green' : 'red'); ?>;"><?php echo e($company['open_status'] ? 'Open' : 'Closed'); ?></strong></td>
+										</tr>
+										<?php else: ?>
+										<tr style="color:#ffffff;">
+											<th><?php echo e($key); ?></th>
+											<td><?php echo e($value); ?></td>
+											<td></td>
+										</tr>
+										<?php endif; ?>
+									
+									<?php endforeach; ?>
+								<?php endif; ?>
+			
+							<?php endforeach; ?>
+						<?php endif; ?>
+						</tbody>
+					</table>
+				</div>
+			</section>
 			<footer>
-				<ul class="buttons">
-					<li><a href="#" class="button">Find Out More</a></li>
-				</ul>
+
 			</footer>
 
 		</div>
@@ -137,36 +186,42 @@
 		<div class="4u 12u(narrower)">
 
 			<section>
-				<span class="icon featured fa-check"></span>
+				<span class="icon featured fa-history"></span>
 				<header>
-					<h3>This is Something</h3>
+					<h3>About Us</h3>
 				</header>
-				<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+				<p>Jays Cleaners was established in the Greenlake neighborhood of Seattle over 70 years ago. Family run and operated, we at Jays Cleaners have always held the belief that the Customer expects and deserves the best and it is our duty to deliver the best.</p>
+				<p>We at Jays Cleaners are relentlessly setting and maintaining high standards for quality, continuously implementing industry best practices and always paying careful attention to the many details of what makes a quality finished product (ie. stain removal, replacing cracked or chipped buttons, sewing loose hems, scrubbing collars, etc). We are always striving to deliver the best quality services, on-time, every time. Our goal is simple: 100% Customer Satisfaction!</p>
+				<a href="https://www.yelp.com/biz/jays-dry-cleaners-roosevelt-seattle">Read Our Reviews</a>
 			</section>
 
 		</div>
 		<div class="4u 12u(narrower)">
 
 			<section>
-				<span class="icon featured fa-check"></span>
+				<span class="icon featured fa-check-square-o"></span>
 				<header>
-					<h3>Also Something</h3>
+					<h3>THE HEALTHY CLEANING ALTERNATIVE</h3>
 				</header>
-				<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+				<p>Jays Cleaners utilizes the SystemK4 cleaning system which is a Toxin-Free, Environmentally Safe and Healthy cleaning system. Unlike the cleaning methods of the past which relied heavily on Perchloroethylene (Perc), SystemK4 utilizes a perc-free/halogen-free, organic solvent and has been tested to be dermatologically safe, biodegradable and provides an excellent, odorless finish to every garment. </p>
+				<a href="http://www.systemk4.com/en/" target="__blank">Learn More</a>
 			</section>
 
 		</div>
 		<div class="4u 12u(narrower)">
 
 			<section>
-				<span class="icon featured fa-check"></span>
+				<span class="icon featured fa-truck"></span>
 				<header>
-					<h3>Probably Something</h3>
+					<h3>Delivery Specialists</h3>
 				</header>
-				<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+				<p>Create an Account using our <a href="<?php echo e(route('pages_registration')); ?>">Sign Up</a> page and set up a delivery schedule today. Returning Members can simply <a href="<?php echo e(route('pages_login')); ?>">Login</a> to schedule a delivery.</p>  
+				<p>Special Instructions for any article or garment and delivery location (concierge, front porch, etc) can be included on each delivery schedule. Once your finished, we will send you an email confirmation.</p>
+				<a href="<?php echo e(route('delivery_pickup')); ?>">Schedule A Delivery</a>
 			</section>
 
 		</div>
+
 	</div>
 </section>
 

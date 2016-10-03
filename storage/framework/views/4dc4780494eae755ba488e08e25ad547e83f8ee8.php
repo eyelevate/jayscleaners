@@ -147,9 +147,9 @@
             <th>Zipcode</th>
             <th>Name</th>
             <th>Email</th>
+            <th>IP</th>
             <th>Comment</th>
             <th>Created</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -159,9 +159,9 @@
             <td><?php echo e($zr->zipcode); ?></td>
             <td><?php echo e($zr->name); ?></td>
             <td><?php echo e($zr->email); ?></td>
+            <td><?php echo e($zr->ip); ?></td>
             <td><?php echo e($zr->comment); ?></td>
             <td><?php echo e(date('D n/d/Y', strtotime($zr->created_at))); ?></td>
-            <td><a>Reply</a></td>
           </tr>
           <?php endforeach; ?>
         <?php endif; ?>
@@ -169,7 +169,7 @@
       </table>
     </div>
     <div class="box-footer clearfix">
-      <a href="" class="btn btn-info">Zipcode Requests<a/>
+      <a href="<?php echo e(route('zipcode_request_index')); ?>" class="btn btn-info">Zipcode Requests<a/>
     </div>
   </div>
 <?php $__env->stopSection(); ?>

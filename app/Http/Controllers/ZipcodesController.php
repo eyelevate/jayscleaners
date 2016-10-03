@@ -87,7 +87,6 @@ class ZipcodesController extends Controller
 
     public function getRequest($id = null){
     	$zipcodes = Zipcode::getAllZipcodes();
-        Job::dump($id);
         return view('zipcodes.request')
         ->with('zipcode',$id)
         ->with('layout',$this->layout);

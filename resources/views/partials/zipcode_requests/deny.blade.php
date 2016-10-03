@@ -10,18 +10,7 @@
 				<h4 class="modal-title">Deny Zipcode</h4>
 			</div>
 			<div class="modal-body">
-                <div class="form-group{{ $errors->has('message') ? ' has-error' : '' }}">
-                    <label class="col-md-4 control-label">Message To Customer(s)</label>
-
-                    <div class="col-md-6">
-                        {!! Form::textarea('message', old('message'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                        @if ($errors->has('message'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('message') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>				        
+		        <p>Will deny zipcode and remove all requests from database.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

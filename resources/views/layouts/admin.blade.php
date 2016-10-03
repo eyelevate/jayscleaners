@@ -159,13 +159,14 @@
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
+          @include('flash::message')
           @yield('header')
 
         </section>
 
         <!-- Main content -->
         <section class="content">
-          @include('flash::message')
+          
           @yield('content')
           @yield('modals')
          

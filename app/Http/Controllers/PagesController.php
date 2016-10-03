@@ -26,6 +26,7 @@ use App\Layout;
 use App\Schedule;
 use App\Address;
 use App\Zipcode;
+use App\ZipcodeList;
 
 
 class PagesController extends Controller
@@ -41,7 +42,7 @@ class PagesController extends Controller
     public function getIndex()
     {
         $auth = (Auth::check()) ? Auth::user() : False;
-        $companies = Company::all();
+        $companies = Company::prepareForView(Company::all());
         $schedules = ($auth) ? Schedule::prepareSchedule(Schedule::where('customer_id',Auth::user()->id)->orderBy('id','desc')->limit(1)->get()) : false;
         return view('pages.index')
         ->with('layout',$this->layout)
@@ -108,7 +109,7 @@ class PagesController extends Controller
 
         $zipcode = $request->zipcode;
     
-        $zipcodes = Zipcode::where('zipcode',$zipcode)->get();
+        $zipcodes = ZipcodeList::where('zipcode',$zipcode)->get();
         $status = (count($zipcodes) > 0) ? true : false;
 
         return view('pages.zipcodes')

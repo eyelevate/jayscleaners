@@ -1,7 +1,8 @@
 <?php
 
 namespace App;
-
+use App\Job;
+use App\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
@@ -49,10 +50,10 @@ class Company extends Model
                     if(isset($sh)){
                         foreach ($sh as $skey => $svalue) {
                             if($svalue['status'] == 2) {
-                                $start_time = date('H:i',strtotime($today.' '.$svalue['open_hour'].':'.$svalue['open_minutes'].' '.$svalue['open_ampm']));
+                                $open_time = date('H:i',strtotime($today.' '.$svalue['open_hour'].':'.$svalue['open_minutes'].' '.$svalue['open_ampm']));
                                 $end_time = date('H:i',strtotime($today.' '.$svalue['closed_hour'].':'.$svalue['closed_minutes'].' '.$svalue['closed_ampm']));
                                 $store_hours[$skey] = [
-                                    'start'=>$start_time,
+                                    'open'=>$open_time,
                                     'end'=>$end_time,
                                     'dow'=>$skey
                                 ];
@@ -70,7 +71,7 @@ class Company extends Model
             // check to see what times are the same
             foreach ($store_hours as $key => $value) {
                 $idx++;
-                $final_hours['start'] = '00:00';
+                $final_hours['open'] = '00:00';
                 $final_hours['end'] = '23:59';
                 $final_hours['dow'][$idx] = $key;
             }
@@ -263,6 +264,48 @@ class Company extends Model
         }
 
         return $companies;
+    }
+
+    public static function prepareForView($data) {
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                if (isset($data[$key]['phone'])) {
+                    $data[$key]['phone'] = Job::formatPhoneString($data[$key]['phone']);
+                }
+
+                // map button
+                $address = $value->street.' '.$value->city.', '.$value->state.' '.$value->zipcode;
+                $latlong = Schedule::getLatLong($address);
+                $data[$key]['map'] = 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'];
+                
+                if (isset($data[$key]['store_hours'])) {
+                    $view_hours = [];
+                    $store_hours = json_decode($data[$key]['store_hours'], true);
+                    if (count($store_hours) > 0) {
+                        foreach ($store_hours as $shkey => $shvalue) {
+
+                            $dow = Company::prepareDayOfWeek($shkey);
+                            
+
+                            $view_hours[$dow[$shkey]] = ($shvalue['status'] == 2) ? $shvalue['open_hour'].':'.$shvalue['open_minutes'].' '.$shvalue['open_ampm'].' - '.$shvalue['closed_hour'].':'.$shvalue['closed_minutes'].' '.$shvalue['closed_ampm'] : 'CLOSED';
+                        }
+                    }
+
+                    $data[$key]['store_hours'] = $view_hours;
+                    $now = strtotime(date('Y-m-d H:i:s'));
+                    $open_string = date('n/d/Y ').$store_hours[date('w')]['open_hour'].':'.$store_hours[date('w')]['open_minutes'].' '.$store_hours[date('w')]['open_ampm'];
+                    $open_time = strtotime(date('Y-m-d H:i:s',strtotime($open_string)));
+                    $closed_string = date('n/d/Y ').$store_hours[date('w')]['closed_hour'].':'.$store_hours[date('w')]['closed_minutes'].' '.$store_hours[date('w')]['closed_ampm'];
+                    $closed_time = strtotime(date('Y-m-d H:i:s',strtotime($closed_string)));
+
+                    $data[$key]['open_status'] = ($now >= $open_time && $now <= $closed_time) ? true : false;
+                }
+
+            }
+
+        }
+
+        return $data;
     }
 
 }

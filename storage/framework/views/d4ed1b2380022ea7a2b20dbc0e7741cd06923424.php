@@ -151,7 +151,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo e(route('zipcodes_index')); ?>"><i class="fa fa-circle-o"></i> Overview</a></li>
-                <li><a href="<?php echo e(route('delivery_new',0)); ?>"><i class="fa fa-circle-o"></i> Requests</a></li>
+                <li><a href="<?php echo e(route('zipcode_request_index')); ?>"><i class="fa fa-circle-o"></i> Requests</a></li>
               </ul>
             </li>            
           </ul>
@@ -163,13 +163,14 @@
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
+          <?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
           <?php echo $__env->yieldContent('header'); ?>
 
         </section>
 
         <!-- Main content -->
         <section class="content">
-          <?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+          
           <?php echo $__env->yieldContent('content'); ?>
           <?php echo $__env->yieldContent('modals'); ?>
          

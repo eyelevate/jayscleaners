@@ -147,9 +147,9 @@
             <th>Zipcode</th>
             <th>Name</th>
             <th>Email</th>
+            <th>IP</th>
             <th>Comment</th>
             <th>Created</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -159,9 +159,9 @@
             <td>{{ $zr->zipcode }}</td>
             <td>{{ $zr->name }}</td>
             <td>{{ $zr->email }}</td>
+            <td>{{ $zr->ip }}</td>
             <td>{{ $zr->comment }}</td>
             <td>{{ date('D n/d/Y', strtotime($zr->created_at)) }}</td>
-            <td><a>Reply</a></td>
           </tr>
           @endforeach
         @endif
@@ -169,7 +169,7 @@
       </table>
     </div>
     <div class="box-footer clearfix">
-      <a href="" class="btn btn-info">Zipcode Requests<a/>
+      <a href="{{ route('zipcode_request_index') }}" class="btn btn-info">Zipcode Requests<a/>
     </div>
   </div>
 @stop
