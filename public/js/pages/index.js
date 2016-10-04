@@ -13,5 +13,11 @@ pages = {
 			e.preventDefault();
 			$(this).parent().find('form:first').submit();
 		});
+
+		$(".read_articles").readmore({
+			speed: 100,
+			collapsedHeight: 400,
+			lessLink: '<a href="#">Read less</a>'
+		});
 	}
 };

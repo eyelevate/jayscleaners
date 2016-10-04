@@ -46,17 +46,14 @@
 				</article>
 
 			<!-- CTA -->
-				<section id="cta">
+				<section class="wrapper style3 container special">
 
 					<header>
-						<h2>Ready to do <strong>something</strong>?</h2>
-						<p>Proin a ullamcorper elit, et sagittis turpis integer ut fermentum.</p>
+						<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+						<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
 					</header>
 					<footer>
-						<ul class="buttons">
-							<li><a href="#" class="button special">Take My Money</a></li>
-							<li><a href="#" class="button">LOL Wut</a></li>
-						</ul>
+
 					</footer>
 
 				</section>
@@ -73,7 +70,7 @@
 					</ul>
 
 					<ul class="copyright">
-						<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						<li>&copy; {{ date('Y') }}</li><li> Jays Cleaners</li>
 					</ul>
 
 				</footer>

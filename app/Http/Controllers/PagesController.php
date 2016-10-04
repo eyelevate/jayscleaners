@@ -251,4 +251,8 @@ class PagesController extends Controller
         return view('pages.update-contact')
         ->with('layout',$this->layout);          
     }
+
+    public function getPricing() {
+        
+    }
 }

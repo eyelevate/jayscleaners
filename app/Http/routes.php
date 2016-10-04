@@ -36,6 +36,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
     Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
     Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
+    Route::get('/pricing',  ['as'=>'pages_pricing', 'uses' => 'PagesController@getPricing']);
     Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
     Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
     Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
