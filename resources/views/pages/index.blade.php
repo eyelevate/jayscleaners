@@ -80,9 +80,64 @@
 
 @section('content')
 <header class="special container">
-	<span class="icon fa fa-home fa-fw"></span>
+	<span class="icon fa-home fa-fw" style="font-size:30px;"></span>
 	<h2>Welcome to Jays Cleaners. With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>
+
+<!-- Two -->
+<section class="wrapper style1 container special">
+	<div class="row">
+		<div class="4u 12u(narrower)">
+
+			<section class="read_articles">
+				
+				<header>
+					<span class="icon featured fa-history"></span>
+					<h3>About Us</h3>
+				</header>
+				<p>
+					Jays Cleaners was established in the Greenlake neighborhood of Seattle over 70 years ago. 
+					Family run and operated, we at Jays Cleaners have always held the belief that the Customer expects and deserves the best and it is our duty to deliver the best.
+				</p>
+				<p>
+					We at Jays Cleaners are relentlessly setting and maintaining high standards for quality, continuously implementing industry best practices and always paying careful attention to the many details of what makes a quality finished product (ie. stain removal, replacing cracked or chipped buttons, sewing loose hems, scrubbing collars, etc). We are always striving to deliver the best quality services, on-time, every time. 
+					Our goal is simple: 100% Customer Satisfaction!
+				</p>
+				<a href="https://www.yelp.com/biz/jays-dry-cleaners-roosevelt-seattle" class="btn btn-lg btn-info">Read Our Reviews</a>
+			</section>
+
+		</div>
+		<div class="4u 12u(narrower)">
+
+			<section class="read_articles">
+				
+				<header>
+					<span class="icon featured fa-check-square-o"></span>
+					<h3>THE HEALTHY CLEANING ALTERNATIVE</h3>
+				</header>
+				<p>Jays Cleaners utilizes the SystemK4 cleaning system which is a Toxin-Free, Environmentally Safe and Healthy cleaning system. Unlike the cleaning methods of the past which relied heavily on Perchloroethylene (Perc), SystemK4 utilizes a perc-free/halogen-free, organic solvent and has been tested to be dermatologically safe, biodegradable and provides an excellent, odorless finish to every garment. </p>
+				<a href="http://www.systemk4.com/en/" target="__blank" class="btn btn-lg btn-info">Learn More</a>
+			</section>
+
+		</div>
+		<div class="4u 12u(narrower)">
+
+			<section class="read_articles">
+				
+				<header>
+					<span class="icon featured fa-truck"></span>
+					<h3>Delivery Specialists</h3>
+				</header>
+				<p>Create an Account using our <a href="{{ route('pages_registration') }}">Sign Up</a> page and set up a delivery schedule today. Returning Members can simply <a href="{{ route('pages_login') }}">Login</a> to schedule a delivery.</p>  
+				<p>Special Instructions for any article or garment and delivery location (concierge, front porch, etc) can be included on each delivery schedule. Once your finished, we will send you an email confirmation.</p>
+				<a href="{{ route('delivery_pickup') }}" class="btn btn-lg btn-info">Schedule A Delivery</a>
+			</section>
+
+		</div>
+
+	</div>
+</section>
+
 
 <!-- One -->
 <section class="wrapper style3 container special">
@@ -165,57 +220,6 @@
 	</div>
 
 
-</section>
-
-<!-- Two -->
-<section class="wrapper style1 container special">
-	<div class="row">
-		<div class="4u 12u(narrower)">
-
-			<section class="read_articles">
-				<span class="icon featured fa-history"></span>
-				<header>
-					<h3>About Us</h3>
-				</header>
-				<p>
-					Jays Cleaners was established in the Greenlake neighborhood of Seattle over 70 years ago. 
-					Family run and operated, we at Jays Cleaners have always held the belief that the Customer expects and deserves the best and it is our duty to deliver the best.
-				</p>
-				<p>
-					We at Jays Cleaners are relentlessly setting and maintaining high standards for quality, continuously implementing industry best practices and always paying careful attention to the many details of what makes a quality finished product (ie. stain removal, replacing cracked or chipped buttons, sewing loose hems, scrubbing collars, etc). We are always striving to deliver the best quality services, on-time, every time. 
-					Our goal is simple: 100% Customer Satisfaction!
-				</p>
-				<a href="https://www.yelp.com/biz/jays-dry-cleaners-roosevelt-seattle" class="btn btn-lg btn-info">Read Our Reviews</a>
-			</section>
-
-		</div>
-		<div class="4u 12u(narrower)">
-
-			<section class="read_articles">
-				<span class="icon featured fa-check-square-o"></span>
-				<header>
-					<h3>THE HEALTHY CLEANING ALTERNATIVE</h3>
-				</header>
-				<p>Jays Cleaners utilizes the SystemK4 cleaning system which is a Toxin-Free, Environmentally Safe and Healthy cleaning system. Unlike the cleaning methods of the past which relied heavily on Perchloroethylene (Perc), SystemK4 utilizes a perc-free/halogen-free, organic solvent and has been tested to be dermatologically safe, biodegradable and provides an excellent, odorless finish to every garment. </p>
-				<a href="http://www.systemk4.com/en/" target="__blank" class="btn btn-lg btn-info">Learn More</a>
-			</section>
-
-		</div>
-		<div class="4u 12u(narrower)">
-
-			<section class="read_articles">
-				<span class="icon featured fa-truck"></span>
-				<header>
-					<h3>Delivery Specialists</h3>
-				</header>
-				<p>Create an Account using our <a href="{{ route('pages_registration') }}">Sign Up</a> page and set up a delivery schedule today. Returning Members can simply <a href="{{ route('pages_login') }}">Login</a> to schedule a delivery.</p>  
-				<p>Special Instructions for any article or garment and delivery location (concierge, front porch, etc) can be included on each delivery schedule. Once your finished, we will send you an email confirmation.</p>
-				<a href="{{ route('delivery_pickup') }}" class="btn btn-lg btn-info">Schedule A Delivery</a>
-			</section>
-
-		</div>
-
-	</div>
 </section>
 
 <!-- Three -->
