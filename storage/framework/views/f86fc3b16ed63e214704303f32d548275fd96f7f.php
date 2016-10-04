@@ -90,95 +90,86 @@
 </header>
 
 <!-- One -->
-<section class="wrapper style2 container special-alt">
-	<div class="row 50%">
-		<div class="8u 12u(narrower)">
+<section class="wrapper style3 container special">
 
-			<header>
-				<h5><strong>Where to find us</strong></h5>
-			</header>
-			<section class="clearfix">
-			<p>We proudly serve the Seattle region at 2 prime locations in the Montlake and Roosevelt neighborhoods. With the ability to deliver if these locations are not suitable to your current location.</p>
-			<?php if(count($companies) > 0): ?>
-				<?php foreach($companies as $company): ?>
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:30px;">
-					<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-						<address>
-							<strong><?php echo e($company->name); ?></strong><br/>
-							<?php echo e($company->street); ?> <br/>
-							<?php echo e($company->city); ?>, <?php echo e($company->state); ?> <?php echo e($company->zipcode); ?> <br/>
-							<?php echo e($company->phone); ?>
+	<div class="row">
+		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
+			<span class="icon featured fa-map-o"></span>
+			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Where to find us</h3>
+		</header>
+		<section class="clearfix">
+		<p>We proudly serve the Seattle region at 2 prime locations in the Montlake and Roosevelt neighborhoods. With the ability to deliver if these locations are not suitable to your current location.</p>
+		<?php if(count($companies) > 0): ?>
+			<?php foreach($companies as $company): ?>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:30px;">
+				<div style="margin-bottom:10px;">
+					<address>
+						<strong class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->name); ?></strong>
+						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->street); ?></span>
+						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->city); ?>, <?php echo e($company->state); ?> <?php echo e($company->zipcode); ?></span>
+						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->phone); ?></span>
 
-
-						</address>
-						
-					</div>
-					<a href="<?php echo e($company->map); ?>" class="col-lg-3 col-md-3 col-sm-12 col-xs-12 btn btn-warning btn-lg"><i class="fa fa-map-o"></i>&nbsp;Directions</a>
+					</address>
+					<a href="<?php echo e($company->map); ?>" class="btn btn-warning btn-lg"><i class="fa fa-map-marker"></i>&nbsp;Directions</a>
 				</div>
-				<?php endforeach; ?>
-			<?php endif; ?>
-			</section>
-			<hr/>
-			<header>
-				<h5><strong>Store Hours</strong></h5>
-			</header>
-			<section class="clearfix">
 
-				<div class="table-responsive">
-					<table class="table table-condensed">	
-						<thead>
-							<tr style="color:#ffffff;">
-								<th><strong>Day</strong></th>
-								<th><strong>Hours</strong></th>
-								<th><strong>Currently</strong></th>
-							</tr>
-						</thead>
-						<tbody>
-						<?php if(count($companies) > 0): ?>
-							<?php foreach($companies as $company): ?>
-								<?php if(count($company->store_hours) > 0 && $company->id == 1): ?>
-									<?php foreach($company->store_hours as $key => $value): ?>
-										<?php if(date('l') == $key): ?>
-										<tr class="warning" style="color:#5e5e5e; font-weight:bold;">
-											<th><strong><?php echo e($key); ?></strong></th>
-											<td><strong><?php echo e($value); ?></strong></td>
-											<td><strong style="color:<?php echo e($company['open_status'] ? 'green' : 'red'); ?>;"><?php echo e($company['open_status'] ? 'Open' : 'Closed'); ?></strong></td>
-										</tr>
-										<?php else: ?>
-										<tr style="color:#ffffff;">
-											<th><?php echo e($key); ?></th>
-											<td><?php echo e($value); ?></td>
-											<td></td>
-										</tr>
-										<?php endif; ?>
-									
-									<?php endforeach; ?>
-								<?php endif; ?>
-			
-							<?php endforeach; ?>
-						<?php endif; ?>
-						</tbody>
-					</table>
-				</div>
-			</section>
-			<footer>
-
-			</footer>
-
-		</div>
-		<div class="4u 12u(narrower) important(narrower)">
-
-			<ul class="featured-icons">
-				<li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
-				<li><span class="icon fa fa-car"><span class="label">Feature 2</span></span></li>
-				<li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>
-				<li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li>
-				<li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>
-				<li><span class="icon fa-calendar-check-o"><span class="label">Feature 6</span></span></li>
-			</ul>
-
-		</div>
+				
+			</div>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		</section>
 	</div>
+	<div class="row">
+		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
+			<span class="icon featured fa-clock-o"></span>
+			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Store Hours</h3>
+		</header>
+		<header class="clearfix">
+
+			<div class="table-responsive">
+				<table class="table table-condensed">	
+					<thead>
+						<tr>
+							<th><strong>Day</strong></th>
+							<th><strong>Hours</strong></th>
+							<th><strong>Currently</strong></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php if(count($companies) > 0): ?>
+						<?php foreach($companies as $company): ?>
+							<?php if(count($company->store_hours) > 0 && $company->id == 1): ?>
+								<?php foreach($company->store_hours as $key => $value): ?>
+									<?php if(date('l') == $key): ?>
+									<tr class="warning" style="color:#5e5e5e; font-weight:bold;">
+										<th><strong><?php echo e($key); ?></strong></th>
+										<td><strong><?php echo e($value); ?></strong></td>
+										<td><strong style="color:<?php echo e($company['open_status'] ? 'green' : 'red'); ?>;"><?php echo e($company['open_status'] ? 'Open' : 'Closed'); ?></strong></td>
+									</tr>
+									<?php else: ?>
+									<tr>
+										<th><?php echo e($key); ?></th>
+										<td><?php echo e($value); ?></td>
+										<td></td>
+									</tr>
+									<?php endif; ?>
+								
+								<?php endforeach; ?>
+							<?php endif; ?>
+		
+						<?php endforeach; ?>
+					<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
+		</header>
+		<footer>
+
+		</footer>
+
+	</div>
+
+
 </section>
 
 <!-- Two -->
