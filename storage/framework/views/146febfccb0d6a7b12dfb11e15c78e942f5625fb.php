@@ -11,6 +11,10 @@
 		<li class="active">Settings</li>
 	</ol>
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
+
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <div class="row">
 	<a href="<?php echo e(route('companies_index')); ?>" class="col-lg-3 col-xs-6">
