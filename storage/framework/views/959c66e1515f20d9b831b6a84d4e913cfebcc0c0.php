@@ -3,7 +3,8 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
-
+<script type="text/javascript" src="/packages/Readmore/readmore.min.js"></script>
+<script type="text/javascript" src="/js/pages/index.js"></script>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('navigation'); ?>
@@ -22,6 +23,7 @@
 
 
 <?php $__env->startSection('content'); ?>
+<?php echo View::make('partials.pages.services')->render(); ?>
 
 <?php $__env->stopSection(); ?>
 

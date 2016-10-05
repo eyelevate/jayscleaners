@@ -35,29 +35,26 @@
 					</div>
 
 				</section>
+
+			<!-- Main -->
+				<div id="main" style="margin-bottom:0px; padding-bottom:0px;">
+					<div class="row-fluid ">
+					@include('flash::message')
+					</div>
+					@yield('content')
+					<section class="wrapper style3 container special">
+						<header>
+							<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+							<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
+						</header>
+					</section>
+				</div>
+				<p></p>
+			<!-- CTA -->
+
 				<section>
 				@yield('modals')
 				</section>
-			<!-- Main -->
-				<article id="main">
-
-					@yield('content')
-
-				</article>
-
-			<!-- CTA -->
-				<section class="wrapper style3 container special">
-
-					<header>
-						<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
-						<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
-					</header>
-					<footer>
-
-					</footer>
-
-				</section>
-
 			<!-- Footer -->
 				<footer id="footer">
 
@@ -65,8 +62,6 @@
 						<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
 						<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
 						<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
-						<li><a href="#" class="icon circle fa-github"><span class="label">Github</span></a></li>
-						<li><a href="#" class="icon circle fa-dribbble"><span class="label">Dribbble</span></a></li>
 					</ul>
 
 					<ul class="copyright">

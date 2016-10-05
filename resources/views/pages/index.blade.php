@@ -80,7 +80,7 @@
 
 @section('content')
 <header class="special container">
-	<span class="icon fa-home fa-fw" style="font-size:30px;"></span>
+	<span class="icon fa-home fa-fw" style="font-size:25px;"></span>
 	<h2>Welcome to Jays Cleaners. With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>
 
@@ -169,7 +169,7 @@
 		@endif
 		</section>
 	</div>
-	<div class="row">
+	<div id="store_hours" class="row">
 		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
 			<span class="icon featured fa-clock-o"></span>
 			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Store Hours</h3>
@@ -213,69 +213,16 @@
 				</table>
 			</div>
 		</section>
-		<footer>
 
-		</footer>
 
 	</div>
 
 
 </section>
 
-<!-- Three -->
-<section class="wrapper style3 container special">
+{!! View::make('partials.pages.services')->render() !!}
 
-	<header class="major">
-		<h2>Our <strong>Premium</strong> Services</h2>
-	</header>
 
-	<div class="row clearfix">
-		<div class="row clearfix">
-			<section class="col-xs-12 col-sm-12 col-md-4 col-lg-4 read_articles">
-				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:5px; margin-bottom:20px;">Dry Cleaning</h3>
-				<p>We partner with high quality retail cleaners in your neighborhood to ensure you receive the best possible garment care. We select our partners based on a proven track record of customer satisfaction and best practices.</p>
-			</section>
-
-			<section class='col-xs-12 col-sm-12 col-md-4 col-lg-4 read_articles'>
-				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:5px; margin-bottom:20px;">Laundry</h3>
-
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
-
-			<section class="col-xs-12 col-sm-12 col-md-4 col-lg-4 read_articles">
-				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:5px; margin-bottom:20px;">Household Cleaning</h3>
-
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
-		</div>
-		<div class="row clearfix">
-			<section class="col-xs-12 col-sm-12 col-md-4 col-lg-4 read_articles">
-				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:5px; margin-bottom:20px;">Alterations</h3>
-
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
-
-			<section class="col-xs-12 col-sm-12 col-md-4 col-lg-4 read_articles">
-				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:5px; margin-bottom:20px;">Rug Cleaning</h3>
-
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
-			<section class="col-xs-12 col-sm-12 col-md-4 col-lg-4 read_articles">
-				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding:5px; margin-bottom:20px;">Leather Care</h3>
-
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
-		</div>
-
-	</div>
-
-	<footer class="major">
-		<ul class="buttons">
-			<li><a href="{{ route('pages_pricing') }}" class="button">See Our Price List</a></li>
-		</ul>
-	</footer>
-
-</section>
 @stop
 
 @section('modals')

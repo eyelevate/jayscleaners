@@ -44,4 +44,28 @@ class InventoryItem extends Model
 
 		return $data;
 	}
+
+	public static function preparePricingList() {
+		$list = [
+			'Dry Clean' => [
+				'Pants' => '$6.50',
+				'Blouse' => '$6.50',
+				'Shirt (Dry Clean)' => '$6.50',
+				'2pc Suit' => '$14.95',
+				'Tux Suit' => '$15.95',
+				'Sweater' => '$6.50',
+				'Tie' => '$4.75',
+				'Jacket' => '$8.95',
+				'Vest' => '$5.75',
+				'Shorts' => '$5.95',
+				'Jumper' => '$15.95'
+			],
+			'Laundry' => [
+				'Shirts (Hanger)' => '$1.70',
+				'Shirts (Folded)' => '$3.40'
+			]
+		];
+
+		return $list;
+	}
 }

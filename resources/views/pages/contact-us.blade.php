@@ -24,5 +24,8 @@
 
 
 @section('content')
-
+{!! View::make('partials.pages.contact-us')
+	->with('companies',$companies)
+    ->render()
+!!}
 @stop

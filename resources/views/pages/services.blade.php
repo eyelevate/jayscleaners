@@ -5,7 +5,8 @@
 @stop
 
 @section('scripts')
-
+<script type="text/javascript" src="/packages/Readmore/readmore.min.js"></script>
+<script type="text/javascript" src="/js/pages/index.js"></script>
 @stop
 
 @section('navigation')
@@ -24,5 +25,5 @@
 
 
 @section('content')
-
+{!! View::make('partials.pages.services')->render() !!}
 @stop

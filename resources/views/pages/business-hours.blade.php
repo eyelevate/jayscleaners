@@ -24,5 +24,9 @@
 
 
 @section('content')
-
+{!! 
+	View::make('partials.pages.business-hours')
+	->with('companies',$companies)
+	->render() 
+!!}
 @stop

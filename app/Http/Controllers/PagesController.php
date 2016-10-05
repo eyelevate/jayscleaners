@@ -22,6 +22,8 @@ use App\Company;
 use App\Customer;
 use App\Custid;
 use App\Delivery;
+use App\Inventory;
+use App\InventoryItem;
 use App\Layout;
 use App\Schedule;
 use App\Address;
@@ -231,15 +233,17 @@ class PagesController extends Controller
 
     public function getBusinessHours() {
         $this->layout = 'layouts.frontend_basic';
-
+        $companies = Company::prepareForView(Company::all());
         return view('pages.business-hours')
+        ->with('companies',$companies)
         ->with('layout',$this->layout);
     }
 
     public function getContactUs() {
         $this->layout = 'layouts.frontend_basic';
-
+        $companies = Company::prepareForView(Company::all());
         return view('pages.contact-us')
+        ->with('companies',$companies)
         ->with('layout',$this->layout);        
     }
 
@@ -253,6 +257,12 @@ class PagesController extends Controller
     }
 
     public function getPricing() {
-        
+
+        $price_list = InventoryItem::preparePricingList();
+        $this->layout = 'layouts.frontend_basic';
+
+        return view('pages.pricing')
+        ->with('price_list',$price_list)
+        ->with('layout',$this->layout);
     }
 }
