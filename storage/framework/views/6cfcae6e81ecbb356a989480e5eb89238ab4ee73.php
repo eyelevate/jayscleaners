@@ -20,10 +20,11 @@
 
 			<!-- Header -->
 				<?php echo $__env->yieldContent('navigation'); ?>
-
 			<!-- Banner -->
 				<section id="banner">
-
+					<div class="row-fluid ">
+					<?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+					</div>
 					<!--
 						".inner" is set up as an inline-block so it automatically expands
 						in both directions to fit whatever's inside it. This means it won't
@@ -38,9 +39,7 @@
 
 			<!-- Main -->
 				<div id="main" style="margin-bottom:0px; padding-bottom:0px;">
-					<div class="row-fluid ">
-					<?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-					</div>
+
 					<?php echo $__env->yieldContent('content'); ?>
 					<section class="wrapper style3 container special">
 						<header>
