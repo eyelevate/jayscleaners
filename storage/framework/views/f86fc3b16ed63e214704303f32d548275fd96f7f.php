@@ -88,7 +88,7 @@
 	<span class="icon fa-home fa-fw" style="font-size:25px;"></span>
 	<h2>Welcome to Jays Cleaners. With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>
-<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-4.png" style="min-height:400px;" androidFix="false" iosFix="false"></section>
+<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-4.png" style="min-height:400px;" data-androidFix="false" data-iosFix="false"></section>
 <!-- Two -->
 <br/>
 <section class="wrapper style1 container special">
@@ -143,7 +143,7 @@
 
 	</div>
 </section>
-<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-3.png" style="min-height:400px;" androidFix="false" iosFix="false"></section>
+<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-3.png" style="min-height:400px;" data-androidFix="false" data-iosFix="false"></section>
 
 <!-- One -->
 <section class="wrapper style3 container special">
@@ -225,7 +225,7 @@
 
 
 </section>
-<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-2.png" style="min-height:400px;" androidFix="false" iosFix="false"></section>
+<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-2.png" style="min-height:400px;" data-androidFix="false" data-iosFix="false"></section>
 <?php echo View::make('partials.pages.services')->render(); ?>
 
 
