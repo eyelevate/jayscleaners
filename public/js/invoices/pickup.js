@@ -56,34 +56,35 @@ pickup = {
 		$(".finish_button").click(function(){
 			$("#invoice_form").html('');
 			var type = $(this).attr('id').replace('finish-','');
-			var type_input = '<input name="type" value="'+type+'" />';
+			console.log(type);
+			var type_input = '<input type="hidden" name="type" value="'+type+'" />';
 			$("#invoice_form").append(type_input);
 
 			switch(type) {
-				case 'card':
-				var last_four = $("#last_four_card").val();
-				$('#invoice_form').append('<input name="last_four" value="'+last_four+'" />');
+				case 'credit':
+				var last_four = $("#last_four_credit").val();
+				$('#invoice_form').append('<input type="hidden" name="last_four" value="'+last_four+'" />');
 				break;
 
 				case 'cash':
 				var tendered = $("#amount_tendered_exact").val();
-				$('#invoice_form').append('<input name="tendered" value="'+tendered+'" />');
+				$('#invoice_form').append('<input type="hidden name="tendered" value="'+tendered+'" />');
 				break;
 
 				case 'cof':
 				var payment_id = $("#payment_id").val();
-				$('#invoice_form').append('<input name="payment_id" value="'+payment_id+'" />');
+				$('#invoice_form').append('<input type="hidden name="payment_id" value="'+payment_id+'" />');
 				break;
 
 				default:
 				var check_number = $("#last_four_check").val();
-				$('#invoice_form').append('<input name="last_four" value="'+check_number+'" />');
+				$('#invoice_form').append('<input type="hidden" name="last_four" value="'+check_number+'" />');
 				break;
 			}
 
 			$("#selected_tbody").find('tr').each(function(e){
 				var invoice_id = $(this).attr('id').replace('selected_tr-','');
-				var selected_input = '<input name="invoice_id[e]" value="'+invoice_id+'"/>';
+				var selected_input = '<input name="invoice_id['+e+']" value="'+invoice_id+'"/>';
 				$("#invoice_form").append(selected_input);
 			});
 

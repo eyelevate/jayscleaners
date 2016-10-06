@@ -193,6 +193,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/invoices/pickup',['uses'=>'InvoicesController@postPickup']);
 		Route::get('/invoices/rack',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
 		Route::post('/invoices/rack',['uses'=>'InvoicesController@postRack']);
+		Route::post('/invoices/rack-update',['as'=>'invoice_rack_update','uses'=>'InvoicesController@postRackUpdate']);
+		Route::post('/invoices/rack-remove',['as'=>'invoice_rack_remove','uses'=>'InvoicesController@postRackRemove']);
 		Route::get('/invoices/report/{id}',['as'=>'invoices_report','uses'=>'InvoicesController@getReport']);
 		Route::get('/invoices/test',['as'=>'invoices_test','uses'=>'InvoicesController@getTest']);
 		Route::get('/invoices/delete/{id}',['as'=>'invoices_delete','uses'=>'InvoicesController@getDelete']);

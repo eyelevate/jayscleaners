@@ -496,11 +496,29 @@ class InvoicesController extends Controller
     public function postPickup(Request $request) {
         $company_id = Auth::user()->company_id;
         $customer_id = $request->customer_id;
+        $invoice_ids = $request->invoice_id;
+        Job::dump($invoice_ids);
         $invoices = Invoice::whereIn('id',$request->invoice_id)->get();
         $selected = Invoice::prepareSelected($invoices);
 
         $type = $request->type;
-        if ($type = 'cof') {
+        switch($type) {
+            case 'credit':
+                $transaction_type = 1;
+            break;
+            case 'cash':
+                $transaction_type = 2;
+            break;
+            case 'check':
+                $transaction_type = 3;
+            break;
+            default: // card on file
+                $transaction_type = 4;
+            break;
+        }
+        $last_four =($request->last_four) ? $request->last_four : NULL;
+
+        if ($type == 'cof') {
             $profile_id = false;
             $payment_id = false;
             $cards = Card::where('payment_id',$request->payment_id)->get();
@@ -537,10 +555,10 @@ class InvoicesController extends Controller
         $transactions->aftertax = $selected['totals']['total'];
         $transactions->discount = NULL;
         $transactions->total = $selected['totals']['total'];
-        $transactions->type = 1;
+        $transactions->type = $transaction_type;
         $transactions->status = 1;
         $transactions->tendered = $request->tendered ? $request->tendered : NULL;
-        $transactions->last_four = $request->last_four ? $request->last_four : NULL;
+        $transactions->last_four = $last_four;
         if ($transactions->save()) {
             $transaction_id = $transactions->id;
             if (count($invoices) > 0) {
@@ -587,13 +605,72 @@ class InvoicesController extends Controller
         return view('invoices.view')
         ->with('layout',$this->layout);
     }
-    public function getRack(){
+    public function getRack(Request $request){
+        $racks = ($request->session()->has('racks')) ? $request->session()->get('racks')  : false;
+        $this->layout = 'layouts.dropoff';
         return view('invoices.rack')
+        ->with('racks',$racks)
         ->with('layout',$this->layout);
     }
 
-    public function postRack() {
+    public function postRack(Request $request) {
+        $racks = $request->rack;
 
+        if (count($racks) > 0) {
+            foreach ($racks as $key => $value) {
+                $invoices = Invoice::where('invoice_id',$key)->get();
+                if (count($invoices) > 0) {
+                    foreach ($invoices as $invoice) {
+                        $invoice_id = $invoice->id;
+                        $invs = Invoice::find($invoice_id);
+                        $invs->status = 2;
+                        $invs->rack = $value;
+                        $invs->save();
+                    }
+                }
+            }
+            $request->session()->pull('racks');
+            Flash::success('Successfully racked invoices.');
+            return Redirect::route('admins_index');
+
+        } else {
+            Flash::error('No racks were entered in to be saved. Please try again.');
+            return Redirect::back();
+        }
+    }
+
+    public function postRackUpdate(Request $request) {
+        if ($request->ajax()) {
+            $invoice_id = $request->invoice_id;
+            $rack_number = $request->rack_number;
+            if ($request->session()->has('racks')) {
+                $racks = $request->session()->get('racks');
+                $racks[$invoice_id] = $rack_number;
+                $request->session()->put('racks',$racks);
+            } else {
+                $request->session()->put('racks',[$invoice_id=>$rack_number]);
+            }
+
+            return response()->json([
+                'status'=> true,
+                'racks' => $request->session()->get('racks')
+            ]);
+        }
+    }
+    public function postRackRemove(Request $request) {
+        if ($request->ajax()) {
+            $invoice_id = $request->invoice_id;
+            if ($request->session()->has('racks')) {
+                $racks = $request->session()->get('racks');
+                unset($racks[$invoice_id]);
+                $request->session()->put('racks',$racks);
+            } 
+            
+            return response()->json([
+                'status'=> true,
+                'racks' => $request->session()->get('racks')
+            ]);
+        }
     }
 
     public function postFeed(Request $request) {

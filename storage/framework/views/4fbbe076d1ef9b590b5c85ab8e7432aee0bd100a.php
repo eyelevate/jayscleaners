@@ -1,18 +1,18 @@
-@extends($layout)
-@section('stylesheets')
+<?php $__env->startSection('stylesheets'); ?>
 
-@stop
-@section('scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
 <script type="text/javascript" src="/packages/ion.sound-3.0.7/ion.sound.min.js"></script>
 <script type="text/javascript" src="/js/invoices/rack.js"></script>
-@stop
-@section('header')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('header'); ?>
 
-@stop
-@section('notifications')
-  {!! View::make('partials.layouts.nav-bar')->render() !!}
-@stop
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 	<br/>
 
 	<section class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -36,7 +36,8 @@
 				</div>
 			</div>
 		</article>
-		{!! Form::open(['action' => 'InvoicesController@postRack','role'=>"form"]) !!}
+		<?php echo Form::open(['action' => 'InvoicesController@postRack','role'=>"form"]); ?>
+
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="box box-info">
 				<div class="box-header"><h4>Invoice Selected</h4></div>
@@ -48,31 +49,33 @@
 							<th>Action</th>
 						</thead>
 						<tbody id="rack_tbody">
-						@if ($racks) 
-							@foreach($racks as $key => $value)
+						<?php if($racks): ?> 
+							<?php foreach($racks as $key => $value): ?>
 							<tr>
-								<td>{{ $key }}</td>
-								<td>{{ $value }}</td>
-								<td><a invoice="{{ $key }}" class="remove btn btn-sm btn-danger">Remove</a><input type="hidden" name="rack[{{ $key }}]" value="{{ $value }}"/></td>
+								<td><?php echo e($key); ?></td>
+								<td><?php echo e($value); ?></td>
+								<td><a invoice="<?php echo e($key); ?>" class="remove btn btn-sm btn-danger">Remove</a><input type="hidden" name="rack[<?php echo e($key); ?>]" value="<?php echo e($value); ?>"/></td>
 							</tr>
-							@endforeach
-						@endif
+							<?php endforeach; ?>
+						<?php endif; ?>
 						</tbody>
 
 					</table>
 				</div>
 				<div class="box-footer clearfix">
-					<a class="btn btn-lg btn-danger" href="{{ URL::previous() }}">Back</a>
+					<a class="btn btn-lg btn-danger" href="<?php echo e(URL::previous()); ?>">Back</a>
 					<button type="submit" class="btn btn-lg btn-success" >Finish</button>
 
 				</div>
 			</div>
 		</article>
-		{!! Form::close() !!}
+		<?php echo Form::close(); ?>
+
 	</section>
 
-@stop
+<?php $__env->stopSection(); ?>
 
-@section('modals')
+<?php $__env->startSection('modals'); ?>
 =
-@stop
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

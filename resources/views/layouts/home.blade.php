@@ -80,6 +80,7 @@
 			<!--[if lte IE 8]><script src="/packages/html5up-twenty/assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="/packages/html5up-twenty/assets/js/jquery.scrolly.min.js"></script>
 			<script src="/packages/html5up-twenty/assets/js/jquery.scrollgress.min.js"></script>
+			<script src="/packages/parallax.js-1.4.2/parallax.min.js"></script>
 			<script src="/packages/html5up-twenty/assets/js/main.js"></script>
 
 			@yield('scripts')
