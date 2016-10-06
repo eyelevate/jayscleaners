@@ -219,7 +219,7 @@
 
 
 </section>
-
+<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-2.png" style="min-height:400px;"></section>
 {!! View::make('partials.pages.services')->render() !!}
 
 
