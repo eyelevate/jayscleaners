@@ -15,6 +15,10 @@
 <?php $__env->startSection('header'); ?>
 
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
+
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <div class=" clearfix">
 	<div class="row">

@@ -5,7 +5,10 @@
 <?php $__env->startSection('scripts'); ?>
 
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
 
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
  	<br/>
     <section class="panel panel-default">

@@ -163,7 +163,7 @@
 	</section>
 
 		<!-- Main content -->
-		<section class="content" style="margin-top:0px; padding-top:0px;">
+		<section class="content clearfix" style="margin-top:0px; padding-top:0px;">
 			@include('flash::message')
 			@yield('content')
 

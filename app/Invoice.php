@@ -135,4 +135,26 @@ class Invoice extends Model
 
         return $new_invoice_id;
     }
+
+    public static function prepareSelected($data) {
+        $selected = [];
+        $totals = Invoice::prepareTotals($data);
+        $invoice_html = '';
+        if (count($data) > 0) {
+            foreach ($data as $invoice) {
+                $invoice_html .= '<tr id="selected_tr-'.$invoice->id.'" class="info">';
+                $invoice_html .= '<td>'.str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT).'</td>';
+                $invoice_html .= '<td>'.date('D n/d',strtotime($invoice->created_at)).'</td>';
+                $invoice_html .= '<td>'.date('D n/d',strtotime($invoice->due_date)).'</td>';
+                $invoice_html .= '<td>'.$invoice->quantity.'</td>';
+                $invoice_html .= '<td>'.money_format('$%i',$invoice->pretax).'</td>';
+                $invoice_html .= '</tr>';
+            }
+        }
+
+        $selected['invoices'] = $invoice_html;
+        $selected['totals'] = $totals;
+
+        return $selected;
+    }
 }

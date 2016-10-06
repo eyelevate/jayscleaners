@@ -16,6 +16,7 @@
 <br/>
 {!! Form::open(['action' => 'CardsController@postAdminsAdd', 'class'=>'form-horizontal','role'=>"form"]) !!}
 {!! csrf_field() !!}
+{!! Form::hidden('customer_id',$customer_id) !!}
 <div class="panel panel-default">
     <div class="panel-heading">Credit Card Form</div>
     <div class="panel-body">  

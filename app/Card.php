@@ -184,6 +184,160 @@ class Card extends Model
 		}
     }
 
+	static public function addAdminCard($form_data, $company_id, $root_payment_id, $customer_id) {
+        $cards_saved = 0;
+        
+        $first_name = $form_data['first_name'];
+        $last_name = $form_data['last_name'];
+        $street = $form_data['street'];
+        $suite = $form_data['suite'];
+        $city = $form_data['city'];
+        $state = $form_data['state'];
+        $zipcode = $form_data['zipcode'];
+        $exp_month = $form_data['exp_month'];
+        $exp_year = $form_data['exp_year'];
+        $card_number = $form_data['card_number'];    	
+    	$companies = Company::find($company_id);
+    	$customers = User::find($customer_id);
+		$api_login_id = $companies->payment_api_login;
+		$api_transaction_key = $companies->payment_gateway_id;
+		$cards = new Card();
+		$cards->user_id = $customer_id;
+		$cards->street = $street;
+		$cards->suite = $suite;
+		$cards->city = $city;
+		$cards->zipcode = $zipcode;
+		$cards->state = $state;
+		$cards->exp_month = $exp_month;
+		$cards->exp_year = $exp_year;
+		$cards->company_id = $company_id;    
+		// Common setup for API credentials
+		$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+		$merchantAuthentication->setName($api_login_id);
+		$merchantAuthentication->setTransactionKey($api_transaction_key);
+		$refId = 'ref' . time(). $company_id;
+		// Create the payment data for a credit card
+		$creditCard = new AnetAPI\CreditCardType();
+		$creditCard->setCardNumber($card_number);
+		$creditCard->setExpirationDate($exp_year.'-'.$exp_month);
+		$paymentCreditCard = new AnetAPI\PaymentType();
+		$paymentCreditCard->setCreditCard($creditCard);
+
+		// Create the Bill To info
+		$billto = new AnetAPI\CustomerAddressType();
+		$billto->setFirstName($first_name);
+		$billto->setLastName($last_name);
+		$billto->setCompany('');
+		$billto->setAddress($street.' '.$suite);
+		$billto->setCity($city);
+		$billto->setState($state);
+		$billto->setZip($zipcode);
+		$billto->setCountry("USA");	
+		$profiles = Profile::where('company_id',$company_id)->where('user_id',$customer_id)->get();
+		if (count($profiles)) {
+			foreach ($profiles as $profile) {
+				$prev_profile_id = $profile->profile_id;		
+
+				// Create a new Customer Payment Profile
+				$paymentprofile = new AnetAPI\CustomerPaymentProfileType();
+				$paymentprofile->setCustomerType('individual');
+				$paymentprofile->setBillTo($billto);
+				$paymentprofile->setPayment($paymentCreditCard);
+
+				$paymentprofiles[] = $paymentprofile;
+
+				// Submit a CreateCustomerPaymentProfileRequest to create a new Customer Payment Profile
+				$paymentprofilerequest = new AnetAPI\CreateCustomerPaymentProfileRequest();
+				$paymentprofilerequest->setMerchantAuthentication($merchantAuthentication);
+				//Use an existing profile id
+				$paymentprofilerequest->setCustomerProfileId( $prev_profile_id );
+				$paymentprofilerequest->setPaymentProfile( $paymentprofile );
+				$paymentprofilerequest->setValidationMode("liveMode");
+				// $paymentprofilerequest->setValidationMode("liveMode");
+				$controller = new AnetController\CreateCustomerPaymentProfileController($paymentprofilerequest);
+				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+				if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
+					$root_payment_id = ($root_payment_id) ? $root_payment_id : $response->getCustomerPaymentProfileId();
+				  	$cards->profile_id = $prev_profile_id;
+				  	$cards->payment_id = $response->getCustomerPaymentProfileId();
+				  	$cards->root_payment_id = $root_payment_id;
+				  	$cards->status = 1;
+				  	if ($cards->save()) {
+				  		return ['status'=>true,
+				  				'root_payment_id'=>$root_payment_id];
+				  	}
+				} else {
+					// echo "Create Customer Payment Profile: ERROR Invalid response\n";
+					$errorMessages = $response->getMessages()->getMessage();
+					// echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+				 	
+				 	return ['status'=>false,
+				 			'message'=>"Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText()]; 
+				}			
+				
+
+			} //end foreach
+		} else {
+
+			// Create a Customer Profile Request
+			//  1. create a Payment Profile
+			//  2. create a Customer Profile   
+			//  3. Submit a CreateCustomerProfile Request
+			//  4. Validate Profiiel ID returned
+
+			$paymentprofile = new AnetAPI\CustomerPaymentProfileType();
+
+			$paymentprofile->setCustomerType('individual');
+			$paymentprofile->setBillTo($billto);
+			$paymentprofile->setPayment($paymentCreditCard);
+			$paymentprofiles[] = $paymentprofile;
+			$customerprofile = new AnetAPI\CustomerProfileType();
+			$customerprofile->setMerchantCustomerId($customer_id);
+			$customerprofile->setEmail($customers->email);
+			$customerprofile->setDescription($customers->last_name.', '.$customers->first_name.' ~ '.strtotime(date('Y-m-d H:i:s')));
+			$customerprofile->setPaymentProfiles($paymentprofiles);
+
+			$request = new AnetAPI\CreateCustomerProfileRequest();
+			$request->setMerchantAuthentication($merchantAuthentication);
+			$request->setRefId( $refId);
+			$request->setProfile($customerprofile);
+			// Job::dump($request);
+			$controller = new AnetController\CreateCustomerProfileController($request);
+			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+			if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
+				// Flash::success('Succesfully create customer profile : '.$response->getCustomerProfileId() );
+			  	// Job::dump($response->getCustomerProfileId());
+			  	$paymentProfiles = $response->getCustomerPaymentProfileIdList();
+			  	$payment_id = $paymentProfiles[0];
+
+			  	$cards->profile_id = $response->getCustomerProfileId();
+			  	$cards->payment_id = $payment_id;
+			  	$cards->root_payment_id = ($root_payment_id) ? $root_payment_id : $payment_id;
+			  	$cards->status = 1;
+			  	$prof = new Profile();
+			  	$prof->company_id = $company_id;
+			  	$prof->user_id = $customer_id;
+			  	$prof->profile_id = $response->getCustomerProfileId();
+			  	$prof->status = 1;
+			  	$prof->save();
+			  	if ($cards->save()) {
+			  		
+			  		return ['status'=>true,
+			  				'root_payment_id'=>($root_payment_id) ? $root_payment_id : $payment_id];
+			  	}
+			  
+			} else {
+				$errorMessages = $response->getMessages()->getMessage();
+				
+				// Job::dump("Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n");
+				return Redirect::route('cards_add');
+				return ['status'=>false,
+						'message'=>"Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText()];
+			}					
+		}
+    }
+
+
     static public function getUserId($root_payment_id) {
     	$user_id = false;
     	$cards = Card::where('root_payment_id',$root_payment_id)->get();
@@ -197,7 +351,7 @@ class Card extends Model
     }
 
     static public function prepareForAdminView($data) {
-    	$companies = Company::find(1);
+    	$companies = Company::find(Auth::user()->company_id);
     	$cards_data = [];
     	if (count($data) > 0) {
     		foreach ($data as $key => $card) {

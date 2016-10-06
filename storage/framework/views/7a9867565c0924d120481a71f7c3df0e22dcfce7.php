@@ -165,6 +165,9 @@
                 <a class="btn btn-lg btn-info" href="<?php echo e(route('delivery_new',$customers->id)); ?>">
                     <div class="icon"><i class="ion-android-car"></i> Set Delivery</div>
                 </a>
+                <a class="btn btn-lg btn-info" href="<?php echo e(route('cards_admins_index',$customers->id)); ?>">
+                    <div class="icon"><i class="ion ion-card"></i> Card on File</div>
+                </a>
             </div>  
 		</div>
 	</div>

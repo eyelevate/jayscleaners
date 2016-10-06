@@ -167,7 +167,7 @@
 	</section>
 
 		<!-- Main content -->
-		<section class="content" style="margin-top:0px; padding-top:0px;">
+		<section class="content clearfix" style="margin-top:0px; padding-top:0px;">
 			<?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 			<?php echo $__env->yieldContent('content'); ?>
 

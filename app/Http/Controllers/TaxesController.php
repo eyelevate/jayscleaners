@@ -46,7 +46,7 @@ class TaxesController extends Controller
 
     public function postUpdate(Request $request){
     	// First set all tax statuses to 2
-    	Tax::where('id','>',0)->update(['status' => 2]);
+    	Tax::where('id','>',0)->where('company_id',Auth::user()->company_id)->update(['status' => 2]);
     	// insert new tax row with status 1 to show that this is the current tax rate.
          //Validate the request
         $this->validate($request, [
@@ -54,9 +54,12 @@ class TaxesController extends Controller
             'company_id'=>'required'
         ]);   
 
+        // adjust rate
+        $tax_rate = ($request->rate > 1) ? ($request->rate / 100) : $request->rate;
+
         $tax = new Tax();
-        $tax->company_id = $request->company_id;
-        $tax->rate = $request->rate;
+        $tax->company_id = Auth::user()->company_id;
+        $tax->rate = $tax_rate;
         $tax->status = 1;
         if($tax->save()){
 			Flash::success('Successfully updated sales tax!');

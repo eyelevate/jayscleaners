@@ -95,13 +95,20 @@
 	<?php echo View::make('partials.customers.reprint-invoice'); ?>
 
 
+
 	<!-- Invoice data -->
 	<?php if(isset($invoices)): ?>
 		<?php foreach($invoices as $invoice): ?>
 		<?php echo View::make('partials.customers.invoice_items')
+			->with('id',$invoice->id)
 			->with('invoice_id',$invoice->invoice_id)
 			->with('items',$invoice->items)
 			->render(); ?>	
+		<?php echo View::make('partials.customers.remove-invoice')
+			->with('id',$invoice->id)
+			->with('invoice_id', $invoice->invoice_id)
+			->render(); ?>
+
 		<?php endforeach; ?>
 	<?php endif; ?>
 

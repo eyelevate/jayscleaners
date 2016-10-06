@@ -6,13 +6,18 @@
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
 
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
 
+<?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 <br/>
 <?php echo Form::open(['action' => 'CardsController@postAdminsAdd', 'class'=>'form-horizontal','role'=>"form"]); ?>
 
 <?php echo csrf_field(); ?>
+
+<?php echo Form::hidden('customer_id',$customer_id); ?>
 
 <div class="panel panel-default">
     <div class="panel-heading">Credit Card Form</div>

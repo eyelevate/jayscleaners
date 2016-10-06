@@ -70,7 +70,7 @@ class InventoriesController extends Controller
         ]);   
 
         $inventory = new Inventory();
-        $inventory->company_id = $request->company_id;
+        $inventory->company_id = Auth::user()->company_id;
         $inventory->name = $request->name;
         $inventory->description = $request->description;
         $inventory->ordered = null;

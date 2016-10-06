@@ -22,16 +22,21 @@ use App\Admin;
 use App\Layout;
 use App\Inventory;
 use App\InventoryItem;
+use App\Card;
 use App\Color;
 use App\Company;
 use App\Memo;
 use App\Tax;
+use App\Schedule;
+use App\Transaction;
 use App\Invoice;
 use App\InvoiceItem;
 use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\CapabilityProfiles\StarCapabilityProfile;
 use Mike42\Escpos\Printer;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
 
 class InvoicesController extends Controller
 {
@@ -122,26 +127,25 @@ class InvoicesController extends Controller
 
     public function postAdd(Request $request){
         $items = Input::get('item');
-        $tax_rate = $tax_rate = Tax::where('company_id',Auth::user()->company_id)->where('status',1)->first()->rate;
+        $company_id = Auth::user()->company_id;
+        $tax_rate = $tax_rate = Tax::where('company_id',$company_id)->where('status',1)->first()->rate;
+        
+        $last_saved_id = Invoice::where('company_id',$company_id)->orderBy('id','desc')->limit(1)->pluck('invoice_id');
+
         if(count($items) > 0) { //Check if any items were selected
             // what type of print out?
             $print_type = $request->store_copy;
-
-            $last_saved_id = Invoice::where('id','>',0)->orderBy('id','desc')->limit(1)->get();
-            $last_invoice_id = 0;
-            if(count($last_saved_id) > 0){
-                foreach ($last_saved_id as $invoice) {
-                    $last_invoice_id = $invoice->invoice_id;
-                    break;
-                }
-            }
-            $new_invoice_id = $last_invoice_id + 1;
-
+            // create a new invoice id (this is different than invoices->id it is its own identification)
+            $new_invoice_id = (count($last_saved_id) > 0) ? $last_saved_id[0] : 0;
 
             foreach ($items as $itms) { // iterate through the first index (inventory group)
+                // create a new invoice id (this is different than invoices->id it is its own identification)
+                $new_invoice_id++;
+
+                // create new invoice object and prep for saving
                 $invoice = new Invoice();
                 $invoice->invoice_id = $new_invoice_id;
-                $invoice->company_id = Auth::user()->company_id;
+                $invoice->company_id = $company_id;
                 $invoice->customer_id = $request->customer_id;
                 $invoice->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
                 $invoice->status = 1;   
@@ -159,7 +163,7 @@ class InvoicesController extends Controller
                             $qty++;
                             $item = new InvoiceItem();
                             $item->invoice_id = $invoice->invoice_id;
-                            $item->company_id = Auth::user()->company_id;
+                            $item->company_id = $company_id;
                             $item->customer_id = $request->customer_id;
                             $item->item_id = $ivalue['item_id'];
                             $item->pretax = $ivalue['price'];
@@ -343,6 +347,240 @@ class InvoicesController extends Controller
             Flash::warning('Could not save your invoice! Please select an invoice item');
             return Redirect::route('invoices_dropoff',$request->customer_id); 
         }   
+    }
+
+    public function getDelete($id = null) {
+        $invoices = Invoice::find($id);
+        if ($invoices->delete()) {
+            $invoice_id = $invoices->invoice_id;
+            $company_id = $invoices->company_id;
+            $items = InvoiceItem::where('company_id',$company_id)->where('invoice_id',$invoice_id)->get();
+            if (count($items)>0) {
+                foreach ($items as $item) {
+                    $item_id = $item->id;
+                    $itms = InvoiceItem::find($item_id);
+                    $itms->delete();
+                }
+            }
+            Flash::success('Successfully delete invoice #'.$invoice_id);
+        }
+        return Redirect::back();
+    }
+
+    public function getPickup($id = null) {
+        $customer_id = $id;
+        $invoices = Invoice::where('customer_id',$customer_id)->where('transaction_id',NULL)->get();
+        $cards = Card::where('user_id',$id)->where('company_id',Auth::user()->company_id)->get();
+
+        $companies = Company::find(Auth::user()->company_id);
+        $cards_data = [];
+        $payment_ids = [];
+        if (count($cards) > 0) {
+            foreach ($cards as $key => $card) {
+                $profile_id = $card->profile_id;
+                $payment_id = $card->payment_id;
+                $exp_month = $card->exp_month;
+                $exp_year = $card->exp_year;
+                $street = $card->street;
+                $suite = $card->suite;
+                $city = $card->city;
+                $state = $card->state;
+                $status = $card->status;
+
+                $exp_full_time = strtotime($exp_year.'-'.$exp_month.'-01 00:00:00');
+                $today = strtotime(date('Y-m-d H:i:s'));
+                $difference = $exp_full_time - $today;
+                $days_remaining = floor($difference/60/60/24);
+                $days_comment = ($days_remaining > 0) ? $days_remaining.' day(s) remaining.' : 'Expired!';
+                if ($difference < 0) {
+                    $exp_status = 3; // expired
+                } elseif(($exp_full_time < strtotime('+1 month'))) {
+                    $exp_status = 2; // Within a month
+                } else {
+                    $exp_status = 1; // good
+                }
+
+                switch($exp_status) {
+                    case 2:
+                    $background_color = '#FCF8E3';
+                    break;
+
+                    case 3:
+                    $background_color = '#F2DEDE';
+                    break;
+
+                    default:
+                    $background_color = '';
+                    break;
+                }
+                $cards_data[$key] = [
+                    'id' => $card->id,
+                    'profile_id' => $profile_id,
+                    'payment_id' => $payment_id,
+                    'exp_month' => $exp_month,
+                    'exp_year' => $exp_year,
+                    'exp_status' => $exp_status,
+                    'status' => $status,
+                    'days_remaining' => $days_comment,
+                    'background_color'=>$background_color
+                ];
+
+                // Common setup for API credentials (merchant)
+                $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+                $merchantAuthentication->setName($companies->payment_api_login);
+                $merchantAuthentication->setTransactionKey($companies->payment_gateway_id);
+                $refId = 'ref' . time();
+
+                //request requires customerProfileId and customerPaymentProfileId
+                $request = new AnetAPI\GetCustomerPaymentProfileRequest();
+                $request->setMerchantAuthentication($merchantAuthentication);
+                $request->setRefId( $refId);
+                $request->setCustomerProfileId($profile_id);
+                $request->setCustomerPaymentProfileId($payment_id);
+
+                $controller = new AnetController\GetCustomerPaymentProfileController($request);
+                $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+                if(($response != null)){
+                    if ($response->getMessages()->getResultCode() == "Ok")
+                    {
+                        $card_number = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber();
+                        $card_type = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardType();
+                        $cards_data[$key]['card_number'] = $card_number;
+                        $cards_data[$key]['card_type'] = $card_type;
+                        $card_first_name = $response->getPaymentProfile()->getBillTo()->getFirstName();
+                        $card_last_name = $response->getPaymentProfile()->getBillTo()->getLastName();
+                        $cards_data[$key]['first_name'] = $card_first_name;
+                        $cards_data[$key]['last_name'] = $card_last_name;
+                        switch($card_type) {
+                            case 'Visa':
+                                $cards_data[$key]['card_image'] = '/imgs/icons/visa.jpg';
+                            break;
+                            case 'MasterCard':
+                                $cards_data[$key]['card_image'] = '/imgs/icons/master.jpg';
+                            break;
+                            case 'Amex':
+                                $cards_data[$key]['card_image'] = '/imgs/icons/amex.jpg';
+                            break;
+
+                            case 'Discover':
+                                $cards_data[$key]['card_image'] = '/imgs/icons/discover.jpg';
+                            break;
+
+                            default:
+                                $cards_data[$key]['card_image'] = '';
+                            break;
+                        }
+                        if ($difference < 0) { // expired
+                            $payment_ids[$payment_id] = $card_type.' '.$card_number.' ***'.$days_comment.'***';  
+                        } elseif(($exp_full_time < strtotime('+1 month'))) { // Within a month
+                            $payment_ids[$payment_id] = $card_type.' '.$card_number.' '.$days_comment;
+                        } else {  // good
+                            $payment_ids[$payment_id] = $card_type.' '.$card_number.' '.$days_comment;
+                        }
+                        // Job::dump($response->getPaymentProfile());
+                    }
+                }               
+            }
+        }
+
+
+        $this->layout = 'layouts.dropoff';
+        return view('invoices.pickup')
+        ->with('customer_id',$customer_id)
+        ->with('cards',$payment_ids)
+        ->with('invoices',$invoices)
+        ->with('layout',$this->layout);
+
+    }
+
+    public function postPickup(Request $request) {
+        $company_id = Auth::user()->company_id;
+        $customer_id = $request->customer_id;
+        $invoices = Invoice::whereIn('id',$request->invoice_id)->get();
+        $selected = Invoice::prepareSelected($invoices);
+
+        $type = $request->type;
+        if ($type = 'cof') {
+            $profile_id = false;
+            $payment_id = false;
+            $cards = Card::where('payment_id',$request->payment_id)->get();
+            if (count($cards)> 0) {
+                foreach ($cards as $card) {
+                    $profile_id = $card->profile_id;
+                    $payment_id = $card->payment_id;                    
+                }
+                $valid_card_check = Card::checkValid($company_id, $profile_id, $payment_id);
+                // Card is not valid error
+                if (!$valid_card_check) {
+                    Flash::error('Credit card on file did not validate. Please contact customer for new card and reschedule delivery.');
+                    return Redirect::back();
+                }
+
+                $attempt_payment = Schedule::makePayment($company_id, $profile_id, $payment_id, $selected['totals']['total']);
+
+                if (!$attempt_payment) {
+                    Flash::error('Error: '.$attempt_payment['error_message']);
+                    return Redirect::back();
+                }
+            } else {
+                Flash::error('Error: no such card.');
+                return Redirect::back();                
+            }
+        } 
+
+        $transactions = new Transaction();
+        $transactions->company_id = $company_id;
+        $transactions->customer_id = $customer_id;
+        $transactions->pretax = $selected['totals']['subtotal'];
+        $transactions->tax = $selected['totals']['tax'];
+        
+        $transactions->aftertax = $selected['totals']['total'];
+        $transactions->discount = NULL;
+        $transactions->total = $selected['totals']['total'];
+        $transactions->type = 1;
+        $transactions->status = 1;
+        $transactions->tendered = $request->tendered ? $request->tendered : NULL;
+        $transactions->last_four = $request->last_four ? $request->last_four : NULL;
+        if ($transactions->save()) {
+            $transaction_id = $transactions->id;
+            if (count($invoices) > 0) {
+                foreach ($invoices as $invoice) {
+                    $invoice_id = $invoice->id;
+                    $invs = Invoice::find($invoice_id);
+                    $invs->transaction_id = $transaction_id;
+                    $invs->status = 5;
+                    $invs->save();
+                }
+            }
+
+            Flash::success('Transaction finished. Invoices are complete');
+            return Redirect::route('customers_view',$customer_id);
+        }
+
+        Flash::error('There was an error with the transaction.');
+        return Redirect::back();
+
+    }
+
+    public function postSelect(Request $request) {
+        if ($request->ajax()) {
+            $ids = $request->invoice_ids;
+            $invoices = Invoice::whereIn('id',$ids)->get();
+            if (count($invoices) > 0) {
+                $selected = Invoice::prepareSelected($invoices);
+                return response()->json([
+                    'status'=> true,
+                    'invoice_data' => $selected
+                ]);
+            } else {
+                return response()->json([
+                    'status'=> false,
+                    'invoice_data' => false
+                ]);               
+            }
+
+
+        }
     }
 
     public function getView($id = null) {

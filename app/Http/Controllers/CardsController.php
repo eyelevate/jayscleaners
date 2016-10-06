@@ -147,6 +147,7 @@ class CardsController extends Controller
 				}    			
     		}
     	}
+
     	return view('cards.index')
     	->with('layout',$this->layout)
     	->with('form_previous',$form_previous)
@@ -643,9 +644,9 @@ class CardsController extends Controller
     }
 
     public function getAdminsIndex($id = null) {
-    	$companies = Company::find(1);
-		$cards = Card::prepareForAdminView(Card::where('user_id',Auth::user()->id)->where('company_id',1)->get());
-    	
+    	$companies = Company::find(Auth::user()->company_id);
+		$cards = Card::prepareForAdminView(Card::where('user_id',$id)->where('company_id',Auth::user()->company_id)->get());
+
     	$this->layout = 'layouts.dropoff';
 
     	return view('cards.admins_index')
@@ -675,6 +676,7 @@ class CardsController extends Controller
             'year'=>'required',
             'month'=>'required'
         ]);
+        $customer_id = $r->customer_id;
         $first_name = $r->first_name;
         $last_name = $r->last_name;
         $street = $r->street;
@@ -706,21 +708,21 @@ class CardsController extends Controller
         $company_id = 1;
 
 
-        $add_card_store_1 = Card::addCard($form_data, $company_id, $root_payment_id);
+        $add_card_store_1 = Card::addAdminCard($form_data, $company_id, $root_payment_id, $customer_id);
 
         if ($add_card_store_1['status']) {
         	$company_id = 2;
         	$card_user_id = Card::getUserId($add_card_store_1);
-        	$add_card_store_2 = Card::addCard($form_data, $company_id, $add_card_store_1['root_payment_id']);
+        	$add_card_store_2 = Card::addAdminCard($form_data, $company_id, $add_card_store_1['root_payment_id'], $customer_id);
         	if ($add_card_store_2['status']) {
         		
 	    		Flash::success('Successfully saved a new card!');
-	    		return Redirect::route('cards_admins_index',$card_user_id);
+	    		return Redirect::route('cards_admins_index',$customer_id);
         	}
         } else {
         	$r->session()->put('card_form_data', $form_data);
         	Flash::error($add_card_store_1['message']);
-        	return Redirect::route('cards_admins_index',$card_user_id);
+        	return Redirect::back();
         }
 
 

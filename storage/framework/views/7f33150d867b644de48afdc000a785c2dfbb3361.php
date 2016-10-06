@@ -34,9 +34,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-info" >Print Invoice</button>
-				<button type="button" class="btn btn-info" >Print Tags</button>
-				<button type="button" class="btn btn-info" >Rfid</button>
+				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#invoiceRemove-<?php echo e($id); ?>">Delete</button>
+
                 <a class="btn btn-primary" href="<?php echo e(route('invoices_edit',$invoice_id)); ?>">
                     <div class="icon"><i class="ion-ios-compose-outline"></i> Edit</div>
                 </a>
