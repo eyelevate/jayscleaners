@@ -36,6 +36,10 @@ class Invoice extends Model
     			if(isset($data[$key]['id'])){
     				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['invoice_id'])->where('status',1)->get();
     			}
+                if (isset($data[$key]['status'])) {
+                    
+                }
+
                 $item_detail[$data[$key]['invoice_id']] = [];
     			if(isset($data[$key]['items'])){
                     

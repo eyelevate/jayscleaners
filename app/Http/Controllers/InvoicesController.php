@@ -624,6 +624,7 @@ class InvoicesController extends Controller
                         $invoice_id = $invoice->id;
                         $invs = Invoice::find($invoice_id);
                         $invs->status = 2;
+                        $invs->rack_date = date('Y-m-d H:i:s');
                         $invs->rack = $value;
                         $invs->save();
                     }

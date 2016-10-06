@@ -271,7 +271,7 @@ class CustomersController extends Controller
             $customers = Customer::prepareView($user);
             $last10 = Customer::prepareLast10($user, $request->session()->get('last10'));
             $request->session()->put('last10',$last10);
-            $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->where('status',1)->orderBy('id','desc')->get());
+            $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->where('status','<',5)->orderBy('id','desc')->get());
             $schedules = Schedule::where('customer_id',$id)->where('status','<',12)->get();
             return view('customers.view')
             ->with('layout',$this->layout)
