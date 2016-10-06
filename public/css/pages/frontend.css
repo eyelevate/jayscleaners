@@ -44,14 +44,6 @@ div.active label{
     to { -moz-transform: rotate(360deg);}
 }
 
-@media screen and (max-width: 1024px) {
-    .parallax-window {
-        background-attachment: scroll !important;
-        background-position: center top !important;
-        -webkit-background-size: auto !important;
-        -moz-background-size: auto !important;
-        background-size: auto !important;
-    }
-}
+
 
 
