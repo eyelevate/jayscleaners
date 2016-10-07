@@ -75,12 +75,14 @@
 	@if(isset($customers))
 		{!! View::make('partials.customers.view-id')
 			->with('customers',$customers)
+			->with('customer_id',$customer_id)
 			->with('schedules',$schedules)
 			->with('invoices',$invoices)
 			->render()
 		!!}		
 	@else
-		{!! View::make('partials.customers.view') !!}
+		{!! View::make('partials.customers.view')->render() 
+		!!}
 	@endif
 
 

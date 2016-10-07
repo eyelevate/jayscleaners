@@ -39,14 +39,21 @@ class Invoice extends Model
                 if (isset($data[$key]['status'])) {
                     switch($data[$key]['status']) {
                         case 1:
-                            $due = strtotime($date[$key]['due_date']);
+                            $due = strtotime($data[$key]['due_date']);
                             $now = strtotime('NOW');
 
-                        $data[$key]['status_color'] = ($now >= $due) ? 'blue' : false;
+                        $data[$key]['status_color'] = ($now >= $due) ? '#0847F3' : false;
+                        $data[$key]['status_bg'] = ($now >= $due) ? '#08EDF3' : false;
                         break;
 
                         case 2:
                         $data[$key]['status_color'] = 'green';
+                        $data[$key]['status_bg'] = '#AAFFCA';
+                        break;
+
+                        case 5:
+                        $data[$key]['status_color'] = '#5e5e5e';
+                        $data[$key]['status_bg'] = '#e5e5e5';                        
                         break;
 
                         default:

@@ -74,11 +74,12 @@
 	<?php if(isset($customers)): ?>
 		<?php echo View::make('partials.customers.view-id')
 			->with('customers',$customers)
+			->with('customer_id',$customer_id)
 			->with('schedules',$schedules)
 			->with('invoices',$invoices)
 			->render(); ?>		
 	<?php else: ?>
-		<?php echo View::make('partials.customers.view'); ?>
+		<?php echo View::make('partials.customers.view')->render(); ?>
 
 	<?php endif; ?>
 

@@ -607,7 +607,14 @@ class InvoicesController extends Controller
     }
 
     public function getHistory($id = null) {
-        $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->orderBy('id','desc')->get());
+        $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->orderBy('id','desc')->paginate(20));
+        
+        $this->layout = 'layouts.dropoff';
+        return view('invoices.history')
+        ->with('invoices',$invoices)
+        ->with('customer_id',$id)
+        ->with('layout',$this->layout);    
+
     }
 
     public function getRack(Request $request, $id = null){

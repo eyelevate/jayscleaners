@@ -201,7 +201,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/invoices/pickup/{id}',['as'=>'invoices_pickup','uses'=>'InvoicesController@getPickup']);
 		Route::post('/invoices/pickup',['uses'=>'InvoicesController@postPickup']);
 		Route::post('/invoices/select',['as'=>'invoices_select','uses'=>'InvoicesController@postSelect']);
-		Route::post('/invoices/history/{id}',['as'=>'invoices_history','uses'=>'InvoicesController@getHistory']);
+		Route::get('/invoices/history/{id}',['as'=>'invoices_history','uses'=>'InvoicesController@getHistory']);
 		//Inventory
 		Route::get('/inventories',  ['as'=>'inventories_index', 'uses' => 'InventoriesController@getIndex']);
 		Route::get('/inventories/add',['as'=>'inventories_add','uses'=>'InventoriesController@getAdd']);

@@ -159,7 +159,7 @@
 				</table>
 			</div>
             <div class="panel-footer">
-                <a class="btn btn-lg btn-info" href="#">
+                <a class="btn btn-lg btn-info" href="<?php echo e(route('invoices_history',$customers->id)); ?>">
                     <div class="icon"><i class="ion-filing"></i> History</div>
                 </a>
                 <a class="btn btn-lg btn-info" href="<?php echo e(route('delivery_new',$customers->id)); ?>">
