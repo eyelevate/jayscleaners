@@ -191,7 +191,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/invoices/view/{id}',['as'=>'invoices_view','uses'=>'InvoicesController@getView']);
 		Route::get('/invoices/pickup/{id}',['as'=>'invoices_pickup','uses'=>'InvoicesController@getPickup']);
 		Route::post('/invoices/pickup',['uses'=>'InvoicesController@postPickup']);
-		Route::get('/invoices/rack',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
+		Route::get('/invoices/rack/{id}',['as'=>'invoices_rack','uses'=>'InvoicesController@getRack']);
 		Route::post('/invoices/rack',['uses'=>'InvoicesController@postRack']);
 		Route::post('/invoices/rack-update',['as'=>'invoice_rack_update','uses'=>'InvoicesController@postRackUpdate']);
 		Route::post('/invoices/rack-remove',['as'=>'invoice_rack_remove','uses'=>'InvoicesController@postRackRemove']);
@@ -201,7 +201,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/invoices/pickup/{id}',['as'=>'invoices_pickup','uses'=>'InvoicesController@getPickup']);
 		Route::post('/invoices/pickup',['uses'=>'InvoicesController@postPickup']);
 		Route::post('/invoices/select',['as'=>'invoices_select','uses'=>'InvoicesController@postSelect']);
-		
+		Route::post('/invoices/history/{id}',['as'=>'invoices_history','uses'=>'InvoicesController@getHistory']);
 		//Inventory
 		Route::get('/inventories',  ['as'=>'inventories_index', 'uses' => 'InventoriesController@getIndex']);
 		Route::get('/inventories/add',['as'=>'inventories_add','uses'=>'InventoriesController@getAdd']);

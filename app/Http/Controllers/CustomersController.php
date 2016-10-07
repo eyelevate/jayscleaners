@@ -276,6 +276,7 @@ class CustomersController extends Controller
             return view('customers.view')
             ->with('layout',$this->layout)
             ->with('customers',$customers)
+            ->with('customer_id',$id)
             ->with('last10',$last10)
             ->with('schedules',$schedules)
             ->with('invoices',$invoices);
@@ -283,6 +284,7 @@ class CustomersController extends Controller
             return view('customers.view')
             ->with('layout',$this->layout)
             ->with('customers',[])
+            ->with('customer_id',$id)
             ->with('last10',$request->session()->get('last10'))
             ->with('invoices',[]);            
         }

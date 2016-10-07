@@ -37,6 +37,22 @@ class Invoice extends Model
     				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['invoice_id'])->where('status',1)->get();
     			}
                 if (isset($data[$key]['status'])) {
+                    switch($data[$key]['status']) {
+                        case 1:
+                            $due = strtotime($date[$key]['due_date']);
+                            $now = strtotime('NOW');
+
+                        $data[$key]['status_color'] = ($now >= $due) ? 'blue' : false;
+                        break;
+
+                        case 2:
+                        $data[$key]['status_color'] = 'green';
+                        break;
+
+                        default:
+                        $data[$key]['status_color'] = false;
+                        break;
+                    }
                     
                 }
 

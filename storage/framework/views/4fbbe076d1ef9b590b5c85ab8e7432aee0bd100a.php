@@ -38,6 +38,8 @@
 		</article>
 		<?php echo Form::open(['action' => 'InvoicesController@postRack','role'=>"form"]); ?>
 
+		<?php echo Form::hidden('id',$id); ?>
+
 		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="box box-info">
 				<div class="box-header"><h4>Invoice Selected</h4></div>
@@ -63,7 +65,7 @@
 					</table>
 				</div>
 				<div class="box-footer clearfix">
-					<a class="btn btn-lg btn-danger" href="<?php echo e(URL::previous()); ?>">Back</a>
+					<a class="btn btn-lg btn-danger" href="<?php echo e(($id) ? route('customers_view',$id) : route('admins_index')); ?>">Back</a>
 					<button type="submit" class="btn btn-lg btn-success" >Finish</button>
 
 				</div>

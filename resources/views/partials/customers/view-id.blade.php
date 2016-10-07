@@ -145,7 +145,7 @@
                     <tbody>
                     @if(isset($invoices))
                         @foreach($invoices as $invoice)
-                        <tr id="invoiceTr-{{ $invoice->invoice_id }}" class="invoiceTr" invoice-id="{{ $invoice->invoice_id }}" data-toggle="modal" data-target="#invoiceModal-{{ $invoice->invoice_id }}">
+                        <tr id="invoiceTr-{{ $invoice->invoice_id }}" class="invoiceTr " invoice-id="{{ $invoice->invoice_id }}" data-toggle="modal" data-target="#invoiceModal-{{ $invoice->invoice_id }}" style="{{ $invoice->status_color ? 'color:'.$invoice->status_color : '' }}">
                             <td>{{ str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT) }}</td>
                             <td>{{ date('D, n/d',strtotime($invoice->created_at)) }}</td>
                             <td>{{ date('D, n/d',strtotime($invoice->due_date)) }}</td>

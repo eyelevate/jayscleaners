@@ -103,7 +103,7 @@
               </a>
               <ul class="treeview-menu">
                 <li class="{{ Request::is('invoices/dropoff') ? 'active' : '' }}"><a href="{{ route('invoices_dropoff',NULL) }}"><i class="fa fa-circle-o"></i> New Invoice</a></li>
-                <li class="{{ Request::is('invoices/rack') ? 'active' : '' }}"><a href="{{ route('invoices_rack') }}"><i class="fa fa-circle-o"></i> Rack</a></li>
+                <li class="{{ Request::is('invoices/rack') ? 'active' : '' }}"><a href="{{ route('invoices_rack',0) }}"><i class="fa fa-circle-o"></i> Rack</a></li>
                 <li class="{{ Request::is('invoices') ? 'active' : '' }}"><a href="{{ route('invoices_index') }}"><i class="fa fa-circle-o"></i> History</a></li>
               </ul>
             </li>

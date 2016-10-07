@@ -605,16 +605,23 @@ class InvoicesController extends Controller
         return view('invoices.view')
         ->with('layout',$this->layout);
     }
-    public function getRack(Request $request){
+
+    public function getHistory($id = null) {
+        $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->orderBy('id','desc')->get());
+    }
+
+    public function getRack(Request $request, $id = null){
         $racks = ($request->session()->has('racks')) ? $request->session()->get('racks')  : false;
         $this->layout = 'layouts.dropoff';
         return view('invoices.rack')
         ->with('racks',$racks)
+        ->with('id',$id)
         ->with('layout',$this->layout);
     }
 
     public function postRack(Request $request) {
         $racks = $request->rack;
+        $id = $request->id;
 
         if (count($racks) > 0) {
             foreach ($racks as $key => $value) {
@@ -632,7 +639,12 @@ class InvoicesController extends Controller
             }
             $request->session()->pull('racks');
             Flash::success('Successfully racked invoices.');
-            return Redirect::route('admins_index');
+            if ($id) {
+                return Redirect::route('customers_view',$id);
+            } else {
+                return Redirect::route('admin_index');
+            }
+            
 
         } else {
             Flash::error('No racks were entered in to be saved. Please try again.');

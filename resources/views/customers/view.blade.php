@@ -26,7 +26,7 @@
 			</div>
 		</a><!-- ./col -->
 		<!-- Rack -->
-		<a href="{{ route('invoices_rack') }}" class="col-lg-3 col-md-3 col-xs-3">
+		<a href="{{ route('invoices_rack',$customer_id) }}" class="col-lg-3 col-md-3 col-xs-3">
 			<!-- small box -->
 			<div class="small-box bg-aqua" style="padding-bottom:10px">
 				<div class="inner">
