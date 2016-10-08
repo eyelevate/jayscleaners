@@ -94,6 +94,10 @@ Route::group(['middleware' => ['web']], function () {
     	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
     	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
 
+    	Route::get('/users/update', ['as' => 'users_update', 'uses'=>'UsersController@getUpdate']);
+    	Route::post('/users/update', ['as' => 'users_update_post', 'uses'=>'UsersController@postUpdate']);
+
+
     	Route::get('/update-contact', ['as'=>'pages_update_contact','uses'=>'PagesController@getUpdateContact']);
     	Route::post('/pages/one-touch',['as'=>'pages_onetouch','uses'=>'PagesController@postOneTouch']);
 	});

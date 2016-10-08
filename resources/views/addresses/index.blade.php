@@ -31,24 +31,39 @@
                 			@foreach($addresses as $address)
                 				@if ($address->primary_address)
 		                		<li>
-									<div class="thumbnail" style="{{ ($address->zipcode_status) ? '' : 'background-color:#F2DEDE' }}">
-										<div class="caption">
-											<h3><strong>{{ $address->name }} </strong> <small>{{ ($address->zipcode_status) ? '' : '- zipcode not deliverable' }}</small> - <a href="#" class="btn btn-sm btn-link">Primary</a></h3>
-											<p><i>{{ $address->street }} <br/> {{ ucfirst($address->city)}} , {{ strtoupper($address->state) }} {{ $address->zipcode }}</i></p>
-											<ul class="clearfix">
+									<div class="thumbnail clearfix" style="{{ ($address->zipcode_status) ? '' : 'background-color:#F2DEDE' }}">
+										<div class="caption clearfix">
+                                            <h3 style="text-align:left;"><strong>{{ $address->name }} </strong> <small>{{ ($address->zipcode_status) ? '' : '- zipcode not deliverable' }}</small> - <a href="#" class="btn btn-sm btn-link">Primary</a></h3>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">       
+                                                <strong style="text-align:left;">Address</strong>
+                                                <p><i>{{ $address->street }} <br/> {{ ucfirst($address->city)}} , {{ strtoupper($address->state) }} {{ $address->zipcode }}</i></p>
+											</div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                <strong style="text-align:left;">Contact Info</strong>
+                                                <p>{{ ucFirst($address->concierge_name) }} <br/>{{ $address->concierge_number }}</p>
+                                            </div>
+                                            <ul class="clearfix col-xs-12 col-md-12 col-sm-12 col-lg-12">
 												<li class="pull-left"><a href="{{ route('address_delete',$address->id) }}" class="btn btn-danger" role="button">Delete</a>&nbsp</li>
 												<li class="pull-left"><a href="{{ route('address_edit',$address->id) }}" class="btn btn-default" role="button">Edit</a>&nbsp</li>
-											</ul>
+
+                                            </ul>
 										</div>
 									</div>
 		                		</li>
                 				@else
 		                		<li>
-									<div class="thumbnail" style="{{ ($address->zipcode_status) ? '' : 'background-color:#F2DEDE' }}">
-										<div class="caption">
-											<h3><strong>{{ $address->name }}</strong> <small>{{ ($address->zipcode_status) ? '' : '- zipcode not deliverable' }}<small></h3>
-											<p><i>{{ $address->street }} <br/> {{ ucfirst($address->city)}} , {{ strtoupper($address->state) }} {{ $address->zipcode }}</i></p>
-											<ul class="clearfix">
+									<div class="thumbnail clearfix" style="{{ ($address->zipcode_status) ? '' : 'background-color:#F2DEDE' }}">
+										<div class="caption clearfix">
+                                            <h3 style="text-align:left;"><strong>{{ $address->name }} </strong> <small>{{ ($address->zipcode_status) ? '' : '- zipcode not deliverable' }}</small> - <a href="#" class="btn btn-sm btn-link">Primary</a></h3>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                <strong style="text-align:left;">Address</strong>
+                                                <p><i>{{ $address->street }} <br/> {{ ucfirst($address->city)}} , {{ strtoupper($address->state) }} {{ $address->zipcode }}</i></p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                <strong style="text-align:left;">Contact Info</strong>
+                                                <p>{{ ucFirst($address->concierge_name) }} <br/>{{ $address->concierge_number }}</p>
+                                            </div>
+											<ul class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
 												<li class="pull-left"><a class="btn btn-danger" role="button" data-toggle="modal" data-target="#address_delete-{{ $address['id'] }}">Delete</a>&nbsp</li>
 												<li class="pull-left"><a href="{{ route('address_edit',$address->id) }}" class="btn btn-default" role="button">Edit</a>&nbsp</li>
 												@if ($address->zipcode_status)

@@ -2,6 +2,7 @@
 
 namespace App;
 use App\Zipcode;
+use App\ZipcodeList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use GuzzleHttp\Client;
@@ -26,7 +27,7 @@ class Address extends Model
     static public function prepareForView($data) {
         if (count($data) > 0) {
             foreach ($data as $key => $value) {
-                $zipcodes = Zipcode::where('zipcode',$value->zipcode)->get();
+                $zipcodes = ZipcodeList::where('zipcode',$value->zipcode)->get();
                 if (count($zipcodes) > 0) {
                     $data[$key]['zipcode_status'] = true;
                 } else {

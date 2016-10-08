@@ -12,7 +12,7 @@
 				<li class="submenu">
 					<a href="#"><?php echo e(Auth::user()->username); ?> menu</a>
 					<ul>
-						<li><a href="<?php echo e(route('pages_update_contact')); ?>">Update User</a></li>
+						<li><a href="<?php echo e(route('users_update')); ?>">Update User</a></li>
 						<li><a href="<?php echo e(route('address_index')); ?>">Manage address(es)</a></li>
 						<li><a href="<?php echo e(route('cards_index')); ?>">Manage card(s)</a></li>
 					</ul>

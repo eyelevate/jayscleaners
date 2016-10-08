@@ -12,7 +12,7 @@
 				<li class="submenu">
 					<a href="#">{{ Auth::user()->username }} menu</a>
 					<ul>
-						<li><a href="{{ route('pages_update_contact') }}">Update User</a></li>
+						<li><a href="{{ route('users_update') }}">Update User</a></li>
 						<li><a href="{{ route('address_index') }}">Manage address(es)</a></li>
 						<li><a href="{{ route('cards_index') }}">Manage card(s)</a></li>
 					</ul>

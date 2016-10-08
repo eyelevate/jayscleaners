@@ -26,6 +26,7 @@ use App\Delivery;
 use App\Layout;
 use App\Schedule;
 use App\Zipcode;
+use App\ZipcodeList;
 
 class AddressesController extends Controller
 {
