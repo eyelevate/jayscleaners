@@ -41,11 +41,11 @@
 								<td><?php echo e(date('D n/d',strtotime($invoice->created_at))); ?></td>
 								<td><?php echo e(date('D n/d',strtotime($invoice->due_date))); ?></td>
 								<td><?php echo e($invoice->quantity); ?></td>
-								<td><?php echo e($invoice->status); ?></td>
+								<td><?php echo e($invoice->status_title); ?></td>
 								<td><?php echo e(money_format('$%i',$invoice->pretax)); ?></td>
 								<td>
 									<a class="btn btn-sm btn-primary">View</a>
-									<a class="btn btn-sm btn-info">Edit</a>&nbsp;
+									<a href="<?php echo e(route('invoices_edit',[$invoice->id,$invoice->invoice_id])); ?>" class="btn btn-sm btn-info">Edit</a>&nbsp;
 									<a class="btn btn-sm btn-danger">Revert</a>
 								</td>
 							</tr>

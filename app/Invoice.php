@@ -34,29 +34,32 @@ class Invoice extends Model
                 $total = 0;
                 $tax_total = 0;
     			if(isset($data[$key]['id'])){
-    				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['invoice_id'])->where('status',1)->get();
+    				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['id'])->get();
     			}
                 if (isset($data[$key]['status'])) {
                     switch($data[$key]['status']) {
                         case 1:
                             $due = strtotime($data[$key]['due_date']);
                             $now = strtotime('NOW');
-
+                        $data[$key]['status_title'] = ($now >= $due) ? 'overdue' : 'active';
                         $data[$key]['status_color'] = ($now >= $due) ? '#0847F3' : false;
                         $data[$key]['status_bg'] = ($now >= $due) ? '#08EDF3' : false;
                         break;
 
                         case 2:
+                        $data[$key]['status_title'] = 'racked';
                         $data[$key]['status_color'] = 'green';
                         $data[$key]['status_bg'] = '#AAFFCA';
                         break;
 
                         case 5:
+                        $data[$key]['status_title'] = 'complete';
                         $data[$key]['status_color'] = '#5e5e5e';
                         $data[$key]['status_bg'] = '#e5e5e5';                        
                         break;
 
                         default:
+                        $data[$key]['status_title'] = 'undefined';
                         $data[$key]['status_color'] = false;
                         break;
                     }
@@ -170,7 +173,7 @@ class Invoice extends Model
         if (count($data) > 0) {
             foreach ($data as $invoice) {
                 $invoice_html .= '<tr id="selected_tr-'.$invoice->id.'" class="info">';
-                $invoice_html .= '<td>'.str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT).'</td>';
+                $invoice_html .= '<td>'.str_pad($invoice->id, 6, '0', STR_PAD_LEFT).'</td>';
                 $invoice_html .= '<td>'.date('D n/d',strtotime($invoice->created_at)).'</td>';
                 $invoice_html .= '<td>'.date('D n/d',strtotime($invoice->due_date)).'</td>';
                 $invoice_html .= '<td>'.$invoice->quantity.'</td>';

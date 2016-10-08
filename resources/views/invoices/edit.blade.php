@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/packages/priceformat/priceformat.min.js"></script>
 <script src='/packages/fullcalendar-2.6.1/lib/moment.min.js'></script>
 <script src='/packages/fullcalendar-2.6.1/fullcalendar.min.js'></script>
-<script type="text/javascript" src="/js/invoices/index.js"></script>
+<script type="text/javascript" src="/js/invoices/edit.js"></script>
 @stop
 @section('header')
 
@@ -198,7 +198,7 @@
 	@foreach($invoice_items as $item)
 	<?php $idx++; ?>
 	<div class="hide formItemsDiv" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}">
-		<input name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][id]" type="hidden" value="{{ $item->id }}"/>
+		<input class="invoiceItem-base_id" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][id]" type="hidden" value="{{ $item->id }}"/>
 		<input class="invoiceItem-id" type="hidden" value="{{ $item->item_id }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][item_id]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}"/>
 		<input class="invoiceItem-price" type="hidden" value="{{ $item->pretax }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][price]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}"/>
 		<input class="invoiceItem-color" type="hidden" value="{{ $item->color }}" name="item[{{ $item->inventory_id }}][{{ $idx }}][{{ $item->item_id }}][color]" item-idx="{{ $idx }}" item-id="{{ $item->item_id }}" color-name="{{ $item->color }}"/>

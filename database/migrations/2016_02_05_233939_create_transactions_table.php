@@ -24,7 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->decimal('total',11,2)->nullable();
             $table->text('invoices')->nullable();
             $table->tinyInteger('type', false, true)->nullable();
-            $table->tinyInteger('last_four', false, true)->length(4)->nullable();
+            $table->integer('last_four', false, true)->length(11)->nullable();
             $table->decimal('tendered',11,2)->nullable();
             $table->integer('transaction_id', false, true)->length(25)->nullable();
             $table->tinyInteger('status', false, true)->nullable();

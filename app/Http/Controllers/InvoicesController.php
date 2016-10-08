@@ -144,7 +144,7 @@ class InvoicesController extends Controller
 
                 // create new invoice object and prep for saving
                 $invoice = new Invoice();
-                $invoice->invoice_id = $new_invoice_id;
+                // $invoice->invoice_id = $new_invoice_id;
                 $invoice->company_id = $company_id;
                 $invoice->customer_id = $request->customer_id;
                 $invoice->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
@@ -162,7 +162,7 @@ class InvoicesController extends Controller
                             $color_name = ($colors) ? $colors->name : $ivalue['color'];
                             $qty++;
                             $item = new InvoiceItem();
-                            $item->invoice_id = $invoice->invoice_id;
+                            $item->invoice_id = $invoice->id;
                             $item->company_id = $company_id;
                             $item->customer_id = $request->customer_id;
                             $item->item_id = $ivalue['item_id'];
@@ -204,15 +204,20 @@ class InvoicesController extends Controller
 
     public function getEdit($id = null){
         $this->layout = 'layouts.dropoff';
-        $customer = User::find($id);
-        $inventories = Inventory::where('company_id',Auth::user()->company_id)
+
+        $invoices = Invoice::find($id);
+        $company_id = $invoices->company_id;
+        $customer_id = $invoices->customer_id;
+
+        $customer = User::find($customer_id);
+        $inventories = Inventory::where('company_id',$company_id)
         ->where('status',1)
         ->orderBy('ordered','asc')
         ->get();
         $items = InventoryItem::prepareItems($inventories);
-        $colors = Color::where('company_id',Auth::user()->company_id)->orderBy('ordered','asc')->get();
-        $memos = Memo::where('company_id',Auth::user()->company_id)->orderBy('ordered','asc')->get();
-        $company = Company::where('id',Auth::user()->company_id)->get();
+        $colors = Color::where('company_id',$company_id)->orderBy('ordered','asc')->get();
+        $memos = Memo::where('company_id',$company_id)->orderBy('ordered','asc')->get();
+        $company = Company::where('id',$company_id)->get();
         $store_hours = Company::getStoreHours($company);
 
         $turnaround_date = Company::getTurnaroundDate($company);
@@ -220,7 +225,7 @@ class InvoicesController extends Controller
         $hours = Company::prepareStoreHours();
         $minutes = Company::prepareMinutes();
         $ampm = Company::prepareAmpm();
-        $tax_rate = Tax::where('company_id',Auth::user()->company_id)->where('status',1)->first();
+        $tax_rate = Tax::where('company_id',$company_id)->where('status',1)->first();
 
         $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$id)->where('status',1)->get());
 
@@ -255,60 +260,66 @@ class InvoicesController extends Controller
             $print_type = $request->store_copy;
 
             foreach ($items as $itms) { // iterate through the first index (inventory group)
-                $invoices = Invoice::where('invoice_id',$request->invoice_id)->get();
-                if (count($invoices) > 0) {
-                    foreach ($invoices as $inv) {
-                        $invoice = Invoice::find($inv->id);
-                        $invoice->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
-                        $invoice->status = 1;   
-                        $qty = 0;
-                        $subtotal = 0;
-                        $tax = 0;
-                        $total = 0;
-                        if($invoice->save()){ // save the invoice
-                            // Get all the previously saved invoice items. remove any deleted ones by comparing existing items
-                            $previous = InvoiceItem::where('invoice_id',$request->invoice_id)->where('status',1)->get();
-                            if(isset($previous)) {
-                                foreach ($previous as $pkey => $pvalue) {
-                                    $rmv = true;
-                                    //compare to new items
-                                    foreach ($items as $itms) {
-                                        foreach ($itms as $i) {
+                $invoices = Invoice::find($request->invoice_id);
+                $invoices->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
+                $invoices->status = 1;   
+                $qty = 0;
+                $subtotal = 0;
+                $tax = 0;
+                $total = 0;
+                if($invoices->save()){ // save the invoice
+                    // Get all the previously saved invoice items. remove any deleted ones by comparing existing items
+                    $previous = InvoiceItem::where('invoice_id',$request->invoice_id)->where('status',1)->get();
+                    if(isset($previous)) {
 
-                                            foreach ($i as $ikey => $ivalue) {
-                                                if(isset($ivalue['id'])){
+                        foreach ($previous as $pkey => $pvalue) {
+                            $rcheck = true;
+                            //compare to new items
+                            foreach ($items as $ritms) {
+                                foreach ($ritms as $i) {
 
-                                                    if($ivalue['id'] == $pvalue->id){ 
-                                                        $rmv = false;
-                                                        break;
-            
-                                                    } 
-                                                }
-                                            }
+                                    foreach ($i as $rikey => $rivalue) {
+                                        if(isset($rivalue['id'])){
+
+                                            if($rivalue['id'] == $pvalue->id){ 
+                                                $rcheck = false;
+                                            } 
                                         }
                                     }
-                                    if($rmv) {
-                                        $del = InvoiceItem::find($pvalue->id);
-                                        $del->delete();
-                                    }
-
                                 }
                             }
-                            // update and save the rest
-                            foreach ($itms as $i) {
-                                foreach ($i as $ikey => $ivalue) {
-                                    $qty++;
+
+                            if ($rcheck) {
+                                $del = InvoiceItem::find($pvalue->id);
+                                $del->delete();                                
+                            }
+
+
+                        }
+                    }
+                    // update and save the rest
+                    if (count($itms) > 0) {
+                        Job::dump($itms);
+                        foreach ($itms as $i) {
+                            foreach ($i as $ikey => $ivalue) {
+                                $qty++;
+                                if (isset($ivalue['color'])) {
                                     if (is_numeric($ivalue['color'])) {
                                         $colors = Color::find($ivalue['color']);
                                         $color_name = ($colors) ? $colors->name : $ivalue['color'];
                                     } else {
                                         $color_name = $ivalue['color'];
                                     }
-
+                                } else {
+                                    $color_name = NULL;
+                                }
+                                if (isset($ivalue['item_id'])) {
                                     $item = (isset($ivalue['id'])) ? InvoiceItem::find($ivalue['id']) : new InvoiceItem();
-                                    $item->item_id = $ivalue['item_id'];
+                                    $item->item_id = (isset($ivalue['item_id'])) ? $ivalue['item_id'] : NULL;
                                     $item->invoice_id = $request->invoice_id;
-                                    $item->pretax = $ivalue['price'];
+                                    $item->company_id = Auth::user()->company_id;
+                                    $item->customer_id = $invoices->customer_id;
+                                    $item->pretax = (isset($ivalue['price'])) ? $ivalue['price'] : NULL;
                                     $item->tax = number_format(round($ivalue['price'] * $tax_rate,2),2,'.','');
                                     $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
                                     $subtotal += $ivalue['price'];
@@ -320,28 +331,25 @@ class InvoicesController extends Controller
                                 }
 
                             }
-                            // get totals here and update invoice
-                            $edits = Invoice::where('invoice_id',$request->invoice_id)->get();
-                            if (count($edits)> 0) {
-                                foreach ($edits as $e) {
-                                    $edit = Invoice::find($e->id);
-                                    $edit->quantity = $qty;
-                                    $edit->pretax = $subtotal;
-                                    $edit->tax = number_format(round($subtotal * $tax_rate,2),2,'.','');
-                                    $edit->total = number_format(round($subtotal * (1+$tax_rate),2),2,'.','');
-                                    $edit->save();
-                                }
-                            }
 
-                            // Do printer logic here
-                        }  
+                        }
                     }
-                }   
+                    // get totals here and update invoice
+                    $edits = Invoice::find($request->invoice_id);
+                    $edits->quantity = $qty;
+                    $edits->pretax = $subtotal;
+                    $edits->tax = number_format(round($subtotal * $tax_rate,2),2,'.','');
+                    $edits->total = number_format(round($subtotal * (1+$tax_rate),2),2,'.','');
+                    $edits->save();
+
+
+                    // Do printer logic here
+                }  
         
             }
             // all finished
-            Flash::success('Successfully added a new inventory!');
-            return Redirect::route('customers_view',$invoice->customer_id);  
+            Flash::success('Successfully updated inventory!');
+            return Redirect::route('customers_view',$invoices->customer_id);  
 
         } else {
             Flash::warning('Could not save your invoice! Please select an invoice item');
@@ -354,7 +362,7 @@ class InvoicesController extends Controller
         if ($invoices->delete()) {
             $invoice_id = $invoices->invoice_id;
             $company_id = $invoices->company_id;
-            $items = InvoiceItem::where('company_id',$company_id)->where('invoice_id',$invoice_id)->get();
+            $items = InvoiceItem::where('company_id',$company_id)->where('invoice_id',$id)->get();
             if (count($items)>0) {
                 foreach ($items as $item) {
                     $item_id = $item->id;

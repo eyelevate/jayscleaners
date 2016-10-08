@@ -348,7 +348,8 @@ class Admin extends Model
     	if (isset($up['invoices'])){
     		foreach ($up['invoices'] as $key => $value) {
     			$invoice = new Invoice();
-                $invoice->invoice_id = Invoice::newInvoiceId();
+                // $invoice->invoice_id = Invoice::newInvoiceId();
+                
     			$invoice->company_id = $company_id;
     			$invoice->customer_id = $value['customer_id'];
     			$invoice->quantity = $value['quantity'];
@@ -365,7 +366,7 @@ class Admin extends Model
                 $invoice->schedule_id = $value['schedule_id'];
     			$invoice->status = $value['status'];
     			if($invoice->save()){
-    				$up['invoices'][$key]['invoice_id'] = $invoice->invoice_id;
+    				$up['invoices'][$key]['invoice_id'] = $invoice->id;
     				$uploaded_rows++;
     			}
     		}

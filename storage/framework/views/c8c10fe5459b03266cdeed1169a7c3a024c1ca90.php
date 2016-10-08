@@ -10,7 +10,7 @@
 <script type="text/javascript" src="/packages/priceformat/priceformat.min.js"></script>
 <script src='/packages/fullcalendar-2.6.1/lib/moment.min.js'></script>
 <script src='/packages/fullcalendar-2.6.1/fullcalendar.min.js'></script>
-<script type="text/javascript" src="/js/invoices/index.js"></script>
+<script type="text/javascript" src="/js/invoices/edit.js"></script>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('header'); ?>
 
@@ -218,7 +218,7 @@
 	<?php foreach($invoice_items as $item): ?>
 	<?php $idx++; ?>
 	<div class="hide formItemsDiv" item-idx="<?php echo e($idx); ?>" item-id="<?php echo e($item->item_id); ?>">
-		<input name="item[<?php echo e($item->inventory_id); ?>][<?php echo e($idx); ?>][<?php echo e($item->item_id); ?>][id]" type="hidden" value="<?php echo e($item->id); ?>"/>
+		<input class="invoiceItem-base_id" name="item[<?php echo e($item->inventory_id); ?>][<?php echo e($idx); ?>][<?php echo e($item->item_id); ?>][id]" type="hidden" value="<?php echo e($item->id); ?>"/>
 		<input class="invoiceItem-id" type="hidden" value="<?php echo e($item->item_id); ?>" name="item[<?php echo e($item->inventory_id); ?>][<?php echo e($idx); ?>][<?php echo e($item->item_id); ?>][item_id]" item-idx="<?php echo e($idx); ?>" item-id="<?php echo e($item->item_id); ?>"/>
 		<input class="invoiceItem-price" type="hidden" value="<?php echo e($item->pretax); ?>" name="item[<?php echo e($item->inventory_id); ?>][<?php echo e($idx); ?>][<?php echo e($item->item_id); ?>][price]" item-idx="<?php echo e($idx); ?>" item-id="<?php echo e($item->item_id); ?>"/>
 		<input class="invoiceItem-color" type="hidden" value="<?php echo e($item->color); ?>" name="item[<?php echo e($item->inventory_id); ?>][<?php echo e($idx); ?>][<?php echo e($item->item_id); ?>][color]" item-idx="<?php echo e($idx); ?>" item-id="<?php echo e($item->item_id); ?>" color-name="<?php echo e($item->color); ?>"/>

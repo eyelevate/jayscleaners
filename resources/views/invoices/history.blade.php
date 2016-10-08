@@ -41,11 +41,11 @@
 								<td>{{ date('D n/d',strtotime($invoice->created_at)) }}</td>
 								<td>{{ date('D n/d',strtotime($invoice->due_date)) }}</td>
 								<td>{{ $invoice->quantity }}</td>
-								<td>{{ $invoice->status }}</td>
+								<td>{{ $invoice->status_title }}</td>
 								<td>{{ money_format('$%i',$invoice->pretax) }}</td>
 								<td>
 									<a class="btn btn-sm btn-primary">View</a>
-									<a class="btn btn-sm btn-info">Edit</a>&nbsp;
+									<a href="{{ route('invoices_edit',$invoice->id) }}" class="btn btn-sm btn-info">Edit</a>&nbsp;
 									<a class="btn btn-sm btn-danger">Revert</a>
 								</td>
 							</tr>
