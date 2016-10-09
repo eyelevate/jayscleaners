@@ -38,7 +38,7 @@
 						<?php if(count($invoices) > 0): ?>
 							<?php foreach($invoices as $invoice): ?>
 							<tr id="invoice_tr-<?php echo e($invoice->id); ?>" class="invoice_tr" style="cursor:pointer">
-								<td><?php echo e(str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT)); ?></td>
+								<td><?php echo e(str_pad($invoice->id, 6, '0', STR_PAD_LEFT)); ?></td>
 								<td><?php echo e($invoice->rack); ?></td>
 								<td><?php echo e(date('D n/d',strtotime($invoice->created_at))); ?></td>
 								<td><?php echo e(date('D n/d',strtotime($invoice->due_date))); ?></td>

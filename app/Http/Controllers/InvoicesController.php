@@ -505,7 +505,7 @@ class InvoicesController extends Controller
         $company_id = Auth::user()->company_id;
         $customer_id = $request->customer_id;
         $invoice_ids = $request->invoice_id;
-        Job::dump($invoice_ids);
+
         $invoices = Invoice::whereIn('id',$request->invoice_id)->get();
         $selected = Invoice::prepareSelected($invoices);
 
@@ -616,7 +616,6 @@ class InvoicesController extends Controller
 
     public function getHistory($id = null) {
         $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->orderBy('id','desc')->paginate(20));
-        
         $this->layout = 'layouts.dropoff';
         return view('invoices.history')
         ->with('invoices',$invoices)
@@ -640,17 +639,11 @@ class InvoicesController extends Controller
 
         if (count($racks) > 0) {
             foreach ($racks as $key => $value) {
-                $invoices = Invoice::where('invoice_id',$key)->get();
-                if (count($invoices) > 0) {
-                    foreach ($invoices as $invoice) {
-                        $invoice_id = $invoice->id;
-                        $invs = Invoice::find($invoice_id);
-                        $invs->status = 2;
-                        $invs->rack_date = date('Y-m-d H:i:s');
-                        $invs->rack = $value;
-                        $invs->save();
-                    }
-                }
+                $invoices = Invoice::find($key);
+                $invoices->status = 2;
+                $invoices->rack_date = date('Y-m-d H:i:s');
+                $invoices->rack = $value;
+                $invoices->save();
             }
             $request->session()->pull('racks');
             Flash::success('Successfully racked invoices.');
@@ -699,6 +692,10 @@ class InvoicesController extends Controller
                 'racks' => $request->session()->get('racks')
             ]);
         }
+    }
+
+    public function postRevert(Request $request) {
+        
     }
 
     public function postFeed(Request $request) {

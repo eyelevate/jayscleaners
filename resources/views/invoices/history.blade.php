@@ -36,7 +36,7 @@
 						@if (count($invoices) > 0)
 							@foreach($invoices as $invoice)
 							<tr id="invoice_tr-{{ $invoice->id }}" class="invoice_tr" style="cursor:pointer; color:{{ $invoice->status_color }}; background-color:{{ $invoice->status_bg }};">
-								<td>{{ str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT) }}</td>
+								<td>{{ str_pad($invoice->id, 6, '0', STR_PAD_LEFT) }}</td>
 								<td>{{ $invoice->rack }}</td>
 								<td>{{ date('D n/d',strtotime($invoice->created_at)) }}</td>
 								<td>{{ date('D n/d',strtotime($invoice->due_date)) }}</td>
@@ -44,9 +44,9 @@
 								<td>{{ $invoice->status_title }}</td>
 								<td>{{ money_format('$%i',$invoice->pretax) }}</td>
 								<td>
-									<a class="btn btn-sm btn-primary">View</a>
+									<a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#view-{{ $invoice->id }}">View</a>
 									<a href="{{ route('invoices_edit',$invoice->id) }}" class="btn btn-sm btn-info">Edit</a>&nbsp;
-									<a class="btn btn-sm btn-danger">Revert</a>
+									<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#revert-{{ $invoice->id }}">Revert</a>
 								</td>
 							</tr>
 							@endforeach
@@ -66,5 +66,20 @@
 @stop
 
 @section('modals')
-
+	@if (count($invoices) > 0)
+		@foreach($invoices as $invoice)
+		{!! View::make('partials.invoices.revert')
+			->with('invoice',$invoice)
+			->render()
+		!!}
+		{!! View::make('partials.invoices.view')
+			->with('invoice',$invoice)
+			->render()
+		!!}
+		{!! View::make('partials.invoices.remove')
+			->with('invoice',$invoice)
+			->render()
+		!!}
+		@endforeach
+	@endif
 @stop

@@ -36,7 +36,7 @@
 						<?php if(count($invoices) > 0): ?>
 							<?php foreach($invoices as $invoice): ?>
 							<tr id="invoice_tr-<?php echo e($invoice->id); ?>" class="invoice_tr" style="cursor:pointer; color:<?php echo e($invoice->status_color); ?>; background-color:<?php echo e($invoice->status_bg); ?>;">
-								<td><?php echo e(str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT)); ?></td>
+								<td><?php echo e(str_pad($invoice->id, 6, '0', STR_PAD_LEFT)); ?></td>
 								<td><?php echo e($invoice->rack); ?></td>
 								<td><?php echo e(date('D n/d',strtotime($invoice->created_at))); ?></td>
 								<td><?php echo e(date('D n/d',strtotime($invoice->due_date))); ?></td>
@@ -44,9 +44,9 @@
 								<td><?php echo e($invoice->status_title); ?></td>
 								<td><?php echo e(money_format('$%i',$invoice->pretax)); ?></td>
 								<td>
-									<a class="btn btn-sm btn-primary">View</a>
-									<a href="<?php echo e(route('invoices_edit',[$invoice->id,$invoice->invoice_id])); ?>" class="btn btn-sm btn-info">Edit</a>&nbsp;
-									<a class="btn btn-sm btn-danger">Revert</a>
+									<a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#view-<?php echo e($invoice->id); ?>">View</a>
+									<a href="<?php echo e(route('invoices_edit',$invoice->id)); ?>" class="btn btn-sm btn-info">Edit</a>&nbsp;
+									<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#revert-<?php echo e($invoice->id); ?>">Revert</a>
 								</td>
 							</tr>
 							<?php endforeach; ?>
@@ -67,6 +67,21 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('modals'); ?>
+	<?php if(count($invoices) > 0): ?>
+		<?php foreach($invoices as $invoice): ?>
+		<?php echo View::make('partials.invoices.revert')
+			->with('invoice',$invoice)
+			->render(); ?>
 
+		<?php echo View::make('partials.invoices.view')
+			->with('invoice',$invoice)
+			->render(); ?>
+
+		<?php echo View::make('partials.invoices.remove')
+			->with('invoice',$invoice)
+			->render(); ?>
+
+		<?php endforeach; ?>
+	<?php endif; ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

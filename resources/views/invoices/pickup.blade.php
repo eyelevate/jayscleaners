@@ -38,7 +38,7 @@
 						@if (count($invoices) > 0)
 							@foreach($invoices as $invoice)
 							<tr id="invoice_tr-{{ $invoice->id }}" class="invoice_tr" style="cursor:pointer">
-								<td>{{ str_pad($invoice->invoice_id, 6, '0', STR_PAD_LEFT) }}</td>
+								<td>{{ str_pad($invoice->id, 6, '0', STR_PAD_LEFT) }}</td>
 								<td>{{ $invoice->rack }}</td>
 								<td>{{ date('D n/d',strtotime($invoice->created_at)) }}</td>
 								<td>{{ date('D n/d',strtotime($invoice->due_date)) }}</td>
