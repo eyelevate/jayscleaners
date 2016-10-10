@@ -616,10 +616,14 @@ class InvoicesController extends Controller
 
     public function getHistory($id = null) {
         $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->orderBy('id','desc')->paginate(20));
+        $revert = Invoice::prepareRevert();
+
         $this->layout = 'layouts.dropoff';
+
         return view('invoices.history')
         ->with('invoices',$invoices)
         ->with('customer_id',$id)
+        ->with('revert',$revert)
         ->with('layout',$this->layout);    
 
     }
@@ -695,7 +699,37 @@ class InvoicesController extends Controller
     }
 
     public function postRevert(Request $request) {
+        $new_status = $request->status;
+        $invoices = Invoice::find($request->id);
+        $old_status = $invoices->status;
+        if ($old_status == 5 || $old_status == 3) { // revert payments 
+            $transaction_id = $invoices->transaction_id;
+            $customer_id = $invoices->customer_id;
+            $company_id = $invoices->company_id;
+            if (isset($transaction_id)) {
+                $transactions = Transaction::find($transaction_id);
+
+                $payment_transaction_id = ($transactions->transaction_id) ? $transactions->transaction_id : false;
+                if ($payment_transaction_id) { // Online payment 
+                    $void = Card::makeVoid($company_id, $payment_transaction_id);
+                    if(!$void['status']) {
+                        Flash::error('Error: '.$void['message']);
+                        return Redirect::back();
+                    }
+                }
+            }
+
+
+            $invoices->transaction_id = NULL; 
+
+        } 
         
+        $invoices->status = $new_status;
+
+        if ($invoices->save()) {
+            Flash::success('Successfully updated status');
+            return Redirect::back();
+        }
     }
 
     public function postFeed(Request $request) {

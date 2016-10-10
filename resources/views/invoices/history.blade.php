@@ -70,6 +70,7 @@
 		@foreach($invoices as $invoice)
 		{!! View::make('partials.invoices.revert')
 			->with('invoice',$invoice)
+			->with('revert',$revert)
 			->render()
 		!!}
 		{!! View::make('partials.invoices.view')

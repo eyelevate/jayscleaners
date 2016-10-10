@@ -1,5 +1,7 @@
 <?php echo Form::open(['action' => 'InvoicesController@postRevert','role'=>"form"]); ?>
 
+<?php echo Form::hidden('id',$invoice->id); ?>
+
 <div id="revert-<?php echo e($invoice->id); ?>" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -17,13 +19,14 @@
 	            <div class="form-group">
                     <label class="col-md-4 col-sm-4 col-lg-4 col-xs-12 control-label padding-top-none">New Status</label>
                     <div class="col-md-8 col-sm-8 col-lg-8 col-xs-12 ">
-                    	
+                    	<?php echo e(Form::select('status',$revert,$invoice->status,['class'=>'form-control'])); ?>
+
                 	</div>
                 </div>
 			</div>
 			<div class="modal-footer clearfix">
 				<button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-success btn-lg finish_button pull-right" >Revert</button>
+				<button type="submit" class="btn btn-success btn-lg finish_button pull-right" >Revert</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

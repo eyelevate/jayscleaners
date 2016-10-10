@@ -72,10 +72,15 @@ class ReportsController extends Controller
     }
 
     public function getMake($start = null, $end = null, $company_id = null) {
-        $reports = Report::prepareQueryReport($start, $end, $company_id);
 
-        return view('reports.index')
+        $start_date = date('D n/d/Y',$start);
+        $end_date = date('D n/d/Y',$end);
+        $reports = Report::prepareQueryReport($start, $end, $company_id);
+        return view('reports.make')
         ->with('layout',$this->layout)
+        ->with('reports',$reports)
+        ->with('start_date',$start_date)
+        ->with('end_date',$end_date)
         ->with('reports',$reports);
 
     }

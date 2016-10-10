@@ -15,10 +15,10 @@ class Invoice extends Model
 
     /**
     * Statuses
-    * 1 - New Order 
-    * 2 - 
-    * 3 - 
-    * 4 - 
+    * 1 - ACTIVE 
+    * 2 - Racked
+    * 3 - Prepaid
+    * 4 - Gone NP
     * 5 - Paid and complete 
     **/
 
@@ -186,5 +186,15 @@ class Invoice extends Model
         $selected['totals'] = $totals;
 
         return $selected;
+    }
+
+    public static function prepareRevert() {
+        return [
+            1 => 'Active',
+            2 => 'Racked',
+            3 => 'Prepaid',
+            4 => 'Gone NP',
+            5 => 'Finished'
+        ];
     }
 }

@@ -71,6 +71,7 @@
 		<?php foreach($invoices as $invoice): ?>
 		<?php echo View::make('partials.invoices.revert')
 			->with('invoice',$invoice)
+			->with('revert',$revert)
 			->render(); ?>
 
 		<?php echo View::make('partials.invoices.view')
