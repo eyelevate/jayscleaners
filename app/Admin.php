@@ -774,7 +774,7 @@ class Admin extends Model
         } 
         if (isset($up['invoices'])){
             foreach ($up['invoices'] as $key => $value) {
-                $invoices = Invoice::withTrashed()->where('invoice_id',$value['invoice_id'])->get();
+                $invoices = Invoice::withTrashed()->where('id',$value['invoice_id'])->get();
                 if ($invoices){
                     foreach ($invoices as $data) {
                         $invoice = Invoice::withTrashed()->find($data->id);
