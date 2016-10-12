@@ -208,7 +208,7 @@ class Admin extends Model
         if(isset($up['cards'])){
             foreach ($up['cards'] as $key => $value) {
                 $card = new Card();
-                $card->company_id = $company_id;
+                $card->company_id = $value['company_id'];
                 $card->user_id = $value['user_id'];
                 $card->profile_id = $value['profile_id'];
                 $card->payment_id = $value['payment_id'];
@@ -407,7 +407,7 @@ class Admin extends Model
         if (isset($up['profiles'])){
             foreach ($up['profiles'] as $key => $value) {
                 $profile = new Profile();
-                $profile->company_id = $company_id;
+                $profile->company_id = $value['company_id'];
                 $profile->user_id = $value['user_id'];
                 $profile->profile_id = $value['profile_id'];
                 $profile->status = $value['status'];
@@ -473,7 +473,7 @@ class Admin extends Model
     	if (isset($up['schedules'])){
     		foreach ($up['schedules'] as $key => $value) {
     			$schedule = new Schedule();
-    			$schedule->company_id = $company_id;
+    			$schedule->company_id = $value['company_id'];
     			$schedule->customer_id = $value['customer_id'];
                 $schedule->card_id = $value['card_id'];
     			$schedule->pickup_delivery_id = $value['pickup_delivery_id'];
