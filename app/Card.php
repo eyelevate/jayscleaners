@@ -424,7 +424,7 @@ class Card extends Model
 						$card_number = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber();
 						$card_type = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardType();
 						$cards_data[$key]['card_number'] = $card_number;
-						$cards_data[$key]['card_type'] = $card_type;
+						$cards_data[$key]['card_type'] = $card_type ? $card_type : NULL;
 						$card_first_name = $response->getPaymentProfile()->getBillTo()->getFirstName();
 						$card_last_name = $response->getPaymentProfile()->getBillTo()->getLastName();
 						$cards_data[$key]['first_name'] = $card_first_name;
