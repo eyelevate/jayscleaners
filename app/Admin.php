@@ -412,7 +412,7 @@ class Admin extends Model
                 $profile->profile_id = $value['profile_id'];
                 $profile->status = $value['status'];
                 if($profile->save()){
-                    $up['profiles'][$key]['prrofile_id'] = $profile->id;
+                    $up['profiles'][$key]['p_id'] = $profile->id;
                     $uploaded_rows++;
                 }
             }
@@ -866,7 +866,7 @@ class Admin extends Model
         } 
         if (isset($up['profiles'])){
             foreach ($up['profiles'] as $key => $value) {
-                $profile = Profile::withTrashed()->find($value['profile_id']);
+                $profile = Profile::withTrashed()->find($value['p_id']);
                 $profile->company_id = $company_id;
                 $profile->user_id = $value['user_id'];
                 $profile->profile_id = $value['profile_id'];
