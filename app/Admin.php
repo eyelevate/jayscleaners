@@ -867,7 +867,7 @@ class Admin extends Model
         if (isset($up['profiles'])){
             foreach ($up['profiles'] as $key => $value) {
                 $profile = Profile::withTrashed()->find($value['p_id']);
-                $profile->company_id = $company_id;
+                $profile->company_id = $value['company_id'];
                 $profile->user_id = $value['user_id'];
                 $profile->profile_id = $value['profile_id'];
                 $profile->status = $value['status'];
