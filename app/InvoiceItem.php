@@ -76,4 +76,22 @@ class InvoiceItem extends Model
 
     	return $group;
     }
+
+    public static function prepareLocation() {
+        return [
+            1 => 'Accepted',
+            2 => 'In Dry Clean',
+            3 => 'In Wash',
+            4 => 'In Press - Shirts',
+            5 => 'In Press - Pants',
+            6 => 'In Press - Blouse',
+            7 => 'In Press - Touch Up',
+            8 => 'In Spotting',
+            9 => 'In Assembly',
+            10 => 'In Bagging',
+            11 => 'Racked',
+            12 => 'In Delivery',
+            13 => 'Complete'
+        ];
+    }
 }

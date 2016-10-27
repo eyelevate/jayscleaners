@@ -45,6 +45,16 @@ class InventoryItem extends Model
 		return $data;
 	}
 
+	public static function getItemName($item_id) {
+		$items = InventoryItem::find($item_id);
+		if ($items){
+			return $items->name;
+		} else {
+			return NULL;
+		}
+		return $items->name;
+	}
+
 	public static function preparePricingList() {
 		$list = [
 			'Dry Clean' => [

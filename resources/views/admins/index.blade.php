@@ -21,7 +21,7 @@
 @stop
 @section('content')
   <div class="row">
-    <a href="{{ route('customers_index','') }}" class="col-lg-3 col-xs-6">
+    <a href="{{ route('invoices_manage') }}" class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-aqua">
         <div class="inner">

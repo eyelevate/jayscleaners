@@ -21,7 +21,7 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
   <div class="row">
-    <a href="<?php echo e(route('customers_index','')); ?>" class="col-lg-3 col-xs-6">
+    <a href="<?php echo e(route('invoices_manage')); ?>" class="col-lg-3 col-xs-6">
       <!-- small box -->
       <div class="small-box bg-aqua">
         <div class="inner">

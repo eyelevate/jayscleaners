@@ -732,6 +732,136 @@ class InvoicesController extends Controller
         }
     }
 
+    public function getManage() {
+        $locations = InvoiceItem::prepareLocation();
+        $companies = Company::getCompany();
+        $this->layout = 'layouts.dropoff';
+        return view('invoices.manage')
+        ->with('layout',$this->layout)
+        ->with('companies',$companies)
+        ->with('locations', $locations);
+    }
+
+    public function postManage(Request $request) {
+        $company_id = $request->company_id;
+        $location = $request->status;
+        $pretax = $request->pretax;
+        $tax = $request->tax;
+        $total = $request->total;
+        $id = $request->id;
+
+
+        $invoice_items = InvoiceItem::find($id);
+        $invoice_id = $invoice_items->invoice_id;
+        $invoice_items->company_id = $company_id;
+        $invoice_items->status = $location;
+        $invoice_items->pretax = $pretax;
+        $invoice_items->tax = $tax;
+        $invoice_items->total = $total;
+        if ($invoice_items->save()) {
+            $taxes = Tax::where('company_id',$company_id)->orderBy('id','desc')->limit(1)->get();
+            if (count($taxes) > 0) {
+                foreach ($taxes as $tax) {
+                    $tax_rate = $tax['rate'];
+                }
+            } else {
+                $tax_rate = 0.096;
+            }
+            $sum_pretax = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
+            $sum_tax = money_format('%i',round($sum_pretax * $tax_rate,2));
+            $sum_total = money_format('%i',$sum_pretax + $sum_tax);
+
+            $invoices = Invoice::find($invoice_id);
+            $invoices->pretax = $sum_pretax;
+            $invoices->tax = $sum_tax;
+            $invoices->total = $sum_total;
+            if ($invoices->save()) {
+                Flash::success('Successfully updated invoice item #'.$id);
+                return Redirect::route('invoices_manage');
+            }
+        }
+
+    }
+
+    public function postManageUpdate(Request $request) {
+        if ($request->ajax()) {
+            $search = $request->search;
+
+            $inv_items = InvoiceItem::find($search);
+            if ($inv_items) {
+                $item_id = $inv_items->item_id;
+                $item_name = InventoryItem::getItemName($item_id);
+                $memo = $inv_items->memo;
+                $color = $inv_items->color;
+                $status = $inv_items->status;
+                $pretax = $inv_items->pretax;
+                $tax = $inv_items->tax;
+                $total = $inv_items->total;
+                $company_id = $inv_items->company_id;
+
+            } else {
+                $item_name = NULL;
+                $memo = NULL;
+                $color = NULL;
+                $status = 1;
+                $pretax = 0;
+                $tax = 0;
+                $total = 0;
+                $company_id = 1;
+            }
+
+
+            return response()->json([
+                'status'=> true,
+                'location_id'=>$status,
+                'pretax'=>$pretax,
+                'tax'=>$tax,
+                'total'=>$total,
+                'company_id'=>$company_id,
+                'name'=>$item_name,
+                'memo'=>$memo,
+                'color'=>$color
+            ]);            
+        }
+    }
+
+    public function postManageTotals(Request $request) {
+        if ($request->ajax()) {
+            $amount = $request->amount;
+            $direction = $request->direction;
+            $company_id = $request->company_id;
+            $taxes = Tax::where('company_id',$company_id)->orderBy('id','desc')->limit(1)->get();
+            if (count($taxes) > 0) {
+                foreach ($taxes as $tax) {
+                    $tax_rate = $tax['rate'];
+                }
+            } else {
+                $tax_rate = 0.096;
+            }
+            switch($direction) {
+                case 1: // subtotal to total
+                $pretax = money_format('%i', $amount);
+                $tax = money_format('%i',round($pretax * $tax_rate,2));
+                $total = money_format('%i',round($pretax * (1+$tax_rate),2));
+                break;
+
+                default: // total to subtotal
+                $total = money_format('%i',$amount);
+                $pretax = money_format('%i',round($total  / (1+$tax_rate),2));
+                $tax = money_format('%i',$total - $pretax);
+                break;
+            }
+
+
+            return response()->json([
+                'status'=> true,
+                'pretax'=>$pretax,
+                'tax'=>$tax,
+                'total'=>$total,
+            ]);            
+        }
+    }
+
     public function postFeed(Request $request) {
         if($request->ajax()){
             $test = $request->test;
@@ -743,31 +873,5 @@ class InvoicesController extends Controller
             ]);
         }
     }
-
-    public function getTest(){
-
-
-try {
-    $connector = new CupsPrintConnector("TSP100LAN");
-    // $connector = new NetworkPrintConnector("10.1.10.10", 9100); 
-    /* Print a "Hello world" receipt" */
-    $printer = new Printer($connector);
-    $printer -> text("Hello World!\n");
-    $printer -> cut();
-    
-    /* Close printer */
-    $printer -> close();
-
-} catch(Exception $e) {
-    echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
 }
-// $connector = new FilePrintConnector("php://stdout");
-// $printer = new Printer($connector);
-// $printer -> text("Hello World!\n");
-// $printer -> cut();
-// $printer -> close();
 
-        return view('invoices.test')
-        ->with('layout',$this->layout);        
-    }
-}

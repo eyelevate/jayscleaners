@@ -800,7 +800,6 @@ class Admin extends Model
                         } else {
                             $invoice->save(); 
                         }
-                        
                     }
                 }
             }
