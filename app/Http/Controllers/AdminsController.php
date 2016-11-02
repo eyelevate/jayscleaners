@@ -29,6 +29,7 @@ use App\Inventory;
 use App\InventoryItem;
 use App\Color;
 use App\Delivery;
+use App\Report;
 use App\Schedule;
 use App\Tax;
 use App\Transaction;
@@ -203,11 +204,11 @@ class AdminsController extends Controller
     public function getView($id = null){
         $this->layout = 'admins.login';
         # update invoice to set users table id as customer_id instead of user_id
-        // $invoices = Invoice::whereBetween('id',[50001,55000])->get();
+        // $invoices = Invoice::whereBetween('id',[65001,70000])->get();
         // if ($invoices) {
         //     foreach ($invoices as $invoice) {
         //         $customer_id = $invoice->customer_id;
-        //         $customers = User::where('user_id',$customer_id)->where('company_id',1)->get();
+        //         $customers = User::where('user_id',$customer_id)->get();
         //         if ($customers){
         //             foreach ($customers as $customer) {                   
         //                 $invs = Invoice::find($invoice->id);
@@ -233,65 +234,71 @@ class AdminsController extends Controller
         // }
 
         # update the invoice to make invoice items
-        $invoices = Invoice::whereBetween('id', [48001, 52000])->get();
-        if($invoices){
-            foreach ($invoices as $invoice) {
-                $invoice_id = $invoice['invoice_id'];
-                $customer_id = $invoice['customer_id'];
-                $company_id = $invoice['company_id'];
-                $taxes = Tax::where('company_id',$company_id)->where('status',1)->first();
-                $tax_rate = $taxes['rate'];
-                $items = json_decode($invoice['items']);
-                if($items){
-                    foreach ($items as $key => $value) {
-                        $item_id = $key;
-                        $item_qty = $value->quantity;
-                        for ($i=0; $i < $item_qty; $i++) { 
-                            $invoice_item = new InvoiceItem;
-                            $invoice_item->invoice_id = $invoice_id;
-                            $invoice_item->item_id = $item_id;
-                            $invoice_item->customer_id = $customer_id;
-                            $invoice_item->company_id = $company_id;
-                            $invoice_item->quantity = 1; 
-                            $inventory_items = InventoryItem::find($item_id);
-                            if ($inventory_items) {
-                                $invoice_item->pretax = money_format('%i',round($inventory_items->price,2));
-                                $invoice_item->tax = money_format('%i',round($inventory_items->price * $tax_rate,2));
-                                $invoice_item->total = money_format('%i',round($inventory_items->price * (1+$tax_rate),2));
-                                $invoice_item->status = 1; 
-                                if($invoice_item->save()){
-                                    Job::dump($invoice->id.' - '.$invoice_id.' - '.$invoice_item->id);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+
+        // $invoices = Invoice::whereBetween('id', [65001, 70000])->get();
+        // if($invoices){
+        //     $itemsToInventory = Report::itemsToInventory(1);
+        //     foreach ($invoices as $invoice) {
+        //         $invoice_id = $invoice['id'];
+        //         $customer_id = $invoice['customer_id'];
+        //         $company_id = $invoice['company_id'];
+        //         $taxes = Tax::where('company_id',$company_id)->where('status',1)->first();
+        //         $tax_rate = $taxes['rate'];
+        //         $items = json_decode($invoice['items']);
+        //         if($items){
+        //             foreach ($items as $key => $value) {
+        //                 $item_id = $key;
+        //                 $item_qty = $value->quantity;
+        //                 for ($i=0; $i < $item_qty; $i++) { 
+        //                     $invoice_item = new InvoiceItem;
+        //                     $invoice_item->invoice_id = $invoice_id;
+        //                     $invoice_item->item_id = $item_id;
+        //                     $invoice_item->customer_id = $customer_id;
+        //                     $invoice_item->company_id = $company_id;
+        //                     $invoice_item->quantity = 1; 
+        //                     $inventory_items = InventoryItem::find($item_id);
+        //                     if ($inventory_items) {
+        //                         $invoice_item->inventory_id = $itemsToInventory[$item_id];
+        //                         $invoice_item->pretax = money_format('%i',round($inventory_items->price,2));
+        //                         $invoice_item->tax = money_format('%i',round($inventory_items->price * $tax_rate,2));
+        //                         $invoice_item->total = money_format('%i',round($inventory_items->price * (1+$tax_rate),2));
+        //                         $invoice_item->status = 1; 
+        //                         if($invoice_item->save()){
+        //                             Job::dump($invoice->id.' - '.$invoice_id.' - '.$invoice_item->id);
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         #update transactions
-        // $transactions = Transaction::whereBetween('id', [20001,25000])->get();
+        // $transactions = Transaction::whereBetween('id', [25001,30000])->get();
         // if ($transactions) {
         //     foreach ($transactions as $transaction) {
         //         $transaction_id = $transaction->id;
+
         //         $trans_invoices = json_decode($transaction->invoices);
+        //         // Job::dump($trans_invoices);
         //         if ($trans_invoices){
         //             foreach ($trans_invoices as $key => $value) {
         //                 $invoice_id = ($value->invoice_id) ? $value->invoice_id : false;
+                   
         //                 if ($invoice_id) {
         //                     $invoices = Invoice::where('invoice_id',$invoice_id)->get();
-        //                         if($invoices){
-        //                             foreach ($invoices as $invoice) {
-        //                                 $invs = Invoice::find($invoice->id);
-        //                                 $invs->transaction_id = $transaction_id;
-        //                                 $invs->status = 5;
+        //                     if($invoices){
+        //                         foreach ($invoices as $invoice) {
+        //                             $invs = Invoice::find($invoice->id);
+        //                             $invs->transaction_id = $transaction_id;
+        //                             $invs->status = 5;
 
-        //                                 if($invs->save()){
-        //                                     Job::dump('saved '.$transaction_id.' = '.$invoice_id);
-        //                                 } else {
-        //                                     Job::dump('could not save '.$transaction_id.' no such invoice - '.$invoice_id);
-        //                                 }
+        //                             if($invs->save()){
+        //                                 Job::dump('saved '.$transaction_id.' = '.$invoice_id);
+        //                             } else {
+        //                                 Job::dump('could not save '.$transaction_id.' no such invoice - '.$invoice_id);
         //                             }
+        //                         }
 
         //                     }
 
@@ -302,35 +309,35 @@ class AdminsController extends Controller
         //     }
         // }
         #make custids
-        // $users = User::whereBetween('id',[14180,16000])->get();
+        // $users = User::whereBetween('id',[5001,10000])->get();
         // if($users){
         //     foreach ($users as $user) {
-        //         $user_id = $user->user_id;
+        //         $user_id = $user->id;
         //         $last_name = $user->last_name;
         //         $hanger_old = $user->shirt_old;
         //         $starch = $user->starch_old;
-        //         // switch($hanger_old){
-        //         //     case 'hanger':
-        //         //         $hanger = 1;
-        //         //     break;
+        //         switch($hanger_old){
+        //             case 'hanger':
+        //                 $hanger = 1;
+        //             break;
 
-        //         //     case 'box':
-        //         //         $hanger = 2;
-        //         //     break;
+        //             case 'box':
+        //                 $hanger = 2;
+        //             break;
 
-        //         //     case 'fold':
-        //         //         $hanger = 2;
-        //         //     break;
+        //             case 'fold':
+        //                 $hanger = 2;
+        //             break;
 
-        //         //     default:
-        //         //         $hanger = 1;
-        //         //     break;
-        //         // }
-        //         // $us = User::find($user_id);
-        //         // $us->shirt = $hanger;
-        //         // if($us->save()){
-        //         //     Job::dump($hanger);
-        //         // }
+        //             default:
+        //                 $hanger = 1;
+        //             break;
+        //         }
+        //         $us = User::find($user_id);
+        //         $us->shirt = $hanger;
+        //         if($us->save()){
+        //             Job::dump($hanger);
+        //         }
 
         //         $mark = Custid::createOriginalMark($user); 
         //         // strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));
@@ -346,7 +353,43 @@ class AdminsController extends Controller
         //     }
         // }
 
+        // SCHEDULE update customer id 
+        // $schedules = Schedule::whereBetween('id', [0,5000])->get();
+        // if (count($schedules) > 0) {
+        //     foreach ($schedules as $schedule) {
+        //         $customer_id = $schedule->customer_id;
+        //         $users = User::where('user_id',$customer_id)->pluck('id');
+        //         if(count($users) > 0) {
+        //             foreach ($users as $uid) {
+        //                 $scheds = Schedule::find($schedule->id);
+        //                 $scheds->customer_id = $uid;
+        //                 if ($scheds->save()) {
+        //                     Job::dump('updated #'.$schedule->id.' with customer_id #'.$uid);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
+        // Transaction only update OPTIONAL
+        // $transactions = Transaction::whereBetween('id', [25001,30000])->get();
+        // if ($transactions) {
+        //     foreach ($transactions as $transaction) {
+        //         $user_id = $transaction->customer_id;
+        //         # swap out the user id with the id
+        //         $users = User::where('user_id',$user_id)->pluck('id');
+        //         if (count($users)>0) {
+        //             foreach ($users as $uid) {
+        //                 $trans = Transaction::find($transaction->id);
+        //                 $trans->customer_id = $uid;
+        //                 if ($trans->save()) {
+        //                     Job::dump('saved id #'.$uid.' to transaction #'.$transaction->id);
+        //                 }
+        //             }
+        //         }
+                
+        //     }
+        // }
 
         return view('admins.view')
         ->with('layout',$this->layout);

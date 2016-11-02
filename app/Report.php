@@ -80,10 +80,10 @@ class Report extends Model
                 $this_year_transactions = Transaction::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->sum('total');
                 $reports[$company_id] = [
                     'name'=>$company->name,
-                    'today'=>money_format('$%i',$today_transactions),
-                    'this_week'=>money_format('$%i',$this_week_transactions),
-                    'this_month'=>money_format('$%i',$this_month_transactions),
-                    'this_year'=>money_format('$%i',$this_year_transactions)
+                    'today'=>money_format('$%n',$today_transactions),
+                    'this_week'=>money_format('$%n',$this_week_transactions),
+                    'this_month'=>money_format('$%n',$this_month_transactions),
+                    'this_year'=>money_format('$%n',$this_year_transactions)
                 ];
             }
         }
@@ -105,8 +105,8 @@ class Report extends Model
     static public function prepareQueryReport($start, $end, $company_id) {
 
         /** transaction types
-        * 1. cash
-        * 2. credit
+        * 1. credit
+        * 2. cash
         * 3. check
         * 4. online cc
         * 5. account
@@ -117,6 +117,7 @@ class Report extends Model
         $end_date = date('Y-m-d H:i:s',$end);
 
         $report = [];
+        setlocale(LC_MONETARY, 'en_US.utf8');
 
         // pickup 
         $pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('pretax');
@@ -124,18 +125,18 @@ class Report extends Model
         $discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('discount');
         $total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('total');
 
-        $cash_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('pretax');
-        $cash_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('tax');
-        $cash_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('discount');
-        $cash_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('total');
+        $cash_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('pretax');
+        $cash_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('tax');
+        $cash_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('discount');
+        $cash_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('total');
         $check_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('pretax');
         $check_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('tax');
         $check_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('discount');
         $check_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('total');
-        $cc_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('pretax');
-        $cc_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('tax');
-        $cc_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('discount');
-        $cc_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('total');
+        $cc_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('pretax');
+        $cc_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('tax');
+        $cc_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('discount');
+        $cc_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('total');
         $online_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('pretax');
         $online_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('tax');
         $online_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('discount');
@@ -144,60 +145,64 @@ class Report extends Model
 
         $report = [
             'totals' => [
-                'subtotal' => money_format('$%i',$pretax),
-                'tax' => money_format('$%i',$tax),
-                'discount' => money_format('$%i',$discount),
-                'total' => money_format('$%i',$total),
+                'subtotal' => money_format('%n',$pretax),
+                'tax' => money_format('%n',$tax),
+                'discount' => money_format('%n',$discount),
+                'total' => money_format('%n',$total),
             ],
             'total_splits' => [
                 'cash' => [
-                    'subtotal' => money_format('$%i',$cash_pretax),
-                    'tax' => money_format('$%i',$cash_tax),
-                    'discount' => money_format('$%i',$cash_discount),
-                    'total' => money_format('$%i',$cash_total),
+                    'subtotal' => money_format('%n',$cash_pretax),
+                    'tax' => money_format('%n',$cash_tax),
+                    'discount' => money_format('%n',$cash_discount),
+                    'total' => money_format('%n',$cash_total),
                 ],
                 'check' => [
-                    'subtotal' => money_format('$%i',$check_pretax),
-                    'tax' => money_format('$%i',$check_tax),
-                    'discount' => money_format('$%i',$check_discount),
-                    'total' => money_format('$%i',$check_total),
+                    'subtotal' => money_format('%n',$check_pretax),
+                    'tax' => money_format('%n',$check_tax),
+                    'discount' => money_format('%n',$check_discount),
+                    'total' => money_format('%n',$check_total),
                 ],
                 'credit' => [
-                    'subtotal' => money_format('$%i',$cc_pretax),
-                    'tax' => money_format('$%i',$cc_tax),
-                    'discount' => money_format('$%i',$cc_discount),
-                    'total' => money_format('$%i',$cc_total),
+                    'subtotal' => money_format('%n',$cc_pretax),
+                    'tax' => money_format('%n',$cc_tax),
+                    'discount' => money_format('%n',$cc_discount),
+                    'total' => money_format('%n',$cc_total),
                 ],
                 'online' => [
-                    'subtotal' => money_format('$%i',$online_pretax),
-                    'tax' => money_format('$%i',$online_tax),
-                    'discount' => money_format('$%i',$online_discount),
-                    'total' => money_format('$%i',$online_total),
+                    'subtotal' => money_format('%n',$online_pretax),
+                    'tax' => money_format('%n',$online_tax),
+                    'discount' => money_format('%n',$online_discount),
+                    'total' => money_format('%n',$online_total),
                 ]
             ],
 
         ];
 
-        $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->get();
+        $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id');
         $completed_invoice_ids = [];
         if (count($query) > 0) {
-            foreach ($query as $q) {
-                $transaction_id = $q->id;
-                $invs = Invoice::where('transaction_id',$transaction_id)->where('status',5)->get();
-                if (count($invs) > 0) {
-                    foreach ($invs as $inv) {
-                        $invoice_id = $inv->id;
-                        array_push($completed_invoice_ids, $invoice_id);
-                    }
+            $trans_id_list = [];
+            foreach ($query as $qid) {
+                $transaction_id = $qid;
+                array_push($trans_id_list, $transaction_id);
+            }
+            $invs = Invoice::whereIn('transaction_id',$trans_id_list)->where('status',5)->pluck('id');
+            if (count($invs) > 0) {
+                foreach ($invs as $invid) {
+                    $invoice_id = $invid;
+                    array_push($completed_invoice_ids, $invoice_id);
                 }
             }
+
         }
+
         $dropoff_invoice_ids = [];
-        $query = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->get();
+        $query = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id');
         
         if (count($query) > 0) {
-            foreach ($query as $q) {
-                $invoice_id = $q->id;
+            foreach ($query as $qid) {
+                $invoice_id = $qid;
                 array_push($dropoff_invoice_ids,$invoice_id);
             }
         }
@@ -218,85 +223,55 @@ class Report extends Model
         $ds_total = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->sum('total');
         $pickup_summary_totals = [
             'quantity' => $ps_quantity, 
-            'subtotal' => money_format('$%i',$ps_subtotal), 
-            'tax'=>money_format('$%i',$ps_tax),
-            'total'=>money_format('$%i',$ps_total)
+            'subtotal' => money_format('%n',$ps_subtotal), 
+            'tax'=>money_format('%n',$ps_tax),
+            'total'=>money_format('%n',$ps_total)
         ];
         $dropoff_summary_totals = [
             'quantity' => $ds_quantity, 
-            'subtotal' => money_format('$%i',$ds_subtotal), 
-            'tax'=>money_format('$%i',$ds_tax),
-            'total'=>money_format('$%i',$ds_total)
+            'subtotal' => money_format('%n',$ds_subtotal), 
+            'tax'=>money_format('%n',$ds_tax),
+            'total'=>money_format('%n',$ds_total)
         ];
-        if (count($inventories) > 0) {
 
-            foreach ($inventories as $inventory) {
-                $pickup_quantity = 0;
-                $pickup_subtotal = 0;
-                $pickup_tax = 0;
-                $pickup_total = 0;
-                $dropoff_quantity = 0;
-                $dropoff_subtotal = 0;
-                $dropoff_tax = 0;
-                $dropoff_total = 0;                
+        // #make a list of inventory item id to inventory id
+        $itemsToInventory = Report::itemsToInventory($company_id);
+
+        if (count($inventories) > 0) {
+            // $items = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->pluck('id');
+            // $dropoff_items = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->pluck('id');
+            foreach ($inventories as $inventory) {               
                 $inventory_id = $inventory->id;
                 $inventory_name = $inventory->name;
-
-                $items = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->get();
+                $qty = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('quantity');
+                $pretax = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('pretax');
+                $tax = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('tax');
+                $total = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('pretax');
+                
                 $inv_summary[$inventory_id] = [
                     'name' => $inventory_name,
-                    'totals' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00'],
+                    'totals' => [
+                        'quantity' => $qty, 
+                        'subtotal' =>money_format('%n', $pretax), 
+                        'tax'=>money_format('%n', $tax),
+                        'total'=>money_format('%n', $total)
+                    ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
-                if (count($items) > 0) {
-                    foreach ($items as $item) {
-                        $item_id = $item->item_id;
-                        $inventories = InventoryItem::find($item_id);
-                        $inv_id = $inventories->inventory_id;
-                        if ($inv_id == $inventory_id) {
-                            $pickup_quantity += 1;
-                            $pickup_subtotal += $item->pretax;
-                            $pickup_tax += $item->tax;
-                            $pickup_total += $item->total;
-                        }
-
-                    }
-                    $inv_summary[$inventory_id]['totals'] = [
-                        'quantity' => $pickup_quantity, 
-                        'subtotal' =>money_format('$%i',$pickup_subtotal), 
-                        'tax'=>money_format('$%i',$pickup_tax),
-                        'total'=>money_format('$%i',$pickup_total)
-                    ];
-                }
-
-                //dropoff info
+                $drop_qty = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('quantity');
+                $drop_pretax = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('pretax');
+                $drop_tax = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('tax');
+                $drop_total = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('total');
                 $dropoff_summary[$inventory_id] = [
                     'name' => $inventory_name,
-                    'totals' => ['quantity' => 0, 'subtotal' => '$0.00', 'tax'=>'$0.00','total'=>'$0.00'],
+                    'totals' => [
+                        'quantity' => $drop_qty, 
+                        'subtotal' => money_format('%n',$drop_pretax), 
+                        'tax'=> money_format('%n',$drop_tax),
+                        'total'=> money_format('%n',$drop_total)
+                    ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
-                $dropoff_items = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->get();
-                if (count($dropoff_items) > 0) {
-                    foreach ($dropoff_items as $di) {
-                        $item_id = $di->item_id;
-                        $inventories = InventoryItem::find($item_id);
-                        $inv_id = $inventories->inventory_id;
-                        if ($inv_id == $inventory_id) {
-                            $dropoff_quantity += 1;
-                            $dropoff_subtotal += $di->pretax;
-                            $dropoff_tax += $di->tax;
-                            $dropoff_total += $di->total;
-                        }
-
-                    }
-                    $dropoff_summary[$inventory_id]['totals'] = [
-                        'quantity' => $dropoff_quantity, 
-                        'subtotal' => money_format('$%i',$dropoff_subtotal), 
-                        'tax'=>money_format('$%i',$dropoff_tax),
-                        'total'=>money_format('$%i',$dropoff_total)
-                    ];
-
-                }
 
             }
         }
@@ -308,6 +283,18 @@ class Report extends Model
 
 
         return $report;
+    }
+
+    public static function itemsToInventory($company_id) {
+        $items = InventoryItem::where('company_id',$company_id)->get();
+        $itemsToInventory = [];
+        if (count($items)> 0) {
+            foreach ($items as $item) {
+                $itemsToInventory[$item->id] = $item->inventory_id;
+            }
+        }
+
+        return $itemsToInventory;
     }
 }
 

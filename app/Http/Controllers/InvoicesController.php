@@ -137,7 +137,7 @@ class InvoicesController extends Controller
             $print_type = $request->store_copy;
             // create a new invoice id (this is different than invoices->id it is its own identification)
             $new_invoice_id = (count($last_saved_id) > 0) ? $last_saved_id[0] : 0;
-
+            $itemsToInventory = Report::itemsToInventory($company_id);
             foreach ($items as $itms) { // iterate through the first index (inventory group)
                 // create a new invoice id (this is different than invoices->id it is its own identification)
                 $new_invoice_id++;
@@ -166,6 +166,7 @@ class InvoicesController extends Controller
                             $item->company_id = $company_id;
                             $item->customer_id = $request->customer_id;
                             $item->item_id = $ivalue['item_id'];
+                            $item->inventory_id = $itemsToInventory[$ivalue['item_id']];
                             $item->pretax = $ivalue['price'];
                             $item->tax = number_format(round($ivalue['price'] * $tax_rate,2),2,'.','');
                             $item->total = number_format(round($ivalue['price'] * (1+$tax_rate),2),2,'.','');
@@ -258,7 +259,7 @@ class InvoicesController extends Controller
 
             // what type of print out?
             $print_type = $request->store_copy;
-
+            $itemsToInventory = Report::itemsToInventory($company_id);
             foreach ($items as $itms) { // iterate through the first index (inventory group)
                 $invoices = Invoice::find($request->invoice_id);
                 $invoices->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
@@ -316,6 +317,7 @@ class InvoicesController extends Controller
                                 if (isset($ivalue['item_id'])) {
                                     $item = (isset($ivalue['id'])) ? InvoiceItem::find($ivalue['id']) : new InvoiceItem();
                                     $item->item_id = (isset($ivalue['item_id'])) ? $ivalue['item_id'] : NULL;
+                                    $item->inventory_id = (isset($ivalue['item_id'])) ? $itemsToInventory[$ivalue['item_id']] : NULL;
                                     $item->invoice_id = $request->invoice_id;
                                     $item->company_id = Auth::user()->company_id;
                                     $item->customer_id = $invoices->customer_id;

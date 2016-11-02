@@ -16,6 +16,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->increments('id');
             $table->integer('invoice_id', false, true)->length(11)->nullable();
             $table->integer('item_id',false,true)->length(11)->nullable();
+            $table->integer('inventory_id',false,true)->length(11)->nullable();
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->integer('customer_id', false, true)->length(11)->nullable();
             $table->tinyInteger('quantity', false, true)->nullable();
