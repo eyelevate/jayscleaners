@@ -520,7 +520,7 @@ class Admin extends Model
     			$transaction->transaction_id = $value['transaction_id'];
     			$transaction->status = $value['status'];
     			if($transaction->save()){
-    				$up['transactions'][$key]['transaction_id'] = $transaction->id;
+    				$up['transactions'][$key]['trans_id'] = $transaction->id;
     				$uploaded_rows++;
     			}
     		}
@@ -964,7 +964,7 @@ class Admin extends Model
         } 
         if (isset($up['transactions'])){
             foreach ($up['transactions'] as $key => $value) {
-                $transaction = Transaction::withTrashed()->find($value['transaction_id']);
+                $transaction = Transaction::withTrashed()->find($value['trans_id']);
                 $transaction->company_id = $company_id;
                 $transaction->customer_id = $value['customer_id'];
                 $transaction->schedule_id = $value['schedule_id'];
