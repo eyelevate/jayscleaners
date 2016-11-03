@@ -735,7 +735,7 @@ class Admin extends Model
         if (isset($up['inventories'])){
             foreach ($up['inventories'] as $key => $value) {
                 $inventory = Inventory::withTrashed()->find($value['inventory_id']);
-                $inventory->company_id = $company_id;
+                $inventory->company_id = $value['company_id'];
                 $inventory->name = $value['name'];
                 $inventory->description = $value['description'];
                 $inventory->laundry = $value['laundry'];
@@ -754,7 +754,7 @@ class Admin extends Model
         if (isset($up['inventory_items'])){
             foreach ($up['inventory_items'] as $key => $value) {
                 $inventory_item = InventoryItem::withTrashed()->find($value['item_id']);
-                $inventory_item->company_id = $company_id;
+                $inventory_item->company_id = $value['company_id'];
                 $inventory_item->inventory_id = $value['inventory_id'];
                 $inventory_item->name = $value['name'];
                 $inventory_item->description = $value['description'];
@@ -779,7 +779,7 @@ class Admin extends Model
                 if ($invoices){
                     foreach ($invoices as $data) {
                         $invoice = Invoice::withTrashed()->find($data->id);
-                        $invoice->company_id = $company_id;
+                        $invoice->company_id = $value['company_id'];
                         $invoice->customer_id = $value['customer_id'];
                         $invoice->quantity = $value['quantity'];
                         $invoice->pretax = $value['pretax'];
