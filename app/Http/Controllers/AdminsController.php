@@ -403,7 +403,6 @@ class AdminsController extends Controller
         $upd = Input::get('upd');
 
         return response()->json(['status'=>200,
-                                 'all'=>Input::all(),
                                  'id'=>$id,
                                  'api_token'=>$api_token,
                                  'servat'=>$server_at,
