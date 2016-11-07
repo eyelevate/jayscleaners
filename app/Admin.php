@@ -182,6 +182,8 @@ class Admin extends Model
     }
 
     static function makeUpload($c, $up){
+        $convert = json_encode($up);
+        $up = json_decode($convert,true);
     	$company_id = $c->id;
     	$last_created_at = $c->created_at;
     	$uploaded_rows = 0;
