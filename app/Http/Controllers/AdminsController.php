@@ -405,8 +405,8 @@ class AdminsController extends Controller
 
         if($server_at){
             $server_at = date('Y-m-d H:i:s',$server_at);
-            $up =json_decode($up,true);
-            $upd = json_decode($upd,true);
+            // $up =json_decode($up,true);
+            // $upd = json_decode($upd,true);
             return response()->json(['status'=>200,
                          'updates'=>$up,
                          'upload'=>$upd
