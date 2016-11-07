@@ -396,11 +396,12 @@ class AdminsController extends Controller
     }
 
     public function postApiUpdate(Request $request) {
-        $id = Input::get('id'); 
-        $api_token = Input::get('api_token'); 
-        $server_at = Input::get('servat'); 
-        $up = Input::get('up'); 
-        $upd = Input::get('upd');
+        $input = Input::all();
+        $id = $input['id']; 
+        $api_token = $input['api']; 
+        $server_at = $input['servat']; 
+        $up = $input['up']; 
+        $upd = $input['upd'];
 
         return response()->json(['status'=>200,
                                  'all'=>Input::all(),
