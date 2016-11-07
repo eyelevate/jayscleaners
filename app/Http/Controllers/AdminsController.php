@@ -396,9 +396,8 @@ class AdminsController extends Controller
     }
 
     public function postApiUpdate(Request $request) {
-        if ($request->is('ajax')){
-            return response()->json(['status'=>false]);
-        }
+        return response()->json(['status'=>true]);
+
     }
 
     // public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null, $upd = null){
