@@ -403,10 +403,6 @@ class AdminsController extends Controller
         $up = Input::get('upload'); 
         $upd = Input::get('update');
 
-        return response()->json(['status'=>200,
-                                 'up'=>$up,
-                                 'upd'=>$upd]);
-
         if($server_at){
             $server_at = date('Y-m-d H:i:s',$server_at);
             $up =json_decode($up,true);
