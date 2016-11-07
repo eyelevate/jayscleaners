@@ -407,13 +407,7 @@ class AdminsController extends Controller
             $server_at = date('Y-m-d H:i:s',$server_at);
             // $up =json_decode($up,true);
             // $upd = json_decode($upd,true);
-            return response()->json(['status'=>200,
-                         'updates'=>$up,
-                         'upload'=>$upd
-                         ]);
             $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
-
-
 
             if ($authenticate){
                 // create items to return
