@@ -398,7 +398,7 @@ class AdminsController extends Controller
     public function postApiUpdate(Request $request) {
         $id = Input::get('id'); 
         $api_token = Input::get('api_token'); 
-        $server_at = Input::get('server_at'); 
+        $server_at = Input::get('serv_at'); 
         $up = Input::get('up'); 
         $upd = Input::get('upd');
         if($server_at){
