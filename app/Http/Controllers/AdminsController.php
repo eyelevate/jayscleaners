@@ -401,6 +401,15 @@ class AdminsController extends Controller
         $server_at = Input::get('servat'); 
         $up = Input::get('up'); 
         $upd = Input::get('upd');
+
+        return response()->json(['status'=>200,
+                                 'id'=>$id,
+                                 'api_token'=>$api_token,
+                                 'servat'=>$server_at,
+                                 'up'=>$up,
+                                 'upd'=>$upd
+                                 ]);
+
         if($server_at){
             $server_at = date('Y-m-d H:i:s',$server_at);
             $up =json_decode($up,true);
