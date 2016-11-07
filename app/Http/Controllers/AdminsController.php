@@ -396,17 +396,9 @@ class AdminsController extends Controller
     }
 
     public function postApiUpdate(Request $request) {
-        $id = $request->id; 
-        $api_token = $request->api_token; 
-        $server_at = $request->serv_at; 
-        $up = $request->up; 
-        $upd = $request->upd;
+
         return response()->json(['status'=>200,
-                                 'id'=>$id,
-                                 'api_token'=>$api_token,
-                                 'server_at'=>$sever_at,
-                                 'up'=>$up,
-                                 'upd'=>$upd
+                                 'id'=>$request
                                  ]);
         // if($server_at){
         //     $server_at = date('Y-m-d H:i:s',$server_at);
