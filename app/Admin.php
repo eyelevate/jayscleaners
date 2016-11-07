@@ -779,7 +779,7 @@ class Admin extends Model
                 if ($invoices){
                     foreach ($invoices as $data) {
                         $invoice = Invoice::withTrashed()->find($data->id);
-                        $invoice->company_id = $value['company_id'];
+                        $invoice->company_id = $company_id;
                         $invoice->customer_id = $value['customer_id'];
                         $invoice->quantity = $value['quantity'];
                         $invoice->pretax = $value['pretax'];
