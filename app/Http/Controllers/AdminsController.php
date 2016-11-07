@@ -396,36 +396,37 @@ class AdminsController extends Controller
     }
 
     public function postApiUpdate(Request $request) {
+        $id = Input::get('id'); 
+        $api_token = Input::get('api_token'); 
+        $server_at = Input::get('server_at'); 
+        $up = Input::get('up'); 
+        $upd = Input::get('upd');
+        if($server_at){
+            $server_at = date('Y-m-d H:i:s',$server_at);
+            $up =json_decode($up,true);
+            $upd = json_decode($upd,true);
+            $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
-        return response()->json(['status'=>200,
-                                 'id'=>Input::all()
-                                 ]);
-        // if($server_at){
-        //     $server_at = date('Y-m-d H:i:s',$server_at);
-        //     $up =json_decode($up,true);
-        //     $upd = json_decode($upd,true);
-        //     $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
 
-
-        //     if ($authenticate){
-        //         // create items to return
-        //         $updates = Admin::makeUpdate($authenticate,$server_at);
-        //         // create list of items with new ids to save in local db
-        //         $uploads = (count($up) > 0) ? Admin::makeUpload($authenticate,$up) : [0,[]];
-        //         // update rows on the server only nothing to return
-        //         $set = Admin::makePut($authenticate,$upd);
+            if ($authenticate){
+                // create items to return
+                $updates = Admin::makeUpdate($authenticate,$server_at);
+                // create list of items with new ids to save in local db
+                $uploads = (count($up) > 0) ? Admin::makeUpload($authenticate,$up) : [0,[]];
+                // update rows on the server only nothing to return
+                $set = Admin::makePut($authenticate,$upd);
                 
-        //         return response()->json(['status'=>200,
-        //                                  'rows_to_create'=>$updates[1],
-        //                                  'updates'=>$updates[0],
-        //                                  'rows_saved'=>$uploads[0],
-        //                                  'saved'=>$uploads[1],
-        //                                  'server_at'=>date('Y-m-d H:i:s')
-        //                                  ]);
+                return response()->json(['status'=>200,
+                                         'rows_to_create'=>$updates[1],
+                                         'updates'=>$updates[0],
+                                         'rows_saved'=>$uploads[0],
+                                         'saved'=>$uploads[1],
+                                         'server_at'=>date('Y-m-d H:i:s')
+                                         ]);
         
-        //     } 
-        // }
+            } 
+        }
 
 
         return abort(403, 'Unauthorized action.');
