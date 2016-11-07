@@ -182,8 +182,7 @@ class Admin extends Model
     }
 
     static function makeUpload($c, $up){
-        $convert = json_encode($up);
-        $up = json_decode($convert,true);
+
     	$company_id = $c->id;
     	$last_created_at = $c->created_at;
     	$uploaded_rows = 0;
@@ -589,8 +588,7 @@ class Admin extends Model
     	return [$uploaded_rows,$up];
     }
     static function makePut($c,$up){
-        $convert = json_encode($up);
-        $up = json_decode($convert,true);
+
         $company_id = $c->id;
         $uploaded_rows = 0;
         if(isset($up['addresses'])){
