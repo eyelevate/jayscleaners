@@ -400,8 +400,8 @@ class AdminsController extends Controller
         $id = Input::get('cid'); 
         $api_token = Input::get('api'); 
         $server_at = Input::get('servat'); 
-        $up = Input::get('up'); 
-        $upd = Input::get('upd');
+        $up = Input::get('upload'); 
+        $upd = Input::get('update');
 
         return response()->json(['status'=>200,
                                  'up'=>$up,
