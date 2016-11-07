@@ -398,7 +398,7 @@ class AdminsController extends Controller
     public function postApiUpdate(Request $request) {
 
         return response()->json(['status'=>200,
-                                 'id'=>$request
+                                 'id'=>Input::all()
                                  ]);
         // if($server_at){
         //     $server_at = date('Y-m-d H:i:s',$server_at);
