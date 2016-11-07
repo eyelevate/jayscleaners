@@ -398,12 +398,11 @@ class AdminsController extends Controller
     public function postApiUpdate(Request $request) {
 
         $id = Input::get('cid'); 
-        // $api_token = $input->api; 
-        // $server_at = $input->servat; 
-        // $up = $input->up; 
-        // $upd = $input->upd;
+        $api_token = Input::get('api'); 
+        $server_at = Input::get('servat'); 
+        $up = Input::get('up'); 
+        $upd = Input::get('upd');
 
-        return response()->json(['status'=>200,'cid'=>$id]);
 
         if($server_at){
             $server_at = date('Y-m-d H:i:s',$server_at);
