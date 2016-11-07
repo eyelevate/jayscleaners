@@ -396,42 +396,76 @@ class AdminsController extends Controller
     }
 
     public function postApiUpdate(Request $request) {
-        return response()->json(['status'=>true]);
+        $id = $request->id; 
+        $api_token = $request->api_token; 
+        $server_at = $request->server_at; 
+        $up = $request->up; 
+        $upd = $request->upd;
+        if($server_at){
+            $server_at = date('Y-m-d H:i:s',$server_at);
+            $up =json_decode($up,true);
+            $upd = json_decode($upd,true);
+            $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
+
+
+
+            if ($authenticate){
+                // create items to return
+                $updates = Admin::makeUpdate($authenticate,$server_at);
+                // create list of items with new ids to save in local db
+                $uploads = (count($up) > 0) ? Admin::makeUpload($authenticate,$up) : [0,[]];
+                // update rows on the server only nothing to return
+                $set = Admin::makePut($authenticate,$upd);
+                
+                return response()->json(['status'=>200,
+                                         'rows_to_create'=>$updates[1],
+                                         'updates'=>$updates[0],
+                                         'rows_saved'=>$uploads[0],
+                                         'saved'=>$uploads[1],
+                                         'server_at'=>date('Y-m-d H:i:s')
+                                         ]);
+        
+            } 
+        }
+
+
+        return abort(403, 'Unauthorized action.');
 
     }
 
-    // public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null, $upd = null){
-
-    //     if($server_at){
-    //         $server_at = date('Y-m-d H:i:s',$server_at);
-    //         $up =json_decode(str_replace(['up=','__'], ['',' '], $up),true);
-    //         $upd = json_decode(str_replace(['upd=','__'],['',' '],$upd),true);
-    //         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
+    public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null, $upd = null){
 
 
+        if($server_at){
+            $server_at = date('Y-m-d H:i:s',$server_at);
+            $up =json_decode(str_replace(['up=','__'], ['',' '], $up),true);
+            $upd = json_decode(str_replace(['upd=','__'],['',' '],$upd),true);
+            $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
-    //         if ($authenticate){
-    //             // create items to return
-    //             $updates = Admin::makeUpdate($authenticate,$server_at);
-    //             // create list of items with new ids to save in local db
-    //             $uploads = (count($up) > 0) ? Admin::makeUpload($authenticate,$up) : [0,[]];
-    //             // update rows on the server only nothing to return
-    //             $set = Admin::makePut($authenticate,$upd);
+
+
+            if ($authenticate){
+                // create items to return
+                $updates = Admin::makeUpdate($authenticate,$server_at);
+                // create list of items with new ids to save in local db
+                $uploads = (count($up) > 0) ? Admin::makeUpload($authenticate,$up) : [0,[]];
+                // update rows on the server only nothing to return
+                $set = Admin::makePut($authenticate,$upd);
                 
-    //             return response()->json(['status'=>200,
-    //                                      'rows_to_create'=>$updates[1],
-    //                                      'updates'=>$updates[0],
-    //                                      'rows_saved'=>$uploads[0],
-    //                                      'saved'=>$uploads[1],
-    //                                      'server_at'=>date('Y-m-d H:i:s')
-    //                                      ]);
+                return response()->json(['status'=>200,
+                                         'rows_to_create'=>$updates[1],
+                                         'updates'=>$updates[0],
+                                         'rows_saved'=>$uploads[0],
+                                         'saved'=>$uploads[1],
+                                         'server_at'=>date('Y-m-d H:i:s')
+                                         ]);
         
-    //         } 
-    //     }
+            } 
+        }
 
 
-    //     return abort(403, 'Unauthorized action.');
-    // }
+        return abort(403, 'Unauthorized action.');
+    }
 
     public function getAuthentication($username = null, $pw = null) {
         
