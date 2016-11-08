@@ -127,30 +127,47 @@ class SchedulesController extends Controller
         $options = $request->session()->has('route_options') ? $request->session()->get('route_options') : false;
         
         $trip = Schedule::prepareTrip($schedules, $options);
-
+        $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : [];
         if (count($schedules) > 0) {
+            
+            $check = false;
+            if ($request->session()->has('delivery_route')) {
+                // check to see if todays session has been made
+                $check = ($dr[strtotime($today)]) ? false : true;
+            } else {
+                $check = true;
+            }
 
-			$client = new Client();
-	        // $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
-	        // 	'headers' => [
-	        // 		'Content-Type' => 'application/json',
-	        // 		'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2Q4ODdjZTJjOGE5MGZhNmMyNDY2YTAiLCJpYXQiOjE0NzM4MDgzMzR9.G-wRJ7Prih7MXp15vUv6T_mqDSd-nvzPnR4OA9PzjbY'
-	        // 	],
-	        //     'json' => $trip 
-	        // ]);
-            $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2UxZGI0MDc2ZGFmYjZhMGE5NmIwNGUiLCJpYXQiOjE0NzQ0MTk1MjB9.6MbKPl0y7a-mWwEtaRwqqmx2pA-6kXGZS8MJlv1gbFE'
-                ],
-                'json' => $trip 
-            ]);
+            if ($check) {
+                $client = new Client();
+                // $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
+                //  'headers' => [
+                //      'Content-Type' => 'application/json',
+                //      'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2Q4ODdjZTJjOGE5MGZhNmMyNDY2YTAiLCJpYXQiOjE0NzM4MDgzMzR9.G-wRJ7Prih7MXp15vUv6T_mqDSd-nvzPnR4OA9PzjbY'
+                //  ],
+                //     'json' => $trip 
+                // ]);
+                $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2UxZGI0MDc2ZGFmYjZhMGE5NmIwNGUiLCJpYXQiOjE0NzQ0MTk1MjB9.6MbKPl0y7a-mWwEtaRwqqmx2pA-6kXGZS8MJlv1gbFE'
+                    ],
+                    'json' => $trip 
+                ]);
 
-	        $body = json_decode($res->getBody()->read(1024));
-	        $delivery_route = Schedule::prepareRouteForView($body,$active_list);
+
+
+                $body = json_decode($res->getBody()->read(1024));
+                
+                $dr[strtotime($today)] = Schedule::prepareRouteForView($body,$active_list);
+                $request->session()->put('delivery_route',$dr);
+            } 
+
+
+
     	} else {
     		$body = false;
-    		$delivery_route = false;
+    		$dr = false;
     	}
     	$pickup_approved = Schedule::where('pickup_date',$today)
         					   ->whereIn('status',[3,12])
@@ -193,7 +210,7 @@ class SchedulesController extends Controller
 
         return view('schedules.delivery_route')
         ->with('layout',$this->layout)
-        ->with('schedules',$delivery_route)
+        ->with('schedules',$dr)
         ->with('approved_list',$approved_list)
         ->with('delivery_date',date('D m/d/Y',strtotime($today)))
         ->with('traffic',$traffic)
@@ -223,7 +240,8 @@ class SchedulesController extends Controller
 
 
     	if ($schedules->save()) {
-    		Flash::success('Updated #'.$request->id.' to "En-route to pickup"');
+
+            Flash::success('Updated #'.$request->id.' to "En-route to pickup"');
     		return Redirect::route('schedules_checklist');
     	}
 
@@ -234,6 +252,7 @@ class SchedulesController extends Controller
     	$schedules->status = $next_status;
 
     	if ($schedules->save()) {
+
     		Flash::success('Updated #'.$request->id.' to "En-route to dropoff"');
     		return Redirect::route('schedules_checklist');
     	}
@@ -308,6 +327,21 @@ class SchedulesController extends Controller
     	$schedules->status = $next_status;
 
     	if ($schedules->save()) {
+            # remove the schedule id from the seession array
+            $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
+            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
+            if ($dr[$today]) {
+                // parse through the session and remove saved items
+                if (count($dr[$today])) {
+                    foreach ($dr[$today] as $key => $value) {
+                        if ($value['id'] == $request->id){
+                            unset($dr[$today][$key]);
+                        }
+                    }
+                }
+            }
+            $request->session()->put('delivery_route',$dr);
+
     		Flash::success('Updated #'.$request->id.' to "Picked Up"');
     		return Redirect::route('schedules_delivery_route');
     	}
@@ -318,6 +352,20 @@ class SchedulesController extends Controller
         $schedules->status = $next_status;
 
         if ($schedules->save()) {
+            # remove the schedule id from the seession array
+            $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
+            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
+            if ($dr[$today]) {
+                // parse through the session and remove saved items
+                if (count($dr[$today])) {
+                    foreach ($dr[$today] as $key => $value) {
+                        if ($value['id'] == $request->id){
+                            unset($dr[$today][$key]);
+                        }
+                    }
+                }
+            }
+            $request->session()->put('delivery_route',$dr);
             Flash::success('Updated #'.$request->id.' to "Dropped Off / Completed"');
             return Redirect::route('schedules_delivery_route');
         }
@@ -358,6 +406,21 @@ class SchedulesController extends Controller
         $schedules = Schedule::find($schedule_id);
         $schedules->status = $status;
         if ($schedules->save()) {
+            # remove the schedule id from the seession array
+            $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
+            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
+            if ($dr[$today]) {
+                // parse through the session and remove saved items
+                if (count($dr[$today])) {
+                    foreach ($dr[$today] as $key => $value) {
+                        if ($value['id'] == $request->id){
+                            unset($dr[$today][$key]);
+                        }
+                    }
+                }
+            }
+            $request->session()->put('delivery_route',$dr);
+
         	// send email
 
         	//redirect back
@@ -401,6 +464,16 @@ class SchedulesController extends Controller
     	$schedules = Schedule::find($schedule_id);
     	$schedules->status = $new_status;
     	if ($schedules->save()) {
+            # remove the schedule id from the seession array
+            $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
+            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
+            if ($dr[$today]) {
+
+                if (count($dr[$today])) {
+                    unset($dr[$today]);
+                }
+            }
+            $request->session()->put('delivery_route',$dr);
     		Flash::warning('Successfully reverted #'.$schedule_id.' back.');
     		return Redirect::back();
     	}

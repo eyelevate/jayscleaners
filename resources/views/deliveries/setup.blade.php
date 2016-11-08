@@ -44,15 +44,11 @@
 						<td>{{ $delivery->end_time }}</td>
 						<td>
 							<ul>
-							@if (count($delivery->zipcode) > 0)
+
+							@if ($delivery->zipcode)
 								@foreach($delivery->zipcode as $zipcode)
 								<li>{{ $zipcode }}</li>
 								@endforeach
-							@else
-								@if (isset($delivery->zipcode))
-
-								<li>{{ $delivery->zipcode }}</li>
-								@endif
 							
 							@endif
 							</ul>

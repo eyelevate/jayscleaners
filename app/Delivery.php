@@ -412,6 +412,8 @@ class Delivery extends Model
                         array_push($zips, $zipcode->zipcode);
                     }
                     $data[$key]['zipcode'] = $zips;
+                } else {
+                    $data[$key]['zipcode'] = false;
                 }
 
                 if (isset($data[$key]['blackout'])) {

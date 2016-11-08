@@ -44,15 +44,11 @@
 						<td><?php echo e($delivery->end_time); ?></td>
 						<td>
 							<ul>
-							<?php if(count($delivery->zipcode) > 0): ?>
+
+							<?php if($delivery->zipcode): ?>
 								<?php foreach($delivery->zipcode as $zipcode): ?>
 								<li><?php echo e($zipcode); ?></li>
 								<?php endforeach; ?>
-							<?php else: ?>
-								<?php if(isset($delivery->zipcode)): ?>
-
-								<li><?php echo e($delivery->zipcode); ?></li>
-								<?php endif; ?>
 							
 							<?php endif; ?>
 							</ul>

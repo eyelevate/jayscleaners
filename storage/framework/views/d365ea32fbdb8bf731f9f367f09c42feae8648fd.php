@@ -59,49 +59,6 @@
 			</div>
 		</div><!-- /.box-header -->
 		<div class="box-body">
-			<div class="panel panel-info">
-				<div class="panel-heading"><h4><?php echo e($route_options_header); ?> - <label class="label label-info"><?php echo e(($travel_data) ? round($travel_data->total_travel_time,1)  : '0'); ?> Minutes</label></h4></div>
-				<?php echo Form::open(['action' => 'SchedulesController@postRouteOptions', 'class'=>'form-horizontal','role'=>"form"]); ?>
-
-				<div class="panel-body">
-                
-                    <?php echo csrf_field(); ?> 
-                    <div class="form-group<?php echo e($errors->has('traffic') ? ' has-error' : ''); ?>">
-                        <label class="col-md-4 control-label padding-top-none">Traffic Conditions</label>
-
-                        <div class="col-md-6">
-                            
-                            <?php echo e(Form::select('traffic',$traffic,old('traffic') ? old('traffic') : $traffic_selected,['class'=>'form-control'])); ?>
-
-                            <?php if($errors->has('traffic')): ?>
-                                <span class="help-block">
-                                    <strong><?php echo e($errors->first('traffic')); ?></strong>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    <div class="form-group<?php echo e($errors->has('shortest_distance') ? ' has-error' : ''); ?> dropoff_date_div">
-                        <label class="col-md-4 control-label padding-top-none">Route Type</label>
-
-                        <div class="col-md-6">
-                            
-                            <?php echo e(Form::select('shortest_distance',$shortest_distance,old('shortest_distance') ? old('shortest_distance') : $shortest_distance_selected,['class'=>'form-control'])); ?>
-
-                            <?php if($errors->has('shortest_distance')): ?>
-                                <span class="help-block">
-                                    <strong><?php echo e($errors->first('shortest_distance')); ?></strong>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                
-				</div>
-				<div class="panel-footer clearfix">
-					<input class="btn btn-info btn-lg pull-right" type="submit" value="Update Route"/>
-				</div>
-				<?php echo Form::close(); ?>
-
-			</div>
 		<?php if($schedules): ?>
 			<?php $idx = 0 ?>
 			<?php foreach($schedules as $schedule): ?>
