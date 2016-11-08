@@ -139,21 +139,26 @@ class SchedulesController extends Controller
             }
 
             if ($check) {
-                $client = new Client();
-                // $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
-                //  'headers' => [
-                //      'Content-Type' => 'application/json',
-                //      'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2Q4ODdjZTJjOGE5MGZhNmMyNDY2YTAiLCJpYXQiOjE0NzM4MDgzMzR9.G-wRJ7Prih7MXp15vUv6T_mqDSd-nvzPnR4OA9PzjbY'
-                //  ],
-                //     'json' => $trip 
-                // ]);
-                $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                        'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2UxZGI0MDc2ZGFmYjZhMGE5NmIwNGUiLCJpYXQiOjE0NzQ0MTk1MjB9.6MbKPl0y7a-mWwEtaRwqqmx2pA-6kXGZS8MJlv1gbFE'
-                    ],
-                    'json' => $trip 
-                ]);
+                try {
+                    $client = new Client();
+                    // $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
+                    //  'headers' => [
+                    //      'Content-Type' => 'application/json',
+                    //      'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2Q4ODdjZTJjOGE5MGZhNmMyNDY2YTAiLCJpYXQiOjE0NzM4MDgzMzR9.G-wRJ7Prih7MXp15vUv6T_mqDSd-nvzPnR4OA9PzjbY'
+                    //  ],
+                    //     'json' => $trip 
+                    // ]);
+                    $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
+                        'headers' => [
+                            'Content-Type' => 'application/json',
+                            'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2UxZGI0MDc2ZGFmYjZhMGE5NmIwNGUiLCJpYXQiOjE0NzQ0MTk1MjB9.6MbKPl0y7a-mWwEtaRwqqmx2pA-6kXGZS8MJlv1gbFE'
+                        ],
+                        'json' => $trip 
+                    ]);
+                } catch(Exception $e) {
+                    Job::dump('Cannot be');
+                }
+
 
 
 
