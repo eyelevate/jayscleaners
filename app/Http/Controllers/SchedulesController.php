@@ -155,16 +155,19 @@ class SchedulesController extends Controller
                         ],
                         'json' => $trip 
                     ]);
+                    $body = json_decode($res->getBody()->read(1024));
+                    $dr[strtotime($today)] = Schedule::prepareRouteForView($body,$active_list);
                 } catch(Exception $e) {
+                    $dr[strtotime($today)] = false;
                     Job::dump('Cannot be');
                 }
 
 
 
 
-                $body = json_decode($res->getBody()->read(1024));
                 
-                $dr[strtotime($today)] = Schedule::prepareRouteForView($body,$active_list);
+                
+                
                 $request->session()->put('delivery_route',$dr);
             } 
 
