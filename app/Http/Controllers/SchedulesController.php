@@ -7,6 +7,7 @@ use Input;
 use Validator;
 use Redirect;
 use Hash;
+use Exception;
 use Route;
 use Response;
 use Auth;
@@ -157,18 +158,13 @@ class SchedulesController extends Controller
                     ]);
                     $body = json_decode($res->getBody()->read(1024));
                     $dr[strtotime($today)] = Schedule::prepareRouteForView($body,$active_list);
-                    Job::dump('Can be');
-                } catch(Exception $e) {
-                    $dr[strtotime($today)] = false;
-                    Job::dump('Cannot be');
+                } catch(\Exception $e) {
+                    $dr[strtotime($today)] = $active_list;
+                    Flash::warning('Warning: '.$e->getMessage());
+
                 }
 
-
-
-
-                
-                
-                
+                $body = false;
                 $request->session()->put('delivery_route',$dr);
             } 
 
@@ -219,7 +215,7 @@ class SchedulesController extends Controller
 
         return view('schedules.delivery_route')
         ->with('layout',$this->layout)
-        ->with('schedules',$dr)
+        ->with('schedules',$dr[strtotime($today)])
         ->with('approved_list',$approved_list)
         ->with('delivery_date',date('D m/d/Y',strtotime($today)))
         ->with('traffic',$traffic)
