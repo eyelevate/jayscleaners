@@ -33,6 +33,7 @@ use App\Report;
 use App\Schedule;
 use App\Tax;
 use App\Transaction;
+use App\Zipcode;
 use App\ZipcodeRequest;
 // use App\Role;
 // use App\RoleUser;
