@@ -538,7 +538,9 @@ class AdminsController extends Controller
                     break;
                 case 'users':
                     $data[$table] = User::whereBetween('id',[$start,$end])->get();
-                    break;                    
+                    break;  
+                case 'zipcodes':
+                    $data[$table] = Zipcode::whereBetween('id',[$start,$end])->get();                  
             }
             return response()->json(['status'=>true,'rows_to_create'=>1,'updates'=>$data]);
         } else{
