@@ -479,8 +479,10 @@ class Admin extends Model
     			$schedule->customer_id = $value['customer_id'];
                 $schedule->card_id = $value['card_id'];
     			$schedule->pickup_delivery_id = $value['pickup_delivery_id'];
+                $schedule->pickup_address = $value['pickup_address'];
     			$schedule->pickup_date = $value['pickup_date'];
     			$schedule->dropoff_delivery_id = $value['dropoff_delivery_id'];
+                $schedule->dropoff_address = $value['dropoff_address'];
     			$schedule->dropoff_date = $value['dropoff_date'];
     			$schedule->special_instructions = $value['special_instructions'];
     			$schedule->type = $value['type'];
@@ -932,8 +934,10 @@ class Admin extends Model
                 $schedule->customer_id = $value['customer_id'];
                 $schedule->card_id = $value['card_id'];
                 $schedule->pickup_delivery_id = $value['pickup_delivery_id'];
+                $schedule->pickup_address = $value['pickup_address'];
                 $schedule->pickup_date = $value['pickup_date'];
                 $schedule->dropoff_delivery_id = $value['dropoff_delivery_id'];
+                $schedule->dropoff_address = $value['dropoff_address'];
                 $schedule->dropoff_date = $value['dropoff_date'];
                 $schedule->special_instructions = $value['special_instructions'];
                 $schedule->type = $value['type'];
