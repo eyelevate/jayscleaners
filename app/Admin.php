@@ -930,7 +930,7 @@ class Admin extends Model
         if (isset($up['schedules'])){
             foreach ($up['schedules'] as $key => $value) {
                 $schedule = Schedule::withTrashed()->find($value['schedule_id']);
-                $schedule->company_id = $company_id;
+                $schedule->company_id = $value['company_id'];
                 $schedule->customer_id = $value['customer_id'];
                 $schedule->card_id = $value['card_id'];
                 $schedule->pickup_delivery_id = $value['pickup_delivery_id'];
