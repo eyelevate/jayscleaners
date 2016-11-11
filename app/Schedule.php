@@ -111,7 +111,7 @@ class Schedule extends Model
                                 '' => 'Select Delay Reason',
                                 '8' => 'Delayed - Customer unavailable for pickup',
                             ];
-                            $schedules[$key]['email_subject'] = 'En-route to Pickup!';
+                            $schedules[$key]['email_subject'] = 'En-route to Pickup';
                             $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
                             $schedules[$key]['email_body'] = 'Your delivery request has been accepted and we are on the way!';
                             $schedules[$key]['email_body'] .= ' Please have you or your contact person(s) be available between the hours of '.$pickup_time.' today.';
