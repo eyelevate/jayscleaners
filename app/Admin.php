@@ -509,14 +509,14 @@ class Admin extends Model
     	if (isset($up['transactions'])){
     		foreach ($up['transactions'] as $key => $value) {
     			$transaction = new Transaction();
-    			$transaction->company_id = $company_id;
+    			$transaction->company_id = $value['company_id'];
     			$transaction->customer_id = $value['customer_id'];
     			$transaction->schedule_id = $value['schedule_id'];
     			$transaction->pretax = $value['pretax'];
     			$transaction->tax = $value['tax'];
     			$transaction->aftertax = $value['aftertax'];
     			$transaction->discount = $value['discount'];
-    			$transaction->invoices = $value['invoices'];
+    			// $transaction->invoices = $value['invoices'];
     			$transaction->type = $value['type'];
     			$transaction->last_four = $value['last_four'];
     			$transaction->tendered = $value['tendered'];
