@@ -531,7 +531,7 @@ class Admin extends Model
     	if (isset($up['users'])){
     		foreach ($up['users'] as $key => $value) {
     			$user = new User();
-                $last_user_id = User::where('company_id',$company_id)->orderBy('id','desc')->limit('1')->pluck('id');
+                $last_user_id = User::where('id','>',0)->orderBy('id','desc')->limit('1')->pluck('id');
                 $user->user_id = ($last_user_id[0]) ? $last_user_id[0]+1 : 1;
     			$user->company_id = $company_id;
     			$user->username = $value['username'];
