@@ -149,7 +149,10 @@
 			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Where to find us</h3>
 		</header>
 		<section class="clearfix">
-		<p>We proudly serve the Seattle region at 2 prime locations in the Montlake and Roosevelt neighborhoods. With the ability to deliver if these locations are not suitable to your current location.</p>
+		<p>
+			We proudly serve the Seattle region at our conveniently located Montlake and Roosevelt locations.  Additionally, we offer free pickup/delivery to local Seattle neighborhood
+			homes, offices, business and more.
+		</p>
 		@if (count($companies) > 0)
 			@foreach($companies as $company)
 			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:30px;">

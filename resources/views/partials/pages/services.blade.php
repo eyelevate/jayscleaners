@@ -11,13 +11,12 @@
 					<h5 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Dry Clean</h5>
 				</header>
 				<p>
-					Our service combines decades of tried and tested spot treating methods combined with our <strong>Innovative, Toxin-Free, Environmentally Safe and Healthy</strong> technologies. 
+					Our service combines decades of tried and tested spot treating methods combined with our <strong>Innovative, Toxin-Free, Environmentally Safe and Healthy</strong> cleaning technologies.
 				</p>
 				<p>
-					Most dry cleaners use chemicals such as perchlorethylene or siloxane to dry clean your clothes.
-					Effective as they may be in cleaning clothes, they also contain toxins that can be harmful to your body and the environment. 
-					Our proven track record of customer satisfaction and best practices combined with our strict guidelines and internal methods provide an ensurance that each and every garment returns to you as if they were brand new.
-					Along with our excellent dry cleaning service, we also offer additional options such as press only. Press only is a lower cost option to be used with new clothes or already cleaned clothes that require that professional crisp tailored look.					
+					Most dry cleaners use chemicals such as perchloroethylene (perc) or siloxane to dry clean your clothes which contain toxins that can be harmful to your body and the environment.
+					Our dry cleaning utilizes SystemK4 which a perc-free/halogen-free, organic solvent that has been tested to be dermatologically safe, biodegradable and provides an excellent, odorless finish to every garment.  
+					Our proven track record of customer satisfaction and best practices ensures that each and every garment is handled with the utmost care.					
 				</p>
 				
 			</section>
@@ -31,10 +30,12 @@
 					<h5 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Shirts</h5>
 				</header>
 				<p>
-					We understand that shirts need extra attention and effort to make them look ultra fresh and sharp. We inspect all shirts for defects, cracked buttons, collar/cuff/under-arm stains, before they are returned to you, so you can rest assured that your shirts are pristine and ready to wear. 
+					We understand that shirts need extra attention and effort to make them look ultra fresh and sharp. We inspect all shirts for defects, cracked buttons, pre-treat and scrub all 
+					collar/cuff/under-arm stains, before they are returned to you, so you can rest assured that your shirts are pristine and ready to wear. 
 				</p>
 				<p>
-					As a default we offer starch services ranging from <strong>no starch</strong> to <strong>heavy starch</strong> and return our work to you on a clean hanger. By request, we also offer shirt folding services and express services.
+					As a default we offer starch services ranging from <strong>no starch</strong> to <strong>heavy starch</strong> and return our work to you on a clean hanger. 
+					By request, we also offer shirt folding services and express services. 
 				</p>
 				
 			</section>
@@ -49,17 +50,9 @@
 					<h5 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Alterations</h5>
 				</header>
 				<p>
-					From the lengthening or shortening of your favourite pants to a complete re-tailoring of a special suit or dress, we are here to help. Our expert alteration services are reasonably priced, and will be done the right way.
-				</p>
-				<p>
-					We place our focus on superior quality while giving you quick turn-around times as well. 
-					We take no shortcuts and use only the finest materials, equipment, and procedures. 
-					We will take instructions directly from you, ensuring the highest quality service possible. 
-					We also provide personal consultations and fittings upon customer request.  
-					We understand our customers’ needs for privacy, and we have a private fitting room for all of your tailoring.  
-					We will provide one-on-one interaction that allows our customers to feel comfortable while achieving the look and feel they are looking for. 
-					We understand that time can be of the essence, especially on last minute fixes. 
-					Let us help you make look and feel perfect.
+					From the lengthening or shortening of your favorite pants, a complete re-tailoring of a special suit or dress or fixing zippers, we are here to help. With over 35 years of experience with alterations and repairs our team provides 
+					superior quality alterations and repairs while giving you quick turn-around times as well. With our personal consultations and fittings upon customer request, let us help you make look and feel perfect in any of your garments. 
+					Contact us anytime to set up a fitting appointment.
 				</p>
 				
 			</section>
@@ -77,10 +70,9 @@
 				</header>
 
 				<p>
-					Crisp, clean table cloths, napkins, sheets and pillowcases are the hallmark of fine restaurants and hotels. 
-					The specialists at Yates Dry Cleaning can clean and press your linens so that you can enjoy same level of quality and luxury at home. 
-					Let us clean your bedding and household linens including blankets, bedspreads and down comforters in special machines that ensure maximum cleanliness, yet are delicate enough for the finest comforters. 
-					Down comforters will come back clean, fresh and fluffy.	
+					Crisp, clean table cloths, napkins, sheets and pillowcases are the hallmark of fine restaurants and hotels. The specialists at Jays Cleaners can clean and press your linens and household items so that you can enjoy same level of quality and luxury at home.
+					Once you leave your household items with us We will inspect all your garments for stains and needed repairs, and process them in our state-of-art facility all while returning them to you feeling like new. In addition we can provide cleaning services for couch
+					cushions, draperies, pillows, rugs and more! Got a question about cleaning? Feel free to call us to discuss your household cleaning needs at any time.
 				</p>
 				
 			</section>
