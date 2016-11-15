@@ -978,7 +978,7 @@ class Admin extends Model
                 $transaction->tax = $value['tax'];
                 $transaction->aftertax = $value['aftertax'];
                 $transaction->discount = $value['discount'];
-                $transaction->total = $value['total'];
+                $transaction->total = $value['aftertax'];
                 $transaction->invoices = ($value['invoices']) ? $value['invoices'] : null;
                 $transaction->type = $value['type'];
                 $transaction->last_four = $value['last_four'];
