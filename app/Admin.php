@@ -65,28 +65,28 @@ class Admin extends Model
 
     	if (is_numeric(strtotime($server_at))) {
     		// get all data from models
-            $addresses = Address::where('updated_at','>=',$server_at)->get();
-            $cards = Card::where('updated_at','>=',$server_at)->get();
-    		$colors = Color::where('updated_at','>=',$server_at)->get();
-    		$companies = Company::where('updated_at','>=',$server_at)->get();
-    		$custids = Custid::where('updated_at','>=',$server_at)->get();
+            $addresses = Address::withTrashed()->where('updated_at','>=',$server_at)->get();
+            $cards = Card::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$colors = Color::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$companies = Company::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$custids = Custid::withTrashed()->where('updated_at','>=',$server_at)->get();
     		// $customers = Customer::where('updated_at',' >= ',$server_at)->get();
-    		$deliveries = Delivery::where('updated_at','>=',$server_at)->get();
-    		$discounts = Discount::where('updated_at','>=',$server_at)->get();
-    		$inventories = Inventory::where('updated_at','>=',$server_at)->get();
-    		$inventory_items = InventoryItem::where('updated_at','>=',$server_at)->get();
-    		$invoices = Invoice::where('updated_at','>=',$server_at)->get();
-    		$invoice_items = InvoiceItem::where('updated_at','>=',$server_at)->get();
-    		$memos = Memo::where('updated_at','>=',$server_at)->get();
-    		$printers = Printer::where('updated_at','>=',$server_at)->get();
-            $profiles = Profile::where('updated_at','>=',$server_at)->get();
-    		$rewards = Reward::where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
-    		$reward_transactions = RewardTransaction::where('updated_at','>=',$server_at)->get();
-    		$schedules = Schedule::where('updated_at','>=',$server_at)->get();
-    		$taxes = Tax::where('updated_at','>=',$server_at)->get();
-    		$transactions = Transaction::where('updated_at','>=',$server_at)->get();
-    		$users = User::where('updated_at','>=',$server_at)->get();
-            $zipcodes = Zipcode::where('updated_at','>=',$server_at)->get();
+    		$deliveries = Delivery::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$discounts = Discount::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$inventories = Inventory::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$inventory_items = InventoryItem::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$invoices = Invoice::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$invoice_items = InvoiceItem::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$memos = Memo::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$printers = Printer::withTrashed()->where('updated_at','>=',$server_at)->get();
+            $profiles = Profile::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$rewards = Reward::withTrashed()->where('updated_at','>=',$server_at)->where('company_id',$company_id)->get();
+    		$reward_transactions = RewardTransaction::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$schedules = Schedule::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$taxes = Tax::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$transactions = Transaction::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$users = User::withTrashed()->where('updated_at','>=',$server_at)->get();
+            $zipcodes = Zipcode::withTrashed()->where('updated_at','>=',$server_at)->get();
 
 
             if(count($addresses) > 0){
@@ -516,7 +516,7 @@ class Admin extends Model
     			$transaction->tax = $value['tax'];
     			$transaction->aftertax = $value['aftertax'];
     			$transaction->discount = $value['discount'];
-    			// $transaction->invoices = $value['invoices'];
+    			$transaction->invoices = $value['invoices'];
     			$transaction->type = $value['type'];
     			$transaction->last_four = $value['last_four'];
     			$transaction->tendered = $value['tendered'];
