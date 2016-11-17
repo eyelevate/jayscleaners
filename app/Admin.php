@@ -274,7 +274,7 @@ class Admin extends Model
                 $credit->reason = $value['reason'];
                 $credit->status = $value['status'];
                 if($credit->save()){
-                    $up['custids'][$key]['cust_id'] = $credit->id;
+                    $up['credits'][$key]['credit_id'] = $credit->id;
                     $uploaded_rows++;
                 }
             }
