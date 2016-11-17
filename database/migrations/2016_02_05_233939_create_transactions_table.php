@@ -21,6 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->decimal('tax',11,2)->nullable();
             $table->decimal('aftertax',11,2)->nullable();
             $table->decimal('discount',11,2)->nullable();
+            $table->decimal('credit',11,2)->nullable();
             $table->decimal('total',11,2)->nullable();
             $table->text('invoices')->nullable();
             $table->tinyInteger('type', false, true)->nullable();

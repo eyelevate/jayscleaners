@@ -41,6 +41,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('reward_status',false, true)->length(1)->nullable();
             $table->integer('reward_points', false, true)->length(11)->nullable();
             $table->boolean('account')->nullable();
+            $table->decimal('credits',11,2)->nullable();
             $table->string('starch_old',10)->nullable();
             $table->tinyInteger('starch',false, true)->length(1)->nullable();
             $table->text('important_memo')->nullable();

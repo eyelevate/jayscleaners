@@ -84,12 +84,20 @@
 								<td id="tax_td"></td>
 							</tr>
 							<tr>
+								<th colspan="4" style="text-align:right;">Total</th>
+								<td id="total_td"></td>
+							</tr>
+							<tr>
+								<th colspan="4" style="text-align:right;">Store Credit</th>
+								<td id="credit_td" credit="<?php echo e($credits); ?>"><?php echo e(money_format('$%i',$credits)); ?></td>
+							</tr>
+							<tr>
 								<th colspan="4" style="text-align:right;">Discount</th>
 								<td id="discount_td"></td>
 							</tr>
 							<tr>
-								<th colspan="4" style="text-align:right;">Total</th>
-								<td id="total_td"></td>
+								<th colspan="4" style="text-align:right;">Total Due</th>
+								<td id="due_td"></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -106,7 +114,7 @@
 	<section class="hide">
 		<?php echo Form::open(['action' => 'InvoicesController@postPickup','role'=>"form",'id'=>'invoiceForm']); ?>
 
-		<?php echo e(Form::hidden('customer_id',$customer_id)); ?>
+		<?php echo e(Form::hidden('customer_id',$customer_id,['id'=>"customer_id"])); ?>
 
 			<div id="invoice_form" class="hide">
 

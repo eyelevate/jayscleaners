@@ -125,5 +125,18 @@
 			<div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
 		</div>
 	</a><!-- ./col -->
+	<a href="{{ route('memos_index') }}" class="col-lg-3 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-red">
+			<div class="inner">
+				<h3>Credits</h3>
+				<p>Setup Memo</p>
+			</div>
+			<div class="icon">
+				<i class="ion-ios-compose"></i>
+			</div>
+			<div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
+		</div>
+	</a><!-- ./col -->
 </div><!-- /.row -->
 @stop

@@ -92,6 +92,20 @@
                             <input type="text" class="form-control" name="account" value="{{ $customers->account }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
                         </div>
                     </div>
+                    <div class="form-group{{ $errors->has('credits') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label">Store Credit</label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="account" value="{{ money_format('$%i',$customers->credits) }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('credits') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label"></label>
+
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#credit">Add Credit</button>
+                        </div>
+                    </div>
                     <div class="form-group{{ $errors->has('delivery') ? ' has-error' : '' }}">
                         <label class="col-md-4 control-label"><a href="{{ route('schedules_view',$customers->id) }}" style="cursor:pointer;">Delivery</a></label>
 

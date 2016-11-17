@@ -16,6 +16,7 @@ use View;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Credit;
 use App\Job;
 use App\User;
 use App\Company;
@@ -267,6 +268,7 @@ class CustomersController extends Controller
 
     public function getView(Request $request, $id = null){
     	$user = User::find($id);
+        $credit_reasons = Credit::prepareReason();
         if ($user){
             $customers = Customer::prepareView($user);
             $last10 = Customer::prepareLast10($user, $request->session()->get('last10'));
@@ -275,6 +277,7 @@ class CustomersController extends Controller
             $schedules = Schedule::where('customer_id',$id)->where('status','<',12)->get();
             return view('customers.view')
             ->with('layout',$this->layout)
+            ->with('reasons',$credit_reasons)
             ->with('customers',$customers)
             ->with('customer_id',$id)
             ->with('last10',$last10)

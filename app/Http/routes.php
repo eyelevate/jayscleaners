@@ -167,6 +167,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/customers/view',['as'=>'customers_view','uses'=>'CustomersController@getView']);
 		Route::get('/customers/view/{id}',['as'=>'customers_view','uses'=>'CustomersController@getView']);
 
+		// Credits
+		Route::post('/credits/add',['uses'=>'CreditsController@postAdd']);
 
 		// Delivery 
 		Route::get('/delivery/overview',['as'=>'delivery_overview','uses'=>'DeliveriesController@getOverview']);

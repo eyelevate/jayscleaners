@@ -9,6 +9,7 @@ use App\Address;
 use App\Card;
 use App\Color;
 use App\Company;
+use App\Credit;
 use App\Custid;
 use App\Customer;
 use App\Delivery;
@@ -264,7 +265,20 @@ class Admin extends Model
     			}
     		}
     	} 
-
+        if (isset($up['credits'])){
+            foreach ($up['credits'] as $key => $value) {
+                $credit = new Credit();
+                $credit->customer_id = $value['customer_id'];
+                $credit->employee_id = $value['employee_id'];
+                $credit->amount = $value['amount'];
+                $credit->reason = $value['reason'];
+                $credit->status = $value['status'];
+                if($credit->save()){
+                    $up['custids'][$key]['cust_id'] = $credit->id;
+                    $uploaded_rows++;
+                }
+            }
+        } 
     	if (isset($up['custids'])){
     		foreach ($up['custids'] as $key => $value) {
     			$custid = new Custid();
@@ -516,6 +530,7 @@ class Admin extends Model
     			$transaction->tax = $value['tax'];
     			$transaction->aftertax = $value['aftertax'];
     			$transaction->discount = $value['discount'];
+                $transaction->credit = $value['credit'];
     			$transaction->invoices = $value['invoices'];
     			$transaction->type = $value['type'];
     			$transaction->last_four = $value['last_four'];
@@ -559,6 +574,7 @@ class Admin extends Model
     			$user->reward_status = $value['reward_status'];
     			$user->reward_points = $value['reward_points'];
     			$user->account = $value['account'];
+                $user->credits = $value['credits'];
     			$user->starch = $value['starch'];
     			$user->important_memo = $value['important_memo'];
     			$user->invoice_memo = $value['invoice_memo'];
@@ -680,7 +696,23 @@ class Admin extends Model
                 }
             }
         } 
-
+        if(isset($up['credits'])){
+            foreach ($up['credits'] as $key => $value) {
+                $credit = Credit::withTrashed()->find($value['credit_id']);
+                $credit->customer_id = $value['customer_id'];
+                $credit->employee = $value['employee_id'];
+                $credit->amount = $value['amount'];
+                $credit->reason = $value['reason'];
+                $credit->status = $value['status'];
+                if(isset($value['deleted_at'])) {
+                    $credit->delete();
+                } elseif($credit->trashed() && !isset($value['deleted_at'])) {
+                    $credit->restore();
+                } else {
+                    $credit->save(); 
+                }
+            }
+        } 
         if (isset($up['custids'])){
             foreach ($up['custids'] as $key => $value) {
                 $custid = Custid::withTrashed()->find($value['cust_id']);
@@ -978,6 +1010,7 @@ class Admin extends Model
                 $transaction->tax = $value['tax'];
                 $transaction->aftertax = $value['aftertax'];
                 $transaction->discount = $value['discount'];
+                $transaction->credit = $value['credit'];
                 $transaction->total = $value['aftertax'];
                 $transaction->invoices = ($value['invoices']) ? $value['invoices'] : null;
                 $transaction->type = $value['type'];
@@ -1025,6 +1058,7 @@ class Admin extends Model
                         $user->reward_status = $value['reward_status'];
                         $user->reward_points = $value['reward_points'];
                         $user->account = $value['account'];
+                        $user->credits = $value['credits'];
                         $user->starch = $value['starch'];
                         $user->important_memo = $value['important_memo'];
                         $user->invoice_memo = $value['invoice_memo'];

@@ -113,5 +113,12 @@
 		<?php endforeach; ?>
 	<?php endif; ?>
 
+	<?php echo View::make('partials.customers.credit')
+		->with('reasons',$reasons)
+		->with('customer_id',$customer_id)
+		->render(); ?>
+
+
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -114,4 +114,12 @@
 		@endforeach
 	@endif
 
+	{!! View::make('partials.customers.credit')
+		->with('reasons',$reasons)
+		->with('customer_id',$customer_id)
+		->render() 
+
+	!!}
+
+
 @stop

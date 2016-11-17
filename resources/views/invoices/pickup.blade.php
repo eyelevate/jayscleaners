@@ -84,12 +84,20 @@
 								<td id="tax_td"></td>
 							</tr>
 							<tr>
+								<th colspan="4" style="text-align:right;">Total</th>
+								<td id="total_td"></td>
+							</tr>
+							<tr>
+								<th colspan="4" style="text-align:right;">Store Credit</th>
+								<td id="credit_td" credit="{{ $credits }}">{{ money_format('$%i',$credits) }}</td>
+							</tr>
+							<tr>
 								<th colspan="4" style="text-align:right;">Discount</th>
 								<td id="discount_td"></td>
 							</tr>
 							<tr>
-								<th colspan="4" style="text-align:right;">Total</th>
-								<td id="total_td"></td>
+								<th colspan="4" style="text-align:right;">Total Due</th>
+								<td id="due_td"></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -105,7 +113,7 @@
 	</section>
 	<section class="hide">
 		{!! Form::open(['action' => 'InvoicesController@postPickup','role'=>"form",'id'=>'invoiceForm']) !!}
-		{{ Form::hidden('customer_id',$customer_id) }}
+		{{ Form::hidden('customer_id',$customer_id,['id'=>"customer_id"]) }}
 			<div id="invoice_form" class="hide">
 
 			</div>

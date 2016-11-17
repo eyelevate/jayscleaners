@@ -27,6 +27,7 @@ use App\Color;
 use App\Company;
 use App\Memo;
 use App\Tax;
+use App\Report;
 use App\Schedule;
 use App\Transaction;
 use App\Invoice;
@@ -379,7 +380,12 @@ class InvoicesController extends Controller
 
     public function getPickup($id = null) {
         $customer_id = $id;
-        $invoices = Invoice::where('customer_id',$customer_id)->where('transaction_id',NULL)->get();
+        $invoices = Invoice::where('customer_id',$customer_id)
+            ->where('transaction_id',NULL)
+            ->where('status','<',5)
+            ->get();
+        $customer = User::find($customer_id);
+        $credit_amount = $customer->credits;
         $cards = Card::where('user_id',$id)->where('company_id',Auth::user()->company_id)->get();
 
         $companies = Company::find(Auth::user()->company_id);
@@ -497,6 +503,7 @@ class InvoicesController extends Controller
         $this->layout = 'layouts.dropoff';
         return view('invoices.pickup')
         ->with('customer_id',$customer_id)
+        ->with('credits',$credit_amount)
         ->with('cards',$payment_ids)
         ->with('invoices',$invoices)
         ->with('layout',$this->layout);
@@ -510,7 +517,8 @@ class InvoicesController extends Controller
 
         $invoices = Invoice::whereIn('id',$request->invoice_id)->get();
         $selected = Invoice::prepareSelected($invoices);
-
+        $customers = User::find($customer_id);
+        $credits = ($customers->credits) ? $customers->credits : 0;
         $type = $request->type;
         switch($type) {
             case 'credit':
@@ -556,18 +564,23 @@ class InvoicesController extends Controller
             }
         } 
 
+        $discount_rate = 0;
+
         $transactions = new Transaction();
         $transactions->company_id = $company_id;
         $transactions->customer_id = $customer_id;
         $transactions->pretax = $selected['totals']['subtotal'];
         $transactions->tax = $selected['totals']['tax'];
-        
         $transactions->aftertax = $selected['totals']['total'];
-        $transactions->discount = NULL;
-        $transactions->total = $selected['totals']['total'];
+        $transactions->discount = $transactions->aftertax * $discount_rate;
+        $discounted_total = $transactions->aftertax - $transactions->discount;
+        $credit_spent = (($credits - $discounted_total) >= 0) ? $discounted_total : $credits;
+        $transactions->credit = $credit_spent;
+        $total_due = $discounted_total - $credit_spent;
+        $transactions->total = $total_due;
         $transactions->type = $transaction_type;
         $transactions->status = 1;
-        $transactions->tendered = $request->tendered ? $request->tendered : NULL;
+        $transactions->tendered = $request->tendered ? $request->tendered : 0;
         $transactions->last_four = $last_four;
         if ($transactions->save()) {
             $transaction_id = $transactions->id;
@@ -578,6 +591,14 @@ class InvoicesController extends Controller
                     $invs->transaction_id = $transaction_id;
                     $invs->status = 5;
                     $invs->save();
+                }
+            }
+            if($customers){
+                // calculate the new credits
+                if ($credit_spent > 0) {
+                    $new_credit = $credits - $credit_spent;
+                    $customers->credits = $new_credit;
+                    $customers->save();
                 }
             }
 
@@ -593,17 +614,27 @@ class InvoicesController extends Controller
     public function postSelect(Request $request) {
         if ($request->ajax()) {
             $ids = $request->invoice_ids;
+            $customer_id = $request->customer_id;
+            $customers = User::find($customer_id);
+            $credits = ($customers->credits) ? $customers->credits : 0;
             $invoices = Invoice::whereIn('id',$ids)->get();
+  
             if (count($invoices) > 0) {
                 $selected = Invoice::prepareSelected($invoices);
+                $total = $selected['totals']['total'];
+                $total_due = (($total - $credits) > 0) ? ($total - $credits) : 0; 
                 return response()->json([
                     'status'=> true,
-                    'invoice_data' => $selected
+                    'invoice_data' => $selected,
+                    'credits'=>$credits,
+                    'total_due' => $total_due,
+                    'total_due_html'=>money_format('$%i',$total_due)
                 ]);
             } else {
                 return response()->json([
                     'status'=> false,
-                    'invoice_data' => false
+                    'invoice_data' => false,
+                    'credits' => false
                 ]);               
             }
 
