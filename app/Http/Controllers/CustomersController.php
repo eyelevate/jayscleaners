@@ -269,6 +269,7 @@ class CustomersController extends Controller
     public function getView(Request $request, $id = null){
     	$user = User::find($id);
         $credit_reasons = Credit::prepareReason();
+        $credits = Credit::prepareCreditHistory($id);
         if ($user){
             $customers = Customer::prepareView($user);
             $last10 = Customer::prepareLast10($user, $request->session()->get('last10'));
@@ -278,6 +279,7 @@ class CustomersController extends Controller
             return view('customers.view')
             ->with('layout',$this->layout)
             ->with('reasons',$credit_reasons)
+            ->with('credits',$credits)
             ->with('customers',$customers)
             ->with('customer_id',$id)
             ->with('last10',$last10)

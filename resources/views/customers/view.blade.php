@@ -120,6 +120,13 @@
 		->render() 
 
 	!!}
+	{!! View::make('partials.customers.credit_history')
+		->with('credits',$credits)
+		->with('customer_id',$customer_id)
+		->render() 
+
+	!!}
+
 
 
 @stop

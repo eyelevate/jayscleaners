@@ -104,6 +104,7 @@
 
                         <div class="col-md-6">
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#credit">Add Credit</button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#credit_history">History</button>
                         </div>
                     </div>
                     <div class="form-group<?php echo e($errors->has('delivery') ? ' has-error' : ''); ?>">
