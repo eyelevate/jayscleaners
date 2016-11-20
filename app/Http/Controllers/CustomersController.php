@@ -272,6 +272,9 @@ class CustomersController extends Controller
         $credits = Credit::prepareCreditHistory($id);
         if ($user){
             $customers = Customer::prepareView($user);
+ 
+            $account_history = ($user->account) ? Customer::prepareAccountHistory($id, 1, '>') : false;
+            
             $last10 = Customer::prepareLast10($user, $request->session()->get('last10'));
             $request->session()->put('last10',$last10);
             $invoices = Invoice::prepareInvoice(Auth::user()->company_id,Invoice::where('customer_id',$id)->where('status','<',5)->orderBy('id','desc')->get());
@@ -279,6 +282,7 @@ class CustomersController extends Controller
             return view('customers.view')
             ->with('layout',$this->layout)
             ->with('reasons',$credit_reasons)
+            ->with('account_history',$account_history)
             ->with('credits',$credits)
             ->with('customers',$customers)
             ->with('customer_id',$id)

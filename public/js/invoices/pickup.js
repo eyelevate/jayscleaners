@@ -61,6 +61,7 @@ pickup = {
 			$("#invoice_form").append(type_input);
 
 			switch(type) {
+
 				case 'credit':
 				var last_four = $("#last_four_credit").val();
 				$('#invoice_form').append('<input type="hidden" name="last_four" value="'+last_four+'" />');

@@ -86,10 +86,24 @@
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('account') ? ' has-error' : '' }}">
-                        <label class="col-md-4 control-label"><a href="#" style="cursor:pointer;">Account</a></label>
+                        <label class="col-md-4 control-label">Account</label>
 
                         <div class="col-md-6">
                             <input type="text" class="form-control" name="account" value="{{ $customers->account }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group{{ $errors->has('account_total') ? ' has-error' : '' }}">
+                        <label class="col-md-4 control-label">Account Total</label>
+
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="account_total" value="{{ money_format('$%i',$customers->account_total) }}" disabled="true" style="font-size:20px; background-color:#ffffff;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#pay_account">Pay Account</button>
                         </div>
                     </div>
                     <div class="form-group{{ $errors->has('credits') ? ' has-error' : '' }}">

@@ -24,6 +24,8 @@ class CreateTransactionsTable extends Migration
             $table->decimal('credit',11,2)->nullable();
             $table->decimal('total',11,2)->nullable();
             $table->text('invoices')->nullable();
+            $table->decimal('account_paid',11,2)->nullable();
+            $table->dateTime('account_paid_on')->nullable();
             $table->tinyInteger('type', false, true)->nullable();
             $table->integer('last_four', false, true)->length(11)->nullable();
             $table->decimal('tendered',11,2)->nullable();

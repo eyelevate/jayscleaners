@@ -21,7 +21,13 @@
 		
 		<article class="col-xs-12 col-sm-6 col-md-6 col-lg-8">
 			<div class="box box-primary" >
-				<div class="box-header"><h4>Select Invoice</h4></div>
+				<div class="box-header cleafix">
+					<h4 class="clearfix">Select Invoice 
+					@if ($customers->account)
+						<span class="label label-danger pull-right">Account Customer</span>
+					@endif
+					</h4>
+				</div>
 				<div class="table-responsive">
 					<table class="table table-hover table-condensed">
 						<thead>
@@ -58,7 +64,13 @@
 		</article>
 		<article class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 			<div class="box box-info">
-				<div class="box-header"><h4>Invoice Selected</h4></div>
+				<div class="box-header">
+					<h4 class="clearfix">Invoice Selected 
+					@if ($customers->account)
+						<span class="label label-danger pull-right">Account Customer</span>
+					@endif
+					</h4>
+				</div>
 				<div class="table-responsive">
 					<table class="table table-condensed table-striped table-hover">
 						<thead>
@@ -103,10 +115,14 @@
 					</table>
 				</div>
 				<div class="box-footer clearfix">
-					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#credit"><i class="ion ion-card"></i>&nbsp;Credit</button>
-					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#cash"><i class="ion ion-cash"></i>&nbsp;Cash</button>
-					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#cof"><i class="ion ion-folder"></i>&nbsp;CoF</button>
-					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#check">Check</button>
+					@if ($customers->account)
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#account">Account Finish</button>
+					@else
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#credit"><i class="ion ion-card"></i>&nbsp;Credit</button>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#cash"><i class="ion ion-cash"></i>&nbsp;Cash</button>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#cof"><i class="ion ion-folder"></i>&nbsp;CoF</button>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#check">Check</button>
+					@endif
 				</div>
 			</div>
 		</article>
@@ -122,6 +138,9 @@
 @stop
 
 @section('modals')
+	{!! View::make('partials.invoices.account')
+		->render()
+	!!}
 	{!! View::make('partials.invoices.credit')
 		->render()
 	!!}

@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Add Store Credit</h4>
+				<h4 class="modal-title">Credit History</h4>
 			</div>
 			<div class="table-responsive">
 				<table class="table table-condensed table-hover table-striped">
@@ -35,8 +35,6 @@
 			</div>
 			<div class="modal-footer clearfix">
 				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-
-				<button type="submit" class="btn btn-success pull-right">Add Credit</button>
 
 			</div>
 		</div><!-- /.modal-content -->

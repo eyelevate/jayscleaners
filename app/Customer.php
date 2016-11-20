@@ -6,6 +6,7 @@ use App\User;
 use App\Invoice;
 use App\Customer;
 use App\Custid;
+use App\Transaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
@@ -16,7 +17,6 @@ class Customer extends Model
         $last10 = (count($last10) > 0) ? $last10 : [];
 
         if($user){
-
             //first check to see if the user is already inside of the array
             //if so then remove the user from the current standing and place him on top 
             if(count($last10) >0) {
@@ -135,6 +135,7 @@ class Customer extends Model
         if(isset($data['account'])){
             $data['account'] = ($data['account'] == true) ? 'Yes' : 'No';
         }
+
         if(isset($data['delivery'])){
             $data['delivery'] = ($data['delivery'] == true) ? 'Yes' : 'No';
         }
@@ -144,6 +145,63 @@ class Customer extends Model
         }
 
         return $data;
+    }
+
+    public static function prepareAccountHistory($id, $status = null, $operand = null) {
+        $history = [
+            'total'=>0,
+            'transactions'=>false
+        ];
+
+        $customers = User::find($id);
+        $history['total'] = $customers->account_total;
+        if (isset($status) and isset($operand)) {
+            $transactions = Transaction::where('customer_id',$id)
+                ->where('status',$operand,$status)
+                ->orderBy('id','desc')
+                ->get();
+        } elseif(isset($status) && !isset($operand)) {
+            $transactions = Transaction::where('customer_id',$id)
+                ->where('status',$status)
+                ->orderBy('id','desc')
+                ->get();
+        } else {
+            $transactions = Transaction::where('customer_id',$id)
+                ->orderBy('id','desc')
+                ->get();
+        }
+        
+        if (count($transactions) > 0) {
+            foreach ($transactions as $key => $value) {
+                $invoices = Invoice::where('transaction_id',$value->id)->where('status',1)->get();
+                $transactions[$key]['invoices'] = $invoices;
+
+                if (isset($transactions[$key]['status'])){
+                    switch($transactions[$key]['status']) {
+                        case 3: // Account active transaction
+                            $status = 'Active';
+                            $background_color = 'success';
+                        break;
+
+                        case 2:
+                            $status = 'To Be Paid';
+                            $background_color = 'info';
+                        break;
+
+                        default:
+                            $status = 'Completed';
+                            $background_color = 'active';
+                        break;
+                    }
+
+                    $transactions[$key]['status_html'] = $status;
+                    $transactions[$key]['background_color'] = $background_color;
+                }
+            }
+        }
+        $history['transactions'] = $transactions;
+
+        return $history;
     }
 
 

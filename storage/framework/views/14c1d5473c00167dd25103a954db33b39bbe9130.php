@@ -6,7 +6,10 @@
 <script type="text/javascript" src="/packages/mask/mask.min.js"></script>
 
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
 
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
     <div class="panel panel-default">

@@ -533,6 +533,8 @@ class Admin extends Model
                 $transaction->credit = $value['credit'];
                 $transaction->total = $value['total'];
     			$transaction->invoices = $value['invoices'];
+                $transaction->account_paid = $value['account_paid'];
+                $transaction->account_paid_on = $value['account_paid_on'];
     			$transaction->type = $value['type'];
     			$transaction->last_four = $value['last_four'];
     			$transaction->tendered = $value['tendered'];
@@ -575,6 +577,7 @@ class Admin extends Model
     			$user->reward_status = $value['reward_status'];
     			$user->reward_points = $value['reward_points'];
     			$user->account = $value['account'];
+                $user->account_total = $value['account_total'];
                 $user->credits = $value['credits'];
     			$user->starch = $value['starch'];
     			$user->important_memo = $value['important_memo'];
@@ -1014,6 +1017,8 @@ class Admin extends Model
                 $transaction->credit = $value['credit'];
                 $transaction->total = $value['total'];
                 $transaction->invoices = ($value['invoices']) ? $value['invoices'] : null;
+                $transaction->account_paid = $value['account_paid'];
+                $transaction->account_paid_on = $value['account_paid_on'];
                 $transaction->type = $value['type'];
                 $transaction->last_four = $value['last_four'];
                 $transaction->tendered = $value['tendered'];
@@ -1059,6 +1064,7 @@ class Admin extends Model
                         $user->reward_status = $value['reward_status'];
                         $user->reward_points = $value['reward_points'];
                         $user->account = $value['account'];
+                        $user->account_total = $value['account_total'];
                         $user->credits = $value['credits'];
                         $user->starch = $value['starch'];
                         $user->important_memo = $value['important_memo'];

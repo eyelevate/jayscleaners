@@ -105,7 +105,11 @@ Route::group(['middleware' => ['web']], function () {
 
 	//Authenticated Pages
 	Route::group(['middleware' => ['auth']], function(){
-
+		// Accounts
+		Route::get('/accounts',  ['as'=>'accounts_index', 'uses' => 'AccountsController@getIndex']);
+		Route::get('/accounts/pay/{id}',  ['as'=>'accounts_pay', 'uses' => 'AccountsController@getPay']);
+		Route::post('/accounts/pay',['as'=>'accounts_pay_post','uses'=>'AccountsController@postPay']);
+		Route::get('/accounts/history/{id}',  ['as'=>'accounts_pay', 'uses' => 'AccountsController@getHistory']);
 		//Admins
 		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);

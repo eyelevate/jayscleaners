@@ -503,6 +503,7 @@ class InvoicesController extends Controller
         $this->layout = 'layouts.dropoff';
         return view('invoices.pickup')
         ->with('customer_id',$customer_id)
+        ->with('customers',$customer)
         ->with('credits',$credit_amount)
         ->with('cards',$payment_ids)
         ->with('invoices',$invoices)
@@ -520,7 +521,23 @@ class InvoicesController extends Controller
         $customers = User::find($customer_id);
         $credits = ($customers->credits) ? $customers->credits : 0;
         $type = $request->type;
+        $transaction_status = 1;
         switch($type) {
+            case 'account':
+                $account_transaction_id = false;
+                $transaction_type = 5;
+                // check transactions for existing open transaction ticket
+                $account_transactions = Transaction::where('customer_id',$customer_id)->where('status',3)->get();
+                if (count($account_transactions) > 0) {
+                    foreach ($account_transactions as $at) {
+                        $account_transaction_id = $at->id;
+                    }
+                } else {
+                    $account_transaction_id = false;
+                }
+                $transaction_status = 3;
+                $account_check = ($account_transaction_id) ? true : false;
+            break;
             case 'credit':
                 $transaction_type = 1;
             break;
@@ -565,23 +582,55 @@ class InvoicesController extends Controller
         } 
 
         $discount_rate = 0;
+        if ($account_check){
+            $transactions = Transaction::find($account_transaction_id);
+            $transactions->company_id = $company_id;
+            $transactions->customer_id = $customer_id;
+            $old_pretax = $transactions->pretax;
+            $old_tax = $transactions->tax;
+            $old_discount = $transactions->discount;
+            $old_credit = $transactions->credit;
+            $old_aftertax = $transactions->aftertax;
+            $old_due = $transactions->total;
+            $new_pretax = $selected['totals']['subtotal'] + $old_pretax;
+            $new_tax = $selected['totals']['tax'] + $old_tax;
+            $new_aftertax = $selected['totals']['total'] + $old_aftertax;
+            $current_discount = ($new_aftertax * $discount_rate);
+            $new_discount = $old_discount + $current_discount;
+            $discounted_total = $selected['totals']['total'] - $current_discount;
+            $credit_spent = (($credits - $discounted_total) >= 0) ? $discounted_total : $credits;
+            $total_due = $discounted_total - $credit_spent;
+            $new_total_due = $old_due + $total_due;
+            $new_credit = $old_credit + $credit_spent;
 
-        $transactions = new Transaction();
-        $transactions->company_id = $company_id;
-        $transactions->customer_id = $customer_id;
-        $transactions->pretax = $selected['totals']['subtotal'];
-        $transactions->tax = $selected['totals']['tax'];
-        $transactions->aftertax = $selected['totals']['total'];
-        $transactions->discount = $transactions->aftertax * $discount_rate;
-        $discounted_total = $transactions->aftertax - $transactions->discount;
-        $credit_spent = (($credits - $discounted_total) >= 0) ? $discounted_total : $credits;
-        $transactions->credit = $credit_spent;
-        $total_due = $discounted_total - $credit_spent;
-        $transactions->total = $total_due;
-        $transactions->type = $transaction_type;
-        $transactions->status = 1;
-        $transactions->tendered = $request->tendered ? $request->tendered : 0;
-        $transactions->last_four = $last_four;
+            $transactions->pretax = $new_pretax;
+            $transactions->tax = $new_tax;
+            $transactions->aftertax = $new_aftertax;
+            $transactions->discount = $new_discount;
+            $transactions->credit = $new_credit;
+            $transactions->total = $new_total_due;
+            $transactions->type = $transaction_type;
+            $transactions->status = $transaction_status;
+            $transactions->tendered = 0;
+        } else {
+            $transactions = new Transaction();
+            $transactions->company_id = $company_id;
+            $transactions->customer_id = $customer_id;
+            $transactions->pretax = $selected['totals']['subtotal'];
+            $transactions->tax = $selected['totals']['tax'];
+            $transactions->aftertax = $selected['totals']['total'];
+            $transactions->discount = $transactions->aftertax * $discount_rate;
+            $discounted_total = $transactions->aftertax - $transactions->discount;
+            $credit_spent = (($credits - $discounted_total) >= 0) ? $discounted_total : $credits;
+            $transactions->credit = $credit_spent;
+            $total_due = $discounted_total - $credit_spent;
+            $transactions->total = $total_due;
+            $transactions->type = $transaction_type;
+            $transactions->status = $transaction_status;
+            $transactions->tendered = $request->tendered ? $request->tendered : 0;
+            $transactions->last_four = $last_four;
+        }
+
         if ($transactions->save()) {
             $transaction_id = $transactions->id;
             if (count($invoices) > 0) {
@@ -594,12 +643,24 @@ class InvoicesController extends Controller
                 }
             }
             if($customers){
+                $save_check = false;
                 // calculate the new credits
                 if ($credit_spent > 0) {
                     $new_credit = $credits - $credit_spent;
                     $customers->credits = $new_credit;
+                    $save_check = true;
+                }
+                // calculate new accounts
+                if ($customers->account) {
+                    $old_account_total = ($customers->account_total) ? $customers->account_total : 0;
+                    $new_account_total = $old_account_total + $total_due;
+                    $customers->account_total = $new_account_total;
+                    $save_check = true;
+                }
+                if ($save_check) {
                     $customers->save();
                 }
+                
             }
 
             Flash::success('Transaction finished. Invoices are complete');

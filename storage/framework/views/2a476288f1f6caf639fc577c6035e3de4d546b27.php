@@ -124,6 +124,12 @@
 		->render(); ?>
 
 
+	<?php echo View::make('partials.customers.pay_account')
+		->with('history',$account_history)
+		->with('customer_id',$customer_id)
+		->render(); ?>
+
+
 
 
 <?php $__env->stopSection(); ?>
