@@ -44,14 +44,14 @@ class Schedule extends Model
                         $pickup_deliveries = Delivery::find($pickup_delivery_id);
                         $pickup_time = $pickup_deliveries->start_time.' - '.$pickup_deliveries->end_time;
                     } else {
-                        $pickup_time = NULL;
+                        $pickup_time = 'No time scheduled';
                     }
 
                     if (isset($dropoff_delivery_id)) {
                         $dropoff_deliveries = Delivery::find($dropoff_delivery_id);
                         $dropoff_time = $dropoff_deliveries->start_time.' - '.$dropoff_deliveries->end_time;
                     } else {
-                        $dropoff_time = NULL;
+                        $dropoff_time = 'No time scheduled';
                     }
 
                     $customers = User::find($value->customer_id);
@@ -70,9 +70,18 @@ class Schedule extends Model
     				$schedules[$key]['pickup_address_2'] = $pickup_address_2;
     				$schedules[$key]['contact_name'] = $addresses->concierge_name;
     				$schedules[$key]['contact_number'] = $addresses->concierge_number;
-    				$schedules[$key]['pickup_date'] = date('D m/d/Y',strtotime($value->pickup_date));
+                    if ($value->pickup_date) {
+                        $schedules[$key]['pickup_date'] = date('D m/d/Y',strtotime($value->pickup_date));
+                    } else {
+                        $schedules[$key]['pickup_date'] = 'No Pickup Date Scheduled';
+                    }
     				$schedules[$key]['pickup_time'] = $pickup_time;
-    				$schedules[$key]['dropoff_date'] = date('D m/d/Y',strtotime($value->dropoff_date));
+                    if ($value->dropoff_date) {
+                        $schedules[$key]['dropoff_date'] = date('D m/d/Y',strtotime($value->dropoff_date));
+                    } else {
+                        $schedules[$key]['dropoff_date'] = 'No Dropoff Date Scheduled';
+                    }
+    				
     				$schedules[$key]['dropoff_time'] = $dropoff_time;
     				$schedules[$key]['special_instructions'] = $value->special_instructions;
     				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
