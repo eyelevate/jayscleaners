@@ -70,13 +70,13 @@ class Schedule extends Model
     				$schedules[$key]['pickup_address_2'] = $pickup_address_2;
     				$schedules[$key]['contact_name'] = $addresses->concierge_name;
     				$schedules[$key]['contact_number'] = $addresses->concierge_number;
-                    if ($value->pickup_date) {
+                    if (strtotime($value->pickup_date) > 0) {
                         $schedules[$key]['pickup_date'] = date('D m/d/Y',strtotime($value->pickup_date));
                     } else {
                         $schedules[$key]['pickup_date'] = 'No Pickup Date Scheduled';
                     }
     				$schedules[$key]['pickup_time'] = $pickup_time;
-                    if ($value->dropoff_date) {
+                    if (strtotime($value->dropoff_date) > 0) {
                         $schedules[$key]['dropoff_date'] = date('D m/d/Y',strtotime($value->dropoff_date));
                     } else {
                         $schedules[$key]['dropoff_date'] = 'No Dropoff Date Scheduled';
