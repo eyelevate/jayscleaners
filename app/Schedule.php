@@ -40,10 +40,20 @@ class Schedule extends Model
     				$pickup_address_2 = ucFirst($city).', '.strtoupper($state).' '.$zipcode;
     				$pickup_delivery_id = $value->pickup_delivery_id;
     				$dropoff_delivery_id = $value->dropoff_delivery_id;
-    				$pickup_deliveries = Delivery::find($pickup_delivery_id);
-    				$pickup_time = $pickup_deliveries->start_time.' - '.$pickup_deliveries->end_time;
-    				$dropoff_deliveries = Delivery::find($dropoff_delivery_id);
-    				$dropoff_time = $dropoff_deliveries->start_time.' - '.$dropoff_deliveries->end_time;
+                    if (isset($pickup_delivery_id)) {
+                        $pickup_deliveries = Delivery::find($pickup_delivery_id);
+                        $pickup_time = $pickup_deliveries->start_time.' - '.$pickup_deliveries->end_time;
+                    } else {
+                        $pickup_time = NULL;
+                    }
+
+                    if (isset($dropoff_delivery_id)) {
+                        $dropoff_deliveries = Delivery::find($dropoff_delivery_id);
+                        $dropoff_time = $dropoff_deliveries->start_time.' - '.$dropoff_deliveries->end_time;
+                    } else {
+                        $dropoff_time = NULL;
+                    }
+
                     $customers = User::find($value->customer_id);
     				$schedules[$key]['id'] = $value->id;
                     $schedules[$key]['customer_id'] = $value->customer_id;

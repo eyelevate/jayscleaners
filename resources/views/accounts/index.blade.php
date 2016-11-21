@@ -66,7 +66,7 @@
 
 		<div class="panel-footer"></div>
 
-	</div>    
+	</div>r    
 
 @stop
 @section('modals')
