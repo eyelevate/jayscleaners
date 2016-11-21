@@ -1430,9 +1430,19 @@ class DeliveriesController extends Controller
         $end_time = $request->end_hours.':'.str_pad($request->start_minutes,2,'0',STR_PAD_LEFT).' '.$request->end_ampm;
         $zipcodes = $request->zipcode;
         $blackout = $request->blackout;
+        $clean_blackout_list = [];
+        if (isset($blackout)) {
+            $today_check = strtotime(date('Y-m-d 00:00:00'));
+            foreach ($blackout as $key => $value) {
+                $blackout_date_check = strtotime(date('Y-m-d 00:00:00',strtotime($value)));
+                if (strtotime($value) >= $blackout_date_check) {
+                    array_push($clean_blackout_list, date('Y-m-d 00:00:00',strtotime($value)));
+                }
+            }
+        }
 
         $zipcodes_string = ($request->zipcode) ? json_encode($zipcodes) : NULL;
-        $blackout_string = ($request->blackout) ? json_encode($blackout) : NULL;
+        $blackout_string = ($request->blackout) ? json_encode($clean_blackout_list) : NULL;
         $deliveries = Delivery::find($delivery_id);
         $deliveries->company_id = $request->company_id;
         $deliveries->route_name = $request->route_name;
