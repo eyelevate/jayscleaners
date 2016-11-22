@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Redirect;
 use Laracasts\Flash\Flash;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -48,7 +49,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-
+        if ($e instanceof NotFoundHttpException) {
+            Flash::error('No such page / link. Please try again.');
+            return Redirect::back();
+        }
         if ($e instanceof TokenMismatchException) {
             Flash::error('You have been logged out due to inactivity. Or you have expired your token. Please try again.');
             return redirect(route('pages_index'));
