@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Laracasts\Flash\Flash;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -46,6 +47,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof TokenMismatchException) {
+            Flash::error('You have been logged out due to inactivity. You must log in again.');
+            return redirect(route('pages_index'));
+        }
         return parent::render($request, $e);
     }
 }

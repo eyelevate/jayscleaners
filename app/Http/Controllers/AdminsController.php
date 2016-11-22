@@ -334,11 +334,11 @@ class AdminsController extends Controller
         //                 $hanger = 1;
         //             break;
         //         }
-        //         $us = User::find($user_id);
-        //         $us->shirt = $hanger;
-        //         if($us->save()){
-        //             Job::dump($hanger);
-        //         }
+                // $us = User::find($user_id);
+                // $us->shirt = $hanger;
+                // if($us->save()){
+                //     Job::dump($hanger);
+                // }
 
         //         $mark = Custid::createOriginalMark($user); 
         //         // strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));

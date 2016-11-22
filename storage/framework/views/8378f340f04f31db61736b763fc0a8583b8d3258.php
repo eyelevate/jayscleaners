@@ -15,27 +15,72 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
-    <section class="wrapper style3 container special-alt no-background-image">
-        <div class="row 50%">
-        	<header>
-				<h2><strong>Select Account Customer</strong></h2>
-            </header>
-            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                <section class="row clearfix">
-                	<ul class="12u">
+	<br/>
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h4>Customer Search Form</h4></div>
+		<div class="panel-body">
+			<?php echo Form::open(['action' => 'AccountsController@postIndex','role'=>"form"]); ?>
 
+			<div class="form-group <?php echo e($errors->has('search') ? ' has-error' : ''); ?>">
+				<label class="control-label">Search</label>
+				<?php echo e(Form::text('search',old('search'),['class'=>"form-control",'placeholder'=>'Last Name / Phone / ID'])); ?>
 
-                	</ul>
-				</section>
+                <?php if($errors->has('search')): ?>
+                    <span class="help-block">
+                        <strong><?php echo e($errors->first('search')); ?></strong>
+                    </span>
+                <?php endif; ?>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary">Search</button>
+			</div>
+			<?php echo Form::close(); ?>
 
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			    <ul>
-		            <li><a href="<?php echo e(route('address_add')); ?>" class="button">Add Address</a></li>
-		        </ul>
-            </div>
-        </div>
-    </section>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Username</th>
+						<th>Last</th>
+						<th>First</th>
+						<th>Phone</th>
+						<th>Due</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php if(isset($customers)): ?>
+					<?php foreach($customers as $customer): ?>
+					<tr class="<?php echo e(($customer->status == 3) ? 'active' : ($customer->status== 2) ? 'info' : 'active'); ?>">
+						<td><?php echo e($customer->id); ?></td>
+						<td><?php echo e($customer->username); ?></td>
+						<td><?php echo e($customer->last_name); ?></td>
+						<td><?php echo e($customer->first_name); ?></td>
+						<td><?php echo e($customer->phone); ?></td>
+						<td><?php echo e($customer->account_total); ?></td>
+						<td>
+						<?php if($customer->account_total > 0): ?>
+							<a href="<?php echo e(route('accounts_pay',$customer->account_transaction_id)); ?>" class="btn btn-info">Pay</a>
+							<a href="<?php echo e(route('accounts_history',$customer->id)); ?>" class="btn btn-info">Payment History</a>
+						<?php else: ?>
+							<button type="button" class="btn btn-default" disabled="true">Pay</button>
+							<a href="<?php echo e(route('accounts_history',$customer->id)); ?>" class="btn btn-info">Payment History</a>
+						<?php endif; ?>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="panel-footer">
+			<button class="btn btn-lg btn-primary" type="button">Send Monthly Bill</button>
+		</div>
+
+	</div>  
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('modals'); ?>

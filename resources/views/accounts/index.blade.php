@@ -20,7 +20,7 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading"><h4>Customer Search Form</h4></div>
 		<div class="panel-body">
-			{!! Form::open(['action' => 'DeliveriesController@postFindCustomer','role'=>"form"]) !!}
+			{!! Form::open(['action' => 'AccountsController@postIndex','role'=>"form"]) !!}
 			<div class="form-group {{ $errors->has('search') ? ' has-error' : '' }}">
 				<label class="control-label">Search</label>
 				{{ Form::text('search',old('search'),['class'=>"form-control",'placeholder'=>'Last Name / Phone / ID']) }}
@@ -44,19 +44,29 @@
 						<th>Last</th>
 						<th>First</th>
 						<th>Phone</th>
+						<th>Due</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
-				@if (count($customers) > 0)
+				@if (isset($customers))
 					@foreach($customers as $customer)
-					<tr>
-						<td>{{ $customer['id'] }}</td>
-						<td>{{ $customer['username'] ? $customer['username'] : '' }}</td>
-						<td>{{ $customer['last_name'] }}</td>
-						<td>{{ $customer['first_name'] }}</td>
-						<td>{{ \App\Job::formatPhoneString($customer['phone']) }}</td>
-						<td><a href="{{ route('delivery_new',$customer['id']) }}">Select</a></td>
+					<tr class="{{ ($customer->status == 3) ? 'active' : ($customer->status== 2) ? 'info' : 'active' }}">
+						<td>{{ $customer->id }}</td>
+						<td>{{ $customer->username }}</td>
+						<td>{{ $customer->last_name }}</td>
+						<td>{{ $customer->first_name }}</td>
+						<td>{{ $customer->phone }}</td>
+						<td>{{ $customer->account_total }}</td>
+						<td>
+						@if ($customer->account_total > 0)
+							<a href="{{ route('accounts_pay',$customer->account_transaction_id) }}" class="btn btn-info">Pay</a>
+							<a href="{{ route('accounts_history',$customer->id) }}" class="btn btn-info">Payment History</a>
+						@else
+							<button type="button" class="btn btn-default" disabled="true">Pay</button>
+							<a href="{{ route('accounts_history',$customer->id) }}" class="btn btn-info">Payment History</a>
+						@endif
+						</td>
 					</tr>
 					@endforeach
 				@endif
@@ -64,9 +74,11 @@
 			</table>
 		</div>
 
-		<div class="panel-footer"></div>
+		<div class="panel-footer">
+			<button  class="btn btn-lg btn-primary" type="button">Send Monthly Bill</button>
+		</div>
 
-	</div>r    
+	</div>  
 
 @stop
 @section('modals')

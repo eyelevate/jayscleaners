@@ -285,7 +285,7 @@ class Admin extends Model
     			$custid->customer_id = $value['customer_id'];
                 $custid->company_id = $value['company_id'];
     			$custid->mark = $value['mark'];
-    			$custid->status = $value['status'];
+    			$custid->status = 1;
     			if($custid->save()){
     				$up['custids'][$key]['cust_id'] = $custid->id;
     				$uploaded_rows++;
