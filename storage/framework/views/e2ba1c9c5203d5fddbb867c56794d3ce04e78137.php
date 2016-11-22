@@ -3,6 +3,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
+<script type="text/javascript" src="/packages/Readmore/readmore.min.js"></script>
 <script type="text/javascript" src="/js/pages/index.js"></script>
 <?php $__env->stopSection(); ?>
 
@@ -84,155 +85,154 @@
 
 <?php $__env->startSection('content'); ?>
 <header class="special container">
-	<span class="icon fa fa-home fa-fw"></span>
-	<h2>Welcome to Jays Cleaners. With over <strong>35 years</strong> of experience, <strong>let us work for you</strong>.</h2>
+	<span class="icon fa-home fa-fw" style="font-size:25px;"></span>
+	<h2>Welcome to Jays Cleaners. With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>
-
-<!-- One -->
-<section class="wrapper style2 container special-alt">
-	<div class="row 50%">
-		<div class="8u 12u(narrower)">
-
-			<header>
-				<h5>Where to find us</h5>
-			</header>
-			<p>We proudly serve the Seattle region at 2 prime locations in the Montlake and Roosevelt neighborhoods. With the ability to deliver if these locations are not suitable to your current location.</p>
-			<?php if(count($companies) > 0): ?>
-				<?php foreach($companies as $company): ?>
-				<address>
-					<strong><?php echo e($company->name); ?></strong><br/>
-					<?php echo e($company->street); ?> <br/>
-					<?php echo e($company->city); ?>, <?php echo e($company->state); ?> <?php echo e($company->zipcode); ?> <br/>
-					<?php echo e($company->phone); ?>
-
-				</address>
-				<?php endforeach; ?>
-			<?php endif; ?>
-
-			<footer>
-				<ul class="buttons">
-					<li><a href="#" class="button">Find Out More</a></li>
-				</ul>
-			</footer>
-
-		</div>
-		<div class="4u 12u(narrower) important(narrower)">
-
-			<ul class="featured-icons">
-				<li><span class="icon fa-clock-o"><span class="label">Feature 1</span></span></li>
-				<li><span class="icon fa fa-car"><span class="label">Feature 2</span></span></li>
-				<li><span class="icon fa-laptop"><span class="label">Feature 3</span></span></li>
-				<li><span class="icon fa-inbox"><span class="label">Feature 4</span></span></li>
-				<li><span class="icon fa-lock"><span class="label">Feature 5</span></span></li>
-				<li><span class="icon fa-calendar-check-o"><span class="label">Feature 6</span></span></li>
-			</ul>
-
-		</div>
-	</div>
-</section>
-
+<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-4.png" style="min-height:300px;"></section>
 <!-- Two -->
+<br/>
 <section class="wrapper style1 container special">
 	<div class="row">
 		<div class="4u 12u(narrower)">
 
-			<section>
-				<span class="icon featured fa-check"></span>
+			<section class="read_articles">
+				
 				<header>
-					<h3>This is Something</h3>
+					<span class="icon featured fa-history"></span>
+					<h3>About Us</h3>
 				</header>
-				<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+				<p>
+					Jays Cleaners was established in the Greenlake neighborhood of Seattle over 70 years ago. 
+					Family run and operated, we at Jays Cleaners have always held the belief that the Customer expects and deserves the best and it is our duty to deliver the best.
+				</p>
+				<p>
+					We at Jays Cleaners are relentlessly setting and maintaining high standards for quality, continuously implementing industry best practices and always paying careful attention to the many details of what makes a quality finished product (ie. stain removal, replacing cracked or chipped buttons, sewing loose hems, scrubbing collars, etc). We are always striving to deliver the best quality services, on-time, every time. 
+					Our goal is simple: 100% Customer Satisfaction!
+				</p>
+				<a href="https://www.yelp.com/biz/jays-dry-cleaners-roosevelt-seattle" class="btn btn-lg btn-info">Read Our Reviews</a>
 			</section>
 
 		</div>
 		<div class="4u 12u(narrower)">
 
-			<section>
-				<span class="icon featured fa-check"></span>
+			<section class="read_articles">
+				
 				<header>
-					<h3>Also Something</h3>
+					<span class="icon featured fa-check-square-o"></span>
+					<h3>THE HEALTHY CLEANING ALTERNATIVE</h3>
 				</header>
-				<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+				<p>Jays Cleaners utilizes the SystemK4 cleaning system which is a Toxin-Free, Environmentally Safe and Healthy cleaning system. Unlike the cleaning methods of the past which relied heavily on Perchloroethylene (Perc), SystemK4 utilizes a perc-free/halogen-free, organic solvent and has been tested to be dermatologically safe, biodegradable and provides an excellent, odorless finish to every garment. </p>
+				<a href="http://www.systemk4.com/en/" target="__blank" class="btn btn-lg btn-info">Learn More</a>
 			</section>
 
 		</div>
 		<div class="4u 12u(narrower)">
 
-			<section>
-				<span class="icon featured fa-check"></span>
+			<section class="read_articles">
+				
 				<header>
-					<h3>Probably Something</h3>
+					<span class="icon featured fa-truck"></span>
+					<h3>Delivery Specialists</h3>
 				</header>
-				<p>Sed tristique purus vitae volutpat ultrices. Aliquam eu elit eget arcu commodo suscipit dolor nec nibh. Proin a ullamcorper elit, et sagittis turpis. Integer ut fermentum.</p>
+				<p>Create an Account using our <a href="<?php echo e(route('pages_registration')); ?>">Sign Up</a> page and set up a delivery schedule today. Returning Members can simply <a href="<?php echo e(route('pages_login')); ?>">Login</a> to schedule a delivery.</p>  
+				<p>Special Instructions for any article or garment and delivery location (concierge, front porch, etc) can be included on each delivery schedule. Once your finished, we will send you an email confirmation.</p>
+				<a href="<?php echo e(route('delivery_pickup')); ?>" class="btn btn-lg btn-info">Schedule A Delivery</a>
 			</section>
 
 		</div>
+
 	</div>
 </section>
+<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-5.png" style="min-height:300px;"></section>
 
-<!-- Three -->
+<!-- One -->
 <section class="wrapper style3 container special">
 
-	<header class="major">
-		<h2>Next look at this <strong>cool stuff</strong></h2>
-	</header>
-
 	<div class="row">
-		<div class="6u 12u(narrower)">
+		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
+			<span class="icon featured fa-map-o"></span>
+			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Where to find us</h3>
+		</header>
+		<section class="clearfix">
+		<p>
+			We proudly serve the Seattle region at our conveniently located Montlake and Roosevelt locations.  Additionally, we offer free pickup/delivery to local Seattle neighborhood
+			homes, offices, business and more.
+		</p>
+		<?php if(count($companies) > 0): ?>
+			<?php foreach($companies as $company): ?>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:30px;">
+				<div style="margin-bottom:10px;">
+					<address>
+						<strong class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->name); ?></strong>
+						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->street); ?></span>
+						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->city); ?>, <?php echo e($company->state); ?> <?php echo e($company->zipcode); ?></span>
+						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><?php echo e($company->phone); ?></span>
 
-			<section>
-				<a href="#" class="image featured"><img src="images/green_nature.png" alt="" /></a>
-				<header>
-					<h3>A Really Fast Train</h3>
-				</header>
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
+					</address>
+					<a href="<?php echo e($company->map); ?>" class="btn btn-warning btn-lg"><i class="fa fa-map-marker"></i>&nbsp;Directions</a>
+				</div>
 
-		</div>
-		<div class="6u 12u(narrower)">
-
-			<section>
-				<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
-				<header>
-					<h3>An Airport Terminal</h3>
-				</header>
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
-
-		</div>
+				
+			</div>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		</section>
 	</div>
-	<div class="row">
-		<div class="6u 12u(narrower)">
+	<div id="store_hours" class="row">
+		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
+			<span class="icon featured fa-clock-o"></span>
+			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Store Hours</h3>
+		</header>
+		<section class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-			<section>
-				<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
-				<header>
-					<h3>Hyperspace Travel</h3>
-				</header>
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
+			<div class="table-responsive">
+				<table class="table table-condensed">	
+					<thead>
+						<tr>
+							<th style="text-align:right;"><strong>Day</strong></th>
+							<th style="text-align:center;"><strong>Hours</strong></th>
+							<th style="text-align:left;"><strong>Currently</strong></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php if(count($companies) > 0): ?>
+						<?php foreach($companies as $company): ?>
+							<?php if(count($company->store_hours) > 0 && $company->id == 1): ?>
+								<?php foreach($company->store_hours as $key => $value): ?>
+									<?php if(date('l') == $key): ?>
+									<tr class="warning" style="color:#5e5e5e; font-weight:bold;">
+										<th style="text-align:right;"><strong><?php echo e($key); ?></strong></th>
+										<td style="text-align:center;"><strong><?php echo e($value); ?></strong></td>
+										<td style="text-align:left;"><strong style="color:<?php echo e($company['open_status'] ? 'green' : 'red'); ?>;"><?php echo e($company['open_status'] ? 'Open' : 'Closed'); ?></strong></td>
+									</tr>
+									<?php else: ?>
+									<tr>
+										<th style="text-align:right;"><?php echo e($key); ?></th>
+										<td style="text-align:center;"><?php echo e($value); ?></td>
+										<td style="text-align:left;"></td>
+									</tr>
+									<?php endif; ?>
+								
+								<?php endforeach; ?>
+							<?php endif; ?>
+		
+						<?php endforeach; ?>
+					<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
+		</section>
 
-		</div>
-		<div class="6u 12u(narrower)">
 
-			<section>
-				<a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
-				<header>
-					<h3>And Another Train</h3>
-				</header>
-				<p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p>
-			</section>
-
-		</div>
 	</div>
 
-	<footer class="major">
-		<ul class="buttons">
-			<li><a href="#" class="button">See More</a></li>
-		</ul>
-	</footer>
 
 </section>
+<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-2.png" style="min-height:300px;" ></section>
+<?php echo View::make('partials.pages.services')->render(); ?>
+
+
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('modals'); ?>

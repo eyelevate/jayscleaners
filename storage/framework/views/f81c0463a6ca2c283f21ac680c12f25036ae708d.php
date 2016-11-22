@@ -30,31 +30,25 @@
 
 
 			<!-- Main -->
-			<article id="main">
-				<div class="container">
+			<div id="main">
+				<section class="container">
 					<div class="row-fluid ">
 					<?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 					</div>
 					<?php echo $__env->yieldContent('content'); ?>
-					
-				</div>
-			</article>
+					<article class="wrapper style3 container special">
 
-			<!-- CTA -->
-			<section id="cta">
+						<header>
+							<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+							<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
+						</header>
 
-				<header>
-					<h2>Ready to do <strong>something</strong>?</h2>
-					<p>Proin a ullamcorper elit, et sagittis turpis integer ut fermentum.</p>
-				</header>
-				<footer>
-					<ul class="buttons">
-						<li><a href="#" class="button special">Take My Money</a></li>
-						<li><a href="#" class="button">LOL Wut</a></li>
-					</ul>
-				</footer>
+					</article>
+				</section>
 
-			</section>
+			</div>
+			<p></p>
+
 
 			<!-- Footer -->
 			<footer id="footer">
@@ -63,12 +57,10 @@
 					<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
 					<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
 					<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
-					<li><a href="#" class="icon circle fa-github"><span class="label">Github</span></a></li>
-					<li><a href="#" class="icon circle fa-dribbble"><span class="label">Dribbble</span></a></li>
 				</ul>
 
 				<ul class="copyright">
-					<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					<li>&copy; <?php echo e(date('Y')); ?></li><li> Jays Cleaners</li>
 				</ul>
 
 			</footer>
