@@ -54,7 +54,7 @@
 				<?php if(isset($customers)): ?>
 					<?php foreach($customers as $customer): ?>
 					<tr class="<?php echo e(($customer->status == 3) ? 'active' : ($customer->status== 2) ? 'info' : 'active'); ?>">
-						<td><?php echo e($customer->id); ?></td>
+						<td><?php echo e($customer->account_transaction_id); ?></td>
 						<td><?php echo e($customer->username); ?></td>
 						<td><?php echo e($customer->last_name); ?></td>
 						<td><?php echo e($customer->first_name); ?></td>
@@ -62,7 +62,7 @@
 						<td><?php echo e($customer->account_total); ?></td>
 						<td>
 						<?php if($customer->account_total > 0): ?>
-							<a href="<?php echo e(route('accounts_pay',$customer->account_transaction_id)); ?>" class="btn btn-info">Pay</a>
+							<a href="<?php echo e(route('accounts_pay',$customer->id)); ?>" class="btn btn-info">Pay</a>
 							<a href="<?php echo e(route('accounts_history',$customer->id)); ?>" class="btn btn-info">Payment History</a>
 						<?php else: ?>
 							<button type="button" class="btn btn-default" disabled="true">Pay</button>
@@ -77,7 +77,7 @@
 		</div>
 
 		<div class="panel-footer">
-			<button class="btn btn-lg btn-primary" type="button">Send Monthly Bill</button>
+			<button  class="btn btn-lg btn-primary" type="button">Send Monthly Bill</button>
 		</div>
 
 	</div>  

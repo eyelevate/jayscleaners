@@ -144,6 +144,12 @@ class Customer extends Model
             $data['marks'] = Custid::where('customer_id',$data['id'])->get();
         }
 
+        if (isset($data['phone'])) {
+            $data['phone_raw'] = $data['phone'];
+            $data['phone'] = Job::formatPhoneString($data['phone']);
+
+        }
+
         return $data;
     }
 
