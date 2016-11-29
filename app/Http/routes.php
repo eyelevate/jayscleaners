@@ -114,7 +114,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/accounts/update-total',['as'=>'accounts_update_total','uses'=>'AccountsController@postUpdateTotal']);
 		Route::post('/accounts/revert',['as'=>'accounts_revert_post','uses'=>'AccountsController@postRevert']);
 		Route::post('/accounts/bill',['as'=>'accounts_bill_post','uses'=>'AccountsController@postBill']);
-
+		Route::get('/accounts/preview',['as'=>'accounts_preview','uses'=>'AccountsController@getPreview']);
+		// Route::get('/accounts/preview-setup/{id}',['as'=>'accounts_preview_setup','uses'=>'AccountsController@getPreviewSetup']);
 		//Admins
 		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);

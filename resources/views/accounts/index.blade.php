@@ -83,5 +83,8 @@
 
 @stop
 @section('modals')
-
+	{!! View::make('partials.accounts.bill')
+		->with('month',$month)
+		->render()
+	!!}	
 @stop

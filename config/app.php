@@ -158,7 +158,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Toin0u\Geocoder\GeocoderServiceProvider::class,
+        Toin0u\Geocoder\GeocoderServiceProvider::class
 
     ],
 

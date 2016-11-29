@@ -77,13 +77,16 @@
 		</div>
 
 		<div class="panel-footer">
-			<button  class="btn btn-lg btn-primary" type="button">Send Monthly Bill</button>
+			<button class="btn btn-lg btn-primary" type="button" data-toggle="modal" data-target="#bill">Send Monthly Bill</button>
+
 		</div>
 
 	</div>  
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('modals'); ?>
-
+	<?php echo View::make('partials.accounts.bill')
+		->with('month',$month)
+		->render(); ?>	
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

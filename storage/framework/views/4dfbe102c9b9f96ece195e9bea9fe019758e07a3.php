@@ -6,21 +6,22 @@
 				<h4 class="modal-title">Send Account Bill</h4>
 			</div>
 			<div class="modal-body">
-				<div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+				<div class="form-group<?php echo e($errors->has('username') ? ' has-error' : ''); ?>">
                     <label class="control-label">Select Month</label>
 
-                	{!! Form::select('billing_month', $month ,date('n'), ['class'=>'form-control', 'placeholder'=>'']) !!}
-                    @if ($errors->has('username'))
+                	<?php echo Form::select('billing_month', $month ,date('n'), ['class'=>'form-control', 'placeholder'=>'']); ?>
+
+                    <?php if($errors->has('username')): ?>
                         <span class="help-block">
-                            <strong>{{ $errors->first('username') }}</strong>
+                            <strong><?php echo e($errors->first('username')); ?></strong>
                         </span>
-                    @endif
+                    <?php endif; ?>
 
                 </div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<a class="btn btn-info" href="{{ route('accounts_preview') }}">Preview & Print Billing</a>
+				<a class="btn btn-info" href="<?php echo e(route('accounts_preview')); ?>">Preview & Print Billing</a>
 				<button type="submit" class="btn btn-primary">Email Billing</button>
 			</div>
 		</div><!-- /.modal-content -->

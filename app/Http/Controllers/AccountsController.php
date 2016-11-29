@@ -15,6 +15,7 @@ use Session;
 use Laracasts\Flash\Flash;
 use View;
 
+use App;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Account;
@@ -38,7 +39,9 @@ class AccountsController extends Controller
     }
 
     public function getIndex(){
+        $month = Account::getMonth();
         return view('accounts.index')
+        ->with('month',$month)
         ->with('layout',$this->layout);
     }
 
@@ -65,9 +68,10 @@ class AccountsController extends Controller
         }
 
         $formatted = Account::prepareAccount($users);
-
+        $month = Account::getMonth();
         return view('accounts.index')
         ->with('layout',$this->layout)
+        ->with('month',$month)
         ->with('customers',$users);
     }
 
@@ -182,6 +186,29 @@ class AccountsController extends Controller
     }
 
     public function postBill(Request $request) {
-        
+
     }
+
+    public function postConvertSend() {
+
+    }
+
+    public function getPreview($id = null) {
+
+        $pdf = App::make('dompdf.wrapper');
+        $html = Account::makeBillHtml($id, false);
+        $pdf->loadHTML($html);
+        
+        return $pdf->stream();
+    }
+
+    public function getPrintCurrent(){
+        $pdf = App::make('dompdf.wrapper');
+        $html = Account::makeBillHtml('current',false);
+        $pdf->loadHTML($html);
+        
+        return $pdf->stream();
+    }
+
+
 }
