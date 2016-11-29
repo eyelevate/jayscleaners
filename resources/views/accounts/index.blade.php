@@ -52,7 +52,7 @@
 				@if (isset($customers))
 					@foreach($customers as $customer)
 					<tr class="{{ ($customer->status == 3) ? 'active' : ($customer->status== 2) ? 'info' : 'active' }}">
-						<td>{{ $customer->id }}</td>
+						<td>{{ $customer->account_transaction_id }}</td>
 						<td>{{ $customer->username }}</td>
 						<td>{{ $customer->last_name }}</td>
 						<td>{{ $customer->first_name }}</td>
@@ -60,7 +60,7 @@
 						<td>{{ $customer->account_total }}</td>
 						<td>
 						@if ($customer->account_total > 0)
-							<a href="{{ route('accounts_pay',$customer->account_transaction_id) }}" class="btn btn-info">Pay</a>
+							<a href="{{ route('accounts_pay',$customer->id) }}" class="btn btn-info">Pay</a>
 							<a href="{{ route('accounts_history',$customer->id) }}" class="btn btn-info">Payment History</a>
 						@else
 							<button type="button" class="btn btn-default" disabled="true">Pay</button>
@@ -75,12 +75,16 @@
 		</div>
 
 		<div class="panel-footer">
-			<button  class="btn btn-lg btn-primary" type="button">Send Monthly Bill</button>
+			<button class="btn btn-lg btn-primary" type="button" data-toggle="modal" data-target="#bill">Send Monthly Bill</button>
+
 		</div>
 
 	</div>  
 
 @stop
 @section('modals')
-
+	{!! View::make('partials.accounts.bill')
+		->with('month',$month)
+		->render()
+	!!}	
 @stop

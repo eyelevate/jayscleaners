@@ -111,6 +111,11 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/accounts/pay/{id}',  ['as'=>'accounts_pay', 'uses' => 'AccountsController@getPay']);
 		Route::post('/accounts/pay',['as'=>'accounts_pay_post','uses'=>'AccountsController@postPay']);
 		Route::get('/accounts/history/{id}',  ['as'=>'accounts_history', 'uses' => 'AccountsController@getHistory']);
+		Route::post('/accounts/update-total',['as'=>'accounts_update_total','uses'=>'AccountsController@postUpdateTotal']);
+		Route::post('/accounts/revert',['as'=>'accounts_revert_post','uses'=>'AccountsController@postRevert']);
+		Route::post('/accounts/bill',['as'=>'accounts_bill_post','uses'=>'AccountsController@postBill']);
+		Route::get('/accounts/preview',['as'=>'accounts_preview','uses'=>'AccountsController@getPreview']);
+		// Route::get('/accounts/preview-setup/{id}',['as'=>'accounts_preview_setup','uses'=>'AccountsController@getPreviewSetup']);
 		//Admins
 		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);
