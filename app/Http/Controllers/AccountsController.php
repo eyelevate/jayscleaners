@@ -196,7 +196,7 @@ class AccountsController extends Controller
     public function getPreview($id = null) {
 
         $pdf = App::make('dompdf.wrapper');
-        $html = Account::makeBillHtml($id, false);
+        $html = Account::makeBillHtml($id, true);
         $pdf->loadHTML($html);
         
         return $pdf->stream();
