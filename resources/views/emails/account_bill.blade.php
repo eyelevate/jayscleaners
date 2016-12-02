@@ -178,7 +178,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       Dear Owner,
+                                       Dear {{ ucFirst($customers->first_name) }} {{ ucFirst($customers->last_name) }},
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -190,7 +190,8 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       This is an email to confirm that account statuses have been updated. Please take a moment to verify that all status have been updated by checking online here. If everything looks correct, please finish the task by select who will receive an email billing and who will have theirs printed and sent to them.
+                                       We at Jays Cleaners wish to thank you for your continued business with us. Attached is your account billing statement for the month of {{ date('F Y',strtotime($transactions->created_at)) }}. 
+                                       If you do not wish to mail a check, we also provide an online form for our users <a href="{{ route('accounts_payMyBill') }}">Click Here</a> if you wish to pay online. 
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -235,7 +236,7 @@
                                  <!-- Title -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:center;line-height: 20px;" st-title="fulltext-title">
-                                       Review Account Status Change Information
+                                       Review Delivery Information
                                     </td>
                                  </tr>
                                  <!-- End of Title -->

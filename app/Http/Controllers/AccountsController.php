@@ -29,6 +29,9 @@ use App\Invoice;
 use App\InvoiceItem;
 use App\Transaction;
 use App\Layout;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
+
 class AccountsController extends Controller
 {
     public function __construct() {
@@ -189,14 +192,55 @@ class AccountsController extends Controller
 
     }
 
-    public function postConvertSend() {
+    public function postEmailSend(Request $request) {
+        $pdf = App::make('dompdf.wrapper');
+        $transaction_ids = $request->session()->has('account_transaction_ids') ? $request->session()->get('account_transaction_ids') : [];
+        $reports = [];
+        if (count($transaction_ids) >0){
+            foreach ($transaction_ids as $transaction_id) {
+                $html = Account::makeSingleBillHtml($transaction_id, true);   
+                $pdf->loadHTML($html);
+                if ($pdf->save('pdf/account-'.$transaction_id.'.pdf')){
+                    // prepare email
+                    $transactions = Transaction::find($transaction_id);
+                    $customer_id = $transactions->customer_id;
+                    $customers = User::find($customer_id);
+                    $first_name = ucFirst($customers->first_name);
+                    $last_name = ucFirst($customers->last_name);
+                    $send_to = $customers->email;
+                    $bill_month = date('F Y',strtotime($transactions->created_at));
+                    $bill_period = date('n/01/Y',strtotime($transactions->created_at)).' - '.date('n/t/Y',strtotime($transactions->created_at));
+                    $due_date = date('n/15/Y',strtotime($transactions->created_at.' +1 month'));
+                    $title = 'Jays Cleaners Account Billing Statement - '.$bill_month;
+                    // send email
+                    $from = 'noreply@jayscleaners.com';
+                    // Email customer
+                    if (Mail::send('emails.account_bill', [
+                        'transactions' => $transactions,
+                        'customers' => $customers
+                    ], function($message) use ($send_to, $title)
+                    {
+                        $message->to($send_to);
+                        $message->subject($title);
+                    }));
+
+
+                    // unlink account statement
+                } 
+            }
+            
+        }
+
+        
+        
 
     }
 
-    public function getPreview($id = null) {
+    public function getPreview(Request $request) {
 
         $pdf = App::make('dompdf.wrapper');
-        $html = Account::makeBillHtml($id, true);
+        $transaction_ids = $request->session()->has('account_transaction_ids') ? $request->session()->get('account_transaction_ids') : [];
+        $html = Account::makeBillHtml($transaction_ids, true);
         $pdf->loadHTML($html);
         
         return $pdf->stream();
@@ -209,6 +253,250 @@ class AccountsController extends Controller
         
         return $pdf->stream();
     }
+
+    public function getSend() {
+        $month = Account::getMonth();
+        $year = Account::getYear();
+        return view('accounts.send')
+        ->with('month',$month)
+        ->with('year',$year)
+        ->with('transactions',[])
+        ->with('layout',$this->layout);
+    }
+
+    public function postSend(Request $request) {
+        $month = $request->billing_month;
+        $year = $request->billing_year;
+        $transaction_id = $request->transaction_id;
+        $customer_id = $request->customer_id;
+        $date_range_start = ($month != '' && $year != '') ? date('Y-m-01 00:00:00',strtotime($year.'-'.$month.'-01 00:00:00')) : false;
+        $date_range_end = ($date_range_start) ? date('Y-m-t 23:59:59',strtotime($date_range_start)) : false;
+
+        if ($date_range_start && $date_range_end) {
+            if ($transaction_id != '' && $customer_id != '') {
+                $transactions = Transaction::whereBetween('created_at',[$date_range_start,$date_range_end])
+                    ->where('status',2)
+                    ->where('id',$transaction_id)
+                    ->where('customer_id',$customer_id)
+                    ->get();
+            } elseif($transaction_id != '' && $customer_id == '') {
+                $transactions = Transaction::whereBetween('created_at',[$date_range_start,$date_range_end])
+                    ->where('status',2)
+                    ->where('id',$transaction_id)
+                    ->get();
+
+            } elseif($transaction_id == '' && $customer_id != '') {
+                $transactions = Transaction::whereBetween('created_at',[$date_range_start,$date_range_end])
+                    ->where('status',2)
+                    ->where('customer_id',$customer_id)
+                    ->get();
+            } else {
+                $transactions = Transaction::whereBetween('created_at',[$date_range_start,$date_range_end])
+                    ->where('status',2)
+                    ->get();
+            }
+            
+        } else {
+            if ($transaction_id != '' && $customer_id != '') {
+                $transactions = Transaction::where('status',2)
+                    ->where('id',$transaction_id)
+                    ->where('customer_id',$customer_id)
+                    ->get();
+            } elseif($transaction_id != '' && $customer_id == '') {
+                $transactions = Transaction::where('status',2)
+                    ->where('id',$transaction_id)
+                    ->get();
+
+            } elseif($transaction_id == '' && $customer_id != '') {
+                $transactions = Transaction::where('status',2)
+                    ->where('customer_id',$customer_id)
+                    ->get();
+            } else {
+                $transactions = Transaction::where('status',2)
+                    ->get();
+            }            
+        }
+        $month = Account::getMonth();
+        $year = Account::getYear();
+        $transactions = Transaction::prepareTransaction($transactions);
+        // Job::dump($transactions);
+        return view('accounts.send')
+        ->with('month',$month)
+        ->with('year',$year)
+        ->with('transactions',$transactions)
+        ->with('layout',$this->layout); 
+    }
+
+    public function postSendList(Request $request) {
+        if ($request->ajax()) {
+            $request->session()->put('account_transaction_ids',$request->transaction_ids);
+            return response()->json([
+                'status'=> true,
+                'transaction_ids'=>$request->session()->get('account_transaction_ids')
+            ]);
+        }
+
+    } 
+
+    public function getPayMyBill(){
+        $this->layout = 'layouts.frontend_basic';
+        return view('accounts.pay_my_bill')
+        ->with('layout',$this->layout); 
+    }
+
+    public function getOneTimePayment(){
+        $this->layout = 'layouts.frontend_basic';
+        $transactions = [];
+        return view('accounts.one_time_payment')
+        ->with('transactions',$transactions)
+        ->with('layout',$this->layout); 
+    }
+
+    public function postOneTimePayment(Request $request) {
+        $this->layout = 'layouts.frontend_basic';
+        $transaction_id = $request->transaction_id;
+        $customer_id = $request->customer_id;
+        $transactions = Transaction::where('customer_id',$customer_id)
+            ->where('id',$transaction_id)
+            ->get();
+        $transaction_status = (count($transactions) > 0) ? true : false;
+        $request->session()->put('transaction_status',$transaction_status);
+        $request->session()->put('transactions',$transactions);
+        return Redirect::route('accounts_oneTimeFinish');
+        // return view('accounts.one_time_payment')
+        // ->with('transactions',$transactions)
+        // ->with('layout',$this->layout);
+    }
+
+    public function getOneTimeFinish(Request $request) {
+        $this->layout = 'layouts.frontend_basic';
+        $transaction_status = $request->session()->has('transaction_status') ? $request->session()->get('transaction_status') : false;
+        if ($transaction_status) {
+
+            $transactions = $request->session()->get('transactions');
+
+            return view('accounts.one_time_finish')
+            ->with('transactions',$transactions)
+            ->with('layout',$this->layout);             
+        } else {
+            Flash::error('Your session has expired. Please enter in the invoice # and the customer # located on your most current account billing statement. Thank you.');
+            return Redirect::route('accounts_oneTimePayment');
+        }
+    }
+
+    public function postOneTimeFinish(Request $r){
+        // validate form
+        $this->validate($r, [
+            'name'=>'required',
+            'card_number'=>'required',
+            'exp_month' => 'required',
+            'exp_year'=>'required',
+            'cvv'=>'required'
+        ]);
+        $trans = $r->session()->get('transactions');
+        $total = 0;
+        if (count($trans) > 0) {
+            foreach ($trans as $tran) {
+                $total = $tran->total;
+            }
+        }
+        $exp_date = date('my',strtotime($r->exp_year.'-01-'.$r->exp_month));
+        $company_id = $r->company_id;
+        $companies = Company::find($company_id);
+        $api_login = $companies->payment_api_login;
+        $api_pass = $companies->payment_gateway_id;
+
+
+        // Common setup for API credentials
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName($api_login);
+        $merchantAuthentication->setTransactionKey($api_pass);
+        $refId = 'ref' . time();
+
+        // Create the payment data for a credit card
+        $creditCard = new AnetAPI\CreditCardType();
+        $creditCard->setCardNumber($r->card_number);
+        $creditCard->setExpirationDate($exp_date);
+        $creditCard->setCardCode($r->cvv);
+        $paymentOne = new AnetAPI\PaymentType();
+        $paymentOne->setCreditCard($creditCard);
+
+        $order = new AnetAPI\OrderType();
+        $order->setDescription("Account Payment - ".$r->transaction_id);
+
+        //create a transaction
+        $transactionRequestType = new AnetAPI\TransactionRequestType();
+        $transactionRequestType->setTransactionType( "authCaptureTransaction"); 
+        $transactionRequestType->setAmount($total);
+        $transactionRequestType->setOrder($order);
+        $transactionRequestType->setPayment($paymentOne);
+
+
+        $request = new AnetAPI\CreateTransactionRequest();
+        $request->setMerchantAuthentication($merchantAuthentication);
+        $request->setRefId( $refId);
+        $request->setTransactionRequest( $transactionRequestType);
+        $controller = new AnetController\CreateTransactionController($request);
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+
+        if ($response != null) {
+            if($response->getMessages()->getResultCode() == "Ok") {
+                $tresponse = $response->getTransactionResponse();
+              
+                if ($tresponse != null && $tresponse->getMessages() != null) {
+                    $new_transaction_id = $tresponse->getTransId();
+                    $auth_code = $tresponse->getAuthCode();
+                    
+                    // make email
+
+                    // update transaction table with new transaction id
+
+                    // redirect to home page
+                    $r->session()->pull('transactions');
+                    $r->session()->pull('transaction_status');
+                    Flash::success('Successfully made account billing payment. An email has been sent to you as a copy of this transaction. Thank you for your business!');
+                    
+                    return Redirect::route('pages_index');
+                    // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
+                    // echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+                    // echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+                    // echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
+                    // echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
+                } else {
+                    
+                    if($tresponse->getErrors() != null) {
+                        Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());
+                        return Redirect::back();        
+                    }
+                }
+            } else {
+                // echo "Transaction Failed \n";
+                $tresponse = $response->getTransactionResponse();
+                if($tresponse != null && $tresponse->getErrors() != null) {
+                    Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());                   
+                } else {
+                    Flash::error('Error ('.$response->getMessages()->getMessage()[0]->getCode().'): '.$response->getMessages()->getMessage()[0]->getText());
+
+                }
+                return Redirect::back(); 
+            }      
+        } else {
+            Flash::error('No response returned from Authorize.net, server may be experiencing down time. Please try again later.');
+            return Redirect::route('accounts_oneTimePayment');
+        }
+        
+    }
+    public function getMemberPayment(){
+        $this->layout = 'layouts.frontend_basic';
+        return view('accounts.member_payment')
+        ->with('layout',$this->layout); 
+    }
+    public function postMemberPayment(Request $request){
+
+    }
+
+
 
 
 }
