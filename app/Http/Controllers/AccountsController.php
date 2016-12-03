@@ -14,12 +14,14 @@ use URL;
 use Session;
 use Laracasts\Flash\Flash;
 use View;
+use Mail;
 
 use App;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Account;
 use App\InventoryItem;
+use App\Card;
 use App\Job;
 use App\User;
 use App\Company;
@@ -358,6 +360,7 @@ class AccountsController extends Controller
         $customer_id = $request->customer_id;
         $transactions = Transaction::where('customer_id',$customer_id)
             ->where('id',$transaction_id)
+            ->where('status',2)
             ->get();
         $transaction_status = (count($transactions) > 0) ? true : false;
         $request->session()->put('transaction_status',$transaction_status);
@@ -391,13 +394,18 @@ class AccountsController extends Controller
             'card_number'=>'required',
             'exp_month' => 'required',
             'exp_year'=>'required',
-            'cvv'=>'required'
+            'cvv'=>'required',
+            'email' => 'email|max:255|required'
         ]);
         $trans = $r->session()->get('transactions');
+        $transaction_id = false;
+        $customer_id = false;
         $total = 0;
         if (count($trans) > 0) {
             foreach ($trans as $tran) {
                 $total = $tran->total;
+                $transaction_id = $tran->id;
+                $customer_id = $tran->customer_id;
             }
         }
         $exp_date = date('my',strtotime($r->exp_year.'-01-'.$r->exp_month));
@@ -447,17 +455,44 @@ class AccountsController extends Controller
                 if ($tresponse != null && $tresponse->getMessages() != null) {
                     $new_transaction_id = $tresponse->getTransId();
                     $auth_code = $tresponse->getAuthCode();
-                    
-                    // make email
+                    $save = Transaction::find($transaction_id);
+                    $save->transaction_id = $new_transaction_id;
+                    $save->status = 1;
+                    $save->account_paid = $total;
+                    $save->account_paid_on = date('Y-m-d H:i:S');
+                    $save->tendered = $total;
+                    if ($save->save()) {
+                        $customers = User::find($save->customer_id);
+                        $account_total = $customers->account_total;
+                        $new_account_total = $account_total - $total;
+                        $customers->account_total = $new_account_total;
+                        if ($customers->save()) {
+                            // make email
+                            $send_to = $r->email;
+                            $from = 'noreply@jayscleaners.com';
+                            // Email customer
+                            if (Mail::send('emails.account_receipt', [
+                                'transactions' => $save,
+                                'customers'=>$customers
+                            ], function($message) use ($send_to)
+                            {
+                                $message->to($send_to);
+                                $message->subject('Account Bill Payment Receipt');
+                            }));
 
-                    // update transaction table with new transaction id
 
-                    // redirect to home page
-                    $r->session()->pull('transactions');
-                    $r->session()->pull('transaction_status');
-                    Flash::success('Successfully made account billing payment. An email has been sent to you as a copy of this transaction. Thank you for your business!');
-                    
-                    return Redirect::route('pages_index');
+
+                        }
+
+                        // redirect to home page
+                        $r->session()->pull('transactions');
+                        $r->session()->pull('transaction_status');
+                        Flash::success('Successfully made account billing payment. An email has been sent to you as a copy of this transaction. Thank you for your business!');
+                        
+                        return Redirect::route('pages_index');
+
+                    }
+
                     // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
                     // echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
                     // echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
@@ -487,12 +522,213 @@ class AccountsController extends Controller
         }
         
     }
-    public function getMemberPayment(){
-        $this->layout = 'layouts.frontend_basic';
+    public function getMemberPayment(Request $request){
+        $request->session()->put('form_previous','accounts_memberPayment');
+        $transactions = Transaction::prepareTransaction(Transaction::where('status',2)
+            // ->where('customer_id',Auth::user()->id)
+            ->get());
+        $quantity = 0;
+        $subtotal = 0;
+        $tax = 0;
+        $aftertax = 0;
+        $credit = 0;
+        $discount = 0;
+        $total = 0;
+        $company_id = false;
+        if (count($transactions) > 0) {
+            foreach ($transactions as $transaction) {
+                $quantity += $transaction['quantity'];
+                $subtotal += $transaction['pretax'];
+                $tax += $transaction['tax'];
+                $aftertax += $transaction['aftertax'];
+                $credit += $transaction['credit'];
+                $discount += $transaction['discount'];
+                $total += $transaction['total'];
+                $company_id = $transaction['company_id'];
+            }
+        }
+
+        // look up card on file
+        $card_on_file = Card::where('user_id',Auth::user()->id)
+            ->where('company_id',$company_id)
+            ->get();
+        $card = [];
+        if (count($card_on_file)>0) {
+            foreach ($card_on_file as $key => $value) {
+                $card_id = $value->id;
+                $profile_id = $value->profile_id;
+                $payment_id = $value->payment_id;
+                $card_on_file = Card::getCardInfo($company_id, $profile_id, $payment_id);
+                $card[$card_id] = ($card_on_file['status']) ? $card_on_file['last_four'] : 'No Card';
+            }
+        }
+
+        $email = Auth::user()->email;
+        $full_name = ucFirst(Auth::user()->first_name).' '.Auth::user()->last_name;
+
+        $this->layout = 'layouts.account_basic';
         return view('accounts.member_payment')
+        ->with('transactions',$transactions)
+        ->with('quantity',$quantity)
+        ->with('subtotal',$subtotal)
+        ->with('tax',$tax)
+        ->with('aftertax',$aftertax)
+        ->with('credit',$credit)
+        ->with('discount',$discount)
+        ->with('total',$total)
+        ->with('card',$card)
+        ->with('email',$email)
+        ->with('full_name',$full_name)
         ->with('layout',$this->layout); 
     }
-    public function postMemberPayment(Request $request){
+    public function postMemberPayment(Request $r){
+        $this->validate($r, [
+            'name'=>'required',
+            'card_number'=>'required',
+            'exp_month' => 'required',
+            'exp_year'=>'required',
+            'cvv'=>'required',
+            'email' => 'email|max:255|required'
+        ]);
+        $trans = Transaction::where('customer_id',Auth::user()->id)
+            ->where('status',2)
+            ->get();
+        $transaction_ids = [];
+        $customer_id = false;
+        $total = 0;
+        $company_id = false;
+        if (count($trans) > 0) {
+            foreach ($trans as $tran) {
+                $total += $tran->total;
+                array_push($transaction_ids,$tran->id);
+                $customer_id = $tran->customer_id;
+                $company_id = $tran->company_id;
+            }
+        }
+        $exp_date = date('my',strtotime($r->exp_year.'-01-'.$r->exp_month));
+        $companies = Company::find($company_id);
+        $api_login = $companies->payment_api_login;
+        $api_pass = $companies->payment_gateway_id;
+
+
+        // Common setup for API credentials
+        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        $merchantAuthentication->setName($api_login);
+        $merchantAuthentication->setTransactionKey($api_pass);
+        $refId = 'ref' . time();
+
+        // Create the payment data for a credit card
+        $creditCard = new AnetAPI\CreditCardType();
+        $creditCard->setCardNumber($r->card_number);
+        $creditCard->setExpirationDate($exp_date);
+        $creditCard->setCardCode($r->cvv);
+        $paymentOne = new AnetAPI\PaymentType();
+        $paymentOne->setCreditCard($creditCard);
+
+        $order = new AnetAPI\OrderType();
+        $order->setDescription("Account Payment - ".$r->transaction_id);
+
+        //create a transaction
+        $transactionRequestType = new AnetAPI\TransactionRequestType();
+        $transactionRequestType->setTransactionType( "authCaptureTransaction"); 
+        $transactionRequestType->setAmount($total);
+        $transactionRequestType->setOrder($order);
+        $transactionRequestType->setPayment($paymentOne);
+
+
+        $request = new AnetAPI\CreateTransactionRequest();
+        $request->setMerchantAuthentication($merchantAuthentication);
+        $request->setRefId( $refId);
+        $request->setTransactionRequest( $transactionRequestType);
+        $controller = new AnetController\CreateTransactionController($request);
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+
+        if ($response != null) {
+            if($response->getMessages()->getResultCode() == "Ok") {
+                $tresponse = $response->getTransactionResponse();
+              
+                if ($tresponse != null && $tresponse->getMessages() != null) {
+                    $new_transaction_id = $tresponse->getTransId();
+                    $auth_code = $tresponse->getAuthCode();
+
+                    $check_save = false;
+                    $total = 0;
+                    if (count($transaction_ids) > 0) {
+                        foreach ($transaction_ids as $tran) {
+                            $transaction_id = $tran->id;
+                            $update_tran = Transaction::find($transaction_id);
+                            $update_tran->transaction_id = $new_transaction_id;
+                            $update_tran->status = 1;
+                            $update_tran->account_paid = $tran->total;
+                            $update_tran->account_paid_on = date('Y-m-d H:i:S');
+                            $update_tran->tendered = $tran->total;
+                            if ($update_tran->save()) {
+                                $total += $tran->total;
+                                $check_save = true;
+                            }
+                        }
+                    }
+
+                    if ($check_save) {
+                        $customers = User::find($customer_id);
+                        $account_total = $customers->account_total;
+                        $new_account_total = $account_total - $total;
+                        $customers->account_total = $new_account_total;
+                        if ($customers->save()) {
+                            // make email
+                            $send_to = $r->email;
+                            $from = 'noreply@jayscleaners.com';
+                            $transactions = Transaction::whereIn($transaction_ids)->get();
+                            // Email customer
+                            if (Mail::send('emails.account_receipts', [
+                                'transactions' => $transactions,
+                                'customers'=>$customers
+                            ], function($message) use ($send_to)
+                            {
+                                $message->to($send_to);
+                                $message->subject('Account Bill Payment Receipt');
+                            }));
+
+                        }
+
+                        // redirect to home page
+                        Flash::success('Successfully made account billing payment. An email has been sent to you as a copy of this transaction. Thank you for your business!');
+                        
+                        return Redirect::back();
+
+                    }
+
+                    // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
+                    // echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+                    // echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+                    // echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
+                    // echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
+                } else {
+                    
+                    if($tresponse->getErrors() != null) {
+                        Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());
+                        return Redirect::back();        
+                    }
+                }
+            } else {
+                // echo "Transaction Failed \n";
+                $tresponse = $response->getTransactionResponse();
+                if($tresponse != null && $tresponse->getErrors() != null) {
+                    Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());                   
+                } else {
+                    Flash::error('Error ('.$response->getMessages()->getMessage()[0]->getCode().'): '.$response->getMessages()->getMessage()[0]->getText());
+
+                }
+                return Redirect::back(); 
+            }      
+        } else {
+            Flash::error('No response returned from Authorize.net, server may be experiencing down time. Please try again later.');
+            return Redirect::route('accounts_oneTimePayment');
+        }
+    }
+
+    public function postMemberFile(Request $request){
 
     }
 

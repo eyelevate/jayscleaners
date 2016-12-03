@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Invoice;
 use App\User;
 class Transaction extends Model
 {
@@ -28,6 +29,17 @@ class Transaction extends Model
     				$due = date('n/15/Y',strtotime($billing_period_start.' +1 month'));
     				$data[$key]['due'] = $due;
     			}
+                if (isset($data[$key]['id'])) {
+                    $invoices = Invoice::where('transaction_id',$value['id'])->get();
+                    $quantity = 0;
+                    if (count($invoices) > 0) {
+                        foreach ($invoices as $invoice) {
+                            $quantity += $invoice->quantity;
+                        }
+                    }
+                    $data[$key]['quantity'] = $quantity;
+                }
+
     		}
     	}
 

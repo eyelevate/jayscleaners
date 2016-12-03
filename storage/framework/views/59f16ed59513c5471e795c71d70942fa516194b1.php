@@ -40,7 +40,7 @@
 			            <label class="control-label col-md-4 padding-top-none">Total Due</label>
 
 			            <div class="col-md-6">
-			            	<p><strong><?php echo e(money_format('$%i',$transaction->total)); ?></strong></p>
+			            	<p style="text-align:left;"><strong><?php echo e(money_format('$%i',$transaction->total)); ?></strong></p>
 			               
 			                <?php if($errors->has('total')): ?>
 			                    <span class="help-block">
@@ -49,6 +49,19 @@
 			                <?php endif; ?>
 			            </div>
 			        </div>
+			        <div class="form-group<?php echo e($errors->has('email') ? ' has-error' : ''); ?>">
+			            <label class="control-label col-md-4 padding-top-none">Email <span class="text text-danger">*</span></label>
+
+			            <div class="col-md-6">
+			                <?php echo Form::text('email', old('email'), ['class'=>'form-control','placeholder'=>'xxxx@xxxxx.com']); ?>
+
+			                <?php if($errors->has('email')): ?>
+			                    <span class="help-block">
+			                        <strong><?php echo e($errors->first('email')); ?></strong>
+			                    </span>
+			                <?php endif; ?>
+			            </div>
+			        </div>	
 			        <div class="form-group<?php echo e($errors->has('name') ? ' has-error' : ''); ?>">
 			            <label class="control-label col-md-4 padding-top-none">Name On Card <span class="text text-danger">*</span></label>
 

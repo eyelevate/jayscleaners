@@ -65,7 +65,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::group(['middleware' => ['frontend']], function(){
 		// Accounts
 		Route::get('/member-payment',['as'=>'accounts_memberPayment','uses'=>'AccountsController@getMemberPayment']);
-    	Route::post('/member=payment',['as'=>'accounts_memberPayment_post','uses'=>'AccountsController@postMemberPayment']);
+    	Route::post('/member-payment',['as'=>'accounts_memberPayment_post','uses'=>'AccountsController@postMemberPayment']);
+		Route::post('/member-file',['as'=>'accounts_memberFile_post','uses'=>'AccountsController@postMemberFile']);
 		//Address
 		Route::get('/address', ['as'=>'address_index','uses'=>'AddressesController@getIndex']);
 		Route::get('/address/add', ['as'=>'address_add','uses'=>'AddressesController@getAdd']);
