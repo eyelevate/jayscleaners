@@ -190,7 +190,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       This is your email receipt for the payment of invoice #{{ $transactions->id }}. Your card was billed for the amount of {{ money_format('$%i',$transactions->total) }}. Thank you for your business. 
+                                       This is your email receipt for the payment of your Jays Cleaners Account Billing Statement. Your card was billed for the amount of {{ money_format('$%i',$amount_paid) }}. Your invoices are detailed below. Thank you for your business. 
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -362,6 +362,10 @@
 											  </tbody>
 											</table>
 	                                    </td>
+	                                 </tr>
+	                                 <!-- Spacing -->
+	                                 <tr>
+	                                    <td width="100%" height="50"></td>
 	                                 </tr>
                                 	@endforeach
 	                            @endif

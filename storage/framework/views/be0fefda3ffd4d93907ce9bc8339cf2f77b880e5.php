@@ -226,12 +226,27 @@
 
 	<?php echo Form::open(['action' => 'AccountsController@postMemberFile', 'class'=>'form-horizontal','role'=>"form"]); ?>
 
+
 	<div id="card_selection-cof" class="card_selection panel panel-default hide">
 		<div class="panel-heading">
 			<h3 class="panel-title">Card On File Form</h3>
 		</div>
 		<div class="panel-body">
-		<?php if(count($card) > 0): ?>
+
+			<?php if(count($card) > 0): ?>
+			<div class="form-group<?php echo e($errors->has('email') ? ' has-error' : ''); ?>">
+	            <label class="control-label col-md-4 padding-top-none">Email <span class="text text-danger">*</span></label>
+
+	            <div class="col-md-6">
+	                <?php echo Form::text('email', old('email') ? old('email') : $email, ['class'=>'form-control','placeholder'=>'xxxx@xxxxx.com']); ?>
+
+	                <?php if($errors->has('email')): ?>
+	                    <span class="help-block">
+	                        <strong><?php echo e($errors->first('email')); ?></strong>
+	                    </span>
+	                <?php endif; ?>
+	            </div>
+	        </div>	
 	        <div class="form-group<?php echo e($errors->has('card_id') ? ' has-error' : ''); ?>">
 	            <label class="control-label col-md-4 padding-top-none">Card On File <span class="text text-danger">*</span></label>
 
@@ -245,10 +260,10 @@
 	                <?php endif; ?>
 	            </div>
 	        </div>				
-		<?php else: ?>
-		<p>You do not have any card on file.</p>
-		<a class="btn btn-info" href="<?php echo e(route('cards_index')); ?>">Add A Card</a>
-		<?php endif; ?>
+			<?php else: ?>
+			<p>You do not have any card on file.</p>
+			<a class="btn btn-info" href="<?php echo e(route('cards_index')); ?>">Add A Card</a>
+			<?php endif; ?>
 		</div>
 		<div class="panel-footer clearfix">  
 			<a class="btn btn-default" href="<?php echo e(route('cards_index')); ?>">Manage Card(s) On File</a>

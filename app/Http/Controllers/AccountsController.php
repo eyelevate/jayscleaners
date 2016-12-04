@@ -534,7 +534,8 @@ class AccountsController extends Controller
         $credit = 0;
         $discount = 0;
         $total = 0;
-        $company_id = false;
+        $company_id = Auth::user()->company_id;
+        $card = [];
         if (count($transactions) > 0) {
             foreach ($transactions as $transaction) {
                 $quantity += $transaction['quantity'];
@@ -546,13 +547,14 @@ class AccountsController extends Controller
                 $total += $transaction['total'];
                 $company_id = $transaction['company_id'];
             }
+
         }
 
         // look up card on file
-        $card_on_file = Card::where('user_id',Auth::user()->id)
+        $card_on_file = Card::where('user_id',3152)
             ->where('company_id',$company_id)
             ->get();
-        $card = [];
+    
         if (count($card_on_file)>0) {
             foreach ($card_on_file as $key => $value) {
                 $card_id = $value->id;
@@ -590,146 +592,281 @@ class AccountsController extends Controller
             'cvv'=>'required',
             'email' => 'email|max:255|required'
         ]);
-        $trans = Transaction::where('customer_id',Auth::user()->id)
-            ->where('status',2)
+        $trans = Transaction::where('status',2)
+            // ->where('customer_id',Auth::user()->id)
             ->get();
         $transaction_ids = [];
-        $customer_id = false;
+        $customer_id = Auth::user()->id;
         $total = 0;
         $company_id = false;
         if (count($trans) > 0) {
             foreach ($trans as $tran) {
                 $total += $tran->total;
                 array_push($transaction_ids,$tran->id);
-                $customer_id = $tran->customer_id;
                 $company_id = $tran->company_id;
             }
         }
-        $exp_date = date('my',strtotime($r->exp_year.'-01-'.$r->exp_month));
-        $companies = Company::find($company_id);
-        $api_login = $companies->payment_api_login;
-        $api_pass = $companies->payment_gateway_id;
+
+        if (count($transaction_ids) > 0) {
+            $exp_date = date('my',strtotime($r->exp_year.'-01-'.$r->exp_month));
+            $companies = Company::find($company_id);
+            $api_login = $companies->payment_api_login;
+            $api_pass = $companies->payment_gateway_id;
 
 
-        // Common setup for API credentials
-        $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-        $merchantAuthentication->setName($api_login);
-        $merchantAuthentication->setTransactionKey($api_pass);
-        $refId = 'ref' . time();
+            // Common setup for API credentials
+            $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+            $merchantAuthentication->setName($api_login);
+            $merchantAuthentication->setTransactionKey($api_pass);
+            $refId = 'ref' . time();
 
-        // Create the payment data for a credit card
-        $creditCard = new AnetAPI\CreditCardType();
-        $creditCard->setCardNumber($r->card_number);
-        $creditCard->setExpirationDate($exp_date);
-        $creditCard->setCardCode($r->cvv);
-        $paymentOne = new AnetAPI\PaymentType();
-        $paymentOne->setCreditCard($creditCard);
+            // Create the payment data for a credit card
+            $creditCard = new AnetAPI\CreditCardType();
+            $creditCard->setCardNumber($r->card_number);
+            $creditCard->setExpirationDate($exp_date);
+            $creditCard->setCardCode($r->cvv);
+            $paymentOne = new AnetAPI\PaymentType();
+            $paymentOne->setCreditCard($creditCard);
 
-        $order = new AnetAPI\OrderType();
-        $order->setDescription("Account Payment - ".$r->transaction_id);
+            $order = new AnetAPI\OrderType();
+            $order->setDescription("Account Payment - ".$r->transaction_id);
 
-        //create a transaction
-        $transactionRequestType = new AnetAPI\TransactionRequestType();
-        $transactionRequestType->setTransactionType( "authCaptureTransaction"); 
-        $transactionRequestType->setAmount($total);
-        $transactionRequestType->setOrder($order);
-        $transactionRequestType->setPayment($paymentOne);
-
-
-        $request = new AnetAPI\CreateTransactionRequest();
-        $request->setMerchantAuthentication($merchantAuthentication);
-        $request->setRefId( $refId);
-        $request->setTransactionRequest( $transactionRequestType);
-        $controller = new AnetController\CreateTransactionController($request);
-        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+            //create a transaction
+            $transactionRequestType = new AnetAPI\TransactionRequestType();
+            $transactionRequestType->setTransactionType( "authCaptureTransaction"); 
+            $transactionRequestType->setAmount($total);
+            $transactionRequestType->setOrder($order);
+            $transactionRequestType->setPayment($paymentOne);
 
 
-        if ($response != null) {
-            if($response->getMessages()->getResultCode() == "Ok") {
-                $tresponse = $response->getTransactionResponse();
-              
-                if ($tresponse != null && $tresponse->getMessages() != null) {
-                    $new_transaction_id = $tresponse->getTransId();
-                    $auth_code = $tresponse->getAuthCode();
+            $request = new AnetAPI\CreateTransactionRequest();
+            $request->setMerchantAuthentication($merchantAuthentication);
+            $request->setRefId( $refId);
+            $request->setTransactionRequest( $transactionRequestType);
+            $controller = new AnetController\CreateTransactionController($request);
+            $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
 
-                    $check_save = false;
-                    $total = 0;
-                    if (count($transaction_ids) > 0) {
-                        foreach ($transaction_ids as $tran) {
-                            $transaction_id = $tran->id;
-                            $update_tran = Transaction::find($transaction_id);
-                            $update_tran->transaction_id = $new_transaction_id;
-                            $update_tran->status = 1;
-                            $update_tran->account_paid = $tran->total;
-                            $update_tran->account_paid_on = date('Y-m-d H:i:S');
-                            $update_tran->tendered = $tran->total;
-                            if ($update_tran->save()) {
-                                $total += $tran->total;
-                                $check_save = true;
+
+            if ($response != null) {
+                if($response->getMessages()->getResultCode() == "Ok") {
+                    $tresponse = $response->getTransactionResponse();
+                  
+                    if ($tresponse != null && $tresponse->getMessages() != null) {
+                        $new_transaction_id = $tresponse->getTransId();
+                        $auth_code = $tresponse->getAuthCode();
+
+                        $check_save = false;
+                        $total = 0;
+                        if (count($transaction_ids) > 0) {
+                            foreach ($transaction_ids as $transaction_id) {
+
+                                $update_tran = Transaction::find($transaction_id);
+                                $update_tran->transaction_id = $new_transaction_id;
+                                $update_tran->status = 1;
+                                $update_tran->account_paid = $update_tran->total;
+                                $update_tran->account_paid_on = date('Y-m-d H:i:S');
+                                $update_tran->tendered = $update_tran->total;
+                                if ($update_tran->save()) {
+                                    $total += $update_tran->total;
+                                    $check_save = true;
+                                }
                             }
                         }
-                    }
 
-                    if ($check_save) {
-                        $customers = User::find($customer_id);
-                        $account_total = $customers->account_total;
-                        $new_account_total = $account_total - $total;
-                        $customers->account_total = $new_account_total;
-                        if ($customers->save()) {
-                            // make email
-                            $send_to = $r->email;
-                            $from = 'noreply@jayscleaners.com';
-                            $transactions = Transaction::whereIn($transaction_ids)->get();
-                            // Email customer
-                            if (Mail::send('emails.account_receipts', [
-                                'transactions' => $transactions,
-                                'customers'=>$customers
-                            ], function($message) use ($send_to)
-                            {
-                                $message->to($send_to);
-                                $message->subject('Account Bill Payment Receipt');
-                            }));
+                        if ($check_save) {
+                            $customers = User::find($customer_id);
+                            $account_total = $customers->account_total;
+                            $new_account_total = $account_total - $total;
+                            $customers->account_total = $new_account_total;
+                            if ($customers->save()) {
+                                // make email
+                                $send_to = $r->email;
+                                $from = 'noreply@jayscleaners.com';
+                                $transactions = Transaction::whereIn('id',$transaction_ids)->get();
+                                // Email customer
+                                if (Mail::send('emails.account_receipts', [
+                                    'transactions' => $transactions,
+                                    'amount_paid' => $total,
+                                    'customers'=>$customers
+                                ], function($message) use ($send_to)
+                                {
+                                    $message->to($send_to);
+                                    $message->subject('Account Bill Payment Receipt');
+                                }));
+
+                            }
+
+                            // redirect to home page
+                            Flash::success('Successfully made account billing payment. An email has been sent to you as a copy of this transaction. Thank you for your business!');
+                            
+                            return Redirect::back();
 
                         }
 
-                        // redirect to home page
-                        Flash::success('Successfully made account billing payment. An email has been sent to you as a copy of this transaction. Thank you for your business!');
+                        // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
+                        // echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+                        // echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+                        // echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
+                        // echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
+                    } else {
                         
-                        return Redirect::back();
-
+                        if($tresponse->getErrors() != null) {
+                            Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());
+                            return Redirect::back();        
+                        }
                     }
-
-                    // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
-                    // echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
-                    // echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
-                    // echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
-                    // echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
                 } else {
-                    
-                    if($tresponse->getErrors() != null) {
-                        Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());
-                        return Redirect::back();        
+                    // echo "Transaction Failed \n";
+                    $tresponse = $response->getTransactionResponse();
+                    if($tresponse != null && $tresponse->getErrors() != null) {
+                        Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());                   
+                    } else {
+                        Flash::error('Error ('.$response->getMessages()->getMessage()[0]->getCode().'): '.$response->getMessages()->getMessage()[0]->getText());
+
                     }
-                }
+                    return Redirect::back(); 
+                }      
             } else {
-                // echo "Transaction Failed \n";
-                $tresponse = $response->getTransactionResponse();
-                if($tresponse != null && $tresponse->getErrors() != null) {
-                    Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());                   
-                } else {
-                    Flash::error('Error ('.$response->getMessages()->getMessage()[0]->getCode().'): '.$response->getMessages()->getMessage()[0]->getText());
-
-                }
-                return Redirect::back(); 
-            }      
+                Flash::error('No response returned from Authorize.net, server may be experiencing down time. Please try again later.');
+                return Redirect::route('accounts_oneTimePayment');
+            }
         } else {
-            Flash::error('No response returned from Authorize.net, server may be experiencing down time. Please try again later.');
-            return Redirect::route('accounts_oneTimePayment');
+            Flash::error('You are not authorized to view this form. There are no invoices with this associated customer id. Please try again.');
+            return Redirect::back();
         }
     }
 
-    public function postMemberFile(Request $request){
+    public function postMemberFile(Request $r){
+        if ($r->card_id != '') {
+            $card_id = $r->card_id;
+            $cards = Card::find($card_id);
+            $profile_id = $cards->profile_id;
+            $payment_id = $cards->payment_id;
+            $customer_id = Auth::user()->id;
+            $company_id = $cards->company_id;
+            $companies = Company::find($company_id);
+            $api_login = $companies->payment_api_login;
+            $api_gateway_id = $companies->payment_gateway_id;
 
+            $transactions = Transaction::where('status',2)
+                // ->where('customer_id',$customer_id)
+                ->get();
+            $total = 0;
+            if (count($transactions)>0) {
+                foreach ($transactions as $transaction) {
+                    $total += $transaction->total;
+                }
+            } else {
+                Flash::error('No Account invoices on file. ');
+                return Redirect::back();
+            }
+            // Common setup for API credentials
+            $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+            $merchantAuthentication->setName($api_login);
+            $merchantAuthentication->setTransactionKey($api_gateway_id);
+            $refId = 'ref' . time();
+
+            $profileToCharge = new AnetAPI\CustomerProfilePaymentType();
+            $profileToCharge->setCustomerProfileId($profile_id);
+            $paymentProfile = new AnetAPI\PaymentProfileType();
+            $paymentProfile->setPaymentProfileId($payment_id);
+            $profileToCharge->setPaymentProfile($paymentProfile);
+
+            $transactionRequestType = new AnetAPI\TransactionRequestType();
+            $transactionRequestType->setTransactionType( "authCaptureTransaction"); 
+            $transactionRequestType->setAmount($total);
+            $transactionRequestType->setProfile($profileToCharge);
+
+            $request = new AnetAPI\CreateTransactionRequest();
+            $request->setMerchantAuthentication($merchantAuthentication);
+            $request->setRefId( $refId);
+            $request->setTransactionRequest( $transactionRequestType);
+            $controller = new AnetController\CreateTransactionController($request);
+            $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+            if ($response != null) {
+                if($response->getMessages()->getResultCode() == 'Ok'){
+                    $tresponse = $response->getTransactionResponse();
+
+                    if ($tresponse != null && $tresponse->getMessages() != null) {
+                        Flash::success('Successfully paid account billing! An email of your receipt has been sent to you. Thank you for your business.');
+                        // update transactions
+                        $saved = false;
+                        if (count($transactions) > 0) {
+                            
+                            foreach ($transactions as $tran) {
+                                $transaction_id = $tran->id;
+                                $trans = Transaction::find($transaction_id);
+                                $trans->status = 1;
+                                $trans->account_paid = $tran->total;
+                                $trans->account_paid_on = date('Y-m-d H:i:s');
+                                $trans->transaction_id = $tresponse->getTransId();
+                                $trans->tendered = $tran->total;
+                                if ($trans->save()) {
+                                    $saved = true;
+                                }
+                            }
+
+                        }
+                        // update users
+                        if ($saved) {
+                            $customers = User::find($customer_id);
+                            $old_account_total = $customers->account_total;
+                            $new_account_total = $old_account_total - $total;
+                            $customers->account_total = $new_account_total;
+                            if ($customers->save()) {
+                                // make email
+                                $send_to = $r->email;
+                                $from = 'noreply@jayscleaners.com';
+                                // Email customer
+                                if (Mail::send('emails.account_receipts', [
+                                    'transactions' => $transactions,
+                                    'amount_paid' => $total,
+                                    'customers'=>$customers
+                                ], function($message) use ($send_to)
+                                {
+                                    $message->to($send_to);
+                                    $message->subject('Account Bill Payment Receipt');
+                                }));
+                                Flash::success('Successfully accpeted payment and updated account totals. Thank you for your business.');       
+                                return Redirect::back();
+                            }
+                        } else {
+                            Flash::error('Accepted payment, however, could not find the correct transaction. Please contact administrator for refund. We apologize for the inconvenience.');
+
+                        }
+
+                        
+
+                        // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
+                        // echo  "Charge Customer Profile APPROVED  :" . "\n";
+                        // echo " Charge Customer Profile AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+                        // echo " Charge Customer Profile TRANS ID  : " . $tresponse->getTransId() . "\n";
+                        // echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
+                        // echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
+                    } else {
+                        if($tresponse->getErrors() != null) {
+                            Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());          
+                        }
+                    }
+                } else {
+                    $tresponse = $response->getTransactionResponse();
+                    if($tresponse != null && $tresponse->getErrors() != null) {
+                        Flash::error('Error ('.$tresponse->getErrors()[0]->getErrorCode().'): '.$tresponse->getErrors()[0]->getErrorText());                     
+                    } else {
+                        Flash::error('Error ('.$response->getMessages()->getMessage()[0]->getCode().'): '.$response->getMessages()->getMessage()[0]->getText());
+                    }
+                }
+            } else {
+                Flash::error('No response from authorize.net servers. Server may be down. Please try again at another time. Thank you');
+                
+            }
+
+        } else {
+            Flash::error('You must first select a card on file before processing.');
+
+        }
+        return Redirect::back();
     }
 
 

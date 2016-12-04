@@ -217,12 +217,26 @@
 	</div>
 	{!! Form::close() !!}
 	{!! Form::open(['action' => 'AccountsController@postMemberFile', 'class'=>'form-horizontal','role'=>"form"]) !!}
+
 	<div id="card_selection-cof" class="card_selection panel panel-default hide">
 		<div class="panel-heading">
 			<h3 class="panel-title">Card On File Form</h3>
 		</div>
 		<div class="panel-body">
-		@if (count($card) > 0)
+
+			@if (count($card) > 0)
+			<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+	            <label class="control-label col-md-4 padding-top-none">Email <span class="text text-danger">*</span></label>
+
+	            <div class="col-md-6">
+	                {!! Form::text('email', old('email') ? old('email') : $email, ['class'=>'form-control','placeholder'=>'xxxx@xxxxx.com']) !!}
+	                @if ($errors->has('email'))
+	                    <span class="help-block">
+	                        <strong>{{ $errors->first('email') }}</strong>
+	                    </span>
+	                @endif
+	            </div>
+	        </div>	
 	        <div class="form-group{{ $errors->has('card_id') ? ' has-error' : '' }}">
 	            <label class="control-label col-md-4 padding-top-none">Card On File <span class="text text-danger">*</span></label>
 
@@ -235,10 +249,10 @@
 	                @endif
 	            </div>
 	        </div>				
-		@else
-		<p>You do not have any card on file.</p>
-		<a class="btn btn-info" href="{{ route('cards_index') }}">Add A Card</a>
-		@endif
+			@else
+			<p>You do not have any card on file.</p>
+			<a class="btn btn-info" href="{{ route('cards_index') }}">Add A Card</a>
+			@endif
 		</div>
 		<div class="panel-footer clearfix">  
 			<a class="btn btn-default" href="{{ route('cards_index') }}">Manage Card(s) On File</a>
