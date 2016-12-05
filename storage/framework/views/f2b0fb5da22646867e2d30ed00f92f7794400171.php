@@ -2,7 +2,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <title>Account Bill</title>
+      <title>Account Status Update</title>
       <style type="text/css">
          /* Client-specific Styles */
          #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */
@@ -25,7 +25,7 @@
          /*################################################*/
          /*IPAD STYLES*/
          /*################################################*/
-         @media only screen and (max-width: 640px) {
+         @media  only screen and (max-width: 640px) {
          a[href^="tel"], a[href^="sms"] {
          text-decoration: none;
          color: #ffffff; /* or whatever your want */
@@ -52,7 +52,7 @@
          /*##############################################*/
          /*IPHONE STYLES*/
          /*##############################################*/
-         @media only screen and (max-width: 480px) {
+         @media  only screen and (max-width: 480px) {
          a[href^="tel"], a[href^="sms"] {
          text-decoration: none;
          color: #ffffff; /* or whatever your want */
@@ -119,7 +119,7 @@
                                  <tr>
                                     <td valign="middle" width="270" style="padding: 10px 0 10px 20px;" class="logo">
                                        <div class="imgpop">
-                                          <a href="{{ route('pages_index') }}" style="color:#ffffff; font-weight:bold; text-decoration:none;">Jays Cleaners</a>
+                                          <a href="<?php echo e(route('pages_index')); ?>" style="color:#ffffff; font-weight:bold; text-decoration:none;">Jays Cleaners</a>
                                        </div>
                                     </td>
                                  </tr>
@@ -131,9 +131,9 @@
                               <tbody>
                                  <tr>
                                     <td width="270" valign="middle" style="font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;line-height: 24px; padding: 10px 0;" align="right" class="menu" st-content="menu">
-                                       <a href="{{ route('pages_index') }}" style="text-decoration: none; color: #ffffff;">HOME</a>
+                                       <a href="<?php echo e(route('pages_index')); ?>" style="text-decoration: none; color: #ffffff;">HOME</a>
                                        &nbsp;|&nbsp;
-                                       <a href="{{ route('delivery_pickup') }}" style="text-decoration: none; color: #ffffff;">Delivery</a>
+                                       <a href="<?php echo e(route('delivery_pickup')); ?>" style="text-decoration: none; color: #ffffff;">Delivery</a>
                                     </td>
                                     <td width="20"></td>
                                  </tr>
@@ -166,7 +166,7 @@
                               <tbody>
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 20px; color: #333333; text-align:left;line-height: 22px;" st-title="rightimage-title">
-                                       Account Bill {{ date('F Y',strtotime($transactions->created_at)) }}
+                                       Account Statuses Updated
                                     </td>
                                  </tr>
                                  <!-- end of title -->
@@ -178,7 +178,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       Dear {{ ucFirst($customers->first_name) }} {{ ucFirst($customers->last_name) }},
+                                       Dear Owner,
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -190,8 +190,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       We at Jays Cleaners wish to thank you for your continued business with us. Attached is your account billing statement for the month of {{ date('F Y',strtotime($transactions->created_at)) }}. 
-                                       If you do not wish to mail a check, we also provide an online form for our users <a href="{{ route('accounts_payMyBill') }}">Click Here</a> if you wish to pay online. 
+                                       This is an email to confirm that account statuses have been updated. Please take a moment to verify that all status have been updated by checking online here. If everything looks correct, please finish the task by select who will receive an email billing and who will have theirs printed and sent to them.
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -246,7 +245,8 @@
                                  </tr>
                                  <!-- End of spacing -->
                                  <!-- content -->
-  
+                                 <?php if(count($transactions)): ?>
+                                 	<?php foreach($transactions as $transaction): ?>
 	                                 <tr>
 	                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #95a5a6; text-align:center;line-height: 30px;" st-content="fulltext-paragraph">
 											<table align="center" valign="middle" border="0" cellpadding="0" cellspacing="0" class="tablet-button" st-button="edit">
@@ -256,7 +256,8 @@
 											        	Transaction #:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ $transactions->id }}
+											        	<?php echo e($transaction->id); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -268,7 +269,8 @@
 											        	Customer ID:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ $transactions->customer_id }}
+											        	<?php echo e($transaction->customer_id); ?>
+
 	 										        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -280,7 +282,8 @@
 											        	Subtotal:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->pretax) }}
+											        	<?php echo e(money_format('$%i',$transaction->pretax)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -292,7 +295,8 @@
 											        	Tax:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->tax) }}
+											        	<?php echo e(money_format('$%i',$transaction->tax)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -304,7 +308,8 @@
 											        	Aftertax:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->aftertax) }}
+											        	<?php echo e(money_format('$%i',$transaction->aftertax)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -316,7 +321,8 @@
 											        	Credit:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->credit) }}
+											        	<?php echo e(money_format('$%i',$transaction->credit)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -328,7 +334,8 @@
 											        	Discount:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->discount) }}
+											        	<?php echo e(money_format('$%i',$transaction->discount)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -340,7 +347,8 @@
 											        	Total Due:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->total) }}
+											        	<?php echo e(money_format('$%i',$transaction->total)); ?>
+
 											        </td>
 											     </tr>
 											  </tbody>
@@ -350,7 +358,8 @@
 	                                 <tr>
 	                                    <td width="100%" height="30">--------------</td>
 	                                 </tr>
-
+	                                 <?php endforeach; ?>
+	                            <?php endif; ?>
                                  <!-- End of content -->
                                  <!-- Spacing -->
                                  <tr>
@@ -384,7 +393,7 @@
                      <!-- Spacing -->
                      <tr>
                         <td align="center" valign="middle" style="font-family: Helvetica, arial, sans-serif; font-size: 10px;color: #999999" st-content="preheader">
-                           We thank you for your business! @ {{ date('Y') }} 
+                           We thank you for your business! @ <?php echo e(date('Y')); ?> 
                         </td>
                      </tr>
                      <!-- Spacing -->

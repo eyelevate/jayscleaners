@@ -25,7 +25,7 @@
          /*################################################*/
          /*IPAD STYLES*/
          /*################################################*/
-         @media only screen and (max-width: 640px) {
+         @media  only screen and (max-width: 640px) {
          a[href^="tel"], a[href^="sms"] {
          text-decoration: none;
          color: #ffffff; /* or whatever your want */
@@ -52,7 +52,7 @@
          /*##############################################*/
          /*IPHONE STYLES*/
          /*##############################################*/
-         @media only screen and (max-width: 480px) {
+         @media  only screen and (max-width: 480px) {
          a[href^="tel"], a[href^="sms"] {
          text-decoration: none;
          color: #ffffff; /* or whatever your want */
@@ -119,7 +119,7 @@
                                  <tr>
                                     <td valign="middle" width="270" style="padding: 10px 0 10px 20px;" class="logo">
                                        <div class="imgpop">
-                                          <a href="{{ route('pages_index') }}" style="color:#ffffff; font-weight:bold; text-decoration:none;">Jays Cleaners</a>
+                                          <a href="<?php echo e(route('pages_index')); ?>" style="color:#ffffff; font-weight:bold; text-decoration:none;">Jays Cleaners</a>
                                        </div>
                                     </td>
                                  </tr>
@@ -131,9 +131,9 @@
                               <tbody>
                                  <tr>
                                     <td width="270" valign="middle" style="font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;line-height: 24px; padding: 10px 0;" align="right" class="menu" st-content="menu">
-                                       <a href="{{ route('pages_index') }}" style="text-decoration: none; color: #ffffff;">HOME</a>
+                                       <a href="<?php echo e(route('pages_index')); ?>" style="text-decoration: none; color: #ffffff;">HOME</a>
                                        &nbsp;|&nbsp;
-                                       <a href="{{ route('delivery_pickup') }}" style="text-decoration: none; color: #ffffff;">Delivery</a>
+                                       <a href="<?php echo e(route('delivery_pickup')); ?>" style="text-decoration: none; color: #ffffff;">Delivery</a>
                                     </td>
                                     <td width="20"></td>
                                  </tr>
@@ -166,7 +166,8 @@
                               <tbody>
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 20px; color: #333333; text-align:left;line-height: 22px;" st-title="rightimage-title">
-                                       Account Bill {{ date('F Y',strtotime($transactions->created_at)) }}
+                                       Account Bill <?php echo e(date('F Y',strtotime($transactions->created_at))); ?>
+
                                     </td>
                                  </tr>
                                  <!-- end of title -->
@@ -178,7 +179,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       Dear {{ ucFirst($customers->first_name) }} {{ ucFirst($customers->last_name) }},
+                                       Dear <?php echo e(ucFirst($customers->first_name)); ?> <?php echo e(ucFirst($customers->last_name)); ?>,
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -190,8 +191,8 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       We at Jays Cleaners wish to thank you for your continued business with us. Attached is your account billing statement for the month of {{ date('F Y',strtotime($transactions->created_at)) }}. 
-                                       If you do not wish to mail a check, we also provide an online form for our users <a href="{{ route('accounts_payMyBill') }}">Click Here</a> if you wish to pay online. 
+                                       We at Jays Cleaners wish to thank you for your continued business with us. Attached is your account billing statement for the month of <?php echo e(date('F Y',strtotime($transactions->created_at))); ?>. 
+                                       If you do not wish to mail a check, we also provide an online form for our users <a href="<?php echo e(route('accounts_payMyBill')); ?>">Click Here</a> if you wish to pay online. 
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -256,7 +257,8 @@
 											        	Transaction #:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ $transactions->id }}
+											        	<?php echo e($transactions->id); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -268,7 +270,8 @@
 											        	Customer ID:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ $transactions->customer_id }}
+											        	<?php echo e($transactions->customer_id); ?>
+
 	 										        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -280,7 +283,8 @@
 											        	Subtotal:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->pretax) }}
+											        	<?php echo e(money_format('$%i',$transactions->pretax)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -292,7 +296,8 @@
 											        	Tax:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->tax) }}
+											        	<?php echo e(money_format('$%i',$transactions->tax)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -304,7 +309,8 @@
 											        	Aftertax:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->aftertax) }}
+											        	<?php echo e(money_format('$%i',$transactions->aftertax)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -316,7 +322,8 @@
 											        	Credit:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->credit) }}
+											        	<?php echo e(money_format('$%i',$transactions->credit)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -328,7 +335,8 @@
 											        	Discount:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->discount) }}
+											        	<?php echo e(money_format('$%i',$transactions->discount)); ?>
+
 											        </td>
 											     </tr>
 				                                 <!-- spacing -->
@@ -340,7 +348,8 @@
 											        	Total Due:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transactions->total) }}
+											        	<?php echo e(money_format('$%i',$transactions->total)); ?>
+
 											        </td>
 											     </tr>
 											  </tbody>
@@ -384,7 +393,7 @@
                      <!-- Spacing -->
                      <tr>
                         <td align="center" valign="middle" style="font-family: Helvetica, arial, sans-serif; font-size: 10px;color: #999999" st-content="preheader">
-                           We thank you for your business! @ {{ date('Y') }} 
+                           We thank you for your business! @ <?php echo e(date('Y')); ?> 
                         </td>
                      </tr>
                      <!-- Spacing -->

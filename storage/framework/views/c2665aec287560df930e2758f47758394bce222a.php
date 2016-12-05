@@ -138,6 +138,19 @@
 			<div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
 		</div>
 	</a><!-- ./col -->
+	<a href="<?php echo e(route('accounts_index')); ?>" class="col-lg-3 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-red">
+			<div class="inner">
+				<h3>Accounts</h3>
+				<p>Manage Accounts</p>
+			</div>
+			<div class="icon">
+				<i class="ion-ios-compose"></i>
+			</div>
+			<div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
+		</div>
+	</a><!-- ./col -->
 </div><!-- /.row -->
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

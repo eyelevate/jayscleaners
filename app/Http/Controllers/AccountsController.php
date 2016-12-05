@@ -195,14 +195,17 @@ class AccountsController extends Controller
     }
 
     public function postEmailSend(Request $request) {
-        $pdf = App::make('dompdf.wrapper');
+        
         $transaction_ids = $request->session()->has('account_transaction_ids') ? $request->session()->get('account_transaction_ids') : [];
         $reports = [];
         if (count($transaction_ids) >0){
+            $email_count = 0;
             foreach ($transaction_ids as $transaction_id) {
+                $pdf = App::make('dompdf.wrapper');
                 $html = Account::makeSingleBillHtml($transaction_id, true);   
                 $pdf->loadHTML($html);
-                if ($pdf->save('pdf/account-'.$transaction_id.'.pdf')){
+                $pdf_title = 'pdf/account-'.$transaction_id.'-'.strtotime(date('Y-m-d H:i:s')).'.pdf';
+                if ($pdf->save($pdf_title)){
                     // prepare email
                     $transactions = Transaction::find($transaction_id);
                     $customer_id = $transactions->customer_id;
@@ -214,24 +217,35 @@ class AccountsController extends Controller
                     $bill_period = date('n/01/Y',strtotime($transactions->created_at)).' - '.date('n/t/Y',strtotime($transactions->created_at));
                     $due_date = date('n/15/Y',strtotime($transactions->created_at.' +1 month'));
                     $title = 'Jays Cleaners Account Billing Statement - '.$bill_month;
+
                     // send email
                     $from = 'noreply@jayscleaners.com';
                     // Email customer
                     if (Mail::send('emails.account_bill', [
                         'transactions' => $transactions,
                         'customers' => $customers
-                    ], function($message) use ($send_to, $title)
+                    ], function($message) use ($send_to, $title, $pdf_title)
                     {
                         $message->to($send_to);
                         $message->subject($title);
+                        $message->attach($pdf_title);
                     }));
 
+                    if (unlink($pdf_title)) {
+                        $email_count += 1;
+                    }
+                    
 
-                    // unlink account statement
                 } 
             }
+
+            Flash::success('Successfully send account billing emails to '.$email_count.' customers. Check no-reply email failues onlinen to view which emails were not successfully sent. Thank you.');
             
+            
+        } else {
+            Flash::error('No account bills to send. Error try another month or look at ids.');
         }
+        return Redirect::back();
 
     }
 
@@ -548,7 +562,7 @@ class AccountsController extends Controller
         }
 
         // look up card on file
-        $card_on_file = Card::where('user_id',3152)
+        $card_on_file = Card::where('user_id',Auth::user()->id)
             ->where('company_id',$company_id)
             ->get();
     
