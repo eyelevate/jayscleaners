@@ -75,7 +75,7 @@
 			<?php echo Form::close(); ?>
 
 		</div>
-		<?php echo Form::open(['action' => 'AccountsController@postConvertSend','role'=>"form"]); ?> 
+		 
 		<div class="table-responsive">
 			<table class="table table-striped table-condensed table-hover">
 				<thead>
@@ -84,6 +84,7 @@
 						<th>Customer</th>
 						<th>Last</th>
 						<th>First</th>
+						<th>Email</th>
 						<th>Period</th>
 						<th>Due Date</th>
 						<th>Bill Total</th>
@@ -100,6 +101,7 @@
 						<td><?php echo e($transaction->customer_id); ?></td>
 						<td><?php echo e($transaction->last_name); ?></td>
 						<td><?php echo e($transaction->first_name); ?></td>
+						<td><?php echo e($transaction->email); ?></td>
 						<td><?php echo e($transaction->billing_period); ?></td>
 						<td><?php echo e($transaction->due); ?></td>
 						<td><?php echo e(money_format('$%i',$transaction->total)); ?></td>
@@ -116,14 +118,13 @@
 
 		<div class="panel-footer">
 			<a class="btn btn-lg btn-info" href="<?php echo e(route('accounts_preview')); ?>" target="_blank">Preview & Print</a>
-			<button type="submit" class="btn btn-lg btn-primary">Send Selected Bills</button>
+			<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#send">Email Selected Bills</button>
 		</div>
-		<?php echo Form::close(); ?>
 
 	</div>  
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('modals'); ?>
-
+<?php echo View::make('partials.accounts.email_send')->render(); ?>	
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

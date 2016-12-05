@@ -128,8 +128,9 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/accounts/preview',['as'=>'accounts_preview','uses'=>'AccountsController@getPreview']);
 		Route::get('/accounts/send',['as'=>'accounts_send','uses'=>'AccountsController@getSend']);
 		Route::post('/accounts/send',['as'=>'accounts_send_post','uses'=>'AccountsController@postSend']);
-		Route::post('/accounts/convert-send',['as'=>'accounts_convert_send_post','uses'=>'AccountsController@postConvertSend']);
+		Route::post('/accounts/email-send',['as'=>'accounts_email_send_post','uses'=>'AccountsController@postEmailSend']);
 		Route::post('/accounts/send-list',['as'=>'accounts_send_list','uses'=>'AccountsController@postSendList']);
+
 		//Admins
 		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);

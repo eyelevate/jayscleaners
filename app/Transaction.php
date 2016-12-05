@@ -19,6 +19,7 @@ class Transaction extends Model
     				$data[$key]['last_name'] = ucFirst($customers->last_name);
     				$data[$key]['first_name'] = ucFirst($customers->first_name);
     				$data[$key]['total_due'] = $customers->account_total;
+                    $data[$key]['email'] = $customers->email;
 
     			}
     			if (isset($data[$key]['created_at'])) {

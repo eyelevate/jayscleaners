@@ -410,9 +410,10 @@ class Account extends Model
 			    		$html .= '</table>';
 			    	}	
 			    	$html .= '</div>';
+			    	$html .= '<div style="page-break-after: always;"></div>'; // Page Break
 		    	}
 
-		    	$html .= '<div style="page-break-after: always;"></div>'; // Page Break
+		    	
     		}
     	}
 
