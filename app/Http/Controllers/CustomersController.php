@@ -125,10 +125,7 @@ class CustomersController extends Controller
         if($request->delivery == '1') {
 	        $users->username = $request->username;
 	        $users->mobile = $request->mobile;
-	        $users->street = $request->street;
-	        $users->suite = $request->suite;
-	        $users->city = $request->city;
-	        $users->zipcode = $request->zipcode;
+
 	        $users->concierge_name = $request->concierge_contact;
 	        $users->concierge_number = $request->concierge_number;
 	        $users->special_instructions = $request->special_instructions;
@@ -137,7 +134,10 @@ class CustomersController extends Controller
         $users->account = $request->account;
 
         if($request->account == '1') {
-			
+            $users->street = $request->street;
+            $users->suite = $request->suite;
+            $users->city = $request->city;
+            $users->zipcode = $request->zipcode;			
         }
         $users->role_id = 5; //Customer status
           
@@ -203,10 +203,6 @@ class CustomersController extends Controller
         if($request->delivery == '1') {
 	        $users->username = $request->username;
 	        $users->mobile = $request->mobile;
-	        $users->street = $request->street;
-	        $users->suite = $request->suite;
-	        $users->city = $request->city;
-	        $users->zipcode = $request->zipcode;
 	        $users->concierge_name = $request->concierge_contact;
 	        $users->concierge_number = $request->concierge_number;
 	        $users->special_instructions = $request->special_instructions;
@@ -215,7 +211,10 @@ class CustomersController extends Controller
         $users->account = $request->account;
 
         if($request->account == '1') {
-			
+            $users->street = $request->street;
+            $users->suite = $request->suite;
+            $users->city = $request->city;
+            $users->zipcode = $request->zipcode;			
         }
         $users->role_id = 3; //Customer status
 

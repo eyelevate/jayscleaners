@@ -169,7 +169,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
+<!--                 <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
                     <label class="col-md-4 control-label">Street</label>
 
                     <div class="col-md-6">
@@ -217,7 +217,7 @@
                             </span>
                         @endif
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group{{ $errors->has('concierge_contact') ? ' has-error' : '' }}">
                     <label class="col-md-4 control-label">Concierge Contact</label>
 
@@ -266,6 +266,55 @@
                         @if ($errors->has('account'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('account') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Billing Street</label>
+
+                    <div class="col-md-6">
+                        {!! Form::text('street', old('street'), ['class'=>'form-control', 'placeholder'=>'']) !!}
+                        @if ($errors->has('street'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('street') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('suite') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Billing Suite</label>
+
+                    <div class="col-md-6">
+                        {!! Form::text('suite', old('suite'), ['class'=>'form-control', 'placeholder'=>'']) !!}
+                        @if ($errors->has('suite'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('suite') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Billing City</label>
+
+                    <div class="col-md-6">
+                        {!! Form::text('city', old('city'), ['class'=>'form-control', 'placeholder'=>'']) !!}
+                        @if ($errors->has('city'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('city') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group{{ $errors->has('zipcode') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label">Billing Zipcode</label>
+
+                    <div class="col-md-6">
+                        {!! Form::text('zipcode', old('zipcode'), ['class'=>'form-control', 'placeholder'=>'']) !!}
+                        @if ($errors->has('zipcode'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('zipcode') }}</strong>
                             </span>
                         @endif
                     </div>

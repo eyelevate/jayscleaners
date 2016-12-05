@@ -175,7 +175,12 @@ class Account extends Model
 			    	$html .= $companies->street.' <br/>'.$companies->city.', WA '.$companies->zipcode.'<br/>'.Job::formatPhoneString($companies->phone).'</p>';
 			    	$html .= '<br/>';
 			    	$html .= '<p style="margin-top:35px;"><span style="font-size:20px;"><b>'.ucFirst($users->first_name).' '.ucFirst($users->last_name).'</b></span><br/>';
-			    	$html .= $users->street.' <br/> '.$users->city.', WA '.$users->zipcode.'<br/>'.Job::formatPhoneString($users->phone).'</p>';
+			    	if ($users->suite) {
+			    		$html .= $users->street.' '.$users->suite.' <br/> '.$users->city.', WA '.$users->zipcode.'<br/>'.Job::formatPhoneString($users->phone).'</p>';
+			    	} else {
+			    		$html .= $users->street.' <br/> '.$users->city.', WA '.$users->zipcode.'<br/>'.Job::formatPhoneString($users->phone).'</p>';
+			    	}
+			    	
 			    	$html .= '</div>';
 			    	$html .= '<div style="width:50%; float:left;">';
 			    	$html .= '<table class="table table-condensed table-hover" style="font-size:20px; width:100%;">';
@@ -442,7 +447,12 @@ class Account extends Model
 		    	$html .= $companies->street.' <br/>'.$companies->city.', WA '.$companies->zipcode.'<br/>'.Job::formatPhoneString($companies->phone).'</p>';
 		    	$html .= '<br/>';
 		    	$html .= '<p style="margin-top:35px;"><span style="font-size:20px;"><b>'.ucFirst($users->first_name).' '.ucFirst($users->last_name).'</b></span><br/>';
-		    	$html .= $users->street.' <br/> '.$users->city.', WA '.$users->zipcode.'<br/>'.Job::formatPhoneString($users->phone).'</p>';
+	    		if ($users->suite) {
+		    		$html .= $users->street.' '.$users->suite.' <br/> '.$users->city.', WA '.$users->zipcode.'<br/>'.Job::formatPhoneString($users->phone).'</p>';
+		    	} else {
+		    		$html .= $users->street.' <br/> '.$users->city.', WA '.$users->zipcode.'<br/>'.Job::formatPhoneString($users->phone).'</p>';
+		    	}
+		    	
 		    	$html .= '</div>';
 		    	$html .= '<div style="width:50%; float:left;">';
 		    	$html .= '<table class="table table-condensed table-hover" style="font-size:20px; width:100%;">';

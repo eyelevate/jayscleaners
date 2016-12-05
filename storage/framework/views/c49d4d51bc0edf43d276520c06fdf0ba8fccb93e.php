@@ -208,7 +208,7 @@
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="form-group<?php echo e($errors->has('street') ? ' has-error' : ''); ?>">
+<!--                 <div class="form-group<?php echo e($errors->has('street') ? ' has-error' : ''); ?>">
                     <label class="col-md-4 control-label">Street</label>
 
                     <div class="col-md-6">
@@ -260,7 +260,7 @@
                             </span>
                         <?php endif; ?>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group<?php echo e($errors->has('concierge_contact') ? ' has-error' : ''); ?>">
                     <label class="col-md-4 control-label">Concierge Contact</label>
 
@@ -308,11 +308,64 @@
                     <label class="col-md-4 control-label">Account Customer? <span class="text text-danger">*</span></label>
 
                     <div class="col-md-6">
-                        <?php echo Form::select('account',$account , '1', ['class'=>'form-control']); ?>
+                        <?php echo Form::select('account',$account , old('account') ? old('account') : $customers['account'], ['class'=>'form-control']); ?>
 
                         <?php if($errors->has('account')): ?>
                             <span class="help-block">
                                 <strong><?php echo e($errors->first('account')); ?></strong>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="form-group<?php echo e($errors->has('street') ? ' has-error' : ''); ?>">
+                    <label class="col-md-4 control-label">Billing Street</label>
+
+                    <div class="col-md-6">
+                        <?php echo Form::text('street', (old('street')) ? old('street') : $customers->street, ['class'=>'form-control', 'placeholder'=>'']); ?>
+
+                        <?php if($errors->has('street')): ?>
+                            <span class="help-block">
+                                <strong><?php echo e($errors->first('street')); ?></strong>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="form-group<?php echo e($errors->has('suite') ? ' has-error' : ''); ?>">
+                    <label class="col-md-4 control-label">Billing Suite</label>
+
+                    <div class="col-md-6">
+                        <?php echo Form::text('suite', (old('suite')) ? old('suite') : $customers->suite, ['class'=>'form-control', 'placeholder'=>'']); ?>
+
+                        <?php if($errors->has('suite')): ?>
+                            <span class="help-block">
+                                <strong><?php echo e($errors->first('suite')); ?></strong>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="form-group<?php echo e($errors->has('city') ? ' has-error' : ''); ?>">
+                    <label class="col-md-4 control-label">Billing City</label>
+
+                    <div class="col-md-6">
+                        <?php echo Form::text('city', (old('city')) ? old('city') : $customers->city, ['class'=>'form-control', 'placeholder'=>'']); ?>
+
+                        <?php if($errors->has('city')): ?>
+                            <span class="help-block">
+                                <strong><?php echo e($errors->first('city')); ?></strong>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="form-group<?php echo e($errors->has('zipcode') ? ' has-error' : ''); ?>">
+                    <label class="col-md-4 control-label">Billing Zipcode</label>
+
+                    <div class="col-md-6">
+                        <?php echo Form::text('zipcode', (old('zipcode')) ? old('zipcode') : $customers->zipcode, ['class'=>'form-control', 'placeholder'=>'']); ?>
+
+                        <?php if($errors->has('zipcode')): ?>
+                            <span class="help-block">
+                                <strong><?php echo e($errors->first('zipcode')); ?></strong>
                             </span>
                         <?php endif; ?>
                     </div>
