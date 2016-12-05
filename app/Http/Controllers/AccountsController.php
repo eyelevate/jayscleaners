@@ -525,7 +525,7 @@ class AccountsController extends Controller
     public function getMemberPayment(Request $request){
         $request->session()->put('form_previous','accounts_memberPayment');
         $transactions = Transaction::prepareTransaction(Transaction::where('status',2)
-            // ->where('customer_id',Auth::user()->id)
+            ->where('customer_id',Auth::user()->id)
             ->get());
         $quantity = 0;
         $subtotal = 0;
@@ -556,7 +556,7 @@ class AccountsController extends Controller
             ->get();
     
         if (count($card_on_file)>0) {
-            foreach ($card_on_file as $key => $value) {
+            foreach ($card_on_file as $key => $value){
                 $card_id = $value->id;
                 $profile_id = $value->profile_id;
                 $payment_id = $value->payment_id;
@@ -593,7 +593,7 @@ class AccountsController extends Controller
             'email' => 'email|max:255|required'
         ]);
         $trans = Transaction::where('status',2)
-            // ->where('customer_id',Auth::user()->id)
+            ->where('customer_id',Auth::user()->id)
             ->get();
         $transaction_ids = [];
         $customer_id = Auth::user()->id;
@@ -749,7 +749,7 @@ class AccountsController extends Controller
             $api_gateway_id = $companies->payment_gateway_id;
 
             $transactions = Transaction::where('status',2)
-                // ->where('customer_id',$customer_id)
+                ->where('customer_id',$customer_id)
                 ->get();
             $total = 0;
             if (count($transactions)>0) {

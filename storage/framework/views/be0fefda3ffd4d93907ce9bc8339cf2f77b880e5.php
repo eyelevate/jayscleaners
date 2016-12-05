@@ -97,6 +97,7 @@
 			</section>
 		</div>
 	</section>
+	<?php if(count($transactions) > 0): ?>
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">Credit Card Payment Method</h3>
@@ -272,6 +273,18 @@
 	</div>
 	<?php echo Form::close(); ?>
 
+	<?php else: ?>
+	<div class="panel panel-default">
+		<div class="panel-heading"><h3>No Invoices To Pay</h3></div>
+		<div class="panel-body">
+
+		</div>
+
+		<div class="panel-footer">
+			<a href="<?php echo e(route('pages_index')); ?>" class="btn btn-default">Home</a>
+		</div>
+	</div>
+	<?php endif; ?>
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('modals'); ?>

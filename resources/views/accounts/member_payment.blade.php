@@ -99,6 +99,7 @@
 			</section>
 		</div>
 	</section>
+	@if (count($transactions) > 0)
 	<div class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">Credit Card Payment Method</h3>
@@ -260,6 +261,18 @@
 		</div>
 	</div>
 	{!! Form::close() !!}
+	@else
+	<div class="panel panel-default">
+		<div class="panel-heading"><h3>No Invoices To Pay</h3></div>
+		<div class="panel-body">
+
+		</div>
+
+		<div class="panel-footer">
+			<a href="{{ route('pages_index') }}" class="btn btn-default">Home</a>
+		</div>
+	</div>
+	@endif
 
 @stop
 @section('modals')
