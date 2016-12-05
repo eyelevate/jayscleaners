@@ -19,7 +19,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php if(isset($history)): ?>
+						<?php if($history): ?>
 							<?php foreach($history['transactions'] as $transaction): ?>
 							<tr class="<?php echo e($transaction['background_color']); ?>">
 								<td><?php echo e($transaction['id']); ?></td>

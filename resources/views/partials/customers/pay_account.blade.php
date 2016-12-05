@@ -19,7 +19,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@if (isset($history))
+						@if ($history)
 							@foreach($history['transactions'] as $transaction)
 							<tr class="{{ $transaction['background_color'] }}">
 								<td>{{ $transaction['id'] }}</td>
