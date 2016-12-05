@@ -86,8 +86,7 @@
 		<script src="/packages/html5up-twenty/assets/js/skel.min.js"></script>
 		<script src="/packages/html5up-twenty/assets/js/util.js"></script>
 		<!--[if lte IE 8]><script src="/packages/html5up-twenty/assets/js/ie/respond.min.js"></script><![endif]-->
-		<script src="/packages/html5up-twenty/assets/js/main.js"></script>
-		<script type="text/javascript" src="/js/pages/index.js"></script>
+
 		<?php echo $__env->yieldContent('scripts'); ?>
 
 	</body>

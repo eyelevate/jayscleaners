@@ -12,7 +12,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="submit" class="btn btn-success">Send</button>
+				<button type="submit" class="btn btn-success" data-toggle="modal" data-target="#loading">Send</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

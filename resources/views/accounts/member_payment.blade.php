@@ -276,5 +276,5 @@
 
 @stop
 @section('modals')
-
+{!! View::make('partials.frontend.modals')->render() !!}
 @stop

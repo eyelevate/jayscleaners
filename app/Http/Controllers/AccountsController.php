@@ -352,13 +352,13 @@ class AccountsController extends Controller
     } 
 
     public function getPayMyBill(){
-        $this->layout = 'layouts.frontend_basic';
+        $this->layout = 'layouts.bill';
         return view('accounts.pay_my_bill')
         ->with('layout',$this->layout); 
     }
 
     public function getOneTimePayment(){
-        $this->layout = 'layouts.frontend_basic';
+        $this->layout = 'layouts.bill';
         $transactions = [];
         return view('accounts.one_time_payment')
         ->with('transactions',$transactions)
@@ -366,7 +366,7 @@ class AccountsController extends Controller
     }
 
     public function postOneTimePayment(Request $request) {
-        $this->layout = 'layouts.frontend_basic';
+        $this->layout = 'layouts.bill';
         $transaction_id = $request->transaction_id;
         $customer_id = $request->customer_id;
         $transactions = Transaction::where('customer_id',$customer_id)
@@ -383,7 +383,7 @@ class AccountsController extends Controller
     }
 
     public function getOneTimeFinish(Request $request) {
-        $this->layout = 'layouts.frontend_basic';
+        $this->layout = 'layouts.bill';
         $transaction_status = $request->session()->has('transaction_status') ? $request->session()->get('transaction_status') : false;
         if ($transaction_status) {
 
@@ -595,6 +595,7 @@ class AccountsController extends Controller
         ->with('layout',$this->layout); 
     }
     public function postMemberPayment(Request $r){
+        Flash::error('There was errors with your form. Please review your form below and try again. Thank you.');
         $this->validate($r, [
             'name'=>'required',
             'card_number'=>'required',

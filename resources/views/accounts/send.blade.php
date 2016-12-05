@@ -121,4 +121,5 @@
 @stop
 @section('modals')
 {!! View::make('partials.accounts.email_send')->render() !!}	
+{!! View::make('partials.frontend.modals') !!}
 @stop
