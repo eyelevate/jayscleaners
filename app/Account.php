@@ -375,7 +375,7 @@ class Account extends Model
 						    			// $html .= '<td>'.$inv_item->id.'</td>';
 						    			$html .= '<td>'.$inv_item['invoice_id'].'</td>';
 						    			$html .= '<td>'.$inv_item['name'].'</td>';
-						    			$html .= '<td>'.$inv_item['color'].'</td>';
+						    			$html .= '<td>'.$inv_item['colors'].'</td>';
 						    			$html .= '<td>'.$inv_item['quantity'].'</td>';
 						    			$html .= '<td>'.money_format('$%i',$inv_item['subtotal']).'</td>';
 						    			$html .= '</tr>';			    					
