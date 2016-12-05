@@ -44,6 +44,13 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/zipcodes/request',['as'=>'zipcodes_request_post','uses'=>'ZipcodesController@postRequest']);
     Route::get('/home', 'HomeController@index');
 
+    // Accounts
+    Route::get('/pay-my-bill',['as'=>'accounts_payMyBill','uses'=>'AccountsController@getPayMyBill']);
+    Route::get('/one-time-payment',['as'=>'accounts_oneTimePayment','uses'=>'AccountsController@getOneTimePayment']);
+    Route::get('/one-time-finish',['as'=>'accounts_oneTimeFinish','uses'=>'AccountsController@getOneTimeFinish']);
+    Route::post('/one-time-payment',['as'=>'accounts_oneTimePayment_post','uses'=>'AccountsController@postOneTimePayment']);
+    Route::post('/one-time-finish',['as'=>'accounts_oneTimeProcess_post','uses'=>'AccountsController@postOneTimeFinish']);
+
     // Admins
     Route::get('/admins/login',  ['as'=>'admins_login', 'uses' => 'AdminsController@getLogin']);
 	Route::post('/admins/login',  ['as'=>'admins_login_post', 'uses' => 'AdminsController@postLogin']);
@@ -56,6 +63,10 @@ Route::group(['middleware' => ['web']], function () {
 
 	//Frontend Authentication
 	Route::group(['middleware' => ['frontend']], function(){
+		// Accounts
+		Route::get('/member-payment',['as'=>'accounts_memberPayment','uses'=>'AccountsController@getMemberPayment']);
+    	Route::post('/member-payment',['as'=>'accounts_memberPayment_post','uses'=>'AccountsController@postMemberPayment']);
+		Route::post('/member-file',['as'=>'accounts_memberFile_post','uses'=>'AccountsController@postMemberFile']);
 		//Address
 		Route::get('/address', ['as'=>'address_index','uses'=>'AddressesController@getIndex']);
 		Route::get('/address/add', ['as'=>'address_add','uses'=>'AddressesController@getAdd']);
@@ -115,7 +126,10 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/accounts/revert',['as'=>'accounts_revert_post','uses'=>'AccountsController@postRevert']);
 		Route::post('/accounts/bill',['as'=>'accounts_bill_post','uses'=>'AccountsController@postBill']);
 		Route::get('/accounts/preview',['as'=>'accounts_preview','uses'=>'AccountsController@getPreview']);
-		// Route::get('/accounts/preview-setup/{id}',['as'=>'accounts_preview_setup','uses'=>'AccountsController@getPreviewSetup']);
+		Route::get('/accounts/send',['as'=>'accounts_send','uses'=>'AccountsController@getSend']);
+		Route::post('/accounts/send',['as'=>'accounts_send_post','uses'=>'AccountsController@postSend']);
+		Route::post('/accounts/convert-send',['as'=>'accounts_convert_send_post','uses'=>'AccountsController@postConvertSend']);
+		Route::post('/accounts/send-list',['as'=>'accounts_send_list','uses'=>'AccountsController@postSendList']);
 		//Admins
 		Route::get('/admins',  ['as'=>'admins_index', 'uses' => 'AdminsController@getIndex']);
 		Route::get('/admins/add',['as'=>'admins_add','uses'=>'AdminsController@getAdd']);

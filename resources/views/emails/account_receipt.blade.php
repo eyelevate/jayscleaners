@@ -2,7 +2,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <title>Account Status Update</title>
+      <title>Account Bill Payment Receipt</title>
       <style type="text/css">
          /* Client-specific Styles */
          #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */
@@ -166,7 +166,7 @@
                               <tbody>
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 20px; color: #333333; text-align:left;line-height: 22px;" st-title="rightimage-title">
-                                       Account Statuses Updated
+                                       Account Payment Receipt
                                     </td>
                                  </tr>
                                  <!-- end of title -->
@@ -178,7 +178,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       Dear Owner,
+                                       Dear {{ ucFirst($customers->first_name) }} {{ ucFirst($customers->last_name) }},
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -190,7 +190,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       This is an email to confirm that account statuses have been updated. Please take a moment to verify that all status have been updated by checking online here. If everything looks correct, please finish the task by select who will receive an email billing and who will have theirs printed and sent to them.
+                                       This is your email receipt for the payment of invoice #{{ $transactions->id }}. Your card was billed for the amount of {{ money_format('$%i',$transactions->total) }}. Thank you for your business. 
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -235,7 +235,7 @@
                                  <!-- Title -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 18px; color: #333333; text-align:center;line-height: 20px;" st-title="fulltext-title">
-                                       Review Account Status Change Information
+                                       Account Transaction Summary
                                     </td>
                                  </tr>
                                  <!-- End of Title -->
@@ -245,112 +245,124 @@
                                  </tr>
                                  <!-- End of spacing -->
                                  <!-- content -->
-                                 @if (count($transactions))
-                                 	@foreach($transactions as $transaction)
-	                                 <tr>
-	                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #95a5a6; text-align:center;line-height: 30px;" st-content="fulltext-paragraph">
-											<table align="center" valign="middle" border="0" cellpadding="0" cellspacing="0" class="tablet-button" st-button="edit">
-											  <tbody>
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Transaction #:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ $transaction->id }}
-											        </td>
-											     </tr>
-				                                 <!-- spacing -->
-				                                 <tr>
-				                                    <td height="10"></td>
-				                                 </tr>										     
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Customer ID:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ $transaction->customer_id }}
-	 										        </td>
-											     </tr>
-				                                 <!-- spacing -->
-				                                 <tr>
-				                                    <td height="10"></td>
-				                                 </tr>										     
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Subtotal:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transaction->pretax) }}
-											        </td>
-											     </tr>
-				                                 <!-- spacing -->
-				                                 <tr>
-				                                    <td height="10"></td>
-				                                 </tr>										     
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Tax:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transaction->tax) }}
-											        </td>
-											     </tr>
-				                                 <!-- spacing -->
-				                                 <tr>
-				                                    <td height="10"></td>
-				                                 </tr>										     
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Aftertax:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transaction->aftertax) }}
-											        </td>
-											     </tr>
-				                                 <!-- spacing -->
-				                                 <tr>
-				                                    <td height="10"></td>
-				                                 </tr>										     
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Credit:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transaction->credit) }}
-											        </td>
-											     </tr>
-				                                 <!-- spacing -->
-				                                 <tr>
-				                                    <td height="10"></td>
-				                                 </tr>										     
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Discount:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transaction->discount) }}
-											        </td>
-											     </tr>
-				                                 <!-- spacing -->
-				                                 <tr>
-				                                    <td height="10"></td>
-				                                 </tr>										     
-											     <tr>
-											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Total Due:&nbsp;
-											        </td>
-											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
-											        	{{ money_format('$%i',$transaction->total) }}
-											        </td>
-											     </tr>
-											  </tbody>
-											</table>
-	                                    </td>
-	                                 </tr>
-	                                 <tr>
-	                                    <td width="100%" height="30">--------------</td>
-	                                 </tr>
-	                                 @endforeach
+                                 @if (count($transactions) > 0)
+                                 <tr>
+                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 14px; color: #5e5e5e; text-align:center;line-height: 30px;" st-content="fulltext-paragraph">
+										<table align="center" valign="middle" border="0" cellpadding="0" cellspacing="0" class="tablet-button" st-button="edit">
+										  <tbody>
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Invoice #:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ $transactions->id }}
+										        </td>
+										     </tr>
+			                                 <!-- spacing -->
+			                                 <tr>
+			                                    <td height="10"></td>
+			                                 </tr>										     
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Customer Name:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ ucFirst($customers->first_name) }} {{ ucFirst($customers->last_name) }}
+ 										        </td>
+										     </tr>
+			                                 <!-- spacing -->
+			                                 <tr>
+			                                    <td height="10"></td>
+			                                 </tr>										     
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Subtotal:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ money_format('$%i',$transactions->pretax) }}
+										        </td>
+										     </tr>
+			                                 <!-- spacing -->
+			                                 <tr>
+			                                    <td height="10"></td>
+			                                 </tr>										     
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Tax:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ money_format('$%i',$transactions->tax) }}
+										        </td>
+										     </tr>
+			                                 <!-- spacing -->
+			                                 <tr>
+			                                    <td height="10"></td>
+			                                 </tr>										     
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Aftertax:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ money_format('$%i',$transactions->aftertax) }}
+										        </td>
+										     </tr>
+			                                 <!-- spacing -->
+			                                 <tr>
+			                                    <td height="10"></td>
+			                                 </tr>										     
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Credit:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ money_format('$%i',$transactions->credit) }}
+										        </td>
+										     </tr>
+			                                 <!-- spacing -->
+			                                 <tr>
+			                                    <td height="10"></td>
+			                                 </tr>										     
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Discount:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ money_format('$%i',$transactions->discount) }}
+										        </td>
+										     </tr>
+			                                 <!-- spacing -->
+			                                 <tr>
+			                                    <td height="10"></td>
+			                                 </tr>										     
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Total Due:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ money_format('$%i',$transactions->total) }}
+										        </td>
+										     </tr>
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Total Paid:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ money_format('$%i',$transactions->tendered) }}
+										        </td>
+										     </tr>	
+										     <tr>
+										        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
+										        	Transaction #:&nbsp;
+										        </td>
+										        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
+										        	{{ $transactions->transaction_id }}
+										        </td>
+										     </tr>											     											     
+										  </tbody>
+										</table>
+                                    </td>
+                                 </tr>
+
 	                            @endif
                                  <!-- End of content -->
                                  <!-- Spacing -->

@@ -293,10 +293,16 @@ class Company extends Model
 
                     $data[$key]['store_hours'] = $view_hours;
                     $now = strtotime(date('Y-m-d H:i:s'));
-                    $open_string = date('n/d/Y ').$store_hours[date('w')]['open_hour'].':'.$store_hours[date('w')]['open_minutes'].' '.$store_hours[date('w')]['open_ampm'];
-                    $open_time = strtotime(date('Y-m-d H:i:s',strtotime($open_string)));
-                    $closed_string = date('n/d/Y ').$store_hours[date('w')]['closed_hour'].':'.$store_hours[date('w')]['closed_minutes'].' '.$store_hours[date('w')]['closed_ampm'];
-                    $closed_time = strtotime(date('Y-m-d H:i:s',strtotime($closed_string)));
+                    if ($store_hours[date('w')]['status'] > 1) {
+                        $open_string = date('n/d/Y ').$store_hours[date('w')]['open_hour'].':'.$store_hours[date('w')]['open_minutes'].' '.$store_hours[date('w')]['open_ampm'];
+                        $open_time = strtotime(date('Y-m-d H:i:s',strtotime($open_string)));
+                        $closed_string = date('n/d/Y ').$store_hours[date('w')]['closed_hour'].':'.$store_hours[date('w')]['closed_minutes'].' '.$store_hours[date('w')]['closed_ampm'];
+                        $closed_time = strtotime(date('Y-m-d H:i:s',strtotime($closed_string)));
+                    } else {
+                        $open_time = 0;
+                        $closed_time = 0;
+                    }
+
 
                     $data[$key]['open_status'] = ($now >= $open_time && $now <= $closed_time) ? true : false;
                 }

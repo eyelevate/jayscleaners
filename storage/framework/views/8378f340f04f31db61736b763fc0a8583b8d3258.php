@@ -77,7 +77,7 @@
 		</div>
 
 		<div class="panel-footer">
-			<button class="btn btn-lg btn-primary" type="button" data-toggle="modal" data-target="#bill">Send Monthly Bill</button>
+			<a class="btn btn-lg btn-primary" href="<?php echo e(route('accounts_send')); ?>">Send Monthly Bill</a>
 
 		</div>
 
