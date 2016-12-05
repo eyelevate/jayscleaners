@@ -619,7 +619,7 @@ class Account extends Model
 			    	$html .= '<table style="width:100%;">';
 			    	$html .= '<thead>';
 			    	$html .= '<tr style="background-color:#e5e5e5;">';
-			    	$html .= '<th>Item #</th>';
+			    	// $html .= '<th>Item #</th>';
 			    	$html .= '<th>Invoice #</th>';
 			    	$html .= '<th>Name</th>';
 			    	$html .= '<th>Color</th>';
@@ -633,18 +633,18 @@ class Account extends Model
 			    	if (count($invoices)>0) {
 			    		$quantity = 0;
 			    		foreach ($invoices as $invoice) {
-			    			$inv_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$invoice->id)->get());
+			    			$inv_items = InvoiceItem::prepareGroup(InvoiceItem::where('invoice_id',$invoice->id)->get());
 			    			$quantity += $invoice->quantity;
 			    			if (count($inv_items)) {
 			    				foreach ($inv_items as $inv_item) {
 
 					    			$html .= '<tr>';
-					    			$html .= '<td>'.$inv_item->id.'</td>';
-					    			$html .= '<td>'.$inv_item->invoice_id.'</td>';
-					    			$html .= '<td>'.$inv_item->item_name.'</td>';
-					    			$html .= '<td>'.$inv_item->color.'</td>';
-					    			$html .= '<td>'.$inv_item->quantity.'</td>';
-					    			$html .= '<td>'.money_format('$%i',$inv_item->pretax).'</td>';
+					    			// $html .= '<td>'.$inv_item->id.'</td>';
+					    			$html .= '<td>'.$inv_item['invoice_id'].'</td>';
+					    			$html .= '<td>'.$inv_item['name'].'</td>';
+					    			$html .= '<td>'.$inv_item['colors'].'</td>';
+					    			$html .= '<td>'.$inv_item['qty'].'</td>';
+					    			$html .= '<td>'.money_format('$%i',$inv_item['subtotal']).'</td>';
 					    			$html .= '</tr>';			    					
 			    				}
 			    			}
@@ -654,22 +654,22 @@ class Account extends Model
 		    		$html .= '</tbody>';
 			    	$html .= '<tfoot style="border-top:1px solid #000000">';
 			    	$html .= '<tr>';
-			    	$html .= '<th colspan="4"></th>';
+			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>Quantity</th>'; 
 			    	$html .= '<td>'.$quantity.'</td>';
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
-			    	$html .= '<th colspan="4"></th>';
+			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>Subtotal</th>'; 
 			    	$html .= '<td>'.money_format('$%i',$transactions->pretax).'</td>';
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
-			    	$html .= '<th colspan="4"></th>';
+			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>Tax</th>'; 
 			    	$html .= '<td>'.money_format('$%i',$transactions->tax).'</td>';
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
-			    	$html .= '<th colspan="4"></th>';
+			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>After Tax</th>'; 
 			    	$html .= '<td>'.money_format('$%i',$transactions->aftertax).'</td>';
 			    	$html .= '</tr>';
