@@ -59,16 +59,20 @@ class InvoiceItem extends Model
                 if (isset($group[$data[$key]['item_id']])) {
                     $qty += 1;
                     $memo .= (isset($value->memo)) ? ', '.$value->memo : '';
+                    $subtotal += $value->pretax;
                 } else {
                     $qty = 1;
                     $memo = (isset($value->memo)) ? $value->memo : '';
+                    $subtotal = $value->pretax;
                 }
 
                 $group[$data[$key]['item_id']] = [
+                    'invoice_id'=>$value->invoice_id,
                     'name' => $name,
                     'colors'=>(isset($color_string[$value->item_id])) ? $color_string[$value->item_id] : '',
                     'memos'=>($memo) ? $memo : '',
-                    'qty'=>$qty
+                    'qty'=>$qty,
+                    'subtotal' => $subtotal
                 ];
     		}
     	}
