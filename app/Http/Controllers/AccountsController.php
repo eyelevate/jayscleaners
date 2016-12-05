@@ -231,7 +231,10 @@ class AccountsController extends Controller
                         $message->attach($pdf_title);
                     }));
 
-                    $email_count += 1;
+                    if (unlink($pdf_title)) {
+                        $email_count += 1;
+                    }
+                    
 
                 } 
             }
