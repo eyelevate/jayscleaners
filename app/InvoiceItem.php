@@ -61,7 +61,9 @@ class InvoiceItem extends Model
 
     		foreach ($data as $key => $value) {
     			$idx++;
-                $name = $value->item_name;
+                $item_id = $value->item_id;
+                $inventory_item = InventoryItem::find($item_id);
+                $item_name = $inventory_item->name;
                 if (isset($group[$data[$key]['item_id']])) {
                     $qty += 1;
                     $memo .= (isset($value->memo)) ? ', '.$value->memo : '';
@@ -74,7 +76,7 @@ class InvoiceItem extends Model
 
                 $group[$data[$key]['item_id']] = [
                     'invoice_id'=>$value->invoice_id,
-                    'name' => $name,
+                    'name' => $item_name,
                     'colors'=>(isset($color_string[$value->item_id])) ? $color_string[$value->item_id] : '',
                     'memos'=>($memo) ? $memo : '',
                     'qty'=>$qty,
