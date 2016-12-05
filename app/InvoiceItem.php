@@ -35,9 +35,15 @@ class InvoiceItem extends Model
             foreach($data as $key => $value) {
                 if (isset($value->color)) {
                     if (isset($color[$value->item_id][$value->color]))
-                        $color[$value->item_id][$value->color] += 1;
+                        if ($value->color) {
+                            $color[$value->item_id][$value->color] += 1;
+                        }
+                        
                     else {
-                        $color[$value->item_id][$value->color] = 1;
+                        if ($value->color) {
+                            $color[$value->item_id][$value->color] = 1;
+                        }
+                        
                     }                    
                 }
 
