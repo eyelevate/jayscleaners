@@ -233,9 +233,6 @@ class AccountsController extends Controller
             
         }
 
-        
-        
-
     }
 
     public function getPreview(Request $request) {
