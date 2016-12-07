@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="csrf-token" content="{{ csrf_token() }}">
-		<title>Jays Cleaners - Account Bill</title>
+		<title>Jays Cleaners - Free Delivery & Pickup</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!-- Bootstrap 3.3.5 -->
@@ -25,10 +25,25 @@
 	<body class="index">
 		<div id="page-wrapper">
 
+			<!-- Header -->
+			@yield('navigation')
+
+
 			<!-- Main -->
 			<div id="main">
 				<section class="container">
+					<div class="row-fluid ">
+					@include('flash::message')
+					</div>
 					@yield('content')
+					<article class="wrapper style3 container special">
+
+						<header>
+							<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+							<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
+						</header>
+
+					</article>
 				</section>
 
 			</div>
@@ -39,7 +54,9 @@
 			<footer id="footer">
 
 				<ul class="icons">
-					<li>Page 1 of 1</li>
+					<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
 				</ul>
 
 				<ul class="copyright">
@@ -86,6 +103,7 @@
 		<script src="/packages/html5up-twenty/assets/js/skel.min.js"></script>
 		<script src="/packages/html5up-twenty/assets/js/util.js"></script>
 		<!--[if lte IE 8]><script src="/packages/html5up-twenty/assets/js/ie/respond.min.js"></script><![endif]-->
+		<script src="/packages/html5up-twenty/assets/js/main.js"></script>
 
 		@yield('scripts')
 
