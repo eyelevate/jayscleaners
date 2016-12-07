@@ -31,8 +31,10 @@
 				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Select Account Payment Method</h3>
 			</header>
 			<section class="clearfix col-xs-12 col-sm-12">
-				<a class="btn btn-lg btn-default" href="{{ route('accounts_oneTimePayment') }}">One Time Payment</a>
-				<a class="btn btn-lg btn-primary" href="{{ route('accounts_memberPayment') }}">Membership Payment <b><i>(login required)</i></b></a>
+				<a class="btn btn-lg btn-default btn-block" href="{{ route('accounts_oneTimePayment') }}">One Time Payment</a>
+			</section>
+			<section class="clearfix col-xs-12 col-sm-12">
+				<a class="btn btn-lg btn-primary btn-block" href="{{ route('accounts_memberPayment') }}">Membership Payment <b><i>(login required)</i></b></a>
 			</section>
 		</div>
 
