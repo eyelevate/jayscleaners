@@ -141,7 +141,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/view',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 		Route::get('/admins/sales-data',['as'=>'admins_sales_data','uses'=>'AdminsController@getSalesData']);
-
+		Route::get('/admins/reset-passwords',['as'=>'admins_reset_passwords','uses'=>'AdminsController@getResetPasswords']);
+		Route::post('/admins/reset-passwords',['as'=>'admins_reset_passwords_post','uses'=>'AdminsController@postResetPasswords']);
 		// Address
 		
 		Route::get('/address/admin/{id}', ['as'=>'address_admin_index','uses'=>'AddressesController@getAdminIndex']);

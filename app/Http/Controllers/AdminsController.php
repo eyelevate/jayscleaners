@@ -598,5 +598,13 @@ class AdminsController extends Controller
 
     }
 
+    public function getResetPasswords() {
+
+    }
+
+    public function postResetPasswords() {
+        
+    }
+
 
 }
