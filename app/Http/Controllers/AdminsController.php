@@ -13,6 +13,7 @@ use URL;
 use Session;
 use Laracasts\Flash\Flash;
 use View;
+use Mail;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -599,11 +600,61 @@ class AdminsController extends Controller
     }
 
     public function getResetPasswords() {
-
+        $users = User::where('password','!=',NULL)
+            ->where('username','!=',NULL)
+            ->where('email','!=',NULL)
+            ->orderBy('last_name','ASC')
+            ->paginate(20);
+        return view('admins.reset_passwords')
+            ->with('users',$users)
+            ->with('layout',$this->layout);
     }
 
-    public function postResetPasswords() {
-        
+    public function postResetPasswords(Request $request) {
+        if ($request->ajax()) {
+            $user_id = $request->user_id;
+            $users = User::find($user_id);
+            // $email = $users->email;
+            $email = 'onedough83@gmail.com';
+            $token = Job::generateRandomString(12);
+            $emailed_status = $users->remember_token;
+            switch($emailed_status) {
+                case 1:
+                $status = 1; // password updated
+                break;
+
+                case 2:
+                $status = 2; // email sent
+                break;
+
+                case 3:
+                $status = 3; // No email sent
+                break;
+
+                default:
+                $status = 3; // No Email Sent
+                break;
+            }
+
+
+            // make email for specified user
+            if (Mail::send('emails.admin_reset_password', [
+                'transactions' => $transactions,
+                'customers' => $customers
+            ], function($message) use ($send_to, $title, $pdf_title)
+            {
+                $message->to($send_to);
+                $message->subject($title);
+                $message->attach($pdf_title);
+            }));
+
+
+            return response()->json([
+                'user_id'=>$user_id,
+                'email'=>$email,
+                'status'=>$status,
+                'token'=>$token]);
+        }
     }
 
 
