@@ -37,11 +37,16 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
     Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
     Route::get('/pricing',  ['as'=>'pages_pricing', 'uses' => 'PagesController@getPricing']);
+    Route::get('/reset-password/{token}',['as'=>'pages_reset_password','uses'=>'PagesController@getResetPassword']);
+    Route::post('/reset-password',['as'=>'pages_reset_password_post','uses'=>'PagesController@postResetPassword']);
+
     Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
     Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
     Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
     Route::get('/zipcodes/request/{id}',['as'=>'zipcodes_request','uses'=>'ZipcodesController@getRequest']);
     Route::post('/zipcodes/request',['as'=>'zipcodes_request_post','uses'=>'ZipcodesController@postRequest']);
+    
+
     Route::get('/home', 'HomeController@index');
 
     // Accounts

@@ -265,4 +265,51 @@ class PagesController extends Controller
         ->with('price_list',$price_list)
         ->with('layout',$this->layout);
     }
+
+    public function getResetPassword($token = null) {
+        
+        if (isset($token)){
+            $users = User::where('token',$token)->get();
+            if (count($users) > 0) {
+                $status = $users->remember_token;
+                if ($status == 1) {
+                    Flash::error('You have already changed the password. Please use the "forgot password" form on the login page to request a new form. Thank you.');
+                    return Redirect::route('pages_index');
+                }
+            } else {
+                Flash::error('You do not have access to this form. Please try again.');
+                return Redirect::route('pages_index');
+            }
+
+            $this->layout = 'layouts.bill';
+            return view('pages.reset_password')
+            ->with('users',$users)
+            ->with('layout',$this->layout);
+        } else {
+            Flash::error('You are not able to view this page. Please contact administrator for assistance');
+            return Redirect::route('pages_index');
+        }
+
+    }
+
+    public function postResetPassword(Request $request) {
+        $this->validate($request, [
+            'password' => 'required|min:4',
+            'password_confirmation' => 'required|confirmed'
+        ]);
+
+        // save password
+        $user_id = $request->id;
+        $users = User::find($user_id);
+        $users->password = bcrypt($request->password);
+        $users->token = NULL;
+        $users->remember_token = 1;
+        if ($users->save()) {
+            Flash::success('Successfully updated password. Please log in with your new password.');
+            return Redirect::route('pages_login');
+        }
+
+
+        // remove 
+    }
 }

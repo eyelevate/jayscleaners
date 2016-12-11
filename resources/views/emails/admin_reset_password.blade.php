@@ -166,7 +166,7 @@
                               <tbody>
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 20px; color: #333333; text-align:left;line-height: 22px;" st-title="rightimage-title">
-                                       Account Statuses Updated
+                                       Reset Password
                                     </td>
                                  </tr>
                                  <!-- end of title -->
@@ -178,7 +178,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       Dear Owner,
+                                       Dear {{ ucFirst($users->first_name) }} {{ ucLastName($users->last_name) }},
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -190,7 +190,19 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       This is an email to confirm that account statuses have been updated. Please take a moment to verify that all status have been updated by checking online here. If everything looks correct, please finish the task by select who will receive an email billing and who will have theirs printed and sent to them.
+                                       <p>We are excited to unveil our new homepage at www.jayscleaners.com! It is our goal at Jays to make it as easy as possible to get your cleaning done and delivered to you without any hiccups along the way.</p>
+                                       
+                                       <p>Our new delivery system includes:</p>
+                                       <ul>
+                                       		<li>An Improved trackingg system of your delivery orders.</li>
+                                       		<li>A new quick one button click delivery reservation (using data from previously completed deliveries).</li>
+                                       		<li>An improved card on file management system using <a href="https://www.authorize.net/company/aboutus/">Authorize.net</a> as the backbone to safely store and manage your credit cards.</li>
+                                       		<li>An improved ability to reschedule missed delivery times.</li>
+                                       		<li>You will now be able to request a new delivery route not available on our current system.</li>
+                                       </ul>
+                                       
+                                       <p>In addition to the new delivery changes, we have improved our security for our members and humbly request that all users update their passwords in accordance with the new security features. It is our wish to make sure that your data is protected from start to end and that we may continue providing you with the best possible service we can muster. Please click on the button below to get started. Thank you!<p>
+
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -199,6 +211,7 @@
                                     <td width="100%" height="10"></td>
                                  </tr>
                                  <!-- Spacing -->
+
                                  <tr>
                                     <td width="100%" height="20"></td>
                                  </tr>
@@ -213,6 +226,54 @@
          </tr>
       </tbody>
    </table>
+</div>
+<div class="block">
+   <!-- start textbox-with-title -->
+   <table width="100%" bgcolor="#f6f4f5" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="fulltext">
+         <tbody>
+         <tr>
+               <td>
+                     <table bgcolor="#ffffff" width="580" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth" modulebg="edit">
+                        <tbody>
+                     <!-- Spacing -->
+                     <tr>
+                        <td width="100%" height="10"></td>
+                     </tr>
+                     <!-- Spacing -->
+                     <!-- Spacing -->
+                     <tr>
+                        <td width="100%" height="10"></td>
+                     </tr>
+                     <!-- Spacing -->
+                     <!-- button -->
+                     <tr>
+                        <td>
+                           <table height="36" align="center" valign="middle" border="0" cellpadding="0" cellspacing="0" class="tablet-button" st-button="edit">
+                             <tbody>
+                                <tr>
+                                   <td width="auto" align="center" valign="middle" height="36" style=" background-color:#0db9ea; border-top-left-radius:4px; border-bottom-left-radius:4px;border-top-right-radius:4px; border-bottom-right-radius:4px; background-clip: padding-box;font-size:13px; font-family:Helvetica, arial, sans-serif; text-align:center;  color:#ffffff; font-weight: 300; padding-left:25px; padding-right:25px;">                                                
+                                    <span style="color: #ffffff; font-weight: 300;">
+                                       <a style="color: #ffffff; text-align:center;text-decoration: none;" href="{{ route('pages_reset_password',$token) }}">Reset Password</a>
+                                       </span>
+                                   </td>
+                                </tr>
+                             </tbody>
+                           </table>                                       
+                        </td>
+                     </tr>
+                     <!-- /button -->
+                     <!-- Spacing -->
+                     <tr>
+                        <td width="100%" height="30"></td>
+                     </tr>
+                           <!-- Spacing -->
+                        </tbody>
+               </table>
+               </td>
+         </tr>
+      </tbody>
+   </table>
+      <!-- end of textbox-with-title -->
 </div>
 
 <div class="block">

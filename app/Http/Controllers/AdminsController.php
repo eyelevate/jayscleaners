@@ -614,8 +614,9 @@ class AdminsController extends Controller
         if ($request->ajax()) {
             $user_id = $request->user_id;
             $users = User::find($user_id);
-            // $email = $users->email;
-            $email = 'onedough83@gmail.com';
+            // $send_to = $users->email;
+            $send_to = 'onedough83@gmail.com';
+            $title = 'Jays Cleaners - Action Required Message';
             $token = Job::generateRandomString(12);
             $emailed_status = $users->remember_token;
             switch($emailed_status) {
@@ -639,13 +640,11 @@ class AdminsController extends Controller
 
             // make email for specified user
             if (Mail::send('emails.admin_reset_password', [
-                'transactions' => $transactions,
-                'customers' => $customers
-            ], function($message) use ($send_to, $title, $pdf_title)
+                'users' => $users
+            ], function($message) use ($send_to, $title)
             {
                 $message->to($send_to);
                 $message->subject($title);
-                $message->attach($pdf_title);
             }));
 
 
