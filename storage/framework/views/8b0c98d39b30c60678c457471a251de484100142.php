@@ -18,6 +18,13 @@
 <?php $__env->startSection('content'); ?>
 	<?php echo Form::open(['action' => 'PagesController@postResetPassword','role'=>"form"]); ?>
 
+	<?php if(count($users) > 0): ?>
+		<?php foreach($users as $user): ?>
+		<?php echo Form::hidden('id',$user->id); ?>
+
+		<?php endforeach; ?>
+	<?php endif; ?>
+	
     <div class="row">
         <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
             <div class="panel panel-default">

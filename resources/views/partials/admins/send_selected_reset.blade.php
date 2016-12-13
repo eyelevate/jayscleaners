@@ -12,7 +12,7 @@
 				
 				<p id="step-1" class="steps hide">(step 1) Preparing selected users</p>
 				<p id='step-2' class="steps hide">(step 2) Collected <strong class="totalSelected">0</strong> users</p>
-				<p id='step-3' class="steps hide">(step 3) Sending reset password email <strong>1</strong> of <strong class="totalSelected">1</strong></p>
+				<p id='step-3' class="steps hide">(step 3) Sending reset password email <strong id="currentSentCount">1</strong> of <strong class="totalSelected">1</strong></p>
 				<p id="step-4" class="steps hide">(step 4) Process complete.</p>
 			</div>
 			<div class="modal-footer">

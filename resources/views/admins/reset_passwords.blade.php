@@ -49,7 +49,15 @@
 						<td>{{ $user->first_name }}</td>
 						<td>{{ $user->email }}</td>
 						<td>{{ $user->token }}</td>
-						<td>{{ $user->status }}</td>
+						<td>
+							@if ($user->remember_token == 1)
+							<label class="label-success" >{{ $user->status }}</label>
+							@elseif ($user->remember_token == 2)
+							<label class="label-warning" >{{ $user->status }}</label>
+							@else
+							<label class="label-danger" >{{ $user->status }}</label>
+							@endif
+						</td>
 						<td><input type="checkbox" name="user_id" value="{{ $user->id }}" class="user_id"/></td>
 					</tr>
 					@endforeach

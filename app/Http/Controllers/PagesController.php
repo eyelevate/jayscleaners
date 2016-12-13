@@ -271,11 +271,14 @@ class PagesController extends Controller
         if (isset($token)){
             $users = User::where('token',$token)->get();
             if (count($users) > 0) {
-                $status = $users->remember_token;
-                if ($status == 1) {
-                    Flash::error('You have already changed the password. Please use the "forgot password" form on the login page to request a new form. Thank you.');
-                    return Redirect::route('pages_index');
+                foreach ($users as $user) {
+                    $status = $user->remember_token;
+                    if ($status == 1) {
+                        Flash::error('You have already changed the password. Please use the "forgot password" form on the login page to request a new form. Thank you.');
+                        return Redirect::route('pages_index');
+                    }
                 }
+
             } else {
                 Flash::error('You do not have access to this form. Please try again.');
                 return Redirect::route('pages_index');
@@ -294,8 +297,8 @@ class PagesController extends Controller
 
     public function postResetPassword(Request $request) {
         $this->validate($request, [
-            'password' => 'required|min:4',
-            'password_confirmation' => 'required|confirmed'
+            'password' => 'required|min:4|confirmed',
+            'password_confirmation' => 'required'
         ]);
 
         // save password

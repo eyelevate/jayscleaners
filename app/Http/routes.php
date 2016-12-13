@@ -201,6 +201,7 @@ Route::group(['middleware' => ['web']], function () {
 		// Credits
 		Route::post('/credits/add',['uses'=>'CreditsController@postAdd']);
 
+
 		// Delivery 
 		Route::get('/delivery/overview',['as'=>'delivery_overview','uses'=>'DeliveriesController@getOverview']);
 		Route::post('/delivery/overview',['as'=>'delivery_overview_post','uses'=>'DeliveriesController@postOverview']);
@@ -219,6 +220,14 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/delivery/setup/edit/{id}',['as'=>'delivery_setup_edit','uses'=>'DeliveriesController@getSetupEdit']);
 		Route::post('/delivery/setup/edit',['as'=>'delivery_setup_edit_post','uses'=>'DeliveriesController@postSetupEdit']);
 		Route::get('/delivery/setup/delete/{id}',['as'=>'delivery_setup_delete','uses'=>'DeliveriesController@getSetupDelete']);
+		
+
+		// Discounts
+		Route::get('/discounts',['as'=>'discounts_index','uses'=>'DiscountsController@getIndex']);
+		Route::get('/discounts/add',['as'=>'discounts_add','uses'=>'DiscountsController@getAdd']);
+		Route::get('/discounts/edit/{id}',['as'=>'discounts_edit','uses'=>'DiscountsController@getEdit']);
+		Route::post('/discounts/add',['as'=>'discounts_add_post','uses'=>'DiscountsController@postAdd']);
+		Route::post('/discounts/edit',['as'=>'discounts_edit_post','uses'=>'DiscountsController@postEdit']);
 		//Invoices
 		Route::get('/invoices',['as'=>'invoices_index','uses'=>'InvoicesController@getIndex']);
 		Route::get('/invoices/dropoff/{id}',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);

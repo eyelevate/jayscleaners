@@ -78,4 +78,18 @@ class InventoryItem extends Model
 
 		return $list;
 	}
+
+	public static function prepareSelect($data) {
+        $select = [];
+
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                if (isset($data[$key]['id'])) {
+                    $select[$data[$key]['id']] = $data[$key]['name'];
+                }
+            }
+        }
+
+        return $select;
+    }
 }

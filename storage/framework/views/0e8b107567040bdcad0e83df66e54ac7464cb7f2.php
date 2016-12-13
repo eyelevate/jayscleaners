@@ -49,7 +49,15 @@
 						<td><?php echo e($user->first_name); ?></td>
 						<td><?php echo e($user->email); ?></td>
 						<td><?php echo e($user->token); ?></td>
-						<td><?php echo e($user->status); ?></td>
+						<td>
+							<?php if($user->remember_token == 1): ?>
+							<label class="label-success" ><?php echo e($user->status); ?></label>
+							<?php elseif($user->remember_token == 2): ?>
+							<label class="label-warning" ><?php echo e($user->status); ?></label>
+							<?php else: ?>
+							<label class="label-danger" ><?php echo e($user->status); ?></label>
+							<?php endif; ?>
+						</td>
 						<td><input type="checkbox" name="user_id" value="<?php echo e($user->id); ?>" class="user_id"/></td>
 					</tr>
 					<?php endforeach; ?>

@@ -605,6 +605,31 @@ class AdminsController extends Controller
             ->where('email','!=',NULL)
             ->orderBy('last_name','ASC')
             ->paginate(20);
+        if (count($users) > 0) {
+            foreach ($users as $key => $value) {
+                if (isset($users[$key]['remember_token'])) {
+                    switch($users[$key]['remember_token']) {
+                        case 1:
+                            $users[$key]['status'] = 'Updated';
+                        break;
+
+                        case 2:
+                            $users[$key]['status'] = 'Email';
+                        break;
+
+                        case 3:
+                            $users[$key]['status'] = 'Needs Update';
+                        break;
+
+                        default:
+                            $users[$key]['status'] = 'Needs Update';
+                        break;
+                    }
+                } else {
+                    $users[$key]['status'] = 'Needs Update';
+                }
+            }
+        }
         return view('admins.reset_passwords')
             ->with('users',$users)
             ->with('layout',$this->layout);
@@ -617,7 +642,7 @@ class AdminsController extends Controller
             // $send_to = $users->email;
             $send_to = 'onedough83@gmail.com';
             $title = 'Jays Cleaners - Action Required Message';
-            $token = Job::generateRandomString(12);
+            $token = Job::generateRandomString(8);
             $emailed_status = $users->remember_token;
             switch($emailed_status) {
                 case 1:
@@ -637,22 +662,32 @@ class AdminsController extends Controller
                 break;
             }
 
+            $users->token = $token;
+            $users->remember_token = 2;
 
-            // make email for specified user
-            if (Mail::send('emails.admin_reset_password', [
-                'users' => $users
-            ], function($message) use ($send_to, $title)
-            {
-                $message->to($send_to);
-                $message->subject($title);
-            }));
+            if ($users->save()) {
+
+                // make email for specified user
+                if (Mail::send('emails.admin_reset_password', [
+                    'users' => $users
+                ], function($message) use ($send_to, $title)
+                {
+                    $message->to($send_to);
+                    $message->subject($title);
+                }));
+
+                return response()->json([
+                    'user_id'=>$user_id,
+                    'email'=>$send_to,
+                    'status'=>$status,
+                    'token'=>$token]);
+            } else {
+                return response()->json([
+                    'status'=>false]);
+            }
 
 
-            return response()->json([
-                'user_id'=>$user_id,
-                'email'=>$email,
-                'status'=>$status,
-                'token'=>$token]);
+
         }
     }
 

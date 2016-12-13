@@ -25,7 +25,7 @@
          /*################################################*/
          /*IPAD STYLES*/
          /*################################################*/
-         @media only screen and (max-width: 640px) {
+         @media  only screen and (max-width: 640px) {
          a[href^="tel"], a[href^="sms"] {
          text-decoration: none;
          color: #ffffff; /* or whatever your want */
@@ -52,7 +52,7 @@
          /*##############################################*/
          /*IPHONE STYLES*/
          /*##############################################*/
-         @media only screen and (max-width: 480px) {
+         @media  only screen and (max-width: 480px) {
          a[href^="tel"], a[href^="sms"] {
          text-decoration: none;
          color: #ffffff; /* or whatever your want */
@@ -119,7 +119,7 @@
                                  <tr>
                                     <td valign="middle" width="270" style="padding: 10px 0 10px 20px;" class="logo">
                                        <div class="imgpop">
-                                          <a href="{{ route('pages_index') }}" style="color:#ffffff; font-weight:bold; text-decoration:none;">Jays Cleaners</a>
+                                          <a href="<?php echo e(route('pages_index')); ?>" style="color:#ffffff; font-weight:bold; text-decoration:none;">Jays Cleaners</a>
                                        </div>
                                     </td>
                                  </tr>
@@ -131,9 +131,9 @@
                               <tbody>
                                  <tr>
                                     <td width="270" valign="middle" style="font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;line-height: 24px; padding: 10px 0;" align="right" class="menu" st-content="menu">
-                                       <a href="{{ route('pages_index') }}" style="text-decoration: none; color: #ffffff;">HOME</a>
+                                       <a href="<?php echo e(route('pages_index')); ?>" style="text-decoration: none; color: #ffffff;">HOME</a>
                                        &nbsp;|&nbsp;
-                                       <a href="{{ route('delivery_pickup') }}" style="text-decoration: none; color: #ffffff;">Delivery</a>
+                                       <a href="<?php echo e(route('delivery_pickup')); ?>" style="text-decoration: none; color: #ffffff;">Delivery</a>
                                     </td>
                                     <td width="20"></td>
                                  </tr>
@@ -178,7 +178,7 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #000000; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       Dear {{ ucFirst($users->first_name) }} {{ ucFirst($users->last_name) }},
+                                       Dear <?php echo e(ucFirst($users->first_name)); ?> <?php echo e(ucFirst($users->last_name)); ?>,
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -226,7 +226,7 @@
 						                     <!-- Spacing -->
 						                     <tr>
 			                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #000000; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-			                                       Username: <b>{{ $users->username }}</b>
+			                                       Username: <b><?php echo e($users->username); ?></b>
 			                                    </td>
 			                                 </tr>
 						                     <!-- button -->
@@ -237,7 +237,7 @@
 						                                <tr>
 						                                   <td width="auto" align="center" valign="middle" height="36" style=" background-color:#0db9ea; border-top-left-radius:4px; border-bottom-left-radius:4px;border-top-right-radius:4px; border-bottom-right-radius:4px; background-clip: padding-box;font-size:13px; font-family:Helvetica, arial, sans-serif; text-align:center;  color:#ffffff; font-weight: 300; padding-left:25px; padding-right:25px;">                                                
 						                                    <span style="color: #ffffff; font-weight: 300;">
-						                                       <a style="color: #ffffff; text-align:center;text-decoration: none;" href="{{ route('pages_reset_password',$users->token) }}">Reset Password</a>
+						                                       <a style="color: #ffffff; text-align:center;text-decoration: none;" href="<?php echo e(route('pages_reset_password',$users->token)); ?>">Reset Password</a>
 						                                       </span>
 						                                   </td>
 						                                </tr>
@@ -283,7 +283,7 @@
                      <!-- Spacing -->
                      <tr>
                         <td align="center" valign="middle" style="font-family: Helvetica, arial, sans-serif; font-size: 10px;color: #999999" st-content="preheader">
-                           We thank you for your business! @ {{ date('Y') }} 
+                           We thank you for your business! @ <?php echo e(date('Y')); ?> 
                         </td>
                      </tr>
                      <!-- Spacing -->
