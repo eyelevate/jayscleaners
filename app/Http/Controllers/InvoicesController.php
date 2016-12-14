@@ -25,6 +25,7 @@ use App\InventoryItem;
 use App\Card;
 use App\Color;
 use App\Company;
+use App\Discount;
 use App\Memo;
 use App\Tax;
 use App\Report;
@@ -102,6 +103,7 @@ class InvoicesController extends Controller
         $memos = Memo::where('company_id',Auth::user()->company_id)->orderBy('ordered','asc')->get();
         $company = Company::where('id',Auth::user()->company_id)->get();
         $store_hours = Company::getStoreHours($company);
+        
 
         $turnaround_date = Company::getTurnaroundDate($company);
         $turnaround = Company::getTurnaround($company);
@@ -387,7 +389,7 @@ class InvoicesController extends Controller
         $customer = User::find($customer_id);
         $credit_amount = $customer->credits;
         $cards = Card::where('user_id',$id)->where('company_id',Auth::user()->company_id)->get();
-
+        $discounts = Discount::prepareApprovedSelect();
         $companies = Company::find(Auth::user()->company_id);
         $cards_data = [];
         $payment_ids = [];
@@ -507,6 +509,7 @@ class InvoicesController extends Controller
         ->with('credits',$credit_amount)
         ->with('cards',$payment_ids)
         ->with('invoices',$invoices)
+        ->with('discounts',$discounts)
         ->with('layout',$this->layout);
 
     }
@@ -522,6 +525,7 @@ class InvoicesController extends Controller
         $credits = ($customers->credits) ? $customers->credits : 0;
         $type = $request->type;
         $transaction_status = 1;
+        $account_check = false;
         switch($type) {
             case 'account':
                 $account_transaction_id = false;
@@ -540,6 +544,7 @@ class InvoicesController extends Controller
             break;
             case 'credit':
                 $transaction_type = 1;
+
             break;
             case 'cash':
                 $transaction_type = 2;
@@ -581,7 +586,61 @@ class InvoicesController extends Controller
             }
         } 
 
-        $discount_rate = 0;
+        $discount = 0;
+        if ($request->session()->has('discount_id')) {
+            $discount_id = $request->session()->pull('discount_id');
+            if ($discount_id > 0) {
+                $discountable_total = 0;
+                $discounts = Discount::find($discount_id);
+                $inventory_id = $discounts->inventory_id;
+                $inventory_item_id = $discounts->inventory_item_id;
+                if (count($invoices) > 0) {
+                    foreach ($invoices as $invoice) {
+                        $invoice_id = $invoice->id;
+                        if (isset($inventory_id)) {
+                            $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)
+                                ->where('inventory_id',$inventory_id)
+                                ->get();
+                        
+                        
+                            if (count($invoice_items) > 0) {
+                                foreach ($invoice_items as $invoice_item) {
+                                    $item_id = $invoice_item->item_id;
+                                    $item_price = $invoice_item->total;
+                                    $discountable_total += $item_price;
+                                }
+                            }
+                        } else {
+                             $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)
+                                ->where('item_id',$inventory_item_id)
+                                ->get();
+                        
+                        
+                            if (count($invoice_items) > 0) {
+                                foreach ($invoice_items as $invoice_item) {
+                                    $item_id = $invoice_item->item_id;
+                                    $item_price = $invoice_item->total;
+                                    $discountable_total += $item_price; 
+                                }
+                            }                           
+                        }
+                        
+                    }
+                }
+
+                $type = $discounts->type;
+                if ($type == 1) {
+                    $rate = $discounts->rate;
+                    $discount = money_format('%i',($discountable_total * $rate));
+                } else {
+                    $price = $discounts->price;
+                    $discount = money_format('%i',($discountable_total - $price));
+                }
+
+            }
+        }
+
+
         if ($account_check){
             $transactions = Transaction::find($account_transaction_id);
             $transactions->company_id = $company_id;
@@ -595,9 +654,8 @@ class InvoicesController extends Controller
             $new_pretax = $selected['totals']['subtotal'] + $old_pretax;
             $new_tax = $selected['totals']['tax'] + $old_tax;
             $new_aftertax = $selected['totals']['total'] + $old_aftertax;
-            $current_discount = ($new_aftertax * $discount_rate);
-            $new_discount = $old_discount + $current_discount;
-            $discounted_total = $selected['totals']['total'] - $current_discount;
+            $new_discount = $old_discount + $discount;
+            $discounted_total = $selected['totals']['total'] - $discount;
             $credit_spent = (($credits - $discounted_total) >= 0) ? $discounted_total : $credits;
             $total_due = $discounted_total - $credit_spent;
             $new_total_due = $old_due + $total_due;
@@ -619,10 +677,10 @@ class InvoicesController extends Controller
             $transactions->pretax = $selected['totals']['subtotal'];
             $transactions->tax = $selected['totals']['tax'];
             $transactions->aftertax = $selected['totals']['total'];
-            $transactions->discount = $transactions->aftertax * $discount_rate;
-            $discounted_total = $transactions->aftertax - $transactions->discount;
+            $discounted_total = $transactions->aftertax - $discount;
             $credit_spent = (($credits - $discounted_total) >= 0) ? $discounted_total : $credits;
             $transactions->credit = $credit_spent;
+            $transactions->discount = $discount;
             $total_due = $discounted_total - $credit_spent;
             $transactions->total = $total_due;
             $transactions->type = $transaction_type;
@@ -675,19 +733,74 @@ class InvoicesController extends Controller
     public function postSelect(Request $request) {
         if ($request->ajax()) {
             $ids = $request->invoice_ids;
+            $discount_id = $request->discount_id;
+            $request->session()->put('discount_id',$discount_id);
             $customer_id = $request->customer_id;
             $customers = User::find($customer_id);
             $credits = ($customers->credits) ? $customers->credits : 0;
             $invoices = Invoice::whereIn('id',$ids)->get();
-  
+            $discount = 0;
             if (count($invoices) > 0) {
                 $selected = Invoice::prepareSelected($invoices);
+                
                 $total = $selected['totals']['total'];
-                $total_due = (($total - $credits) > 0) ? ($total - $credits) : 0; 
+
+                // discount rules
+                if ($discount_id > 0) {
+                    $discountable_total = 0;
+                    $discounts = Discount::find($discount_id);
+                    $inventory_id = $discounts->inventory_id;
+                    $inventory_item_id = $discounts->inventory_item_id;
+
+                    foreach ($invoices as $invoice) {
+                        $invoice_id = $invoice->id;
+                        if (isset($inventory_id)) {
+                            $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)
+                                ->where('inventory_id',$inventory_id)
+                                ->get();
+                        
+                        
+                            if (count($invoice_items) > 0) {
+                                foreach ($invoice_items as $invoice_item) {
+                                    $item_id = $invoice_item->item_id;
+                                    $item_price = $invoice_item->total;
+                                    $discountable_total += $item_price;
+                                }
+                            }
+                        } else {
+                             $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)
+                                ->where('item_id',$inventory_item_id)
+                                ->get();
+                        
+                        
+                            if (count($invoice_items) > 0) {
+                                foreach ($invoice_items as $invoice_item) {
+                                    $item_id = $invoice_item->item_id;
+                                    $item_price = $invoice_item->total;
+                                    $discountable_total += $item_price; 
+                                }
+                            }                           
+                        }
+                        
+                    }
+
+                    $type = $discounts->type;
+                    if ($type == 1) {
+                        $rate = $discounts->rate;
+                        $discount = money_format('%i',($discountable_total * $rate));
+                    } else {
+                        $price = $discounts->price;
+                        $discount = money_format('%i',($discountable_total - $price));
+                    }
+                }
+
+                $total_due = (($total - $credits - $discount) > 0) ? ($total - $credits - $discount) : 0; 
                 return response()->json([
                     'status'=> true,
                     'invoice_data' => $selected,
                     'credits'=>$credits,
+                    'discount'=>$discount,
+                    'discount_html'=>money_format('($%i)',$discount),
                     'total_due' => $total_due,
                     'total_due_html'=>money_format('$%i',$total_due)
                 ]);

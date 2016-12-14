@@ -123,6 +123,7 @@ class Report extends Model
         $pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('pretax');
         $tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('tax');
         $discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('discount');
+        $credit = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('credit');
         $total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('total');
 
         $cash_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('pretax');
@@ -147,7 +148,8 @@ class Report extends Model
             'totals' => [
                 'subtotal' => money_format('%n',$pretax),
                 'tax' => money_format('%n',$tax),
-                'discount' => money_format('%n',$discount),
+                'credit'=>money_format('(%n)',$credit),
+                'discount' => money_format('(%n)',$discount),
                 'total' => money_format('%n',$total),
             ],
             'total_splits' => [

@@ -101,10 +101,10 @@
 							</tr>
 							<tr>
 								<th colspan="4" style="text-align:right;">Store Credit</th>
-								<td id="credit_td" credit="{{ $credits }}">{{ money_format('$%i',$credits) }}</td>
+								<td id="credit_td" credit="{{ $credits }}">{{ money_format('($%i)',$credits) }}</td>
 							</tr>
 							<tr>
-								<th colspan="4" style="text-align:right;">Discount</th>
+								<th colspan="4" style="text-align:right;"><a href="#" data-toggle="modal" data-target="#discount">Discount</a></th>
 								<td id="discount_td"></td>
 							</tr>
 							<tr>
@@ -152,6 +152,10 @@
 		->render()
 	!!}
 	{!! View::make('partials.invoices.check')
+		->render()
+	!!}
+	{!! View::make('partials.invoices.discount') 
+		->with('discounts',$discounts)
 		->render()
 	!!}
 @stop

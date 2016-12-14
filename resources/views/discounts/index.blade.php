@@ -37,7 +37,29 @@
     					<th>Status</th>
     					<th>Action</th>
     				</tr>
-    			</thead>	
+    			</thead>
+    			<tbody>
+    			@if (count($discounts) > 0)
+    				@foreach($discounts as $discount)
+    				<tr class="{{ ($discount->status == 1 ? 'success' : 'error') }}">
+    					<td>{{ $discount->id }}</td>
+    					<td>{{ $discount->name }}</td>
+    					<td>{{ $discount->type }}</td>
+    					<td>{{ $discount->group }}</td>
+    					<td>{{ $discount->item }}</td>
+    					<td>{{ $discount->rate }}</td>
+    					<td>{{ $discount->discount }}</td>
+    					<td>{{ date('n/d/Y g:ia',strtotime($discount->start_date)) }}</td>
+    					<td>{{ date('n/d/Y g:ia',strtotime($discount->end_date)) }}</td>
+    					<td>{{ $discount->status_label }}</td>
+    					<td>
+    						<a href="{{ route('discounts_edit',$discount->id) }}">Edit</a> 
+    						<a style="color:#ff0000" href="#" data-toggle="modal" data-target="#delete-{{ $discount->id }}">Delete</a>
+    					</td>
+    				</tr>
+    				@endforeach
+    			@endif
+    			</tbody>	
     		</table>
     	</div>
     	<div class="panel-footer">
@@ -48,5 +70,12 @@
 
 @stop
 @section('modals')
-
+	@if (count($discounts) > 0)
+		@foreach($discounts as $discount)
+		{!! View::make('partials.discounts.delete')
+			->with('id',$discount->id)
+			->render() 
+		!!}
+		@endforeach
+	@endif
 @stop

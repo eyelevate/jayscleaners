@@ -133,11 +133,11 @@
 							<td>Tax</td>
 							<th id="invoiceItem-tax"></th>
 						</tr>
-						<tr>
+<!-- 						<tr>
 							<td colspan="3" style="border:none;"></td>
-							<td>Discount</td>
+							<td><a href="#" data-toggle="modal" data-target="#discount">Discount</a></td>
 							<th id="invoiceItem-discount"></th>
-						</tr>
+						</tr> -->
 						<tr>
 							<td colspan="3" style="border:none;"></td>
 							<th>Total</th>
@@ -219,4 +219,6 @@
 	{!! View::make('partials.invoices.print')
 		->render()
 	!!}
+
+
 @stop

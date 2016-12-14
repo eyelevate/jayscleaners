@@ -91,14 +91,22 @@ pickup = {
 
 			$("#invoiceForm").submit();
 		});
+
+		$("#discountRemove").click(function() {
+			$("#discount_id").find('option[value="0"]').attr('selected','selected');
+			requests.select_invoice();
+		});
+
+		$("#discountSelect").click(function(){
+			requests.select_invoice();
+		});
 	}
 };
 
 requests = {
 	select_invoice:function(){
-		console.log('test');
 		customer_id = $("#customer_id").val();
-		console.log(customer_id);
+		discount_id = $("#discount_id option:selected").val();
 		invoice_ids = [];
 		$("#invoice_tbody").find('tr.success').each(function(e){
 			var id = $(this).attr('id').replace('invoice_tr-','');
@@ -111,12 +119,14 @@ requests = {
 			{
 				"_token": token,
 				"invoice_ids": invoice_ids,
-				"customer_id": customer_id
+				"customer_id": customer_id,
+				"discount_id": discount_id
 			},function(result){
 				if (result.status) {
 					var totals = result.invoice_data.totals;
 					var credits = parseFloat(result.credits);
 					var total_due = parseFloat(result.total_due);
+					var discount = parseFloat(result.discount);
 					var total_due_html = result.total_due_html;
 
 					$("#selected_tbody").html(result.invoice_data.invoices);
@@ -124,8 +134,8 @@ requests = {
 					$("#tax_td").html(totals.tax_html);
 					$("#quantity_td").html(totals.quantity);
 					$("#total_td").html(totals.total_html);
+					$("#discount_td").html(result.discount_html);
 					$("#due_td").html(total_due_html);
-
 					$(".amount_due").attr('total',total_due).val(total_due_html);
 				} else{
 					$("#selected_tbody").html('');

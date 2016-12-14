@@ -36,7 +36,29 @@
     					<th>Status</th>
     					<th>Action</th>
     				</tr>
-    			</thead>	
+    			</thead>
+    			<tbody>
+    			<?php if(count($discounts) > 0): ?>
+    				<?php foreach($discounts as $discount): ?>
+    				<tr class="<?php echo e(($discount->status == 1 ? 'success' : 'error')); ?>">
+    					<td><?php echo e($discount->id); ?></td>
+    					<td><?php echo e($discount->name); ?></td>
+    					<td><?php echo e($discount->type); ?></td>
+    					<td><?php echo e($discount->group); ?></td>
+    					<td><?php echo e($discount->item); ?></td>
+    					<td><?php echo e($discount->rate); ?></td>
+    					<td><?php echo e($discount->discount); ?></td>
+    					<td><?php echo e(date('n/d/Y g:ia',strtotime($discount->start_date))); ?></td>
+    					<td><?php echo e(date('n/d/Y g:ia',strtotime($discount->end_date))); ?></td>
+    					<td><?php echo e($discount->status_label); ?></td>
+    					<td>
+    						<a href="<?php echo e(route('discounts_edit',$discount->id)); ?>">Edit</a> 
+    						<a style="color:#ff0000" href="#" data-toggle="modal" data-target="#delete-<?php echo e($discount->id); ?>">Delete</a>
+    					</td>
+    				</tr>
+    				<?php endforeach; ?>
+    			<?php endif; ?>
+    			</tbody>	
     		</table>
     	</div>
     	<div class="panel-footer">
@@ -47,6 +69,13 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('modals'); ?>
+	<?php if(count($discounts) > 0): ?>
+		<?php foreach($discounts as $discount): ?>
+		<?php echo View::make('partials.discounts.delete')
+			->with('id',$discount->id)
+			->render(); ?>
 
+		<?php endforeach; ?>
+	<?php endif; ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

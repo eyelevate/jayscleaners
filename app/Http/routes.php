@@ -228,6 +228,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/discounts/edit/{id}',['as'=>'discounts_edit','uses'=>'DiscountsController@getEdit']);
 		Route::post('/discounts/add',['as'=>'discounts_add_post','uses'=>'DiscountsController@postAdd']);
 		Route::post('/discounts/edit',['as'=>'discounts_edit_post','uses'=>'DiscountsController@postEdit']);
+		Route::post('/discounts/delete',['as'=>'discounts_delete_post','uses'=>'DiscountsController@postDelete']);
+
 		//Invoices
 		Route::get('/invoices',['as'=>'invoices_index','uses'=>'InvoicesController@getIndex']);
 		Route::get('/invoices/dropoff/{id}',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);

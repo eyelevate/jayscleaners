@@ -101,10 +101,10 @@
 							</tr>
 							<tr>
 								<th colspan="4" style="text-align:right;">Store Credit</th>
-								<td id="credit_td" credit="<?php echo e($credits); ?>"><?php echo e(money_format('$%i',$credits)); ?></td>
+								<td id="credit_td" credit="<?php echo e($credits); ?>"><?php echo e(money_format('($%i)',$credits)); ?></td>
 							</tr>
 							<tr>
-								<th colspan="4" style="text-align:right;">Discount</th>
+								<th colspan="4" style="text-align:right;"><a href="#" data-toggle="modal" data-target="#discount">Discount</a></th>
 								<td id="discount_td"></td>
 							</tr>
 							<tr>
@@ -155,6 +155,10 @@
 		->render(); ?>
 
 	<?php echo View::make('partials.invoices.check')
+		->render(); ?>
+
+	<?php echo View::make('partials.invoices.discount') 
+		->with('discounts',$discounts)
 		->render(); ?>
 
 <?php $__env->stopSection(); ?>

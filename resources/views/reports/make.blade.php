@@ -164,6 +164,10 @@
 					<td>{{ $reports['totals']['tax'] }}</td>
 				</tr>
 				<tr>
+					<th colspan="3" style="text-align:right">Credit</th>
+					<td>{{ $reports['totals']['credit'] }}</td>
+				</tr>
+				<tr>
 					<th colspan="3" style="text-align:right">Discount</th>
 					<td>{{ $reports['totals']['discount'] }}</td>
 				</tr>
