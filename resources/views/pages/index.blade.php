@@ -86,11 +86,11 @@
 <section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-4.png" style="min-height:300px;"></section>
 <!-- Two -->
 <br/>
-<section class="wrapper style1 container special">
+<section class="wrapper style1 container special clearfix">
 	<div class="row">
 		<div class="4u 12u(narrower)">
 
-			<section class="read_articles">
+			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
 				<header>
 					<span class="icon featured fa-history"></span>
@@ -110,7 +110,7 @@
 		</div>
 		<div class="4u 12u(narrower)">
 
-			<section class="read_articles">
+			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
 				<header>
 					<span class="icon featured fa-check-square-o"></span>
@@ -123,7 +123,7 @@
 		</div>
 		<div class="4u 12u(narrower)">
 
-			<section class="read_articles">
+			<section class="read_articles" style="background-color:#F3F6FA; padding:5px;">
 				
 				<header>
 					<span class="icon featured fa-truck"></span>
@@ -138,91 +138,94 @@
 
 	</div>
 </section>
-<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-5.png" style="min-height:300px;"></section>
 
-<!-- One -->
-<section class="wrapper style3 container special">
+<div class="row-fluid">
+	<article class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-5.png" style="min-height:300px; position:relative;"></article>
 
-	<div class="row">
-		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
-			<span class="icon featured fa-map-o"></span>
-			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Where to find us</h3>
-		</header>
-		<section class="clearfix">
-		<p>
-			We proudly serve the Seattle region at our conveniently located Montlake and Roosevelt locations.  Additionally, we offer free pickup/delivery to local Seattle neighborhood
-			homes, offices, business and more.
-		</p>
-		@if (count($companies) > 0)
-			@foreach($companies as $company)
-			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:30px;">
-				<div style="margin-bottom:10px;">
-					<address>
-						<strong class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->name }}</strong>
-						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->street }}</span>
-						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->city }}, {{ $company->state }} {{ $company->zipcode }}</span>
-						<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->phone }}</span>
-
-					</address>
-					<a href="{{ $company->map }}" class="btn btn-warning btn-lg"><i class="fa fa-map-marker"></i>&nbsp;Directions</a>
-				</div>
-
-				
-			</div>
-			@endforeach
-		@endif
-		</section>
-	</div>
-	<div id="store_hours" class="row">
-		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
-			<span class="icon featured fa-clock-o"></span>
-			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Store Hours</h3>
-		</header>
-		<section class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-			<div class="table-responsive">
-				<table class="table table-condensed">	
-					<thead>
-						<tr>
-							<th style="text-align:right;"><strong>Day</strong></th>
-							<th style="text-align:center;"><strong>Hours</strong></th>
-							<th style="text-align:left;"><strong>Currently</strong></th>
-						</tr>
-					</thead>
-					<tbody>
-					@if (count($companies) > 0)
-						@foreach($companies as $company)
-							@if(count($company->store_hours) > 0 && $company->id == 1)
-								@foreach($company->store_hours as $key => $value)
-									@if (date('l') == $key)
-									<tr class="warning" style="color:#5e5e5e; font-weight:bold;">
-										<th style="text-align:right;"><strong>{{ $key }}</strong></th>
-										<td style="text-align:center;"><strong>{{ $value }}</strong></td>
-										<td style="text-align:left;"><strong style="color:{{ $company['open_status'] ? 'green' : 'red' }};">{{ $company['open_status'] ? 'Open' : 'Closed' }}</strong></td>
-									</tr>
-									@else
-									<tr>
-										<th style="text-align:right;">{{ $key }}</th>
-										<td style="text-align:center;">{{ $value }}</td>
-										<td style="text-align:left;"></td>
-									</tr>
-									@endif
-								
-								@endforeach
-							@endif
+	<!-- One -->
+	<section class="wrapper style3 container special">
 		
-						@endforeach
-					@endif
-					</tbody>
-				</table>
-			</div>
-		</section>
+		<div class="row">
+			<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
+				<span class="icon featured fa-map-o"></span>
+				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Where to find us</h3>
+			</header>
+			<section class="clearfix">
+			<p>
+				We proudly serve the Seattle region at our conveniently located Montlake and Roosevelt locations.  Additionally, we offer free pickup/delivery to local Seattle neighborhood
+				homes, offices, business and more.
+			</p>
+			@if (count($companies) > 0)
+				@foreach($companies as $company)
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:30px;">
+					<div style="margin-bottom:10px;">
+						<address>
+							<strong class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->name }}</strong>
+							<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->street }}</span>
+							<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->city }}, {{ $company->state }} {{ $company->zipcode }}</span>
+							<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12">{{ $company->phone }}</span>
+
+						</address>
+						<a href="{{ $company->map }}" class="btn btn-warning btn-lg"><i class="fa fa-map-marker"></i>&nbsp;Directions</a>
+					</div>
+
+					
+				</div>
+				@endforeach
+			@endif
+			</section>
+		</div>
+		<div id="store_hours" class="row">
+			<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
+				<span class="icon featured fa-clock-o"></span>
+				<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Store Hours</h3>
+			</header>
+			<section class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+				<div class="table-responsive">
+					<table class="table table-condensed">	
+						<thead>
+							<tr>
+								<th style="text-align:right;"><strong>Day</strong></th>
+								<th style="text-align:center;"><strong>Hours</strong></th>
+								<th style="text-align:left;"><strong>Currently</strong></th>
+							</tr>
+						</thead>
+						<tbody>
+						@if (count($companies) > 0)
+							@foreach($companies as $company)
+								@if(count($company->store_hours) > 0 && $company->id == 1)
+									@foreach($company->store_hours as $key => $value)
+										@if (date('l') == $key)
+										<tr class="warning" style="color:#5e5e5e; font-weight:bold;">
+											<th style="text-align:right;"><strong>{{ $key }}</strong></th>
+											<td style="text-align:center;"><strong>{{ $value }}</strong></td>
+											<td style="text-align:left;"><strong style="color:{{ $company['open_status'] ? 'green' : 'red' }};">{{ $company['open_status'] ? 'Open' : 'Closed' }}</strong></td>
+										</tr>
+										@else
+										<tr>
+											<th style="text-align:right;">{{ $key }}</th>
+											<td style="text-align:center;">{{ $value }}</td>
+											<td style="text-align:left;"></td>
+										</tr>
+										@endif
+									
+									@endforeach
+								@endif
+			
+							@endforeach
+						@endif
+						</tbody>
+					</table>
+				</div>
+			</section>
 
 
-	</div>
+		</div>
 
 
-</section>
+	</section>
+</div>
 <section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-2.png" style="min-height:300px;" ></section>
 {!! View::make('partials.pages.services')->render() !!}
 

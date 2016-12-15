@@ -54,11 +54,20 @@
 			<footer id="footer">
 
 				<ul class="icons">
-					<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="https://twitter.com/mrjayscleaners" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.facebook.com/Jays-Cleaners-863927957082219/" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
 					<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
 				</ul>
-
+				<ul class="icons">
+					<li>
+						<!-- (c) 2005, 2016. Authorize.Net is a registered trademark of CyberSource Corporation --> 
+						<div class="AuthorizeNetSeal"> 
+							<script type="text/javascript" language="javascript">var ANS_customer_id="ebe6e342-11f7-41de-b5f8-d1e8cdfa46c5";</script> 
+							<script type="text/javascript" language="javascript" src="//verify.authorize.net/anetseal/seal.js" ></script> 
+							<a href="http://www.authorize.net/" id="AuthorizeNetText" target="_blank">Online Payments</a> 
+						</div>
+					</li>
+				</ul>
 				<ul class="copyright">
 					<li>&copy; {{ date('Y') }}</li><li> Jays Cleaners</li>
 				</ul>
