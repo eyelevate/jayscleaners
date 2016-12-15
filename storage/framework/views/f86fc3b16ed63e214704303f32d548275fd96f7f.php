@@ -93,7 +93,7 @@
 <br/>
 <section class="wrapper style1 container special clearfix">
 	<div class="row">
-		<div class="4u 12u(narrower)">
+		<div class="4u 12u(narrower)" style="background-color:#f3f6fa; padding:10px;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
@@ -113,7 +113,7 @@
 			</section>
 
 		</div>
-		<div class="4u 12u(narrower)">
+		<div class="4u 12u(narrower)" style="background-color:#f3f6fa; padding:10px;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
@@ -126,7 +126,7 @@
 			</section>
 
 		</div>
-		<div class="4u 12u(narrower)">
+		<div class="4u 12u(narrower)" style="background-color:#f3f6fa; padding:10px;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding:5px;">
 				
@@ -135,7 +135,7 @@
 					<h3>Delivery Specialists</h3>
 				</header>
 				<p>Create an Account using our <a href="<?php echo e(route('pages_registration')); ?>">Sign Up</a> page and set up a delivery schedule today. Returning Members can simply <a href="<?php echo e(route('pages_login')); ?>">Login</a> to schedule a delivery.</p>  
-				<p>Special Instructions for any article or garment and delivery location (concierge, front porch, etc) can be included on each delivery schedule. Once your finished, we will send you an email confirmation.</p>
+				<p>Special Instructions for any article or garment and delivery location (concierge, front porch, etc) can be included on each delivery schedule. Once you are finished, we will send you an email confirmation.</p>
 				<a href="<?php echo e(route('delivery_pickup')); ?>" class="btn btn-lg btn-info">Schedule A Delivery</a>
 			</section>
 
