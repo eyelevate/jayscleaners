@@ -88,7 +88,7 @@
 <br/>
 <section class="wrapper style1 container special clearfix">
 	<div class="row">
-		<div class="4u 12u(narrower)" style="background-color:#f3f6fa; padding:10px;">
+		<div class="4u 12u(narrower)" style="background-color:#f3f6fa;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
@@ -108,7 +108,7 @@
 			</section>
 
 		</div>
-		<div class="4u 12u(narrower)" style="background-color:#f3f6fa; padding:10px;">
+		<div class="4u 12u(narrower)" style="background-color:#f3f6fa;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
@@ -121,7 +121,7 @@
 			</section>
 
 		</div>
-		<div class="4u 12u(narrower)" style="background-color:#f3f6fa; padding:10px;">
+		<div class="4u 12u(narrower)" style="background-color:#f3f6fa;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding:5px;">
 				
