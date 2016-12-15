@@ -30,20 +30,18 @@
 
 
 			<!-- Main -->
-			<div id="main">
-				<section class="container">
-					<div class="row-fluid ">
-					<?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-					</div>
-					<?php echo $__env->yieldContent('content'); ?>
-					<article class="wrapper style3 container special">
+			<div id="main" style="margin-bottom:0px; padding-bottom:0px;">
 
-						<header>
-							<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
-							<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
-						</header>
+				<div class="row-fluid ">
+				<?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+				</div>
+				<?php echo $__env->yieldContent('content'); ?>
+				<section class="wrapper style3 container special">
+					<header>
+						<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+						<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
+					</header>
 
-					</article>
 				</section>
 
 			</div>
@@ -54,9 +52,10 @@
 			<footer id="footer">
 
 				<ul class="icons">
-					<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
+					<li><a target="__blank" href="https://www.yelp.com/biz/jays-dry-cleaners-roosevelt-seattle" class="icon circle fa-yelp" style="color:#ffffff; background-color:#DB6B67;"><span class="label">Yelp</span></a></li>
+					<li><a target="__blank" href="https://plus.google.com/+JaysDryCleanersRooseveltSeattle" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
+					<li><a target="__blank" href="https://twitter.com/mrjayscleaners" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a target="__blank" href="https://www.facebook.com/Jays-Cleaners-863927957082219/" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>	
 				</ul>
 				<ul class="icons">
 					<li>

@@ -39,7 +39,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/pricing',  ['as'=>'pages_pricing', 'uses' => 'PagesController@getPricing']);
     Route::get('/reset-password/{token}',['as'=>'pages_reset_password','uses'=>'PagesController@getResetPassword']);
     Route::post('/reset-password',['as'=>'pages_reset_password_post','uses'=>'PagesController@postResetPassword']);
-
+    Route::get('/terms-of-service',['as'=>'pages_terms','uses'=>'PagesController@getTerms']);
     Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
     Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
     Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    

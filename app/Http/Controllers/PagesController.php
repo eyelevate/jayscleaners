@@ -315,4 +315,10 @@ class PagesController extends Controller
 
         // remove 
     }
+
+    public function getTerms() {
+        $this->layout = 'layouts.bill';
+        return view('pages.terms')
+            ->with('layout',$this->layout);
+    }
 }
