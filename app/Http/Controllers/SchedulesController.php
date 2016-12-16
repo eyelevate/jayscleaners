@@ -134,7 +134,7 @@ class SchedulesController extends Controller
             $check = false;
             if ($request->session()->has('delivery_route')) {
                 // check to see if todays session has been made
-                $check = ($dr[strtotime($today)]) ? false : true;
+                $check = (isset($dr[strtotime($today)])) ? false : true;
             } else {
                 $check = true;
             }
