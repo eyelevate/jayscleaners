@@ -20,6 +20,8 @@ use App\Http\Controllers\Controller;
 use App\Job;
 use App\User;
 use App\Admin;
+use App\Address;
+use App\Card;
 use App\Layout;
 use App\Company;
 use App\Custid;
@@ -30,6 +32,7 @@ use App\Inventory;
 use App\InventoryItem;
 use App\Color;
 use App\Delivery;
+use App\Profile;
 use App\Report;
 use App\Schedule;
 use App\Tax;
@@ -202,7 +205,7 @@ class AdminsController extends Controller
         ->with('layout',$this->layout);       
     }
 
-    public function getView($id = null){
+    public function getView(){
         $this->layout = 'admins.login';
         # update invoice to set users table id as customer_id instead of user_id
         // $invoices = Invoice::whereBetween('id',[65001,70000])->get();
@@ -236,7 +239,7 @@ class AdminsController extends Controller
 
         # update the invoice to make invoice items
 
-        // $invoices = Invoice::whereBetween('id', [65001, 70000])->get();
+        // $invoices = Invoice::whereBetween('id', [70001, 72500])->get();
         // if($invoices){
         //     $itemsToInventory = Report::itemsToInventory(1);
         //     foreach ($invoices as $invoice) {
@@ -275,7 +278,7 @@ class AdminsController extends Controller
         // }
 
         #update transactions
-        // $transactions = Transaction::whereBetween('id', [25001,30000])->get();
+        // $transactions = Transaction::whereBetween('id', [30001,35000])->get();
         // if ($transactions) {
         //     foreach ($transactions as $transaction) {
         //         $transaction_id = $transaction->id;
@@ -300,11 +303,8 @@ class AdminsController extends Controller
         //                                 Job::dump('could not save '.$transaction_id.' no such invoice - '.$invoice_id);
         //                             }
         //                         }
-
         //                     }
-
         //                 }
-
         //             }
         //         }
         //     }
@@ -387,10 +387,135 @@ class AdminsController extends Controller
         //                     Job::dump('saved id #'.$uid.' to transaction #'.$transaction->id);
         //                 }
         //             }
-        //         }
-                
+        //         } 
         //     }
         // }
+
+        # payment profiles and ids
+        // $users = User::where('profile_id','>',0)->get();
+        // if (count($users)) {
+        //     foreach ($users as $user) {
+        //         $profile_id = $user->profile_id;
+        //         $payment_id = $user->payment_id;
+        //         $user_id = $user->id;
+        //         $profile = new Profile();
+        //         $profile->user_id = $user_id;
+        //         $profile->company_id = 1;
+        //         $profile->profile_id = $profile_id;
+        //         $profile->status = 1;
+        //         if ($profile->save()) {
+        //             Job::dump('saved profile #'.$profile->id);
+        //         }
+        //     }
+        // }
+
+        # card ids
+        // $users = User::where('profile_id','>',0)->get();
+        // if (count($users)) {
+        //     foreach ($users as $user) {
+        //         $profile_id = $user->profile_id;
+        //         $payment_id = $user->payment_id;
+        //         $user_id = $user->id;
+        //         $street = $user->street;
+        //         $suite = $user->suite;
+        //         $city = $user->city;
+        //         $state = $user->state;
+        //         $zipcode = $user->zipcode;
+
+        //         $address = new Card();
+        //         $address->user_id = $user_id;
+        //         $address->company_id = 1;
+        //         $address->profile_id = $profile_id;
+        //         $address->root_payment_id = $payment_id;
+        //         $address->payment_id = $payment_id;
+        //         $address->status = 1;
+        //         $address->street = $street;
+        //         $address->suite = $suite;
+        //         $address->city = $city;
+        //         $address->state = $state;
+        //         $address->zipcode = $zipcode;
+        //         if ($payment_id != '') {
+        //             if ($address->save()) {
+        //                 Job::dump('saved card #'.$address->id);
+        //             }
+        //         }   
+        //     }
+        // }
+        # card ids
+        // $users = User::where('profile_id','>',0)->get();
+        // if (count($users)) {
+        //     foreach ($users as $user) {
+        //         $profile_id = $user->profile_id;
+        //         $payment_id = $user->payment_id;
+        //         $user_id = $user->id;
+        //         $street = $user->street;
+        //         $suite = $user->suite;
+        //         $city = $user->city;
+        //         $state = $user->state;
+        //         $zipcode = $user->zipcode;
+
+        //         $address = new Address();
+        //         $address->user_id = $user_id;
+        //         $address->name = 'Primary Address';
+        //         $address->primary_address = 1;
+        //         $address->concierge_name = ucFirst($user->first_name).' '.ucFirst($user->last_name);
+        //         $address->concierge_number = Job::formatPhoneString($user->phone);
+        //         $address->status = 1;
+        //         $address->street = $street;
+        //         $address->suite = $suite;
+        //         $address->city = $city;
+        //         $address->state = $state;
+        //         $address->zipcode = $zipcode;
+        //         if ($street != '') {
+        //             if ($address->save()) {
+        //                 Job::dump('saved card #'.$address->id);
+        //             }
+        //         }   
+        //     }
+        // }
+
+        #schedules fix add in address_id
+        $schedules = Schedule::all();
+        if (count($schedules) > 0) {
+            foreach ($schedules as $schedule) {
+                $sch_id = $schedule->id;
+                $customer_id = $schedule->customer_id;
+                $addresses = Address::where('user_id',$customer_id)
+                    ->where('primary_address',1)
+                    ->get();
+                $sch = Schedule::find($sch_id);
+                $address_id = NULL;
+                if (count($addresses) > 0) {
+                    foreach ($addresses as $address) {
+                        $address_id = $address->id;
+
+                    }
+                }
+                $sch->pickup_address = ($schedule->pickup_delivery_id > 0) ? $address_id : NULL;
+                $sch->dropoff_address = ($schedule->dropoff_delivery_id > 0) ? $address_id : NULL;
+                
+                $cards = Card::where('user_id',$customer_id)->get();
+                $card_id = NULL;
+                if (count($cards) > 0) {
+                    foreach ($cards as $card) {
+                        $card_id = $card->id;
+                    }
+                }
+
+                $sch->card_id = $card_id;
+
+                // change status
+                $dropoff_date = strtotime(date('Y-m-d 23:59:59',strtotime($schedule->dropoff_date)));
+                $today_date = strtotime(date('Y-m-d H:i:s'));
+                if ($today_date >= $dropoff_date) {
+                    $sch->status = 12;
+                }
+
+                if ($sch->save()) {
+                    Job::dump('updated schedule #'.$sch->id);
+                }
+            }
+        }
 
         return view('admins.view')
         ->with('layout',$this->layout);
@@ -606,8 +731,8 @@ class AdminsController extends Controller
             ->paginate(20);
         if (count($users) > 0) {
             foreach ($users as $key => $value) {
-                if (isset($users[$key]['remember_token'])) {
-                    switch($users[$key]['remember_token']) {
+                if (isset($users[$key]['starch_old'])) {
+                    switch($users[$key]['starch_old']) {
                         case 1:
                             $users[$key]['status'] = 'Updated';
                         break;
@@ -642,7 +767,7 @@ class AdminsController extends Controller
             $send_to = 'onedough83@gmail.com';
             $title = 'Jays Cleaners - Action Required Message';
             $token = Job::generateRandomString(8);
-            $emailed_status = $users->remember_token;
+            $emailed_status = $users->starch_old;
             switch($emailed_status) {
                 case 1:
                 $status = 1; // password updated
@@ -662,7 +787,7 @@ class AdminsController extends Controller
             }
 
             $users->token = $token;
-            $users->remember_token = 2;
+            $users->starch_old = 2;
 
             if ($users->save()) {
 

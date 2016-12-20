@@ -49,5 +49,6 @@ class Kernel extends HttpKernel
         'frontend' => \App\Http\Middleware\FrontendMiddleware::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'forceSSL' => \App\Http\Middleware\ForceSSL::class
     ];
 }

@@ -64,25 +64,70 @@ class PagesController extends Controller
         $username = Input::get('username');
         $password = Input::get('password');
         $remember = Input::get('remember');
-
+        $users = User::where('username',$username)->get();
+        $password_expired = 3;
         if($remember) { // If user requests to be remembered create session
             if (Auth::attempt(['username' => $username, 'password' => $password], $remember)) {
                 Flash::success('Welcome back '.$username.'!');
 
+                $user_id = Auth::user()->id;
+                $password_token = Auth::user()->starch_old;
+                if ($password_token != 1) {
+                    $user = User::find($user_id);
+                    $user->starch_old = 1;
+                    $user->save();
+                }
+
                 //redirect to intended page
                 return (Session::has('intended_url')) ? Redirect::to(Session::get('intended_url')) : redirect()->intended('/');
             } else { //LOGING FAILED
-                Flash::error('Wrong Username or Password!');
+                
+                if (count($users) > 0) {
+                    foreach ($users as $user) {
+                        $password_expired = ($user->starch_old != '') ? $user->starch_old : 3;
+                    }
+                    if ($password_expired != 1) {
+                        Flash::error('Password has expired. Please reset your password using the form below. Thank you.');
+                        return redirect('/password/reset');
+                    } else {
+                        Flash::error('Wrong Username or Password!');
+
+                    }
+                } else {
+                    Flash::error('Wrong Username or Password!');
+                }
+
+                
                 return view('pages.login')
                 ->with('layout',$this->layout);
             }   
         } else {
             if (Auth::attempt(['username'=>$username, 'password'=>$password])) {
                 Flash::success('Welcome back '.$username.'!');
+                $user_id = Auth::user()->id;
+                $password_token = Auth::user()->starch_old;
+                if ($password_token != 1) {
+                    $user = User::find($user_id);
+                    $user->starch_old = 1;
+                    $user->save();
+                }
 
                 return (Session::has('intended_url')) ? Redirect::to(Session::get('intended_url')) : redirect()->intended('/');
             } else { //LOGIN FAILED
-                Flash::error('Wrong Username or Password!');
+                if (count($users) > 0) {
+                    foreach ($users as $user) {
+                        $password_expired = ($user->starch_old != '') ? $user->starch_old : 3;
+                    }
+                    if ($password_expired != 1) {
+                        Flash::error('Password has expired. Please reset your password using the form below. Thank you.');
+                        return redirect('/password/reset');
+                    } else {
+                        Flash::error('Wrong Username or Password!');
+                    }
+                } else {
+                    Flash::error('Wrong Username or Password!');
+                }
+                
                 return view('pages.login')
                 ->with('layout',$this->layout);
             }   
@@ -272,7 +317,7 @@ class PagesController extends Controller
             $users = User::where('token',$token)->get();
             if (count($users) > 0) {
                 foreach ($users as $user) {
-                    $status = $user->remember_token;
+                    $status = $user->starch_old;
                     if ($status == 1) {
                         Flash::error('You have already changed the password. Please use the "forgot password" form on the login page to request a new form. Thank you.');
                         return Redirect::route('pages_index');
@@ -306,7 +351,7 @@ class PagesController extends Controller
         $users = User::find($user_id);
         $users->password = bcrypt($request->password);
         $users->token = NULL;
-        $users->remember_token = 1;
+        $users->starch_old = 1;
         if ($users->save()) {
             Flash::success('Successfully updated password. Please log in with your new password.');
             return Redirect::route('pages_login');
