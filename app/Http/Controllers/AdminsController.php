@@ -683,6 +683,12 @@ class AdminsController extends Controller
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
         if ($authenticate){
             switch ($table) {
+                case 'addresses':
+                    $data[$table] = Address::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'cards':
+                    $data[$table] = Card::whereBetween('id',[$start,$end])->get();
+                    break;
                 case 'colors':
                     $data[$table] = Color::whereBetween('id',[$start,$end])->get();
                     break;
@@ -703,6 +709,9 @@ class AdminsController extends Controller
                     break;
                 case 'invoices':
                     $data[$table] = Invoice::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'profiles':
+                    $data[$table] = Profile::whereBetween('id',[$start,$end])->get();
                     break;
                 case 'tax':
                     $data[$table] = Tax::whereBetween('id',[$start,$end])->get();
