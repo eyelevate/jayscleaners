@@ -319,28 +319,28 @@ class AdminsController extends Controller
         //         $last_name = $user->last_name;
         //         $hanger_old = $user->shirt_old;
         //         $starch = $user->starch_old;
-        //         switch($hanger_old){
-        //             case 'hanger':
-        //                 $hanger = 1;
-        //             break;
+        //         // switch($hanger_old){
+        //         //     case 'hanger':
+        //         //         $hanger = 1;
+        //         //     break;
 
-        //             case 'box':
-        //                 $hanger = 2;
-        //             break;
+        //         //     case 'box':
+        //         //         $hanger = 2;
+        //         //     break;
 
-        //             case 'fold':
-        //                 $hanger = 2;
-        //             break;
+        //         //     case 'fold':
+        //         //         $hanger = 2;
+        //         //     break;
 
-        //             default:
-        //                 $hanger = 1;
-        //             break;
-        //         }
-                // $us = User::find($user_id);
-                // $us->shirt = $hanger;
-                // if($us->save()){
-                //     Job::dump($hanger);
-                // }
+        //         //     default:
+        //         //         $hanger = 1;
+        //         //     break;
+        //         // }
+        //         // $us = User::find($user_id);
+        //         // $us->shirt = $hanger;
+        //         // if($us->save()){
+        //         //     Job::dump($hanger);
+        //         // }
 
         //         $mark = Custid::createOriginalMark($user); 
         //         // strtoupper(substr($last_name, 0,1)).$user_id.strtoupper(substr($starch,0,1));
@@ -445,54 +445,54 @@ class AdminsController extends Controller
         // }
 
         # remove deleted card_ids from server
-        $cards = Card::all();
-        if (count($cards) > 0) {
-            $companies = Company::find(1);
+        // $cards = Card::all();
+        // if (count($cards) > 0) {
+        //     $companies = Company::find(1);
 
-            foreach ($cards as $card) {
-                $card_id = $card->id;
-                $profile_id = $card->profile_id;
-                $payment_id = $card->payment_id;
+        //     foreach ($cards as $card) {
+        //         $card_id = $card->id;
+        //         $profile_id = $card->profile_id;
+        //         $payment_id = $card->payment_id;
 
-                // Common setup for API credentials (merchant)
-                $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-                $merchantAuthentication->setName($companies->payment_api_login);
-                $merchantAuthentication->setTransactionKey($companies->payment_gateway_id);
-                $refId = 'ref' . time();
+        //         // Common setup for API credentials (merchant)
+        //         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+        //         $merchantAuthentication->setName($companies->payment_api_login);
+        //         $merchantAuthentication->setTransactionKey($companies->payment_gateway_id);
+        //         $refId = 'ref' . time();
 
-                //request requires customerProfileId and customerPaymentProfileId
-                $request = new AnetAPI\GetCustomerPaymentProfileRequest();
-                $request->setMerchantAuthentication($merchantAuthentication);
-                $request->setRefId( $refId);
-                $request->setCustomerProfileId($profile_id);
-                $request->setCustomerPaymentProfileId($payment_id);
-                $request->setUnmaskExpirationDate(true);
+        //         //request requires customerProfileId and customerPaymentProfileId
+        //         $request = new AnetAPI\GetCustomerPaymentProfileRequest();
+        //         $request->setMerchantAuthentication($merchantAuthentication);
+        //         $request->setRefId( $refId);
+        //         $request->setCustomerProfileId($profile_id);
+        //         $request->setCustomerPaymentProfileId($payment_id);
+        //         $request->setUnmaskExpirationDate(true);
 
-                $controller = new AnetController\GetCustomerPaymentProfileController($request);
-                // $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
-                $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
-                if(($response != null)){
-                    if ($response->getMessages()->getResultCode() != "Ok") {
-                        $deleting = Card::find($card->id);
-                        if ($deleting->delete()) {
-                            Job::dump('deleting #'.$card->id);
-                        }
+        //         $controller = new AnetController\GetCustomerPaymentProfileController($request);
+        //         // $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+        //         $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+        //         if(($response != null)){
+        //             if ($response->getMessages()->getResultCode() != "Ok") {
+        //                 $deleting = Card::find($card->id);
+        //                 if ($deleting->delete()) {
+        //                     Job::dump('deleting #'.$card->id);
+        //                 }
                         
-                    } else {
-                        // expiration_date
-                        $expiration_date = $response->getPaymentProfile()->getPayment()->getCreditCard()->getExpirationDate();
-                        $exp_month = date('m',strtotime($expiration_date.'-01 00:00:00'));
-                        $exp_year = date('Y',strtotime($expiration_date.'-01 00:00:00'));
-                        $update = Card::find($card->id);
-                        $update->exp_month = $exp_month;
-                        $update->exp_year = $exp_year;
-                        if ($update->save()) {
-                            Job::dump('Saved exp_month='.$exp_month.' exp_year='.$exp_year.' id='.$update->id);
-                        }
-                    } 
-                }
-            }
-        }
+        //             } else {
+        //                 // expiration_date
+        //                 $expiration_date = $response->getPaymentProfile()->getPayment()->getCreditCard()->getExpirationDate();
+        //                 $exp_month = date('m',strtotime($expiration_date.'-01 00:00:00'));
+        //                 $exp_year = date('Y',strtotime($expiration_date.'-01 00:00:00'));
+        //                 $update = Card::find($card->id);
+        //                 $update->exp_month = $exp_month;
+        //                 $update->exp_year = $exp_year;
+        //                 if ($update->save()) {
+        //                     Job::dump('Saved exp_month='.$exp_month.' exp_year='.$exp_year.' id='.$update->id);
+        //                 }
+        //             } 
+        //         }
+        //     }
+        // }
 
 
         # address ids
