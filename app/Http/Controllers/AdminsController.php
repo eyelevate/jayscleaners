@@ -39,6 +39,8 @@ use App\Tax;
 use App\Transaction;
 use App\Zipcode;
 use App\ZipcodeRequest;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
 // use App\Role;
 // use App\RoleUser;
 // use App\Permission;
@@ -441,7 +443,59 @@ class AdminsController extends Controller
         //         }   
         //     }
         // }
-        # card ids
+
+        # remove deleted card_ids from server
+        $cards = Card::all();
+        if (count($cards) > 0) {
+            $companies = Company::find(1);
+
+            foreach ($cards as $card) {
+                $card_id = $card->id;
+                $profile_id = $card->profile_id;
+                $payment_id = $card->payment_id;
+
+                // Common setup for API credentials (merchant)
+                $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+                $merchantAuthentication->setName($companies->payment_api_login);
+                $merchantAuthentication->setTransactionKey($companies->payment_gateway_id);
+                $refId = 'ref' . time();
+
+                //request requires customerProfileId and customerPaymentProfileId
+                $request = new AnetAPI\GetCustomerPaymentProfileRequest();
+                $request->setMerchantAuthentication($merchantAuthentication);
+                $request->setRefId( $refId);
+                $request->setCustomerProfileId($profile_id);
+                $request->setCustomerPaymentProfileId($payment_id);
+                $request->setUnmaskExpirationDate(true);
+
+                $controller = new AnetController\GetCustomerPaymentProfileController($request);
+                // $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+                $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+                if(($response != null)){
+                    if ($response->getMessages()->getResultCode() != "Ok") {
+                        $deleting = Card::find($card->id);
+                        if ($deleting->delete()) {
+                            Job::dump('deleting #'.$card->id);
+                        }
+                        
+                    } else {
+                        // expiration_date
+                        $expiration_date = $response->getPaymentProfile()->getPayment()->getCreditCard()->getExpirationDate();
+                        $exp_month = date('m',strtotime($expiration_date.'-01 00:00:00'));
+                        $exp_year = date('Y',strtotime($expiration_date.'-01 00:00:00'));
+                        $update = Card::find($card->id);
+                        $update->exp_month = $exp_month;
+                        $update->exp_year = $exp_year;
+                        if ($update->save()) {
+                            Job::dump('Saved exp_month='.$exp_month.' exp_year='.$exp_year.' id='.$update->id);
+                        }
+                    } 
+                }
+            }
+        }
+
+
+        # address ids
         // $users = User::where('profile_id','>',0)->get();
         // if (count($users)) {
         //     foreach ($users as $user) {
@@ -475,50 +529,50 @@ class AdminsController extends Controller
         // }
 
         #schedules fix add in address_id
-        $schedules = Schedule::all();
-        if (count($schedules) > 0) {
-            foreach ($schedules as $schedule) {
-                $sch_id = $schedule->id;
-                $customer_id = $schedule->customer_id;
-                $addresses = Address::where('user_id',$customer_id)
-                    ->where('primary_address',1)
-                    ->get();
-                $sch = Schedule::find($sch_id);
-                $address_id = NULL;
-                if (count($addresses) > 0) {
-                    foreach ($addresses as $address) {
-                        $address_id = $address->id;
+        // $schedules = Schedule::all();
+        // if (count($schedules) > 0) {
+        //     foreach ($schedules as $schedule) {
+        //         $sch_id = $schedule->id;
+        //         $customer_id = $schedule->customer_id;
+        //         $addresses = Address::where('user_id',$customer_id)
+        //             ->where('primary_address',1)
+        //             ->get();
+        //         $sch = Schedule::find($sch_id);
+        //         $address_id = NULL;
+        //         if (count($addresses) > 0) {
+        //             foreach ($addresses as $address) {
+        //                 $address_id = $address->id;
 
-                    }
-                }
-                $sch->pickup_address = ($schedule->pickup_delivery_id > 0) ? $address_id : NULL;
-                $sch->dropoff_address = ($schedule->dropoff_delivery_id > 0) ? $address_id : NULL;
+        //             }
+        //         }
+        //         $sch->pickup_address = ($schedule->pickup_delivery_id > 0) ? $address_id : NULL;
+        //         $sch->dropoff_address = ($schedule->dropoff_delivery_id > 0) ? $address_id : NULL;
                 
-                $cards = Card::where('user_id',$customer_id)->get();
-                $card_id = NULL;
-                if (count($cards) > 0) {
-                    foreach ($cards as $card) {
-                        $card_id = $card->id;
-                    }
-                }
+        //         $cards = Card::where('user_id',$customer_id)->get();
+        //         $card_id = NULL;
+        //         if (count($cards) > 0) {
+        //             foreach ($cards as $card) {
+        //                 $card_id = $card->id;
+        //             }
+        //         }
 
-                $sch->card_id = $card_id;
+        //         $sch->card_id = $card_id;
 
-                // change status
-                $dropoff_date = strtotime(date('Y-m-d 23:59:59',strtotime($schedule->dropoff_date)));
-                $today_date = strtotime(date('Y-m-d H:i:s'));
-                if ($today_date >= $dropoff_date) {
-                    $sch->status = 12;
-                }
+        //         // change status
+        //         $dropoff_date = strtotime(date('Y-m-d 23:59:59',strtotime($schedule->dropoff_date)));
+        //         $today_date = strtotime(date('Y-m-d H:i:s'));
+        //         if ($today_date >= $dropoff_date) {
+        //             $sch->status = 12;
+        //         }
 
-                if ($sch->save()) {
-                    Job::dump('updated schedule #'.$sch->id);
-                }
-            }
-        }
+        //         if ($sch->save()) {
+        //             Job::dump('updated schedule #'.$sch->id);
+        //         }
+        //     }
+        // }
 
-        return view('admins.view')
-        ->with('layout',$this->layout);
+        // return view('admins.view')
+        // ->with('layout',$this->layout);
     }
 
     public function postApiUpdate(Request $request) {

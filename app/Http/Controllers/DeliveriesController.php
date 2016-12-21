@@ -346,7 +346,7 @@ class DeliveriesController extends Controller
                 $request->setCustomerPaymentProfileId($payment_id);
 
                 $controller = new AnetController\GetCustomerPaymentProfileController($request);
-                $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+                $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
                 if(($response != null)){
                     if ($response->getMessages()->getResultCode() == "Ok")
                     {
@@ -487,7 +487,7 @@ class DeliveriesController extends Controller
         $request->setValidationMode($validationmode);
 
         $controller = new AnetController\ValidateCustomerPaymentProfileController($request);
-        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+        $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
         if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
             $validationMessages = $response->getMessages()->getMessage();

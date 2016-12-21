@@ -457,7 +457,7 @@ class InvoicesController extends Controller
                 $request->setCustomerPaymentProfileId($payment_id);
 
                 $controller = new AnetController\GetCustomerPaymentProfileController($request);
-                $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+                $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
                 if(($response != null)){
                     if ($response->getMessages()->getResultCode() == "Ok")
                     {

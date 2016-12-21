@@ -39,6 +39,7 @@ class CardsController extends Controller
     public function getIndex(Request $request) {
     	$form_previous = ($request->session()->has('form_previous')) ? $request->session()->get('form_previous') : 'delivery_confirmation';
     	$cards = Card::where('user_id',Auth::user()->id)->where('company_id',1)->get();
+
     	$companies = Company::find(1);
     	$cards_data = [];
     	if (count($cards) > 0) {
@@ -53,18 +54,25 @@ class CardsController extends Controller
     			$state = $card->state;
     			$status = $card->status;
     			// make exp status
-    			$exp_status = 1; // good
+    			$exp_status = 0; // not set
+    			if (isset($exp_year) && isset($exp_month)) {
+    				$exp_status = 1; // good
+	    			$exp_full_time = strtotime($exp_year.'-'.$exp_month.'-01 00:00:00');
+	    			$today = strtotime(date('Y-m-d H:i:s'));
+	    			$difference = $exp_full_time - $today;
+	    			$days_remaining = floor($difference/60/60/24);
+	    			$days_comment = ($days_remaining > 0) ? $days_remaining.' day(s) remaining.' : 'Expired!';
+	    			if ($difference < 0) {
+	    				$exp_status = 3; // expired
+	    			} elseif(($exp_full_time < strtotime('+1 month'))) {
+	    				$exp_status = 2; // Within a month
+	    			}
 
-    			$exp_full_time = strtotime($exp_year.'-'.$exp_month.'-01 00:00:00');
-    			$today = strtotime(date('Y-m-d H:i:s'));
-    			$difference = $exp_full_time - $today;
-    			$days_remaining = floor($difference/60/60/24);
-    			$days_comment = ($days_remaining > 0) ? $days_remaining.' day(s) remaining.' : 'Expired!';
-    			if ($difference < 0) {
-    				$exp_status = 3; // expired
-    			} elseif(($exp_full_time < strtotime('+1 month'))) {
-    				$exp_status = 2; // Within a month
+    			} else {
+
+    				$days_comment = 'Not Set';
     			}
+
 
     			switch($exp_status) {
     				case 2:
@@ -105,10 +113,11 @@ class CardsController extends Controller
 				$request->setCustomerPaymentProfileId($payment_id);
 
 				$controller = new AnetController\GetCustomerPaymentProfileController($request);
-				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+				// $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 				if(($response != null)){
-					if ($response->getMessages()->getResultCode() == "Ok")
-					{
+					if ($response->getMessages()->getResultCode() == "Ok") {
+
 						$card_number = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber();
 						$card_type = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardType();
 						$cards_data[$key]['card_number'] = (isset($card_number)) ? $card_number : '';
@@ -138,11 +147,9 @@ class CardsController extends Controller
 						}
 						// Job::dump($response->getPaymentProfile());
 					} else {
-						$cards_data[$key]['card_type'] = null;
-						$cards_data[$key]['card_number'] = null;
-						$cards_data[$key]['first_name']  = null;
-						$cards_data[$key]['last_name']  = null;
-						$cards_data[$key]['card_image']  = null;
+		 				// $errorMessages = $response->getMessages()->getMessage();
+		 				// Job::dump("Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n");
+		 				unset($cards_data[$key]);
 					}
 				}    			
     		}
@@ -261,7 +268,7 @@ class CardsController extends Controller
 		$request->setCustomerPaymentProfileId($payment_id);
 
 		$controller = new AnetController\GetCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		if(($response != null)){
 			if ($response->getMessages()->getResultCode() == "Ok") {
 				$card_number = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber();
@@ -373,7 +380,7 @@ class CardsController extends Controller
 		$request->setPaymentProfile( $paymentprofile );
 
 		$controller = new AnetController\UpdateCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		$errorMessages = $response->getMessages()->getMessage();
 		$error_response = 'Error: could not save card, please try again!';
 		if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
@@ -387,7 +394,7 @@ class CardsController extends Controller
 			$getRequest->setCustomerPaymentProfileId($payment_id);
 
 			$controller = new AnetController\GetCustomerPaymentProfileController($getRequest);
-			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 			
 			if(($response != null)) {
 				if ($response->getMessages()->getResultCode() == "Ok") {
@@ -511,7 +518,7 @@ class CardsController extends Controller
 					$request->setPaymentProfile( $paymentprofile );
 
 					$controller = new AnetController\UpdateCustomerPaymentProfileController($request);
-					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 					$errorMessages = $response->getMessages()->getMessage();
 					if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 
@@ -524,7 +531,7 @@ class CardsController extends Controller
 						$getRequest->setCustomerPaymentProfileId($payment_id);
 
 						$controller = new AnetController\GetCustomerPaymentProfileController($getRequest);
-						$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+						$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 						if(($response != null)) {
 							if ($response->getMessages()->getResultCode() == "Ok") {
 								if($card_find->save()) {
@@ -584,7 +591,7 @@ class CardsController extends Controller
 		$request->setCustomerProfileId($profile_id);
 		$request->setCustomerPaymentProfileId($payment_id);
 		$controller = new AnetController\DeleteCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		if($cards->delete()) {
 			if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 				// Flash::success('Successfully removed card!');
@@ -622,7 +629,7 @@ class CardsController extends Controller
 					$request->setCustomerProfileId($profile_id);
 					$request->setCustomerPaymentProfileId($payment_id);
 					$controller = new AnetController\DeleteCustomerPaymentProfileController($request);
-					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 					if($card_find->delete()) {
 						if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 						
@@ -753,7 +760,7 @@ class CardsController extends Controller
 		$request->setCustomerPaymentProfileId($payment_id);
 
 		$controller = new AnetController\GetCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		if(($response != null)){
 			if ($response->getMessages()->getResultCode() == "Ok") {
 				$card_number = $response->getPaymentProfile()->getPayment()->getCreditCard()->getCardNumber();
@@ -865,7 +872,7 @@ class CardsController extends Controller
 		$request->setPaymentProfile( $paymentprofile );
 
 		$controller = new AnetController\UpdateCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		$errorMessages = $response->getMessages()->getMessage();
 		$error_response = 'Error: could not save card, please try again!';
 		if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
@@ -879,7 +886,7 @@ class CardsController extends Controller
 			$getRequest->setCustomerPaymentProfileId($payment_id);
 
 			$controller = new AnetController\GetCustomerPaymentProfileController($getRequest);
-			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 			
 			if(($response != null)) {
 				if ($response->getMessages()->getResultCode() == "Ok") {
@@ -1002,7 +1009,7 @@ class CardsController extends Controller
 					$request->setPaymentProfile( $paymentprofile );
 
 					$controller = new AnetController\UpdateCustomerPaymentProfileController($request);
-					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 					$errorMessages = $response->getMessages()->getMessage();
 					if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 
@@ -1015,7 +1022,7 @@ class CardsController extends Controller
 						$getRequest->setCustomerPaymentProfileId($payment_id);
 
 						$controller = new AnetController\GetCustomerPaymentProfileController($getRequest);
-						$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+						$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 						if(($response != null)) {
 							if ($response->getMessages()->getResultCode() == "Ok") {
 								if($card_find->save()) {
@@ -1072,7 +1079,7 @@ class CardsController extends Controller
 		$request->setCustomerProfileId($profile_id);
 		$request->setCustomerPaymentProfileId($payment_id);
 		$controller = new AnetController\DeleteCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 			if($cards->delete()) {
 				// Flash::success('Successfully removed card!');
@@ -1111,7 +1118,7 @@ class CardsController extends Controller
 					$request->setCustomerProfileId($profile_id);
 					$request->setCustomerPaymentProfileId($payment_id);
 					$controller = new AnetController\DeleteCustomerPaymentProfileController($request);
-					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+					$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 					if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 						if($card_find->delete()) {
 							Flash::success('Successfully removed card!');

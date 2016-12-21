@@ -102,7 +102,7 @@ class Card extends Model
 				$paymentprofilerequest->setValidationMode("liveMode");
 				// $paymentprofilerequest->setValidationMode("liveMode");
 				$controller = new AnetController\CreateCustomerPaymentProfileController($paymentprofilerequest);
-				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 				if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 					$root_payment_id = ($root_payment_id) ? $root_payment_id : $response->getCustomerPaymentProfileId();
 				  	$cards->profile_id = $prev_profile_id;
@@ -150,7 +150,7 @@ class Card extends Model
 			$request->setProfile($customerprofile);
 			// Job::dump($request);
 			$controller = new AnetController\CreateCustomerProfileController($request);
-			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 			if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 				// Flash::success('Succesfully create customer profile : '.$response->getCustomerProfileId() );
 			  	// Job::dump($response->getCustomerProfileId());
@@ -255,7 +255,7 @@ class Card extends Model
 				$paymentprofilerequest->setValidationMode("liveMode");
 				// $paymentprofilerequest->setValidationMode("liveMode");
 				$controller = new AnetController\CreateCustomerPaymentProfileController($paymentprofilerequest);
-				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 				if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 					$root_payment_id = ($root_payment_id) ? $root_payment_id : $response->getCustomerPaymentProfileId();
 				  	$cards->profile_id = $prev_profile_id;
@@ -303,7 +303,7 @@ class Card extends Model
 			$request->setProfile($customerprofile);
 			// Job::dump($request);
 			$controller = new AnetController\CreateCustomerProfileController($request);
-			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+			$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 			if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 				// Flash::success('Succesfully create customer profile : '.$response->getCustomerProfileId() );
 			  	// Job::dump($response->getCustomerProfileId());
@@ -417,7 +417,7 @@ class Card extends Model
 				$request->setCustomerPaymentProfileId($payment_id);
 
 				$controller = new AnetController\GetCustomerPaymentProfileController($request);
-				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+				$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 				if(($response != null)){
 					if ($response->getMessages()->getResultCode() == "Ok")
 					{
@@ -477,7 +477,7 @@ class Card extends Model
 		$request->setCustomerPaymentProfileId($payment_id);
 
 		$controller = new AnetController\GetCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		if(($response != null)){
 			if ($response->getMessages()->getResultCode() == "Ok") {
 				$info = [
@@ -527,7 +527,7 @@ class Card extends Model
 		$request->setValidationMode($validationmode);
 
 		$controller = new AnetController\ValidateCustomerPaymentProfileController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
 		if (($response != null) && ($response->getMessages()->getResultCode() == "Ok") ) {
 			return true;
@@ -565,7 +565,7 @@ class Card extends Model
 		$request->setRefId($refId);
 		$request->setTransactionRequest( $transactionRequestType);
 		$controller = new AnetController\CreateTransactionController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 
 		if ($response != null) {
 			if($response->getMessages()->getResultCode() == "Ok") {
