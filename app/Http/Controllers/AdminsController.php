@@ -737,6 +737,84 @@ class AdminsController extends Controller
         }
     }
 
+    public function postApiAuto(Request $request) {
+        $id = Input::get('cid'); 
+        $api_token = Input::get('api'); 
+        $tables = Input::get('upload'); 
+
+
+        $tables =json_decode($tables,true);
+
+        $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
+
+        if ($authenticate){
+            $data = [];
+            if (count($tables) > 0) {
+                foreach ($tables as $table) {
+                    switch ($table) {
+                        case 'addresses':
+                            $data[$table] = Address::all();
+                            break;
+                        case 'cards':
+                            $data[$table] = Card::all();
+                            break;
+                        case 'colors':
+                            $data[$table] = Color::all();
+                            break;
+                        case 'companies':
+                            $data[$table] = Company::all();
+                            break;
+                        case 'custids':
+                            $data[$table] = Custid::all();
+                            break;
+                        case 'deliveries':
+                            $data[$table] = Delivery::all();
+                            break;
+                        case 'inventories':
+                            $data[$table] = Inventory::all();
+                            break;
+                        case 'inventory_items':
+                            $data[$table] = InventoryItem::all();
+                            break;
+                        case 'invoices':
+                            $data[$table] = Invoice::all();
+                            break;
+                        case 'profiles':
+                            $data[$table] = Profile::all();
+                            break;
+                        case 'tax':
+                            $data[$table] = Tax::all();
+                            break;
+                        case 'transactions':
+                            $data[$table] = Transaction::all();
+                            break;
+                        case 'invoice_items':
+                            $data[$table] = InvoiceItem::all();
+                            break;
+                        case 'schedules':
+                            $data[$table] = Schedule::all();
+                            break;
+                        case 'users':
+                            $data[$table] = User::all();
+                            break;  
+                        case 'zipcodes':
+                            $data[$table] = Zipcode::all();                  
+                    }                    
+                }
+            }
+
+
+            return response()->json(['status'=>200,
+                                     'data'=>$data,
+                                     'server_at'=>date('Y-m-d H:i:s')
+                                     ]);
+    
+        } 
+
+
+        return abort(403, 'Unauthorized action.');
+    }
+
     public function getDropoffData() {
         $date_start = date('Y-01-01 00:00:00');
         $date_end = date('Y-m-d H:i:s');
