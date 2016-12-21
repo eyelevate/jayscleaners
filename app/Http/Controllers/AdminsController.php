@@ -674,6 +674,54 @@ class AdminsController extends Controller
         }
     }
 
+    public function getDropoffData() {
+        $date_start = date('Y-01-01 00:00:00');
+        $date_end = date('Y-m-d H:i:s');
+        $month_start = 1;
+        $month_end = date('n');
+        $labels = [];
+        for ($i=$month_start; $i <= $month_end; $i++) { 
+            array_push($labels,date('F',strtotime(date('Y-'.$i.'-01'))));
+        }
+        $companies = Company::all();
+        $datasets = [];
+        if (count($companies) > 0) {
+            foreach ($companies as $company) {
+                $company_id = $company->id;
+                $company_name = $company->name;
+                $fill_color = Company::getFillColor($company_id);
+                $stroke_color = Company::getStrokeColor($company_id);
+                $point_color = Company::getPointColor($company_id);
+                $point_stroke_color = Company::getPointStrokeColor($company_id);
+                $point_highlight_fill = Company::getPointHighlightFill($company_id);
+                $point_highlight_stroke = Company::getPointHighlightStroke($company_id);
+                $month_totals = [];
+                for ($i=$month_start; $i < $month_end; $i++) { 
+                    $invoice_start = date('Y-'.$i.'-01 00:00:00');
+                    $invoice_end = date('Y-'.$i.'-31 23:59:59');
+                    $invoices = Invoice::where('company_id',$company_id)
+                        ->where('created_at','>=',$invoice_start)
+                        ->where('created_at','<=',$invoice_end)
+                        ->sum('total');
+                    array_push($month_totals,$invoices);
+                }
+                array_push($datasets,['label'=>$company_name,
+                                      'fill_color'=>$fill_color,
+                                      'stroke_color'=>$stroke_color,
+                                      'point_color'=>$point_color,
+                                      'point_stroke_color'=>$point_stroke_color,
+                                      'point_highlight_fill'=>$point_highlight_fill,
+                                      'point_highlight_stroke'=>$point_highlight_stroke,
+                                      'data'=>$month_totals
+                                      ]);
+
+            }
+        }
+        return response()->json(['labels'=>$labels,
+                                 'datasets'=>$datasets]);
+
+    }
+
     public function getSalesData() {
         $date_start = date('Y-01-01 00:00:00');
         $date_end = date('Y-m-d H:i:s');

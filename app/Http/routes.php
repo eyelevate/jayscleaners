@@ -37,7 +37,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/chunk/{id}/{api_token}/{table}/{start}/{end}',['as'=>'admins_api_chunk','uses'=>'AdminsController@getApiChunk']);
 	Route::get('/admins/api/passmanage/{id}/{api_token}/{up}',['as'=>'admins_api_passmanage','uses'=>'AdminsController@getApiPassmanage']);
 	Route::get('/admins/api/authenticate/{username}/{pw}',['as'=>'admins_api_authenticate','uses'=>'AdminsController@getAuthentication']);
-	
+
     // Route::group(['middleware' => ['forceSSL']], function(){
 	   
 	    Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
@@ -150,6 +150,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/view',['as'=>'admins_view','uses'=>'AdminsController@getView']);
 		Route::get('/admins/overview',['as'=>'admins_overview','uses'=>'AdminsController@getOverview']);
 		Route::get('/admins/sales-data',['as'=>'admins_sales_data','uses'=>'AdminsController@getSalesData']);
+		Route::get('/admins/dropoff-data',['as'=>'admins_dropoff_data','uses'=>'AdminsController@getDropoffData']);
 		Route::get('/admins/reset-passwords',['as'=>'admins_reset_passwords','uses'=>'AdminsController@getResetPasswords']);
 		Route::post('/admins/reset-passwords',['as'=>'admins_reset_passwords_post','uses'=>'AdminsController@postResetPasswords']);
 		// Address

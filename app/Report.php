@@ -74,16 +74,48 @@ class Report extends Model
         if (count($companies) > 0) {
             foreach ($companies as $company) {
                 $company_id = $company->id;
-                $today_transactions = Transaction::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->sum('total');
-                $this_week_transactions = Transaction::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->sum('total');
-                $this_month_transactions = Transaction::whereBetween('created_at',[$this_month_start,$this_month_end])->where('company_id',$company_id)->sum('total');
-                $this_year_transactions = Transaction::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->sum('total');
+                $today_transactions = Transaction::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->where('status',1)->sum('total');
+                $this_week_transactions = Transaction::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->where('status',1)->sum('total');
+                $this_month_transactions = Transaction::whereBetween('created_at',[$this_month_start,$this_month_end])->where('company_id',$company_id)->where('status',1)->sum('total');
+                $this_year_transactions = Transaction::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->where('status',1)->sum('total');
                 $reports[$company_id] = [
                     'name'=>$company->name,
-                    'today'=>money_format('$%n',$today_transactions),
-                    'this_week'=>money_format('$%n',$this_week_transactions),
-                    'this_month'=>money_format('$%n',$this_month_transactions),
-                    'this_year'=>money_format('$%n',$this_year_transactions)
+                    'today'=>money_format('$%i',$today_transactions),
+                    'this_week'=>money_format('$%i',$this_week_transactions),
+                    'this_month'=>money_format('$%i',$this_month_transactions),
+                    'this_year'=>money_format('$%i',$this_year_transactions)
+                ];
+            }
+        }
+        return $reports;
+    }
+
+    static public function prepareDropoffGlimpse() {
+        $reports = [];
+
+        $companies = Company::all();
+
+        $today_start = date('Y-m-d 00:00:00');
+        $today_end = date('Y-m-d 23:59:59');
+        $this_week_start = date("Y-m-d H:i:s", strtotime('monday this week', strtotime(date('Y-m-d 00:00:00'))));
+        $this_week_end = date("Y-m-d H:i:s", strtotime('saturday this week', strtotime(date('Y-m-d 23:59:59'))));
+        $this_month_start = date('Y-m-d H:i:s',strtotime(date('Y-m-01 00:00:00')));
+        $this_month_end = date('Y-m-d H:i:s',strtotime(date('Y-m-t 23:59:59')));
+        $this_year_start = date('Y-01-01 00:00:00');
+        $this_year_end = date('Y-12-31 23:59:59');
+        if (count($companies) > 0) {
+            foreach ($companies as $company) {
+                $company_id = $company->id;
+                $today_transactions = Invoice::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->sum('total');
+                $this_week_transactions = Invoice::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->sum('total');
+                $this_month_transactions = Invoice::whereBetween('created_at',[$this_month_start,$this_month_end])->where('company_id',$company_id)->sum('total');
+                $this_year_transactions = Invoice::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->sum('total');
+                $reports[$company_id] = [
+                    'name'=>$company->name,
+                    'today'=>money_format('$%i',$today_transactions),
+                    'this_week'=>money_format('$%i',$this_week_transactions),
+                    'this_month'=>money_format('$%i',$this_month_transactions),
+                    'this_year'=>money_format('$%i',$this_year_transactions)
                 ];
             }
         }

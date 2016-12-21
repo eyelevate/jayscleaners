@@ -49,11 +49,13 @@ class ReportsController extends Controller
     	$dates = Report::prepareDates();
     	$companies = Report::prepareCompanies(Company::all());
         $summaries = Report::prepareGlimpse();
+        $drops = Report::prepareDropoffGlimpse();
 
         return view('reports.index')
         ->with('layout',$this->layout)
         ->with('dates',$dates)
         ->with('summaries',$summaries)
+        ->with('drops',$drops)
         ->with('companies',$companies);
     }
 

@@ -15,7 +15,7 @@
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header with-border">
-				<h3 class="box-title">Monthly Recap Report</h3>
+				<h3 class="box-title">Monthly Pickup/Dropoff Summary</h3>
 
 				<div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -36,12 +36,14 @@
 					<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 				</div>
 			</div>
+			
+			
 			<!-- /.box-header -->
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-12">
 						<p class="text-center">
-							<strong>Sales: {{ date('d M, Y', strtotime(date('Y-01-01 00:00:00'))) }} - {{ date('d M, Y',strtotime(date('Y-m-d H:i:s'))) }}</strong>
+							<strong>Pickup: {{ date('d M, Y', strtotime(date('Y-01-01 00:00:00'))) }} - {{ date('d M, Y',strtotime(date('Y-m-d H:i:s'))) }}</strong>
 						</p>
 
 						<div class="chart">
@@ -54,7 +56,7 @@
 				</div>
 				<!-- /.row -->
 			</div>
-			<!-- ./box-body -->
+<!-- ./box-body -->
 			<div class="box-footer">
 				<div class="row clearfix">
 					<div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
@@ -125,6 +127,95 @@
 				</div>
 				<!-- /.row -->
 			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-md-12">
+						<p class="text-center">
+							<strong>Dropoff: {{ date('d M, Y', strtotime(date('Y-01-01 00:00:00'))) }} - {{ date('d M, Y',strtotime(date('Y-m-d H:i:s'))) }}</strong>
+						</p>
+
+						<div class="chart">
+							<!-- Sales Chart Canvas -->
+							<canvas id="dropoffChart" style="height: 350px;"></canvas>
+						</div>
+					<!-- /.chart-responsive -->
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- ./box-body -->
+			<div class="box-footer">
+				<div class="row clearfix">
+					<div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+						<p class="description-text" style="text-align:center;">TODAY</p>
+						<div class="description-block border-right">
+							@if (count($drops))
+								@foreach($drops as $drop)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $drop['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $drop['today'] }}</h5>
+								</div>
+								@endforeach
+							@endif
+						</div>
+						<!-- /.description-block -->
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+						<p class="description-text" style="text-align:center;">THIS WEEK</p>
+						<div class="description-block border-right">
+							
+							@if (count($drops))
+								@foreach($drops as $drop)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $drop['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $drop['this_week'] }}</h5>
+								</div>
+								@endforeach
+							@endif
+							
+						</div>
+					<!-- /.description-block -->
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+						<p class="description-text" style="text-align:center;">THIS MONTH</p>
+						<div class="description-block border-right">
+							
+							@if (count($drops))
+								@foreach($drops as $drop)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $drop['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $drop['this_month'] }}</h5>
+								</div>
+								@endforeach
+							@endif
+							
+						</div>
+						<!-- /.description-block -->
+					</div>
+					<!-- /.col -->
+					<div class="col-sm-6 col-xs-12 col-md-3 col-lg-3">
+						<p class="description-text" style="text-align:center;">THIS YEAR</p>
+						<div class="description-block">
+						
+							@if (count($drops))
+								@foreach($drops as $drop)
+								<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+									<label class="col-lg-12 col-md-12 col-sm-12 col-xs-12">{{ $drop['name'] }}</label>
+									<h5 class="description-header">&nbsp;{{ $drop['this_year'] }}</h5>
+								</div>
+								@endforeach
+							@endif
+							
+						</div>
+						<!-- /.description-block -->
+					</div>
+				</div>
+				<!-- /.row -->
+			</div> 
 		<!-- /.box-footer -->
 			<div class="box-footer">
 
