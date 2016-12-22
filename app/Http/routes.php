@@ -37,7 +37,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/chunk/{id}/{api_token}/{table}/{start}/{end}',['as'=>'admins_api_chunk','uses'=>'AdminsController@getApiChunk']);
 	Route::get('/admins/api/passmanage/{id}/{api_token}/{up}',['as'=>'admins_api_passmanage','uses'=>'AdminsController@getApiPassmanage']);
 	Route::get('/admins/api/authenticate/{username}/{pw}',['as'=>'admins_api_authenticate','uses'=>'AdminsController@getAuthentication']);
-	Route::get('/admins/api/auto',['as'=>'admins_api_auto','uses'=>'AdminsController@getApiAuto']);
+	Route::get('/admins/api/auto/{table}',['as'=>'admins_api_auto','uses'=>'AdminsController@getApiAuto']);
 	Route::post('/admins/api/auto', ['as'=>'admins_api_auto_post','uses'=>'AdminsController@postApiAuto']);
     // Route::group(['middleware' => ['forceSSL']], function(){
 	   

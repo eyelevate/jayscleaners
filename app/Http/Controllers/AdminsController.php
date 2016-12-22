@@ -729,7 +729,8 @@ class AdminsController extends Controller
                     $data[$table] = User::whereBetween('id',[$start,$end])->get();
                     break;  
                 case 'zipcodes':
-                    $data[$table] = Zipcode::whereBetween('id',[$start,$end])->get();                  
+                    $data[$table] = Zipcode::whereBetween('id',[$start,$end])->get();   
+                    break;               
             }
             return response()->json(['status'=>true,'rows_to_create'=>1,'updates'=>$data]);
         } else{
@@ -737,30 +738,112 @@ class AdminsController extends Controller
         }
     }
 
-    public function getApiAuto() {
-        $data = [
-            'addresses'=>count(Address::all()),
-            'cards'=>count(Card::all()),
-            'companies'=> count(Company::all()),
-            'custids'=>count(Custid::all()),
-            'deliveries'=>count(Delivery::all()),
-            'inventories'=>count(Inventory::all()),
-            'inventory_items'=>count(InventoryItem::all()),
-            // 'invoices'=>count(Invoice::all()),
-            // 'invoice_items'=>count(InvoiceItem::all()),
-            'profiles'=>count(Profile::all()),
-            'taxes'=>count(Tax::all()),
-            'transactions'=>count(Transaction::all()),
-            'schedules'=>count(Schedule::all()),
-            'users'=>count(User::all()),
-            'zipcodes'=>count(Zipcode::all())
-        ];
+    public function getApiAuto($table = null) {
+        $data = [];
+        switch ($table) {
+            case 'addresses':
+                $data[$table] = [
+                    'first_row'=>Address::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Address::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'cards':
+                $data[$table] = [
+                    'first_row'=>Card::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Card::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'colors':
+                $data[$table] = [
+                    'first_row'=>Color::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Color::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'companies':
+                $data[$table] = [
+                    'first_row'=>Company::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Company::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'custids':
+                $data[$table] = [
+                    'first_row'=>Custid::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Custid::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'deliveries':
+                $data[$table] = [
+                    'first_row'=>Delivery::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Delivery::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'inventories':
+                $data[$table] = [
+                    'first_row'=>Inventory::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Inventory::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'inventory_items':
+                $data[$table] = [
+                    'first_row'=>InventoryItem::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>InventoryItem::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'invoices':
+                $data[$table] = [
+                    'first_row'=>Invoice::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Invoice::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'profiles':
+                $data[$table] = [
+                    'first_row'=>Profile::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Profile::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'tax':
+                $data[$table] = [
+                    'first_row'=>Tax::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Tax::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'transactions':
+                $data[$table] = [
+                    'first_row'=>Transaction::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Transaction::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'invoice_items':
+                $data[$table] = [
+                    'first_row'=>InvoiceItem::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>InvoiceItem::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'schedules':
+                $data[$table] = [
+                    'first_row'=>Schedule::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Schedule::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'users':
+                $data[$table] = [
+                    'first_row'=>User::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>User::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;  
+            case 'zipcodes':
+                $data[$table] = [
+                    'first_row'=>Zipcode::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Zipcode::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];  
+                break;               
+        }
+
+
 
 
         return response()->json(['status'=>200,
-                                 'data'=>$data,
-                                 'server_at'=>date('Y-m-d H:i:s')
-                                 ]);
+                                 'data'=>$data[$table]]);
 
 
     }
