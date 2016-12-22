@@ -22,6 +22,7 @@ use App\User;
 use App\Admin;
 use App\Address;
 use App\Card;
+use App\Credit;
 use App\Layout;
 use App\Company;
 use App\Custid;
@@ -695,6 +696,10 @@ class AdminsController extends Controller
                 case 'companies':
                     $data[$table] = Company::whereBetween('id',[$start,$end])->get();
                     break;
+                case 'credits':
+                    $data[$table] = Credit::whereBetween('id',[$start,$end])->get();
+                    break;
+                    
                 case 'custids':
                     $data[$table] = Custid::whereBetween('id',[$start,$end])->get();
                     break;
@@ -765,6 +770,12 @@ class AdminsController extends Controller
                     'last_row'=>Company::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
                 ];
                 break;
+            case 'credits':
+                $data[$table] = [
+                    'first_row'=>Credit::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Credit::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;    
             case 'custids':
                 $data[$table] = [
                     'first_row'=>Custid::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
@@ -833,8 +844,8 @@ class AdminsController extends Controller
                 break;  
             case 'zipcodes':
                 $data[$table] = [
-                    'first_row'=>Zipcode::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
-                    'last_row'=>Zipcode::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                    'first_row'=>Address::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Address::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
                 ];  
                 break;               
         }

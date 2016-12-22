@@ -70,7 +70,8 @@ class Admin extends Model
             $cards = Card::withTrashed()->where('updated_at','>=',$server_at)->get();
     		$colors = Color::withTrashed()->where('updated_at','>=',$server_at)->get();
     		$companies = Company::withTrashed()->where('updated_at','>=',$server_at)->get();
-    		$custids = Custid::withTrashed()->where('updated_at','>=',$server_at)->get();
+    		$credits = Credit::withTrashed()->where('updated_at','>=',$server_at)->get();
+            $custids = Custid::withTrashed()->where('updated_at','>=',$server_at)->get();
     		// $customers = Customer::where('updated_at',' >= ',$server_at)->get();
     		$deliveries = Delivery::withTrashed()->where('updated_at','>=',$server_at)->get();
     		$discounts = Discount::withTrashed()->where('updated_at','>=',$server_at)->get();
@@ -106,6 +107,10 @@ class Admin extends Model
     			$update['companies'] = $companies;
     			$update_rows += count($companies);
     		}
+            if(count($credits) > 0){
+                $update['credits'] = $credits;
+                $update_rows += count($credits);
+            }
     		if(count($custids) > 0){
     			$update['custids'] = $custids;
     			$update_rows += count($custids);
