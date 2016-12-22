@@ -740,10 +740,10 @@ class AdminsController extends Controller
     public function postApiAuto(Request $request) {
         $id = Input::get('cid'); 
         $api_token = Input::get('api'); 
-        $tables = Input::get('upload'); 
+        $tables = Input::get('tables'); 
 
 
-        $tables =json_decode($tables,true);
+        // $tables =json_decode($tables,true);
 
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
