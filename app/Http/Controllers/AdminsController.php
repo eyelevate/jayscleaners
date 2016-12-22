@@ -743,7 +743,7 @@ class AdminsController extends Controller
         $tables = Input::get('tables'); 
 
 
-        // $tables =json_decode($tables,true);
+        $tables =json_decode($tables,true);
 
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
