@@ -738,9 +738,29 @@ class AdminsController extends Controller
     }
 
     public function getApiAuto() {
-        $id = Input::get('cid'); 
-        $api_token = Input::get('api'); 
-        $ts = Input::get('tables'); 
+        $data = [
+            'addresses'=>count(Address::all()),
+            'cards'=>count(Card::all()),
+            'companies'=> count(Company::all()),
+            'custids'=>count(Custid::all()),
+            'deliveries'=>count(Delivery::all()),
+            'inventories'=>count(Inventory::all()),
+            'inventory_items'=>count(InventoryItem::all()),
+            // 'invoices'=>count(Invoice::all()),
+            // 'invoice_items'=>count(InvoiceItem::all()),
+            'profiles'=>count(Profile::all()),
+            'taxes'=>count(Tax::all()),
+            'transactions'=>count(Transaction::all()),
+            'schedules'=>count(Schedule::all()),
+            'users'=>count(User::all()),
+            'zipcodes'=>count(Zipcode::all())
+        ];
+
+
+        return response()->json(['status'=>200,
+                                 'data'=>$data,
+                                 'server_at'=>date('Y-m-d H:i:s')
+                                 ]);
 
 
     }
