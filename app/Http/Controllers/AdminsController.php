@@ -33,7 +33,12 @@ use App\Inventory;
 use App\InventoryItem;
 use App\Color;
 use App\Delivery;
+use App\Discount;
+use App\Memo;
+use App\Printer;
 use App\Profile;
+use App\Reward;
+use App\RewardTransaction;
 use App\Report;
 use App\Schedule;
 use App\Tax;
@@ -690,6 +695,9 @@ class AdminsController extends Controller
                 case 'cards':
                     $data[$table] = Card::whereBetween('id',[$start,$end])->get();
                     break;
+                case 'credits':
+                    $data[$table] = Credit::whereBetween('id',[$start,$end])->get();
+                    break;
                 case 'colors':
                     $data[$table] = Color::whereBetween('id',[$start,$end])->get();
                     break;
@@ -706,6 +714,9 @@ class AdminsController extends Controller
                 case 'deliveries':
                     $data[$table] = Delivery::whereBetween('id',[$start,$end])->get();
                     break;
+                case 'discounts':
+                    $data[$table] = Discount::whereBetween('id',[$start,$end])->get();
+                    break;
                 case 'inventories':
                     $data[$table] = Inventory::whereBetween('id',[$start,$end])->get();
                     break;
@@ -715,8 +726,20 @@ class AdminsController extends Controller
                 case 'invoices':
                     $data[$table] = Invoice::whereBetween('id',[$start,$end])->get();
                     break;
+                case 'memos':
+                    $data[$table] = Memo::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'printers':
+                    $data[$table] = Printer::whereBetween('id',[$start,$end])->get();
+                    break;
                 case 'profiles':
                     $data[$table] = Profile::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'rewards':
+                    $data[$table] = Reward::whereBetween('id',[$start,$end])->get();
+                    break;
+                case 'reward_transactions':
+                    $data[$table] = RewardTransaction::whereBetween('id',[$start,$end])->get();
                     break;
                 case 'tax':
                     $data[$table] = Tax::whereBetween('id',[$start,$end])->get();
