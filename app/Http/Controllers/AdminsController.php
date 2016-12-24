@@ -811,6 +811,12 @@ class AdminsController extends Controller
                     'last_row'=>Delivery::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
                 ];
                 break;
+            case 'discounts':
+                $data[$table] = [
+                    'first_row'=>Discount::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Discount::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
             case 'inventories':
                 $data[$table] = [
                     'first_row'=>Inventory::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
@@ -827,6 +833,18 @@ class AdminsController extends Controller
                 $data[$table] = [
                     'first_row'=>Invoice::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
                     'last_row'=>Invoice::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'memos':
+                $data[$table] = [
+                    'first_row'=>Memo::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Memo::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
+                ];
+                break;
+            case 'printers':
+                $data[$table] = [
+                    'first_row'=>Printer::where('id','>',0)->orderBy('id','asc')->limit(1)->pluck('id')[0],
+                    'last_row'=>Printer::where('id','>',0)->orderBy('id','desc')->limit(1)->pluck('id')[0]
                 ];
                 break;
             case 'profiles':
