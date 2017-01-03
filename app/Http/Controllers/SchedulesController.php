@@ -223,7 +223,7 @@ class SchedulesController extends Controller
         ->with('traffic_selected',$traffic_selected)
         ->with('shortest_distance_selected',$shortest_distance_selected)
         ->with('route_options_header',$route_options_header)
-        ->with('travel_data',$body)
+        ->with('travel_data',(isset($body)) ? $body : null)
         ->with('delayed_list',$delayed_list);    	
     }
 
