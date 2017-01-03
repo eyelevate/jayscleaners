@@ -1032,7 +1032,12 @@ class DeliveriesController extends Controller
         $cards_select = [];
         if (count($cards) > 0) {
             foreach ($cards as $card) {
-                $cards_select[$card['id']] = $card['card_number'].' - '.$card['exp_month'].'/'.$card['exp_year'];
+                if (isset($card['card_number'])) {
+                    $cards_select[$card['id']] = $card['card_number'].' - '.$card['exp_month'].'/'.$card['exp_year'];
+                } else {
+                    $cards_select[$card['id']] = null;
+                }
+                // $cards_select[$card['id']] = $card['card_number'].' - '.$card['exp_month'].'/'.$card['exp_year'];
             }
         }
 
