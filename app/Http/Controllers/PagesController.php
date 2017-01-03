@@ -197,6 +197,7 @@ class PagesController extends Controller
                     $edit->phone = Job::strip($request->phone);
                     $edit->email = $request->email;
                     $edit->username = $request->username;
+                    $edit->starch_old = 1; # override the expiration password
                     $edit->password = bcrypt($request->password);
                     $edit->role_id = 5;
                     if ($edit->save()) {
@@ -221,6 +222,7 @@ class PagesController extends Controller
             $users->phone = Job::strip($request->phone);
             $users->email = $request->email;
             $users->username = $request->username;
+            $users->starch_old = 1; #override the password expiration
             $users->password = bcrypt($request->password);
             $users->role_id = 5; //Customer status
 
