@@ -164,15 +164,15 @@ class SchedulesController extends Controller
 
                 }
 
-                $body = false;
+                $body = null;
                 $request->session()->put('delivery_route',$dr);
             } 
 
 
 
     	} else {
-    		$body = false;
-    		$dr = false;
+    		$body = null;
+    		$dr = null;
     	}
     	$pickup_approved = Schedule::where('pickup_date',$today)
         					   ->whereIn('status',[3,12])
