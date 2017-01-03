@@ -528,7 +528,7 @@ class AdminsController extends Controller
         //         $address->zipcode = $zipcode;
         //         if ($street != '') {
         //             if ($address->save()) {
-        //                 Job::dump('saved card #'.$address->id);
+        //                 Job::dump('saved address #'.$address->id);
         //             }
         //         }   
         //     }

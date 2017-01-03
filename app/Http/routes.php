@@ -39,7 +39,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/authenticate/{username}/{pw}',['as'=>'admins_api_authenticate','uses'=>'AdminsController@getAuthentication']);
 	Route::get('/admins/api/auto/{table}',['as'=>'admins_api_auto','uses'=>'AdminsController@getApiAuto']);
 	Route::post('/admins/api/auto', ['as'=>'admins_api_auto_post','uses'=>'AdminsController@postApiAuto']);
-    // Route::group(['middleware' => ['forceSSL']], function(){
+    Route::group(['middleware' => ['forceSSL']], function(){
 	   
 	    Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
 	    Route::get('/services',['as'=>'pages_services','uses'=>'PagesController@getServices']);
@@ -123,7 +123,7 @@ Route::group(['middleware' => ['web']], function () {
 	    	Route::get('/update-contact', ['as'=>'pages_update_contact','uses'=>'PagesController@getUpdateContact']);
 	    	Route::post('/pages/one-touch',['as'=>'pages_onetouch','uses'=>'PagesController@postOneTouch']);
 		});
-	// });
+	});
 	//Authenticated Pages
 	Route::group(['middleware' => ['auth']], function(){
 		// Accounts
