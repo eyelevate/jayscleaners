@@ -298,7 +298,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/schedules/processing', ['as'=>'schedules_processing','uses' => 'SchedulesController@getProcessing']);
 		Route::post('/schedules/processing',['as'=>'schedules_processing_post','uses'=>'SchedulesController@postProcessing']);
 		Route::get('/schedules/view/{id}', ['as'=>'schedules_view','uses' => 'SchedulesController@getView']);
-		
+		Route::post('/schedules/admin-cancel',['as'=>'schedules_admin_cancel','uses'=>'SchedulesController@postAdminCancel']);
 
 		Route::post('/schedules/approve-pickup', ['as'=>'schedules_approve_pickup','uses'=>'SchedulesController@postApprovePickup']);
 		Route::post('/schedules/approve-dropoff', ['as'=>'schedules_approve_dropoff','uses'=>'SchedulesController@postApproveDropoff']);

@@ -183,7 +183,8 @@
                     </div>
 
                     <div class="panel-footer clearfix">
-                        <a href="{{ route('schedules_view',$customer_id) }}" class="btn btn-danger btn-lg">Cancel</a>
+                        <a href="{{ route('schedules_view',$customer_id) }}" class="btn btn-lg">Back</a>
+                        <button type="button" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#cancel">Cancel Delivery</button>
                         <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" >Update</button>
                     </div>
                 {!! Form::close() !!}
@@ -191,4 +192,11 @@
             </div>
         </div>
     </div>
+
+@stop
+@section('modals')
+    {!! View::make('partials.deliveries.cancel')
+        ->with('schedule_id',$update_id)
+        ->render() 
+    !!}
 @stop

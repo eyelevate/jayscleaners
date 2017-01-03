@@ -47,7 +47,10 @@
     });
 </script>
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('notifications'); ?>
+  <?php echo View::make('partials.layouts.nav-bar')->render(); ?>
 
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
     <br/>
     <div class="row">
@@ -188,7 +191,8 @@
                     </div>
 
                     <div class="panel-footer clearfix">
-                        <a href="<?php echo e(route('schedules_view',$customer_id)); ?>" class="btn btn-danger btn-lg">Cancel</a>
+                        <a href="<?php echo e(route('schedules_view',$customer_id)); ?>" class="btn btn-lg">Back</a>
+                        <button type="button" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#cancel">Cancel Delivery</button>
                         <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" >Update</button>
                     </div>
                 <?php echo Form::close(); ?>
@@ -197,5 +201,12 @@
             </div>
         </div>
     </div>
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('modals'); ?>
+    <?php echo View::make('partials.deliveries.cancel')
+        ->with('schedule_id',$update_id)
+        ->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

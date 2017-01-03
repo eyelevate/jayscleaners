@@ -732,6 +732,15 @@ class SchedulesController extends Controller
         }
     }
 
+    public function postAdminCancel(Request $request) {
+        $schedule_id = $request->id;
+        $schedules = Schedule::find($schedule_id);
+        if ($schedules->delete()) {
+            Flash::success('Successfully deleted schedule #'.$schedule_id.' from the server.');
+            return Redirect::route('delivery_overview');
+        }
+    }
+
 
 
 
