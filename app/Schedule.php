@@ -53,8 +53,9 @@ class Schedule extends Model
                     } else {
                         $dropoff_time = 'No time scheduled';
                     }
-
+                    Job::dump($value->customer_id);
                     $customers = User::find($value->customer_id);
+                    Job::dump($customers);
     				$schedules[$key]['id'] = $value->id;
                     $schedules[$key]['customer_id'] = $value->customer_id;
                     $schedules[$key]['email'] = 'Not Set';
