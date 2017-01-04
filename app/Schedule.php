@@ -55,288 +55,297 @@ class Schedule extends Model
                     }
 
                     $customers = User::find($value->customer_id);
-    				$schedules[$key]['id'] = $value->id;
-                    $schedules[$key]['customer_id'] = $value->customer_id;
-                    $schedules[$key]['email'] = ($customers->email) ?  $customers->email : NULL;
-                    $schedules[$key]['first_name'] = ucFirst($customers->first_name);
-                    $schedules[$key]['last_name'] = ucFirst($customers->last_name);
-    				$schedules[$key]['company_id'] = $value->company_id;
-                    $schedules[$key]['company_name'] = $companies->name;
-    				$schedules[$key]['pickup_address'] = $value->pickup_address;
-    				$schedules[$key]['pickup_delivery_id'] = $value->pickup_delivery_id;
-    				$schedules[$key]['dropoff_delivery_id'] = $value->dropoff_delivery_id;
-    				$schedules[$key]['address_name'] = $addresses->name;
-    				$schedules[$key]['pickup_address_1'] = $pickup_address_1;
-    				$schedules[$key]['pickup_address_2'] = $pickup_address_2;
-    				$schedules[$key]['contact_name'] = $addresses->concierge_name;
-    				$schedules[$key]['contact_number'] = $addresses->concierge_number;
-                    if (strtotime($value->pickup_date) > 0) {
-                        $schedules[$key]['pickup_date'] = date('D m/d/Y',strtotime($value->pickup_date));
-                    } else {
-                        $schedules[$key]['pickup_date'] = 'No Pickup Date Scheduled';
+                    if (count($customers) > 0) {
+
+
+        				$schedules[$key]['id'] = $value->id;
+                        $schedules[$key]['customer_id'] = $value->customer_id;
+                        if ($customers->email) {
+                            $schedules[$key]['email'] = $customers->email;
+                        } else {
+                            $schedules[$key]['email'] = '';
+                        }
+                        
+                        $schedules[$key]['first_name'] = ucFirst($customers->first_name);
+                        $schedules[$key]['last_name'] = ucFirst($customers->last_name);
+        				$schedules[$key]['company_id'] = $value->company_id;
+                        $schedules[$key]['company_name'] = $companies->name;
+        				$schedules[$key]['pickup_address'] = $value->pickup_address;
+        				$schedules[$key]['pickup_delivery_id'] = $value->pickup_delivery_id;
+        				$schedules[$key]['dropoff_delivery_id'] = $value->dropoff_delivery_id;
+        				$schedules[$key]['address_name'] = $addresses->name;
+        				$schedules[$key]['pickup_address_1'] = $pickup_address_1;
+        				$schedules[$key]['pickup_address_2'] = $pickup_address_2;
+        				$schedules[$key]['contact_name'] = $addresses->concierge_name;
+        				$schedules[$key]['contact_number'] = $addresses->concierge_number;
+                        if (strtotime($value->pickup_date) > 0) {
+                            $schedules[$key]['pickup_date'] = date('D m/d/Y',strtotime($value->pickup_date));
+                        } else {
+                            $schedules[$key]['pickup_date'] = 'No Pickup Date Scheduled';
+                        }
+        				$schedules[$key]['pickup_time'] = $pickup_time;
+                        if (strtotime($value->dropoff_date) > 0) {
+                            $schedules[$key]['dropoff_date'] = date('D m/d/Y',strtotime($value->dropoff_date));
+                        } else {
+                            $schedules[$key]['dropoff_date'] = 'No Dropoff Date Scheduled';
+                        }
+        				
+        				$schedules[$key]['dropoff_time'] = $dropoff_time;
+        				$schedules[$key]['special_instructions'] = $value->special_instructions;
+        				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
+                        $latlong = Schedule::getLatLong($pickup_address_1.' '.$pickup_address_2);
+
+                        $schedules[$key]['gmap_address'] = (isset($latlong['latitude'])) ? 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'] : null;
+        				/**
+        				* Status Index
+        				* 1. Delivery Scheduled
+        				* 2. En-route Pickup
+        				* 3. Picked Up
+        				* 4. Processing 
+        				* 5. En-route Dropoff
+        				* 6. Cancelled by user
+        				* 7. Delayed - Processing not complete
+        				* 8. Delayed - Customer not available for pickup
+        				* 9. Delayed - Customer not available for dropoff
+        				* 10. Delayed - Customer card on file error
+        				* 11. Delayed - Delivery could not be completed
+        				* 12. Dropped Off
+        				**/
+        				$schedules[$key]['status'] = $value->status;
+                        $schedules[$key]['invoices'] = [];
+                        // $delay_list = [
+                        //     '' => 'Select Delay Reason',
+                        //     '7' => 'Delayed - Processing not complete',
+                        //     '8' => 'Delayed - Customer unavailable for pickup',
+                        //     '9' => 'Delayed - Customer unavailable for dropoff',
+                        //     '10'=> 'Delayed - Card on file processing error'
+                        // ];
+        				// $schedules[$key]['status'] = 12;
+        				switch($schedules[$key]['status']) {
+        					case 1:
+    							$schedules[$key]['status_message'] = 'Delivery Scheduled';
+                                $schedules[$key]['status_html'] = 'label-info';
+                                $schedules[$key]['delay_list'] = [
+                                    '' => 'Select Delay Reason',
+                                    '8' => 'Delayed - Customer unavailable for pickup',
+                                ];
+        					break;
+
+        					case 2:
+        						$schedules[$key]['status_message'] = 'En-route Pickup';
+                                $schedules[$key]['status_html'] = 'label-info';
+                                $schedules[$key]['delay_list'] = [
+                                    '' => 'Select Delay Reason',
+                                    '8' => 'Delayed - Customer unavailable for pickup',
+                                ];
+                                $schedules[$key]['email_subject'] = 'En-route to Pickup';
+                                $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                                $schedules[$key]['email_body'] = 'Your delivery request has been accepted and we are on the way!';
+                                $schedules[$key]['email_body'] .= ' Please have you or your contact person(s) be available between the hours of '.$pickup_time.' today.';
+                                $schedules[$key]['email_body'] .= ' If you or your contact cannot be available during these hours, please contact us at '.Job::formatPhoneString($companies->phone).' click on the "Reschedule" link below to cancel or make a change to your delivery date.';
+        					break;
+
+        					case 3:
+        						$schedules[$key]['status_message'] = 'Picked Up';
+                                $schedules[$key]['status_html'] = 'label-info';
+                                $schedules[$key]['delay_list'] = [
+                                    '' => 'Select Delay Reason',
+                                    '7' => 'Delayed - Processing not complete',
+                                ];
+        					break;
+
+        					case 4:
+        						$schedules[$key]['status_message'] = 'Processing';
+                                $schedules[$key]['status_html'] = 'label-info';
+                                $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
+                                $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                     ->where('status','<',5)
+                                                     ->where('schedule_id',NULL)
+                                                     ->union($invoices_selected)
+                                                     ->get();
+                                $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+                                $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                                $totals = Invoice::prepareTotals($invs);
+                                $schedules[$key]['invoices'] = $prepared_invoices;
+                                $schedules[$key]['invoice_totals'] = $totals;
+                                $schedules[$key]['delay_list'] = [
+                                    '' => 'Select Delay Reason',
+                                    '7' => 'Delayed - Processing not complete',
+                                    '10'=> 'Delayed - Card on file processing error'
+                                ];
+        					break;
+
+        					case 5:
+        						$schedules[$key]['status_message'] = 'Invoice Paid';
+                                $schedules[$key]['status_html'] = 'label-info';
+                                $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                                               ->where('status',5)
+                                                               ->where('schedule_id',$schedules[$key]['id']);
+                                $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                     ->where('status','<',5)
+                                                     ->where('schedule_id',NULL)
+                                                     ->union($completed_invoices)
+                                                     ->get();
+                                $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                                $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                                $totals = Invoice::prepareTotals($invs);
+                                $schedules[$key]['invoices'] = $prepared_invoices;
+                                $schedules[$key]['invoice_totals'] = $totals;
+                                $schedules[$key]['delay_list'] = [
+                                    '' => 'Select Delay Reason',
+                                    '9' => 'Delayed - Customer unavailable for dropoff'
+                                ];
+        					break;
+
+        					case 6:
+        						$schedules[$key]['status_message'] = 'Cancelled by customer';
+                                $schedules[$key]['status_html'] = 'label-danger';
+        					break;
+
+        					case 7:
+        						$schedules[$key]['status_message'] = 'Delayed - Processing not complete';
+                                $schedules[$key]['status_html'] = 'label-warning';
+                                $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
+                                $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                     ->where('status','<',5)
+                                                     ->where('schedule_id',NULL)
+                                                     ->union($invoices_selected)
+                                                     ->get();
+                                $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+                                $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                                $totals = Invoice::prepareTotals($invs);
+                                $schedules[$key]['invoices'] = $prepared_invoices;
+                                $schedules[$key]['invoice_totals'] = $totals;
+        					break;
+
+        					case 8:
+        						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for pickup';
+                                $schedules[$key]['status_html'] = 'label-warning';
+                                $schedules[$key]['email_subject'] = 'Delivery delayed due contact not available during pickup!';
+                                $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                                $schedules[$key]['email_body'] = 'Your delivery has been delayed due your contact not being available during pickup.';
+                                $schedules[$key]['email_body'] .= ' In order to finish this pickup we will need to reschedule to another available delivery date.';
+                                $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
+                                $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule Pickup</a>';
+        					break;
+
+        					case 9:
+        						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for dropoff';
+                                $schedules[$key]['status_html'] = 'label-warning';
+                                $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                                   ->where('status',5)
+                                                   ->where('schedule_id',$schedules[$key]['id']);
+                                $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                     ->where('status','<',5)
+                                                     ->where('schedule_id',NULL)
+                                                     ->union($completed_invoices)
+                                                     ->get();
+                                $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                                $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                                $totals = Invoice::prepareTotals($invs);
+                                $schedules[$key]['invoices'] = $prepared_invoices;
+                                $schedules[$key]['invoice_totals'] = $totals;
+                                $schedules[$key]['email_subject'] = 'Delivery delayed due contact not available during dropoff!';
+                                $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                                $schedules[$key]['email_body'] = 'Your delivery has been delayed due your contact not being available during dropoff.';
+                                $schedules[$key]['email_body'] .= ' In order to finish processing this delivery and have it delivered to you we will need to reschedule the dropoff to another available delivery date.';
+                                $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
+                                $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule Dropoff</a>';
+        					break;
+
+        					case 10:
+        						$schedules[$key]['status_message'] = 'Delayed - Card on file processing error';
+                                $schedules[$key]['status_html'] = 'label-warning';
+                                            $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
+                                $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                     ->where('status','<',5)
+                                                     ->where('schedule_id',NULL)
+                                                     ->union($invoices_selected)
+                                                     ->get();
+                                $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+                                $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                                $totals = Invoice::prepareTotals($invs);
+                                $schedules[$key]['invoices'] = $prepared_invoices;
+                                $schedules[$key]['invoice_totals'] = $totals;
+
+
+                                // gather card information
+                                $cards = Card::find($value->card_id);
+                                $profile_id = $cards->profile_id;
+                                $payment_id = $cards->payment_id;
+
+                                $card_info = Card::getCardInfo($company_id, $profile_id, $payment_id);
+
+                                $card_last_four = ($card_info['status']) ? $card_info['last_four'] : 'XXXX';
+
+                                $schedules[$key]['email_subject'] = 'Delivery delayed due to credit card on file error!';
+                                $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                                $schedules[$key]['email_body'] = 'Your delivery has been delayed due to a processing error on your card ending in "'.$card_last_four.'"';
+                                $schedules[$key]['email_body'] .= ' In order to finish processing this delivery and have it delivered to you we will need to fix the issue with the card and process it successfully.';
+                                $schedules[$key]['email_body'] .= ' Please click on the button below to make the appropriate adjustments.';
+                                $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('cards_edit',$value->card_id).'">Update Card Info</a>';
+                                $schedules[$key]['email_body_2'] = 'Once you have updated your card information. Click on the "Reschedule" button below to reschedule your drop off.';
+                                $schedules[$key]['email_button_2'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule</a>';
+        					break;
+
+        					case 11:
+        						$schedules[$key]['status_message'] = 'En-route Dropoff - invoice paid';
+                                $schedules[$key]['status_html'] = 'label-info';
+                                $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                                               ->where('status',5)
+                                                               ->where('schedule_id',$schedules[$key]['id']);
+                                $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                     ->where('status','<',5)
+                                                     ->where('schedule_id',NULL)
+                                                     ->union($completed_invoices)
+                                                     ->get();
+                                $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                                $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                                $totals = Invoice::prepareTotals($invs);
+                                $schedules[$key]['invoices'] = $prepared_invoices;
+                                $schedules[$key]['invoice_totals'] = $totals;
+                                $schedules[$key]['delay_list'] = [
+                                    '' => 'Select Delay Reason',
+                                    '9' => 'Delayed - Customer unavailable for dropoff'
+                                ];
+                                $schedules[$key]['email_subject'] = 'En-route to Dropoff!';
+                                $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                                $schedules[$key]['email_body'] = 'Your delivery has been processed, paid and is ready to be dropped off at your address.';
+                                $schedules[$key]['email_body'] .= ' Please have you or your contact person(s) be available between the hours of '.$dropoff_time.' today.';
+                                $schedules[$key]['email_body'] .= ' If you or your contact cannot be available during these hours, please contact us at '.Job::formatPhoneString($companies->phone).' OR click on the "Reschedule" link below to cancel or make a change to your delivery date.';
+                                $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule</a>';
+                            break;
+         					case 12:
+         						$schedules[$key]['status_message'] = 'Dropped Off. Thank You!';
+                                $schedules[$key]['status_html'] = 'label-success';
+                                $completed_invoices = Invoice::where('customer_id',$value->customer_id)
+                                                               ->where('status',5)
+                                                               ->where('schedule_id',$schedules[$key]['id']);
+                                $invoices = Invoice::where('customer_id',$value->customer_id)
+                                                     ->where('status','<',5)
+                                                     ->where('schedule_id',NULL)
+                                                     ->union($completed_invoices)
+                                                     ->get();
+                                $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
+
+                                $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
+                                $totals = Invoice::prepareTotals($invs);
+                                $schedules[$key]['invoices'] = $prepared_invoices;
+                                $schedules[$key]['invoice_totals'] = $totals;
+                                $schedules[$key]['email_subject'] = 'Delivery Successful!';
+                                $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                                $schedules[$key]['email_body'] = 'Your delivery was successfully';
+                                $schedules[$key]['email_body'] .= ' Congratulations! Your delivery was successfully completed.';
+                                $schedules[$key]['email_body'] .= ' If you would like to schedule your next delivery you may click on the link below to reschedule. Thank you for your business!';
+                                $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_start').'">New Delivery</a>';
+        					break;
+
+
+        				}
                     }
-    				$schedules[$key]['pickup_time'] = $pickup_time;
-                    if (strtotime($value->dropoff_date) > 0) {
-                        $schedules[$key]['dropoff_date'] = date('D m/d/Y',strtotime($value->dropoff_date));
-                    } else {
-                        $schedules[$key]['dropoff_date'] = 'No Dropoff Date Scheduled';
-                    }
-    				
-    				$schedules[$key]['dropoff_time'] = $dropoff_time;
-    				$schedules[$key]['special_instructions'] = $value->special_instructions;
-    				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
-                    $latlong = Schedule::getLatLong($pickup_address_1.' '.$pickup_address_2);
-
-                    $schedules[$key]['gmap_address'] = (isset($latlong['latitude'])) ? 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'] : null;
-    				/**
-    				* Status Index
-    				* 1. Delivery Scheduled
-    				* 2. En-route Pickup
-    				* 3. Picked Up
-    				* 4. Processing 
-    				* 5. En-route Dropoff
-    				* 6. Cancelled by user
-    				* 7. Delayed - Processing not complete
-    				* 8. Delayed - Customer not available for pickup
-    				* 9. Delayed - Customer not available for dropoff
-    				* 10. Delayed - Customer card on file error
-    				* 11. Delayed - Delivery could not be completed
-    				* 12. Dropped Off
-    				**/
-    				$schedules[$key]['status'] = $value->status;
-                    $schedules[$key]['invoices'] = [];
-                    // $delay_list = [
-                    //     '' => 'Select Delay Reason',
-                    //     '7' => 'Delayed - Processing not complete',
-                    //     '8' => 'Delayed - Customer unavailable for pickup',
-                    //     '9' => 'Delayed - Customer unavailable for dropoff',
-                    //     '10'=> 'Delayed - Card on file processing error'
-                    // ];
-    				// $schedules[$key]['status'] = 12;
-    				switch($schedules[$key]['status']) {
-    					case 1:
-							$schedules[$key]['status_message'] = 'Delivery Scheduled';
-                            $schedules[$key]['status_html'] = 'label-info';
-                            $schedules[$key]['delay_list'] = [
-                                '' => 'Select Delay Reason',
-                                '8' => 'Delayed - Customer unavailable for pickup',
-                            ];
-    					break;
-
-    					case 2:
-    						$schedules[$key]['status_message'] = 'En-route Pickup';
-                            $schedules[$key]['status_html'] = 'label-info';
-                            $schedules[$key]['delay_list'] = [
-                                '' => 'Select Delay Reason',
-                                '8' => 'Delayed - Customer unavailable for pickup',
-                            ];
-                            $schedules[$key]['email_subject'] = 'En-route to Pickup';
-                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
-                            $schedules[$key]['email_body'] = 'Your delivery request has been accepted and we are on the way!';
-                            $schedules[$key]['email_body'] .= ' Please have you or your contact person(s) be available between the hours of '.$pickup_time.' today.';
-                            $schedules[$key]['email_body'] .= ' If you or your contact cannot be available during these hours, please contact us at '.Job::formatPhoneString($companies->phone).' click on the "Reschedule" link below to cancel or make a change to your delivery date.';
-    					break;
-
-    					case 3:
-    						$schedules[$key]['status_message'] = 'Picked Up';
-                            $schedules[$key]['status_html'] = 'label-info';
-                            $schedules[$key]['delay_list'] = [
-                                '' => 'Select Delay Reason',
-                                '7' => 'Delayed - Processing not complete',
-                            ];
-    					break;
-
-    					case 4:
-    						$schedules[$key]['status_message'] = 'Processing';
-                            $schedules[$key]['status_html'] = 'label-info';
-                            $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
-                            $invoices = Invoice::where('customer_id',$value->customer_id)
-                                                 ->where('status','<',5)
-                                                 ->where('schedule_id',NULL)
-                                                 ->union($invoices_selected)
-                                                 ->get();
-                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
-                            $totals = Invoice::prepareTotals($invs);
-                            $schedules[$key]['invoices'] = $prepared_invoices;
-                            $schedules[$key]['invoice_totals'] = $totals;
-                            $schedules[$key]['delay_list'] = [
-                                '' => 'Select Delay Reason',
-                                '7' => 'Delayed - Processing not complete',
-                                '10'=> 'Delayed - Card on file processing error'
-                            ];
-    					break;
-
-    					case 5:
-    						$schedules[$key]['status_message'] = 'Invoice Paid';
-                            $schedules[$key]['status_html'] = 'label-info';
-                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
-                                                           ->where('status',5)
-                                                           ->where('schedule_id',$schedules[$key]['id']);
-                            $invoices = Invoice::where('customer_id',$value->customer_id)
-                                                 ->where('status','<',5)
-                                                 ->where('schedule_id',NULL)
-                                                 ->union($completed_invoices)
-                                                 ->get();
-                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-
-                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
-                            $totals = Invoice::prepareTotals($invs);
-                            $schedules[$key]['invoices'] = $prepared_invoices;
-                            $schedules[$key]['invoice_totals'] = $totals;
-                            $schedules[$key]['delay_list'] = [
-                                '' => 'Select Delay Reason',
-                                '9' => 'Delayed - Customer unavailable for dropoff'
-                            ];
-    					break;
-
-    					case 6:
-    						$schedules[$key]['status_message'] = 'Cancelled by customer';
-                            $schedules[$key]['status_html'] = 'label-danger';
-    					break;
-
-    					case 7:
-    						$schedules[$key]['status_message'] = 'Delayed - Processing not complete';
-                            $schedules[$key]['status_html'] = 'label-warning';
-                            $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
-                            $invoices = Invoice::where('customer_id',$value->customer_id)
-                                                 ->where('status','<',5)
-                                                 ->where('schedule_id',NULL)
-                                                 ->union($invoices_selected)
-                                                 ->get();
-                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
-                            $totals = Invoice::prepareTotals($invs);
-                            $schedules[$key]['invoices'] = $prepared_invoices;
-                            $schedules[$key]['invoice_totals'] = $totals;
-    					break;
-
-    					case 8:
-    						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for pickup';
-                            $schedules[$key]['status_html'] = 'label-warning';
-                            $schedules[$key]['email_subject'] = 'Delivery delayed due contact not available during pickup!';
-                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
-                            $schedules[$key]['email_body'] = 'Your delivery has been delayed due your contact not being available during pickup.';
-                            $schedules[$key]['email_body'] .= ' In order to finish this pickup we will need to reschedule to another available delivery date.';
-                            $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
-                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule Pickup</a>';
-    					break;
-
-    					case 9:
-    						$schedules[$key]['status_message'] = 'Delayed - Customer unavailable for dropoff';
-                            $schedules[$key]['status_html'] = 'label-warning';
-                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
-                                               ->where('status',5)
-                                               ->where('schedule_id',$schedules[$key]['id']);
-                            $invoices = Invoice::where('customer_id',$value->customer_id)
-                                                 ->where('status','<',5)
-                                                 ->where('schedule_id',NULL)
-                                                 ->union($completed_invoices)
-                                                 ->get();
-                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-
-                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
-                            $totals = Invoice::prepareTotals($invs);
-                            $schedules[$key]['invoices'] = $prepared_invoices;
-                            $schedules[$key]['invoice_totals'] = $totals;
-                            $schedules[$key]['email_subject'] = 'Delivery delayed due contact not available during dropoff!';
-                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
-                            $schedules[$key]['email_body'] = 'Your delivery has been delayed due your contact not being available during dropoff.';
-                            $schedules[$key]['email_body'] .= ' In order to finish processing this delivery and have it delivered to you we will need to reschedule the dropoff to another available delivery date.';
-                            $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
-                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule Dropoff</a>';
-    					break;
-
-    					case 10:
-    						$schedules[$key]['status_message'] = 'Delayed - Card on file processing error';
-                            $schedules[$key]['status_html'] = 'label-warning';
-                                        $invoices_selected = Invoice::where('schedule_id',$schedules[$key]['id']);
-                            $invoices = Invoice::where('customer_id',$value->customer_id)
-                                                 ->where('status','<',5)
-                                                 ->where('schedule_id',NULL)
-                                                 ->union($invoices_selected)
-                                                 ->get();
-                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
-                            $totals = Invoice::prepareTotals($invs);
-                            $schedules[$key]['invoices'] = $prepared_invoices;
-                            $schedules[$key]['invoice_totals'] = $totals;
-
-
-                            // gather card information
-                            $cards = Card::find($value->card_id);
-                            $profile_id = $cards->profile_id;
-                            $payment_id = $cards->payment_id;
-
-                            $card_info = Card::getCardInfo($company_id, $profile_id, $payment_id);
-
-                            $card_last_four = ($card_info['status']) ? $card_info['last_four'] : 'XXXX';
-
-                            $schedules[$key]['email_subject'] = 'Delivery delayed due to credit card on file error!';
-                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
-                            $schedules[$key]['email_body'] = 'Your delivery has been delayed due to a processing error on your card ending in "'.$card_last_four.'"';
-                            $schedules[$key]['email_body'] .= ' In order to finish processing this delivery and have it delivered to you we will need to fix the issue with the card and process it successfully.';
-                            $schedules[$key]['email_body'] .= ' Please click on the button below to make the appropriate adjustments.';
-                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('cards_edit',$value->card_id).'">Update Card Info</a>';
-                            $schedules[$key]['email_body_2'] = 'Once you have updated your card information. Click on the "Reschedule" button below to reschedule your drop off.';
-                            $schedules[$key]['email_button_2'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule</a>';
-    					break;
-
-    					case 11:
-    						$schedules[$key]['status_message'] = 'En-route Dropoff - invoice paid';
-                            $schedules[$key]['status_html'] = 'label-info';
-                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
-                                                           ->where('status',5)
-                                                           ->where('schedule_id',$schedules[$key]['id']);
-                            $invoices = Invoice::where('customer_id',$value->customer_id)
-                                                 ->where('status','<',5)
-                                                 ->where('schedule_id',NULL)
-                                                 ->union($completed_invoices)
-                                                 ->get();
-                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-
-                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
-                            $totals = Invoice::prepareTotals($invs);
-                            $schedules[$key]['invoices'] = $prepared_invoices;
-                            $schedules[$key]['invoice_totals'] = $totals;
-                            $schedules[$key]['delay_list'] = [
-                                '' => 'Select Delay Reason',
-                                '9' => 'Delayed - Customer unavailable for dropoff'
-                            ];
-                            $schedules[$key]['email_subject'] = 'En-route to Dropoff!';
-                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
-                            $schedules[$key]['email_body'] = 'Your delivery has been processed, paid and is ready to be dropped off at your address.';
-                            $schedules[$key]['email_body'] .= ' Please have you or your contact person(s) be available between the hours of '.$dropoff_time.' today.';
-                            $schedules[$key]['email_body'] .= ' If you or your contact cannot be available during these hours, please contact us at '.Job::formatPhoneString($companies->phone).' OR click on the "Reschedule" link below to cancel or make a change to your delivery date.';
-                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule</a>';
-                        break;
-     					case 12:
-     						$schedules[$key]['status_message'] = 'Dropped Off. Thank You!';
-                            $schedules[$key]['status_html'] = 'label-success';
-                            $completed_invoices = Invoice::where('customer_id',$value->customer_id)
-                                                           ->where('status',5)
-                                                           ->where('schedule_id',$schedules[$key]['id']);
-                            $invoices = Invoice::where('customer_id',$value->customer_id)
-                                                 ->where('status','<',5)
-                                                 ->where('schedule_id',NULL)
-                                                 ->union($completed_invoices)
-                                                 ->get();
-                            $prepared_invoices = Invoice::prepareInvoice($value->company_id, $invoices);
-
-                            $invs = Invoice::where('schedule_id',$schedules[$key]['id'])->get();
-                            $totals = Invoice::prepareTotals($invs);
-                            $schedules[$key]['invoices'] = $prepared_invoices;
-                            $schedules[$key]['invoice_totals'] = $totals;
-                            $schedules[$key]['email_subject'] = 'Delivery Successful!';
-                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
-                            $schedules[$key]['email_body'] = 'Your delivery was successfully';
-                            $schedules[$key]['email_body'] .= ' Congratulations! Your delivery was successfully completed.';
-                            $schedules[$key]['email_body'] .= ' If you would like to schedule your next delivery you may click on the link below to reschedule. Thank you for your business!';
-                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_start').'">New Delivery</a>';
-    					break;
-
-
-    				}
 
     			}
     		}
