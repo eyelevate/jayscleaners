@@ -63,7 +63,7 @@
                     <div class="panel-heading"><strong>Delivery Update Form</strong></div>
                     <div id="pickup_body" class="panel-body">   
                         <div class="form-group{{ $errors->has('pickup_address') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
+                            <label class="col-md-4 control-label padding-top-none">Pickup Card</label>
 
                             <div class="col-md-6">
                                 
