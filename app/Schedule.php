@@ -57,7 +57,7 @@ class Schedule extends Model
                     $customers = User::find($value->customer_id);
     				$schedules[$key]['id'] = $value->id;
                     $schedules[$key]['customer_id'] = $value->customer_id;
-                    $schedules[$key]['email'] = $customers->email;
+                    $schedules[$key]['email'] = ($customers->email) ?  $customers->email : NULL;
                     $schedules[$key]['first_name'] = ucFirst($customers->first_name);
                     $schedules[$key]['last_name'] = ucFirst($customers->last_name);
     				$schedules[$key]['company_id'] = $value->company_id;
