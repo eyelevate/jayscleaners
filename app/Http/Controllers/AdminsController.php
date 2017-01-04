@@ -619,6 +619,24 @@ class AdminsController extends Controller
         //     }
         // }
 
+        #check invoice items to compare
+        $invoices = Invoice::whereBetween('created_at',['2017-01-03 00:00:00','2017-01-03 23:59:59'])->get();
+        $yes_invoice = [];
+        $no_invoice = [];
+        if (count($invoices) > 0) {
+            foreach ($invoices as $invoice) {
+                $invoice_id = $invoice->id;
+                $iitems = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                if (count($iitems) > 0) {
+                    array_push($yes_invoice,$invoice_id);
+                } else {
+                    array_push($no_invoice,$invoice_id);
+                }
+            }
+        }
+
+        Job::dump($no_invoice);
+
 
         // return view('admins.view')
         // ->with('layout',$this->layout);
