@@ -58,9 +58,9 @@ class Schedule extends Model
     				$schedules[$key]['id'] = $value->id;
                     $schedules[$key]['customer_id'] = $value->customer_id;
                     $schedules[$key]['email'] = 'Not Set';
-                    if ($customers->email != '') {
-                        $schedules[$key]['email'] = $customers->email;
-                    } 
+                    // if ($customers->email != '') {
+                    //     $schedules[$key]['email'] = $customers->email;
+                    // } 
                     
                     $schedules[$key]['first_name'] = ucFirst($customers->first_name);
                     $schedules[$key]['last_name'] = ucFirst($customers->last_name);
