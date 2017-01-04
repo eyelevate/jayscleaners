@@ -580,8 +580,22 @@ class AdminsController extends Controller
         # go through todays transactions, check to see if exists in invoices if not then delete
         $start = date('Y-m-d 00:00:00');
         $end = date('Y-m-d 23:59:59');
+        $found = [];
+        $not_found = [];
         $transactions = Transaction::whereBetween('created_at',[$start,$end])->where('status',1)->get();
-        Job::dump($transactions);
+        if (count($transactions) > 0) {
+            foreach ($transactions as $transaction) {
+                $transaction_id = $transaction->id;
+                $invoices = Invoice::where('transaction_id',$transaction_id)->get();
+                if (count($invoices) > 0) {
+                    array_push($found,$transaction_id);
+                } else {
+                    array_push($not_found,$transaction_id);
+                }
+            }
+        }
+        
+        Job::dump($found);
 
         // return view('admins.view')
         // ->with('layout',$this->layout);
