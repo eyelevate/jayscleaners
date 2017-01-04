@@ -634,8 +634,15 @@ class AdminsController extends Controller
                 }
             }
         }
+        if (count($no_invoice) > 0) {
+            foreach ($no_invoice as $invoice_id) {
+                $delete = Invoice::find($invoice_id);
+                if ($delete->delete()) {
+                    Job::dump('deleted empty invoice #'.$invoice_id);
+                }
+            }
+        }
 
-        Job::dump($no_invoice);
 
 
         // return view('admins.view')
