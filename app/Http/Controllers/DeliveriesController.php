@@ -1029,6 +1029,7 @@ class DeliveriesController extends Controller
 
 
         $cards = Card::prepareForAdminView(Card::where('user_id',$customer_id)->where('company_id',1)->get());
+        Job::dump($cards);
         $cards_select = [];
         if (count($cards) > 0) {
             foreach ($cards as $card) {
