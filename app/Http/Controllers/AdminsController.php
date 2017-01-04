@@ -578,9 +578,9 @@ class AdminsController extends Controller
         // }
 
         # go through todays transactions, check to see if exists in invoices if not then delete
-        $transactions = Transaction::whereBetween('created_at',[date('Y-m-d 00:00:00',date('Y-m-d 23:59:59'))])
-            ->where('status',1)
-            ->get();
+        $start = date('Y-m-d 00:00:00');
+        $end = date('Y-m-d 23:59:59');
+        $transactions = Transaction::whereBetween('id',[$start,$end])->where('status',1)->get();
         Job::dump($transactions);
 
         // return view('admins.view')
