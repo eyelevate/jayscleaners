@@ -24,6 +24,7 @@ class Schedule extends Model
     	$schedules = [];
     	if (count($data) > 0) {
     		foreach ($data as $key => $value) {
+                Job::dump($value);
     			if(isset($data[$key]['pickup_address'])) {
                     $company_id = $value->company_id;
                     $companies = Company::find($company_id);
