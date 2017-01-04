@@ -351,7 +351,7 @@ class Card extends Model
     }
 
     static public function prepareForAdminView($data) {
-    	$companies = Company::find(1);
+    	$companies = Company::find(1); #todo fix this issue later for now hard code ydc company
     	$cards_data = [];
     	if (count($data) > 0) {
     		foreach ($data as $key => $card) {
