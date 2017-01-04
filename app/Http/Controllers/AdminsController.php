@@ -598,6 +598,15 @@ class AdminsController extends Controller
         Job::dump($found);
         Job::dump($not_found);
 
+        if (count($not_found) > 0) {
+            foreach ($not_found as $trans_id) {
+                $trans = Transaction::find($trans_id);
+                if ($trans->delete()) {
+                    Job::dump('Removed #'.$trans_id);
+                }
+            }
+        }
+
         // return view('admins.view')
         // ->with('layout',$this->layout);
     }
