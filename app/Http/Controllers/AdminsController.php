@@ -596,6 +596,7 @@ class AdminsController extends Controller
         }
         
         Job::dump($found);
+        Job::dump($not_found);
 
         // return view('admins.view')
         // ->with('layout',$this->layout);
