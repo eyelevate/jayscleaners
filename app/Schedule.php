@@ -55,7 +55,8 @@ class Schedule extends Model
                     }
                     Job::dump($value->customer_id);
                     $customers = User::find($value->customer_id);
-                    Job::dump($customers);
+                    Job::dump(User::find(7808));
+
     				$schedules[$key]['id'] = $value->id;
                     $schedules[$key]['customer_id'] = $value->customer_id;
                     $schedules[$key]['email'] = 'Not Set';
