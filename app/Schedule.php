@@ -24,7 +24,6 @@ class Schedule extends Model
     	$schedules = [];
     	if (count($data) > 0) {
     		foreach ($data as $key => $value) {
-                Job::dump($value);
     			if(isset($data[$key]['pickup_address'])) {
                     $company_id = $value->company_id;
                     $companies = Company::find($company_id);
@@ -54,17 +53,12 @@ class Schedule extends Model
                     } else {
                         $dropoff_time = 'No time scheduled';
                     }
-                    Job::dump($value->customer_id);
                     $customers = User::find($value->customer_id);
-                    Job::dump(User::find(7808));
 
     				$schedules[$key]['id'] = $value->id;
                     $schedules[$key]['customer_id'] = $value->customer_id;
-                    $schedules[$key]['email'] = 'Not Set';
-                    // if ($customers->email != '') {
-                    //     $schedules[$key]['email'] = $customers->email;
-                    // } 
-                    
+                    $schedules[$key]['email'] = $customers->email;
+                
                     $schedules[$key]['first_name'] = ucFirst($customers->first_name);
                     $schedules[$key]['last_name'] = ucFirst($customers->last_name);
     				$schedules[$key]['company_id'] = $value->company_id;

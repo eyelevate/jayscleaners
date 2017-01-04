@@ -608,16 +608,17 @@ class AdminsController extends Controller
         // }
 
         #check invoices
-        $invoices = Invoice::where('customer_id',NULL)->get();
-        Job::dump($invoices);
-        if (count($invoices) > 0) {
-            foreach ($invoices as $inv) {
-                $invs = Invoice::find($inv->id);
-                if ($invs->delete()) {
-                    Job::dump('deleted invoice #'.$inv->id);
-                }
-            }
-        }
+        // $invoices = Invoice::where('customer_id',NULL)->get();
+        // Job::dump($invoices);
+        // if (count($invoices) > 0) {
+        //     foreach ($invoices as $inv) {
+        //         $invs = Invoice::find($inv->id);
+        //         if ($invs->delete()) {
+        //             Job::dump('deleted invoice #'.$inv->id);
+        //         }
+        //     }
+        // }
+
 
         // return view('admins.view')
         // ->with('layout',$this->layout);
