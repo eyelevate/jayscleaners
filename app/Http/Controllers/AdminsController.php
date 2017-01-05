@@ -1143,7 +1143,7 @@ class AdminsController extends Controller
             $user_id = $request->user_id;
             $users = User::find($user_id);
             // $send_to = $users->email;
-            $send_to = 'onedough83@gmail.com';
+            $send_to = $users->email;
             $title = 'Jays Cleaners - Action Required Message';
             $token = Job::generateRandomString(8);
             $emailed_status = $users->starch_old;
