@@ -153,7 +153,6 @@ class Report extends Model
 
         // pickup 
         $pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('pretax');
-        Job::dump($pretax);
         $tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('tax');
         $discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('discount');
         $credit = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('credit');
