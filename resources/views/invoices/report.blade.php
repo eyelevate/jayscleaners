@@ -33,7 +33,7 @@
 					@if (count($invoices) > 0)
 						@foreach($invoices as $invoice)
 						<tr>
-							<td>{{ $invoice->invoice_id }}</td>
+							<td>{{ $invoice->id }}</td>
 							<td>{{ $invoice->quantity }}</td>
 							<td>
 								<ul style="list-style:none;">
