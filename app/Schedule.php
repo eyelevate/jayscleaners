@@ -380,11 +380,11 @@ class Schedule extends Model
                             'lng'=>($latlong['status']) ? $latlong['longitude'] : false
                          ];
                 // push to the visits array
-                $trip['visits'][$schedule->id] = [
+                $trip['visits'][$address_id] = [
                     'location' => $point,
                     'start' =>($schedule->status == 5) ? $dropoff_start_time: $pickup_start_time,
                     'end' => ($schedule->status == 5) ? $dropoff_end_time : $pickup_end_time,
-                    'duration' => 20,
+                    'duration' => 10,
                 ];
 
 
@@ -402,6 +402,36 @@ class Schedule extends Model
 
 
         return $trip;
+    }
+
+    static public function prepareRouteSetup($schedules) {
+        $setup = [];
+
+        if (count($schedules) > 0) {
+            foreach ($schedules as $schedule) {
+                $company_id = $schedule->company_id;
+                $customer_id = $schedule->customer_id;
+                $users = User::find($customer_id);
+                $first_name = $users->first_name;
+                $last_name = $users->last_name;
+                $address_id = $schedule->pickup_address;
+                $addresses = Address::find($address_id);
+                $address_name = $addresses->name;
+                $address_street = $addresses->street;
+                $address_suite = $addresses->suite;
+                $address_city = $addresses->city;
+                $address_state = $addresses->state;
+                $address_zipcode = $addresses->zipcode;
+                $tag = ucFirst($first_name).' '.ucFirst($last_name).' - '.$address_street;
+                $address_string = $address_street.' '.$address_city.', '.$address_state.' '.$address_zipcode;
+                $latlong = Schedule::getLatLong($address_string);
+                array_push($setup, [$latlong['latitude'],$latlong['longitude'],$tag]);                
+            }
+        }
+
+        return $setup;
+
+
     }
 
     static private function getDrivers($company_id = null) {

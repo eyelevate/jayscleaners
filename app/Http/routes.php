@@ -295,6 +295,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/schedules/checklist',['as'=>'schedules_checklist_post','uses'=>'SchedulesController@postChecklist']);
 		Route::get('/schedules/delivery-route',['as'=>'schedules_delivery_route','uses'=>'SchedulesController@getDeliveryRoute']);
 		Route::post('/schedules/delivery-route',['as'=>'schedules_delivery_route_post','uses'=>'SchedulesController@postDeliveryRoute']);
+		Route::get('/schedules/prepare-route',['as'=>'schedules_prepare_route','uses'=>'SchedulesController@getPrepareRoute']);
+		Route::post('/schedules/prepare-route',['as'=>'schedules_prepare_route_post','uses'=>'SchedulesController@postPrepareRoute']);
 		Route::get('/schedules/processing', ['as'=>'schedules_processing','uses' => 'SchedulesController@getProcessing']);
 		Route::post('/schedules/processing',['as'=>'schedules_processing_post','uses'=>'SchedulesController@postProcessing']);
 		Route::get('/schedules/view/{id}', ['as'=>'schedules_view','uses' => 'SchedulesController@getView']);

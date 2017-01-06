@@ -112,6 +112,34 @@ class SchedulesController extends Controller
         return Redirect::route('schedules_checklist');
     }
 
+    public function getPrepareRoute(Request $request) {
+        $this->layout = 'layouts.dropoff';
+        $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
+        $pickups = Schedule::where('pickup_date',$today) // remove 4 from the list
+                               ->whereIn('status',[2,4,5,11])
+                               ->orderBy('id','desc');        
+        $schedules = Schedule::where('dropoff_date',$today) // remove 4 from the list
+                               ->whereIn('status',[2,4,5,11])
+                               ->orderBy('id','desc')
+                               ->union($pickups)
+                               ->get();
+
+        $setup = Schedule::prepareRouteSetup($schedules);
+        $check = Schedule::prepareSchedule($schedules);
+
+        Job::dump($setup);
+        return view('schedules.prepare_route')
+            ->with('layout',$this->layout)
+            ->with('setup',$setup)
+            ->with('check',$check);
+
+    }
+
+    public function postPrepareRoute(Request $request) {
+
+    }
+
+
     public function getDeliveryRoute(Request $request) {
         $this->layout = 'layouts.dropoff';
         $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
