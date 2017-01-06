@@ -578,34 +578,34 @@ class AdminsController extends Controller
         // }
 
         # go through todays transactions, check to see if exists in invoices if not then delete
-        $start = date('Y-m-d 00:00:00');
-        $end = date('Y-m-d 23:59:59');
-        $found = [];
-        $not_found = [];
-        $transactions = Transaction::whereBetween('created_at',[$start,$end])->where('status',1)->get();
-        if (count($transactions) > 0) {
-            foreach ($transactions as $transaction) {
-                $transaction_id = $transaction->id;
-                $invoices = Invoice::where('transaction_id',$transaction_id)->get();
-                if (count($invoices) > 0) {
-                    array_push($found,$transaction_id);
-                } else {
-                    array_push($not_found,$transaction_id);
-                }
-            }
-        }
+        // $start = date('Y-m-d 00:00:00');
+        // $end = date('Y-m-d 23:59:59');
+        // $found = [];
+        // $not_found = [];
+        // $transactions = Transaction::whereBetween('created_at',[$start,$end])->where('status',1)->get();
+        // if (count($transactions) > 0) {
+        //     foreach ($transactions as $transaction) {
+        //         $transaction_id = $transaction->id;
+        //         $invoices = Invoice::where('transaction_id',$transaction_id)->get();
+        //         if (count($invoices) > 0) {
+        //             array_push($found,$transaction_id);
+        //         } else {
+        //             array_push($not_found,$transaction_id);
+        //         }
+        //     }
+        // }
         
-        Job::dump($found);
-        Job::dump($not_found);
+        // Job::dump($found);
+        // Job::dump($not_found);
 
-        if (count($not_found) > 0) {
-            foreach ($not_found as $trans_id) {
-                $trans = Transaction::find($trans_id);
-                if ($trans->delete()) {
-                    Job::dump('Removed #'.$trans_id);
-                }
-            }
-        }
+        // if (count($not_found) > 0) {
+        //     foreach ($not_found as $trans_id) {
+        //         $trans = Transaction::find($trans_id);
+        //         if ($trans->delete()) {
+        //             Job::dump('Removed #'.$trans_id);
+        //         }
+        //     }
+        // }
 
         #check invoices
         // $invoices = Invoice::where('customer_id',NULL)->get();
@@ -620,28 +620,28 @@ class AdminsController extends Controller
         // }
 
         #check invoice items to compare
-        // $invoices = Invoice::whereBetween('created_at',['2017-01-03 00:00:00','2017-01-03 23:59:59'])->get();
-        // $yes_invoice = [];
-        // $no_invoice = [];
-        // if (count($invoices) > 0) {
-        //     foreach ($invoices as $invoice) {
-        //         $invoice_id = $invoice->id;
-        //         $iitems = InvoiceItem::where('invoice_id',$invoice_id)->get();
-        //         if (count($iitems) > 0) {
-        //             array_push($yes_invoice,$invoice_id);
-        //         } else {
-        //             array_push($no_invoice,$invoice_id);
-        //         }
-        //     }
-        // }
-        // if (count($no_invoice) > 0) {
-        //     foreach ($no_invoice as $invoice_id) {
-        //         $delete = Invoice::find($invoice_id);
-        //         if ($delete->delete()) {
-        //             Job::dump('deleted empty invoice #'.$invoice_id);
-        //         }
-        //     }
-        // }
+        $invoices = Invoice::whereBetween('created_at',['2017-01-03 00:00:00','2017-01-03 23:59:59'])->get();
+        $yes_invoice = [];
+        $no_invoice = [];
+        if (count($invoices) > 0) {
+            foreach ($invoices as $invoice) {
+                $invoice_id = $invoice->id;
+                $iitems = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                if (count($iitems) > 0) {
+                    array_push($yes_invoice,$invoice_id);
+                } else {
+                    array_push($no_invoice,$invoice_id);
+                }
+            }
+        }
+        if (count($no_invoice) > 0) {
+            foreach ($no_invoice as $invoice_id) {
+                $delete = Invoice::find($invoice_id);
+                if ($delete->delete()) {
+                    Job::dump('deleted empty invoice #'.$invoice_id);
+                }
+            }
+        }
 
 
 
