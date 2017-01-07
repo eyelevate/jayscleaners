@@ -386,13 +386,27 @@ class Schedule extends Model
                     $latlong = [];
                 }
                 
+                if ($schedule->pickup_delivery_id) {
+                    $delivery_pickup = Delivery::find($schedule->pickup_delivery_id);
+                    $pickup_start_time = Schedule::convertTimeToMilitary($delivery_pickup->start_time);
+                    $pickup_end_time = Schedule::convertTimeToMilitary($delivery_pickup->end_time);
+                } else {
+                    $delivery_pickup = NULL;
+                    $pickup_start_time = NULL;
+                    $pickup_end_time = NULL;
+                }
 
-                $delivery_pickup = Delivery::find($schedule->pickup_delivery_id);
-                $pickup_start_time = Schedule::convertTimeToMilitary($delivery_pickup->start_time);
-                $pickup_end_time = Schedule::convertTimeToMilitary($delivery_pickup->end_time);
-                $delivery_dropoff = Delivery::find($schedule->dropoff_delivery_id);
-                $dropoff_start_time = Schedule::convertTimeToMilitary($delivery_dropoff->start_time);
-                $dropoff_end_time = Schedule::convertTimeToMilitary($delivery_dropoff->end_time);
+                if ($schule->dropoff_delivery_id) {
+                    $delivery_dropoff = Delivery::find($schedule->dropoff_delivery_id);
+                    $dropoff_start_time = Schedule::convertTimeToMilitary($delivery_dropoff->start_time);
+                    $dropoff_end_time = Schedule::convertTimeToMilitary($delivery_dropoff->end_time);
+                } else {
+                    $delivery_dropoff = NULL;
+                    $dropoff_start_time = NULL;
+                    $dropoff_end_time = NULL;
+                }
+
+
 
                 $point = [
                             'name' => $address_street,
