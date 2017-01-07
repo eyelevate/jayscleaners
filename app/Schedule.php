@@ -395,7 +395,7 @@ class Schedule extends Model
                     $pickup_end_time = NULL;
                 }
 
-                if ($schule->dropoff_delivery_id) {
+                if ($schedule->dropoff_delivery_id) {
                     $delivery_dropoff = Delivery::find($schedule->dropoff_delivery_id);
                     $dropoff_start_time = Schedule::convertTimeToMilitary($delivery_dropoff->start_time);
                     $dropoff_end_time = Schedule::convertTimeToMilitary($delivery_dropoff->end_time);
