@@ -63,11 +63,30 @@
 					@foreach($check as $schedule)
 					<tr>
 						<td>
-							{{ $schedule->id }}
+							{{ $schedule['id'] }}
 						</td>
 						<td>
-							{{ ucFirst($schedule->first_name).' '.ucFirst($schedule->last_name) }}
+							{{ ucFirst($schedule['first_name']).' '.ucFirst($schedule['last_name']) }}
 						</td>
+						<td>
+							{{ $schedule['street'] }}
+						</td>
+						<td>
+							{{ $schedule['city'] }}
+						</td>
+						<td>
+							{{ $schedule['state'] }}
+						</td>
+						<td>
+							{{ $schedule['zipcode'] }}
+						</td>
+						<td>
+							{{ $schedule['latitude'] }}
+						</td>
+						<td>
+							{{ $schedule['longitude'] }}
+						</td>
+						<td><a class="btn btn-sm btn-success" href="">Accept Address</a></td>
 					</tr>
 					@endforeach
 				@endif

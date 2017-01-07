@@ -67,6 +67,10 @@ class Schedule extends Model
     				$schedules[$key]['pickup_delivery_id'] = $value->pickup_delivery_id;
     				$schedules[$key]['dropoff_delivery_id'] = $value->dropoff_delivery_id;
     				$schedules[$key]['address_name'] = $addresses->name;
+                    $schedules[$key]['street'] = $street;
+                    $schedules[$key]['city'] = $city;
+                    $schedules[$key]['state'] = $state;
+                    $schedules[$key]['zipcode'] = $zipcode;
     				$schedules[$key]['pickup_address_1'] = $pickup_address_1;
     				$schedules[$key]['pickup_address_2'] = $pickup_address_2;
     				$schedules[$key]['contact_name'] = $addresses->concierge_name;
@@ -86,7 +90,9 @@ class Schedule extends Model
     				$schedules[$key]['dropoff_time'] = $dropoff_time;
     				$schedules[$key]['special_instructions'] = $value->special_instructions;
     				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
-                    $latlong = Schedule::getLatLong($pickup_address_1.' '.$pickup_address_2);
+                    $latlong = Schedule::getLatLong($street.' '.$pickup_address_2);
+                    $schedules[$key]['latitude'] = $latlong['latitude'];
+                    $schedules[$key]['longitude'] = $latlong['longitude'];
 
                     $schedules[$key]['gmap_address'] = (isset($latlong['latitude'])) ? 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'] : null;
     				/**
@@ -358,14 +364,26 @@ class Schedule extends Model
                 $company_id = $schedule->company_id;
                 $address_id = $schedule->pickup_address;
                 $addresses = Address::find($address_id);
-                $address_name = $addresses->name;
-                $address_street = $addresses->street;
-                $address_suite = $addresses->suite;
-                $address_city = $addresses->city;
-                $address_state = $addresses->state;
-                $address_zipcode = $addresses->zipcode;
-                $address_string = $address_street.' '.$address_city.', '.$address_state.' '.$address_zipcode;
-                $latlong = Schedule::getLatLong($address_string);
+                if ($addresses) {
+                    $address_name = $addresses->name;
+                    $address_street = $addresses->street;
+                    $address_suite = $addresses->suite;
+                    $address_city = $addresses->city;
+                    $address_state = $addresses->state;
+                    $address_zipcode = $addresses->zipcode;
+                    $address_string = $address_street.' '.$address_city.', '.$address_state.' '.$address_zipcode;
+                    $latlong = Schedule::getLatLong($address_string);
+                } else {
+                    $address_name = NULL;
+                    $address_street = NULL;
+                    $address_suite = NULL;
+                    $address_city = NULL;
+                    $address_state = NULL;
+                    $address_zipcode = NULL;
+                    $address_string = NULL;
+                    $latlong = [];
+                }
+                
 
                 $delivery_pickup = Delivery::find($schedule->pickup_delivery_id);
                 $pickup_start_time = Schedule::convertTimeToMilitary($delivery_pickup->start_time);

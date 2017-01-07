@@ -126,8 +126,6 @@ class SchedulesController extends Controller
 
         $setup = Schedule::prepareRouteSetup($schedules);
         $check = Schedule::prepareSchedule($schedules);
-
-        Job::dump($setup);
         return view('schedules.prepare_route')
             ->with('layout',$this->layout)
             ->with('setup',$setup)
