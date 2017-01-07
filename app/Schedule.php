@@ -361,7 +361,6 @@ class Schedule extends Model
         $company_id = null;
         if (count($schedules) > 0) {
             foreach ($schedules as $schedule) {
-                Job::dump($schedule->id);
                 $company_id = $schedule->company_id;
                 $address_id = $schedule->pickup_address;
                 $addresses = Address::find($address_id);
