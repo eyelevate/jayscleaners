@@ -58,6 +58,10 @@ class SchedulesController extends Controller
         $this->layout = 'layouts.dropoff';
         $company_id = Auth::user()->company_id;
 
+        if ($request->session()->has('delivery_route')) {
+            $request->session()->pull('delivery_route');
+        }
+
         $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
         $pickups = Schedule::where('pickup_date',$today)
                              ->where('status',1)
