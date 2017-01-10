@@ -201,6 +201,17 @@ class PagesController extends Controller
                     $edit->password = bcrypt($request->password);
                     $edit->role_id = 5;
                     if ($edit->save()) {
+
+                        // check if the user has a mark if so then pass if not then create one
+                        $custids = Custid::where('customer_id',$edit->id)->get();
+                        if (count($custids) == 0) {
+                            $marks = new Custid();
+                            $marks->company_id = 1;
+                            $marks->customer_id = $edit->id;
+                            $marks->mark = Custid::createOriginalMark($edit);
+                            $marks->status = 1;
+                            $marks->save();
+                        }
                         if (Auth::attempt(['username' => $request->username, 'password' => $request->password], true)) {
                             $request->session()->put('registered',true);
                             Flash::success(ucfirst($request->first_name).' '.ucfirst($request->last_name).', thank you for your registration! Please fill out the form below to start the delivery process.');
@@ -217,6 +228,7 @@ class PagesController extends Controller
             // otherwise save a new profile
 
             $users = new User();
+            $users->company_id = 1;
             $users->first_name = $request->first_name;
             $users->last_name = $request->last_name;
             $users->phone = Job::strip($request->phone);
@@ -227,6 +239,18 @@ class PagesController extends Controller
             $users->role_id = 5; //Customer status
 
             if ($users->save()) {
+                // check to see if user has a custid
+                $custids = Custid::where('customer_id',$users->id)->get();
+                if (count($custids) == 0) {
+                    $marks = new Custid();
+                    $marks->company_id = 1;
+                    $marks->customer_id = $users->id;
+                    $marks->mark = Custid::createOriginalMark($users);
+                    $marks->status = 1;
+                    $marks->save();
+                }
+
+
                 if (Auth::attempt(['username' => $request->username, 'password' => $request->password], true)) {
                     $request->session()->put('registered',true);
                     Flash::success(ucfirst($request->first_name).' '.ucfirst($request->last_name).', thank you for your registration! Please fill out the form below to start the delivery process.');

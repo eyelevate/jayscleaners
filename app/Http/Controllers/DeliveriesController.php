@@ -1155,7 +1155,7 @@ class DeliveriesController extends Controller
         $schedules->dropoff_delivery_id = $dropoff_delivery_id;
         $schedules->special_instructions = $special_instructions;
         $schedules->type = 2;
-        $schedules->status = 1;
+        $schedules->status = ($picking_up == 2) ? 4 : 1;
         if ($schedules->save()) {
             Flash::success('You have successfully saved a new delivery schedule');
             return Redirect::route('customers_view',$customer_id);
