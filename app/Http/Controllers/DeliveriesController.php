@@ -953,17 +953,12 @@ class DeliveriesController extends Controller
         $request->session()->put('form_previous',['delivery_admin_edit',$id]);
         $check_address = $request->session()->has('check_address') ? $request->session()->pull('check_address') : false;
         $auth = (Auth::check()) ? Auth::user() : false;
-        $addresses = Address::addressSelect(Address::where('user_id',Auth::user()->id)->orderby('primary_address','desc')->get());
+        $addresses = Address::addressSelect(Address::where('user_id',$customer_id)->orderby('primary_address','desc')->get());
         
-        $primary_address = Address::where('user_id',Auth::user()->id)->where('primary_address',true)->get();
-        $primary_address_id = false;
-        $primary_zipcode = false;
-        if (count($primary_address) > 0) {
-            foreach ($primary_address as $pa) {
-                $primary_address_id = $pa['id'];
-                $primary_address_zipcode = $pa['zipcode'];
-            }
-        }
+        $primary_address_id = ($schedules->pickup_address) ? $schedules->pickup_address : ($schedules->dropoff_address) ? $schedules->dropoff_address : NULL;
+        Job::dump('test');
+        Job::dump('test');
+        Job::dump($primary_address_id);
 
         $special_instructions = $schedules->special_instructions;
         $selected_date = false;

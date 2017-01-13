@@ -103,7 +103,7 @@
 
                             <div id="pickup_container" class="col-md-6">
                                 <?php if($zipcode_status): ?> 
-                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;">
+                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : (strtotime($selected_date) > 0) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;">
                                 <?php else: ?>
                                 <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="<?php echo e(old('pickup_date')); ?>" disabled="true">
                                 <?php endif; ?>
