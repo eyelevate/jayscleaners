@@ -1067,23 +1067,23 @@ class DeliveriesController extends Controller
         ->with('update_id',$id);   
     }
     public function postAdminEdit(Request $request) {
-        $this->validate($request, [
-            'pickup_address' => 'required',
-            'dropoff_date' => 'required',
-            'dropoff_time' => 'required',
-            'card_id'=>'required',
-            'status'=>'required'
-        ]);
+        // $this->validate($request, [
+        //     'pickup_address' => 'required',
+        //     'dropoff_date' => 'required',
+        //     'dropoff_time' => 'required',
+        //     'card_id'=>'required',
+        //     'status'=>'required'
+        // ]);
 
         $schedules = Schedule::find($request->id);
-        $schedules->card_id = $request->card_id;
-        $schedules->pickup_address = $request->pickup_address;
-        $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
-        $schedules->pickup_delivery_id = $request->pickup_time;
-        $schedules->dropoff_address = $request->pickup_address;
-        $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
-        $schedules->dropoff_delivery_id = $request->dropoff_time;
-        $schedules->special_instructions = $request->special_instructions;
+        // $schedules->card_id = $request->card_id;
+        // $schedules->pickup_address = $request->pickup_address;
+        // $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
+        // $schedules->pickup_delivery_id = $request->pickup_time;
+        // $schedules->dropoff_address = $request->pickup_address;
+        // $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
+        // $schedules->dropoff_delivery_id = $request->dropoff_time;
+        // $schedules->special_instructions = $request->special_instructions;
         $schedules->status = $request->status;
 
         if ($schedules->save()) {
