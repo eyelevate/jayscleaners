@@ -1091,7 +1091,7 @@ class DeliveriesController extends Controller
                 $request->session()->forget('schedule');
             }
             Flash::success('You have successfully updated your delivery.');
-            return Redirect::route('schedules_view',$schedules->customer_id);
+            return Redirect::route('delivery_overview');
         }
 
 
