@@ -68,9 +68,9 @@
                             <div class="col-md-6">
                                 
                                 {{ Form::select('card_id',$cards,$card_id,['class'=>'form-control']) }}
-                                @if ($errors->has('pickup_address'))
+                                @if ($errors->has('card_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('pickup_address') }}</strong>
+                                        <strong>{{ $errors->first('card_id') }}</strong>
                                     </span>
                                 @endif
 
@@ -100,7 +100,7 @@
 
                             <div id="pickup_container" class="col-md-6">
                                 @if ($zipcode_status) 
-                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" style="background-color:#ffffff;">
+                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : (strtotime($selected_date) > 0) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" style="background-color:#ffffff;">
                                 @else
                                 <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" disabled="true">
                                 @endif
@@ -176,6 +176,19 @@
                                 @if ($errors->has('dropoff_time'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('dropoff_time') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }} ">
+                            <label class="col-md-4 control-label padding-top-none">Status</label>
+
+                            <div class="col-md-6">
+                                {{ Form::select('status',$status_list,old('status') ? old('status') : ($status) ? $status : null, ['class'=>'form-control']) }}
+
+                                @if ($errors->has('status'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('status') }}</strong>
                                     </span>
                                 @endif
                             </div>

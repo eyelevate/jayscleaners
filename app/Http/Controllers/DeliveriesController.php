@@ -1041,6 +1041,8 @@ class DeliveriesController extends Controller
             }
         }
 
+        $status_list = Schedule::prepareStatusSelect();
+
         $this->layout = 'layouts.dropoff';
         return view('deliveries.admin-edit')
         ->with('layout',$this->layout)
@@ -1060,16 +1062,17 @@ class DeliveriesController extends Controller
         ->with('customer_id',$customer_id)
         ->with('cards', $cards_select)
         ->with('card_id',$card_id)
+        ->with('status_list',$status_list)
+        ->with('status',$schedules->status)
         ->with('update_id',$id);   
     }
     public function postAdminEdit(Request $request) {
         $this->validate($request, [
             'pickup_address' => 'required',
-            'pickup_date'=>'required',
-            'pickup_time'=>'required',
             'dropoff_date' => 'required',
             'dropoff_time' => 'required',
-            'card_id'=>'required'
+            'card_id'=>'required',
+            'status'=>'required'
         ]);
 
         $schedules = Schedule::find($request->id);
@@ -1081,6 +1084,7 @@ class DeliveriesController extends Controller
         $schedules->dropoff_date = date('Y-m-d H:i:s',strtotime($request->dropoff_date));
         $schedules->dropoff_delivery_id = $request->dropoff_time;
         $schedules->special_instructions = $request->special_instructions;
+        $schedules->status = $request->status;
 
         if ($schedules->save()) {
             if ($request->session()->has('schedule')) {

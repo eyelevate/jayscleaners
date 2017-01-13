@@ -86,7 +86,9 @@
 						<td>
 							{{ $schedule['longitude'] }}
 						</td>
-						<td><a class="btn btn-sm btn-success" href="">Accept Address</a></td>
+						<td>
+							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="edit-{{ $schedule['id'] }}">Edit</a>
+						</td>
 					</tr>
 					@endforeach
 				@endif
@@ -99,7 +101,13 @@
 @stop
 
 @section('modals')
-
-
+@if (count($check) > 0)
+	@foreach($check as $schedule)
+	{!! View::make('partials.schedules.setup_route')
+		->with('schedule',$schedule)
+		->render()
+	!!}
+	@endforeach
+@endif
 
 @stop

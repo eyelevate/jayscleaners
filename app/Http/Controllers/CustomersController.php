@@ -216,7 +216,7 @@ class CustomersController extends Controller
             $users->city = $request->city;
             $users->zipcode = $request->zipcode;			
         }
-        $users->role_id = 3; //Customer status
+        // $users->role_id = 5; //Customer status
 
         if ($users->save()) {
             #@TODO double check to see if this is how we want to do this
@@ -227,29 +227,47 @@ class CustomersController extends Controller
 			$mark2_id = preg_replace('/\s+/', '', $marks[2]['id']);
 			$mark2_mark = preg_replace('/\s+/', '', $marks[2]['mark']);
         	// If there is an id
-			if( $mark1_id !== '' && $mark1_mark == '') { // softdelete the row
+			if( $mark1_id != '' && $mark1_mark == '') { // softdelete the row
         		$custid1 = Custid::find($mark1_id);
-        		$custid1->delete(); // Soft delete
-        	} else { // save 
-        		$custid1 = ($mark1_id !== '' && $mark1_mark !== '') ? Custid::find($mark1_id) : new Custid;
-	        	$custid1->customer_id = $users->id;
-	        	$custid1->mark = $mark1_mark;
-	        	$custid1->status = 2; // approved
-	        	$custid1->save();
-				
-        	}
+                if ($custid1) {
+                    $custid1->delete(); // Soft delete
+                }
+        		
+            } elseif ($mark1_id == '' && $mark1_mark != '') {
+                $custid1 = new Custid();
+                $custid1->customer_id = $users->id;
+                $custid1->company_id = 1;
+                $custid1->mark = $mark1_mark;
+                $custid1->status = 1; // approved
+                $custid1->save();
+            } elseif ($mark1_id != '' && $mark1_mark != '') {
+                $custid1 = Custid::find($mark1_id);
+                if ($custid1) {
+                    $custid1->mark = $mark1_mark;
+                    $custid1->save();
+                }
+        	} 
         	// If there is an id
-			if( $mark2_id !== '' && $mark2_mark == '') { // softdelete the row
-        		$custid2 = Custid::find($mark2_id);
-        		$custid2->delete(); // Soft delete
-        	} else { // save 
-        		$custid2 = ($mark2_id !== '' && $mark2_mark !== '') ? Custid::find($mark2_id) : new Custid;
-	        	$custid2->customer_id = $users->id;
-	        	$custid2->mark = $mark2_mark;
-	        	$custid2->status = 2; // approved
-	        	$custid2->save();
-				
-        	}
+			if( $mark2_id != '' && $mark2_mark == '') { // softdelete the row
+                $custid2 = Custid::find($mark2_id);
+                if ($custid2) {
+                    $custid1->delete(); // Soft delete
+                }
+                
+            } elseif ($mark2_id == '' && $mark2_mark != '') {
+                $custid2 = new Custid();
+                $custid2->customer_id = $users->id;
+                $custid2->company_id = 1;
+                $custid2->mark = $mark2_mark;
+                $custid2->status = 1; // approved
+                $custid2->save();
+            } elseif ($mark2_id != '' && $mark2_mark != '') {
+                $custid2 = Custid::find($mark2_id);
+                if ($custid2) {
+                    $custid2->mark = $mark2_mark;
+                    $custid2->save();
+                }
+            }
 
 			Flash::success('Successfully updated customer!');
 			return Redirect::route('customers_view',$users->id);

@@ -436,6 +436,36 @@ class Schedule extends Model
 
         return $trip;
     }
+    /**
+    * Status Index
+    * 1. Delivery Scheduled
+    * 2. En-route Pickup
+    * 3. Picked Up
+    * 4. Processing 
+    * 5. En-route Dropoff
+    * 6. Cancelled by user
+    * 7. Delayed - Processing not complete
+    * 8. Delayed - Customer not available for pickup
+    * 9. Delayed - Customer not available for dropoff
+    * 10. Delayed - Customer card on file error
+    * 11. Delayed - Delivery could not be completed
+    * 12. Dropped Off
+    **/
+    public static function prepareStatusSelect() {
+        return [''=>'No status selected',
+                1=>'Delivery Scheduled',
+                2=>'En-route Pickup',
+                3=>'Picked Up',
+                4=>'Processing',
+                5=>'En-route Dropoff',
+                6=>'Cancelled by user',
+                7=>'Delayed - Processing not complete',
+                8=>'Delayed - Customer not available for pickup',
+                9=>'Delayed - Customer not available for dropoff',
+                10=>'Delayed - Customer card on file error',
+                11=>'Delayed - Delivery could not be completed',
+                12=>'Dropped Off'];
+    }
 
     static public function prepareRouteSetup($schedules) {
         $setup = [];

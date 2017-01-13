@@ -64,15 +64,15 @@
                     <div class="panel-heading"><strong>Delivery Update Form</strong></div>
                     <div id="pickup_body" class="panel-body">   
                         <div class="form-group<?php echo e($errors->has('pickup_address') ? ' has-error' : ''); ?>">
-                            <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
+                            <label class="col-md-4 control-label padding-top-none">Pickup Card</label>
 
                             <div class="col-md-6">
                                 
                                 <?php echo e(Form::select('card_id',$cards,$card_id,['class'=>'form-control'])); ?>
 
-                                <?php if($errors->has('pickup_address')): ?>
+                                <?php if($errors->has('card_id')): ?>
                                     <span class="help-block">
-                                        <strong><?php echo e($errors->first('pickup_address')); ?></strong>
+                                        <strong><?php echo e($errors->first('card_id')); ?></strong>
                                     </span>
                                 <?php endif; ?>
 
@@ -184,6 +184,20 @@
                                 <?php if($errors->has('dropoff_time')): ?>
                                     <span class="help-block">
                                         <strong><?php echo e($errors->first('dropoff_time')); ?></strong>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="form-group<?php echo e($errors->has('status') ? ' has-error' : ''); ?> ">
+                            <label class="col-md-4 control-label padding-top-none">Status</label>
+
+                            <div class="col-md-6">
+                                <?php echo e(Form::select('status',$status_list,old('status') ? old('status') : ($status) ? $status : null, ['class'=>'form-control'])); ?>
+
+
+                                <?php if($errors->has('status')): ?>
+                                    <span class="help-block">
+                                        <strong><?php echo e($errors->first('status')); ?></strong>
                                     </span>
                                 <?php endif; ?>
                             </div>

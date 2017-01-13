@@ -94,7 +94,9 @@
 							<?php echo e($schedule['longitude']); ?>
 
 						</td>
-						<td><a class="btn btn-sm btn-success" href="">Accept Address</a></td>
+						<td>
+							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="edit-<?php echo e($schedule['id']); ?>">Edit</a>
+						</td>
 					</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -107,8 +109,14 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('modals'); ?>
+<?php if(count($check) > 0): ?>
+	<?php foreach($check as $schedule): ?>
+	<?php echo View::make('partials.schedules.setup_route')
+		->with('schedule',$schedule)
+		->render(); ?>
 
-
+	<?php endforeach; ?>
+<?php endif; ?>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

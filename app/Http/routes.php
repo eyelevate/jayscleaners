@@ -319,6 +319,8 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/schedules/revert-payment', ['as'=>'schedules_revert_payment','uses'=>'SchedulesController@postRevertPayment']);
 		Route::post('/schedules/select-invoice-row', ['as'=>'schedules_select_invoice_row','uses'=>'SchedulesController@postSelectInvoiceRow']); 
 		Route::post('/schedules/remove-invoice-row', ['as'=>'schedules_remove_invoice_row','uses'=>'SchedulesController@postRemoveInvoiceRow']); 
+		Route::post('/schedules/setup-route',['as'=>'schedules_setup_route','uses'=>'SchedulesController@postSetupRoute']);
+
 
 		//Taxes
 		Route::get('/taxes',['as'=>'taxes_index','uses'=>'TaxesController@getIndex']);

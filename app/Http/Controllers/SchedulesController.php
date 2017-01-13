@@ -137,6 +137,10 @@ class SchedulesController extends Controller
 
     }
 
+    public function postSetupRoute(Request $request) {
+        
+    }
+
     public function postPrepareRoute(Request $request) {
 
     }
