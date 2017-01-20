@@ -91,8 +91,8 @@ class Schedule extends Model
     				$schedules[$key]['special_instructions'] = $value->special_instructions;
     				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
                     $latlong = Schedule::getLatLong($street.' '.$pickup_address_2);
-                    $schedules[$key]['latitude'] = ($latlong['latitude']) ? $latlong['latitude'] : NULL;
-                    $schedules[$key]['longitude'] = ($latlong['longitude']) ? $latlong['longitude'] :  NULL;
+                    $schedules[$key]['latitude'] = (isset($latlong['latitude'])) ? $latlong['latitude'] : NULL;
+                    $schedules[$key]['longitude'] = (isset($latlong['longitude'])) ? $latlong['longitude'] :  NULL;
 
                     $schedules[$key]['gmap_address'] = (isset($latlong['latitude'])) ? 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'] : null;
     				/**
