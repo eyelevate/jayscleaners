@@ -87,7 +87,7 @@
 							{{ $schedule['longitude'] }}
 						</td>
 						<td>
-							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="edit-{{ $schedule['id'] }}">Edit</a>
+							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="#edit-{{ $schedule['id'] }}">Setup</a>
 						</td>
 					</tr>
 					@endforeach
@@ -98,6 +98,48 @@
 		<div class="panel-footer">
 		</div>
 	</div>
+	@if (count($droutes) > 0)
+		@foreach($droutes as $ordered)
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Driver ID#{{ $ordered['driver']->id.' - '.ucFirst($ordered['driver']->first_name).' '.ucFirst($ordered['driver']->last_name).' - '.$ordered['driver']->username}}</h3>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-condensed table-hover table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Address</th>
+								<th>A</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php $idx = 0;?>
+						@foreach($ordered['schedule'] as $droute)
+							@foreach($droute as $dr)
+								<?php $idx++; ?>
+								<tr>
+									<td>{{ $idx }}</td>
+									<td>{{ $dr['id'] }}</td>
+									<td>{{ ucFirst($dr['first_name']).' '.ucFirst($dr['last_name']) }}</td>
+									<td>{{ $dr['street'].' '.$dr['city'].', '.$dr['state'].' '.$dr['zipcode'] }}</td>
+									<td><a href="" class="btn btn-sm btn-danger">Revert</a>&nbsp<a class="btn btn-sm btn-success" href="">UP</a>&nbsp<a class="btn btn-sm btn-info" href="">Down</a></td>
+								</tr>
+							@endforeach
+							
+						@endforeach
+						</tbody>
+					</table>
+				
+				</div>
+				<div class="panel-footer">
+					<button class="btn btn-warning btn-lg">Create CSV</button>
+				</div>
+			</div>
+		@endforeach
+	@endif
 @stop
 
 @section('modals')
@@ -105,6 +147,7 @@
 	@foreach($check as $schedule)
 	{!! View::make('partials.schedules.setup_route')
 		->with('schedule',$schedule)
+		->with('drivers',$drivers)
 		->render()
 	!!}
 	@endforeach

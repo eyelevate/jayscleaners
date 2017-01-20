@@ -1067,7 +1067,6 @@ class DeliveriesController extends Controller
         $schedules->card_id = $request->card_id;
         $schedules->pickup_address = $request->pickup_address;
         if ($request->pickup_date != '') {
-            
             $schedules->pickup_date = date('Y-m-d H:i:s',strtotime($request->pickup_date));
             $schedules->pickup_delivery_id = $request->pickup_time;
         } else {

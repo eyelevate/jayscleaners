@@ -95,7 +95,7 @@
 
 						</td>
 						<td>
-							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="edit-<?php echo e($schedule['id']); ?>">Edit</a>
+							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="#edit-<?php echo e($schedule['id']); ?>">Setup</a>
 						</td>
 					</tr>
 					<?php endforeach; ?>
@@ -106,6 +106,48 @@
 		<div class="panel-footer">
 		</div>
 	</div>
+	<?php if(count($droutes) > 0): ?>
+		<?php foreach($droutes as $ordered): ?>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Driver ID#<?php echo e($ordered['driver']->id.' - '.ucFirst($ordered['driver']->first_name).' '.ucFirst($ordered['driver']->last_name).' - '.$ordered['driver']->username); ?></h3>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-condensed table-hover table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Address</th>
+								<th>A</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php $idx = 0;?>
+						<?php foreach($ordered['schedule'] as $droute): ?>
+							<?php foreach($droute as $dr): ?>
+								<?php $idx++; ?>
+								<tr>
+									<td><?php echo e($idx); ?></td>
+									<td><?php echo e($dr['id']); ?></td>
+									<td><?php echo e(ucFirst($dr['first_name']).' '.ucFirst($dr['last_name'])); ?></td>
+									<td><?php echo e($dr['street'].' '.$dr['city'].', '.$dr['state'].' '.$dr['zipcode']); ?></td>
+									<td><a href="" class="btn btn-sm btn-danger">Revert</a>&nbsp<a class="btn btn-sm btn-success" href="">UP</a>&nbsp<a class="btn btn-sm btn-info" href="">Down</a></td>
+								</tr>
+							<?php endforeach; ?>
+							
+						<?php endforeach; ?>
+						</tbody>
+					</table>
+				
+				</div>
+				<div class="panel-footer">
+					<button class="btn btn-warning btn-lg">Create CSV</button>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	<?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('modals'); ?>
@@ -113,6 +155,7 @@
 	<?php foreach($check as $schedule): ?>
 	<?php echo View::make('partials.schedules.setup_route')
 		->with('schedule',$schedule)
+		->with('drivers',$drivers)
 		->render(); ?>
 
 	<?php endforeach; ?>

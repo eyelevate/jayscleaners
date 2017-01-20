@@ -74,15 +74,15 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('zipcode') ? ' has-error' : '' }} clearfix">
-                    <label class="col-md-12 control-label padding-top-none">Zipcode </label>
+                <div class="form-group{{ $errors->has('employee_id') ? ' has-error' : '' }} clearfix">
+                    <label class="col-md-12 control-label padding-top-none">Driver </label>
 
                     <div class="col-md-12 clearfix">
                         
-                        {{ Form::text('zipcode',old('zipcode') ? old('zipcode') : $schedule['zipcode'],['class'=>'form-control']) }}
-                        @if ($errors->has('content'))
+                        {{ Form::select('employee_id',$drivers,old('employee_id'),['class'=>'form-control']) }}
+                        @if ($errors->has('employee_id'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('zipcode') }}</strong>
+                                <strong>{{ $errors->first('employee_id') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -92,7 +92,7 @@
 			<div class="modal-footer clearfix">
 				<button type="button" class="btn pull-left" data-dismiss="modal">Close</button>
 
-				<input type="submit" class="btn btn-primary" value="Send" />
+				<input type="submit" class="btn btn-primary" value="Finish Setup" />
 				
 			</div>
 			

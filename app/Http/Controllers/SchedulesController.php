@@ -26,6 +26,7 @@ use App\Company;
 use App\Customer;
 use App\Custid;
 use App\Delivery;
+use App\Droute;
 use App\Invoice;
 use App\Layout;
 use App\Transaction;
@@ -128,17 +129,84 @@ class SchedulesController extends Controller
                                ->union($pickups)
                                ->get();
 
-        $setup = Schedule::prepareRouteSetup($schedules);
-        $check = Schedule::prepareSchedule($schedules);
+        if (count($schedules) > 0) {
+            $idx = 0;
+            foreach ($schedules as $schedule) {
+                $schedule_id = $schedule->id;
+                $d_check = Droute::where('schedule_id',$schedule_id)->get();
+                if (count($d_check) == 0) {
+                    $idx++;
+                    $d = new Droute();
+                    $d->company_id = Auth::user()->company_id;
+                    $d->schedule_id = $schedule->id;
+                    $d->delivery_date = $today;
+                    $d->ordered = $idx;
+                    $d->status = 1;
+                    $d->save();
+                }
+            }
+        }
+        $del_routes = Droute::where('delivery_date',$today)
+            ->where('employee_id',NULL)
+            ->orderBy('ordered','asc')
+            ->get();
+        $drs = Droute::where('delivery_date',$today)
+            ->where('employee_id','!=',NULL)
+            ->orderBy('ordered','asc')
+            ->get();
+        $droutes = Droute::prepareRoutes($drs);
+        
+        $schedule_ids = [];
+        if (count($del_routes) > 0) {
+            foreach ($del_routes as $dr) {
+                array_push($schedule_ids, $dr->schedule_id);  
+            }
+        }
+        $schs = Schedule::whereIn('id',$schedule_ids)->get();
+        $setup = Schedule::prepareRouteSetup($schs);
+        $drivers = Schedule::prepareDrivers(User::where('role_id','<',5)->get());
+        $check = Schedule::prepareSchedule($schs);
         return view('schedules.prepare_route')
             ->with('layout',$this->layout)
             ->with('setup',$setup)
+            ->with('drivers',$drivers)
+            ->with('droutes',$droutes)
             ->with('check',$check);
 
     }
 
     public function postSetupRoute(Request $request) {
-        
+        $schedule_id = $request->id;
+        $employee_id = $request->employee_id;
+        $delivery_date = $request->session()->get('delivery_date');
+
+        $orders = Droute::where('delivery_date',$delivery_date)
+            ->where('employee_id',$employee_id)
+            ->orderBy('ordered','desc')
+            ->limit(1)
+            ->get();
+        $ordered = 1;
+        if (count($orders) > 0) {
+            foreach ($orders as $order) {
+                $ordered = ($order->ordered) ? $order->ordered + 1 : 1;
+            }
+        }
+        $droutes = Droute::where('schedule_id',$schedule_id)->get();
+        if (count($droutes) > 0) {
+            foreach ($droutes as $droute) {
+                $dr = Droute::find($droute->id);
+                $dr->employee_id = $employee_id;
+                $dr->ordered = $ordered;
+                if ($dr->save()) {
+                    Flash::success('Successfully setup route with driver. You may update order of route or download csv file below.');
+                    return Redirect::back();
+                }
+            }
+        } else {
+            Flash::error('Could not find corresponding schedule, please contact administrator or reset schedule.');
+            return Redirect::back();
+        }        
+
     }
 
     public function postPrepareRoute(Request $request) {

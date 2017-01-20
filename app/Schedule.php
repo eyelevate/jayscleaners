@@ -91,8 +91,8 @@ class Schedule extends Model
     				$schedules[$key]['special_instructions'] = $value->special_instructions;
     				$schedules[$key]['created_at'] = date('D m/d/Y g:i a',strtotime($value->created_at));
                     $latlong = Schedule::getLatLong($street.' '.$pickup_address_2);
-                    $schedules[$key]['latitude'] = $latlong['latitude'];
-                    $schedules[$key]['longitude'] = $latlong['longitude'];
+                    $schedules[$key]['latitude'] = ($latlong['latitude']) ? $latlong['latitude'] : NULL;
+                    $schedules[$key]['longitude'] = ($latlong['longitude']) ? $latlong['longitude'] :  NULL;
 
                     $schedules[$key]['gmap_address'] = (isset($latlong['latitude'])) ? 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'] : null;
     				/**
@@ -670,5 +670,16 @@ class Schedule extends Model
         }
 
         return $re;
+    }
+
+    public static function prepareDrivers($drivers) {
+        $dr = [];
+        if (count($drivers) > 0) {
+            foreach ($drivers as $driver) {
+                $dr[$driver->id] = $driver->id.' - '.ucFirst($driver->first_name).' '.ucFirst($driver->last_name).' - '.$driver->username;
+            }
+        }
+
+        return $dr;
     }
 }
