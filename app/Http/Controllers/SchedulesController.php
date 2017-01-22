@@ -117,14 +117,15 @@ class SchedulesController extends Controller
         return Redirect::route('schedules_checklist');
     }
 
+    // Droutes
     public function getPrepareRoute(Request $request) {
         $this->layout = 'layouts.dropoff';
         $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
-        $pickups = Schedule::where('pickup_date',$today) // remove 4 from the list
-                               ->whereIn('status',[2,4,5,11])
+        $pickups = Schedule::where('pickup_date',$today)
+                               ->whereIn('status',[2,5,11])
                                ->orderBy('id','desc');        
-        $schedules = Schedule::where('dropoff_date',$today) // remove 4 from the list
-                               ->whereIn('status',[2,4,5,11])
+        $schedules = Schedule::where('dropoff_date',$today)
+                               ->whereIn('status',[2,5,11])
                                ->orderBy('id','desc')
                                ->union($pickups)
                                ->get();
@@ -150,6 +151,7 @@ class SchedulesController extends Controller
             ->where('employee_id',NULL)
             ->orderBy('ordered','asc')
             ->get();
+
         $drs = Droute::where('delivery_date',$today)
             ->where('employee_id','!=',NULL)
             ->orderBy('ordered','asc')
@@ -161,8 +163,11 @@ class SchedulesController extends Controller
             foreach ($del_routes as $dr) {
                 array_push($schedule_ids, $dr->schedule_id);  
             }
+            $schs = Schedule::whereIn('id',$schedule_ids)->get();
+        } else {
+            $schs = [];
         }
-        $schs = Schedule::whereIn('id',$schedule_ids)->get();
+        
         $setup = Schedule::prepareRouteSetup($schs);
         $drivers = Schedule::prepareDrivers(User::where('role_id','<',5)->get());
         $check = Schedule::prepareSchedule($schs);
@@ -209,124 +214,174 @@ class SchedulesController extends Controller
 
     }
 
+    public function postRevertSchedule(Request $request) {
+        $schedule_id = $request->id;
+        $droutes = Droute::where('schedule_id',$schedule_id)->get();
+        if (count($droutes) > 0) {
+            foreach ($droutes as $droute) {
+                $dr = Droute::find($droute->id);
+                $employee_id = $dr->employee_id;
+                $dr->employee_id = NULL;
+                $dr->ordered = NULL;
+                $delivery_date = $dr->delivery_date;
+                if ($dr->save()) {
+                    // Reindex
+                    $del_dates = Droute::where('delivery_date',$delivery_date)
+                        ->where('employee_id',$employee_id)
+                        ->orderBy('ordered','asc')
+                        ->get();
+
+                    if (count($del_dates) > 0) {
+                        $idx = 0;
+                        foreach ($del_dates as $dd) {
+                            $idx++;
+                            $drs = Droute::find($dd->id);
+                            $drs->ordered = $idx;
+                            $drs->save();
+                            Job::dump('reindexing '.$idx);
+                        }
+                    }
+                    Flash::success('Successfully reverted the delivery schedule.');
+                    return Redirect::back();
+                }
+            }
+        } else {
+            Flash::warning('No such delivery schedule. Please try again.');
+            return Redirect::back();
+        }
+    }
+
+    public function postSort(Request $request) {
+        if ($request->ajax()) {
+            $data = $request->sort;
+            if (count($data) > 0) {
+                foreach ($data as $key => $value) {
+                    $idx = $key + 1;
+                    $schedule_id = $value;
+                    $droutes = Droute::where('schedule_id',$schedule_id)->get();
+                    if (count($droutes) > 0) {
+                        foreach ($droutes as $droute) {
+                            $dd_id = $droute->id;
+                            $dds = Droute::find($dd_id);
+                            $dds->ordered = $idx;
+                            $dds->save();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public function getRouteCSV(Request $request,$id = null) {
+        if (isset($id)) {
+            $delivery_date = $request->session()->get('delivery_date');
+            $csv = \League\Csv\Writer::createFromFileObject(new \SplTempFileObject());
+            $droutes = Droute::where('employee_id',$id)
+                ->where('delivery_date',$delivery_date)
+                ->orderBy('ordered','asc')
+                ->get();
+            // $csv->insertOne(\Schema::getColumnListing('droutes')); // optional change for map
+            $csv->insertOne(['First Name','Last Name','Phone','Street','City','State','Zipcode']);
+            if (count($droutes) > 0) {
+                foreach ($droutes as $droute) {
+                    $schedule_id = $droute->schedule_id;
+                    $schedules = Schedule::find($schedule_id);
+                    $dropoff_address = $schedules->dropoff_address;
+                    $addresses = Address::find($dropoff_address);
+                    $street = $addresses->street;
+                    $city = $addresses->city;
+                    $state = $addresses->state;
+                    $zipcode = $addresses->zipcode;
+                    $customer_id = $schedules->customer_id;
+                    $users = User::find($customer_id);
+                    $first_name = ucFirst($users->first_name);
+                    $last_name = ucFirst($users->last_name);
+                    $phone = Job::formatPhoneString($users->phone);
+                    $data = [$first_name,$last_name,$phone,$street,$city,$state,$zipcode];
+                    $csv->insertOne($data);
+                }
+                $title = 'route-'.strtotime(date('Y-m-d H:i:s')).'.csv';
+                $csv->output($title);
+            } else {
+                Flash::warning('There are no stops for this driver. Please select routes then try again.');
+                return Redirect::back();
+            }
+            
+            
+            
+        } else {
+            Flash::warning('No such employee_id. Please select a proper employee route and try again.');
+            return Redirect::back();
+        }
+        
+    }
+
     public function postPrepareRoute(Request $request) {
 
     }
 
 
-    public function getDeliveryRoute(Request $request) {
+    public function getDeliveryRoute(Request $request, $id = null) {
         $this->layout = 'layouts.dropoff';
-        $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
-        $pickups = Schedule::where('pickup_date',$today)
-        					   ->whereIn('status',[2,5,11])
-        					   ->orderBy('id','desc');        
-        $schedules = Schedule::where('dropoff_date',$today)
-        					   ->whereIn('status',[2,5,11])
-        					   ->orderBy('id','desc')
-        					   ->union($pickups)
-        					   ->get();
-
-        $active_list = Schedule::prepareSchedule($schedules);
-        $options = $request->session()->has('route_options') ? $request->session()->get('route_options') : false;
-        
-        $trip = Schedule::prepareTrip($schedules, $options);
-        $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : [];
-        if (count($schedules) > 0) {
-            
-            $check = false;
-            if ($request->session()->has('delivery_route')) {
-                // check to see if todays session has been made
-                $check = (isset($dr[strtotime($today)])) ? false : true;
-            } else {
-                $check = true;
-            }
-
-            if ($check) {
-                try {
-                    $client = new Client();
-                    $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
-                     'headers' => [
-                         'Content-Type' => 'application/json',
-                         'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2Q4ODdjZTJjOGE5MGZhNmMyNDY2YTAiLCJpYXQiOjE0NzM4MDgzMzR9.G-wRJ7Prih7MXp15vUv6T_mqDSd-nvzPnR4OA9PzjbY'
-                     ],
-                        'json' => $trip 
-                    ]);
-                    // $res = $client->request('POST', 'https://api.routific.com/v1/vrp', [
-                    //     'headers' => [
-                    //         'Content-Type' => 'application/json',
-                    //         'Authorization' => 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1N2UxZGI0MDc2ZGFmYjZhMGE5NmIwNGUiLCJpYXQiOjE0NzQ0MTk1MjB9.6MbKPl0y7a-mWwEtaRwqqmx2pA-6kXGZS8MJlv1gbFE'
-                    //     ],
-                    //     'json' => $trip 
-                    // ]);
-                    $body = json_decode($res->getBody()->read(1024));
-                    $dr[strtotime($today)] = Schedule::prepareRouteForView($body,$active_list);
-                } catch(\Exception $e) {
-                    $dr[strtotime($today)] = $active_list;
-                    Flash::warning('Warning: '.$e->getMessage());
+        $employee_id = $id;
+        if (isset($employee_id)) {
+            $employees = User::find($employee_id);
+            $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
+            $schedule_ids = [];
+            $droutes = Droute::where('employee_id',$employee_id)
+                ->where('delivery_date',$today)
+                ->where('status',1)
+                ->orderBy('ordered','asc')
+                ->get();
+            if (count($droutes) > 0) {
+                foreach ($droutes as $droute) {
+                    $schedule_id = $droute->schedule_id;
+                    array_push($schedule_ids, $schedule_id);
 
                 }
+            }
 
-                $body = null;
-                $request->session()->put('delivery_route',$dr);
-            } 
+            $schs = [];
+            $active_list = [];
+            if (count($schedule_ids)) {
+                foreach ($schedule_ids as $key => $value) {
+                    array_push($schs,Schedule::find($value));
+                }
+                $active_list = Schedule::prepareSchedule($schs);
+            }
+            
+            $pickup_approved = Schedule::where('pickup_date',$today)
+                                   ->whereIn('status',[3,12])
+                                   ->orderBy('id','desc');
+            $approved = Schedule::where('dropoff_date',$today)
+                                   ->whereIn('status',[3,12])
+                                   ->orderBy('id','desc')
+                                   ->union($pickup_approved)
+                                   ->get();
+            $approved_list = Schedule::prepareSchedule($approved);
 
-
-
-    	} else {
-    		$body = null;
-    		$dr = null;
-    	}
-    	$pickup_approved = Schedule::where('pickup_date',$today)
-        					   ->whereIn('status',[3,12])
-        					   ->orderBy('id','desc');
-        $approved = Schedule::where('dropoff_date',$today)
-        					   ->whereIn('status',[3,12])
-        					   ->orderBy('id','desc')
-        					   ->union($pickup_approved)
-        					   ->get();
-       	$approved_list = Schedule::prepareSchedule($approved);
-
-       	$pickup_delayed = Schedule::where('pickup_date',$today)
-        					   ->whereIn('status',[7,8,9,10])
-        					   ->orderBy('id','desc');
-        $delayed = Schedule::where('dropoff_date',$today)
-        					   ->whereIn('status',[7,8,9,10])
-        					   ->orderBy('id','desc')
-        					   ->union($pickup_delayed)
-        					   ->get();
-       	$delayed_list = Schedule::prepareSchedule($delayed);
-
-       	$traffic = [
-       		'very slow' => 'Very Slow',
-       		'slow' => 'Slow',
-       		'normal' => 'Normal',
-       		'fast' => 'Fast',
-       		'faster' => 'Faster'
-       	];
-
-       	$shortest_distance = [
-       		'false' => 'Shortest Time',
-       		'true' => 'Shortest Distance'
-       	];
+            $pickup_delayed = Schedule::where('pickup_date',$today)
+                                   ->whereIn('status',[7,8,9,10])
+                                   ->orderBy('id','desc');
+            $delayed = Schedule::where('dropoff_date',$today)
+                                   ->whereIn('status',[7,8,9,10])
+                                   ->orderBy('id','desc')
+                                   ->union($pickup_delayed)
+                                   ->get();
+            $delayed_list = Schedule::prepareSchedule($delayed);
 
 
-       	$traffic_selected = ($options) ? $options['traffic'] : 'slow';
-       	$shortest_distance_selected = ($options) ? $options['shortest_distance'] : 'false';
-       	$route_options_header = ($options) ? ($options['shortest_distance'] == 'false') ? 'Route Optimized For Time' : 'Route Optimized For Distance' : 'Route Optimized For Time';
 
-
-        return view('schedules.delivery_route')
-        ->with('layout',$this->layout)
-        ->with('schedules',$dr[strtotime($today)])
-        ->with('approved_list',$approved_list)
-        ->with('delivery_date',date('D m/d/Y',strtotime($today)))
-        ->with('traffic',$traffic)
-        ->with('shortest_distance',$shortest_distance)
-        ->with('traffic_selected',$traffic_selected)
-        ->with('shortest_distance_selected',$shortest_distance_selected)
-        ->with('route_options_header',$route_options_header)
-        ->with('travel_data',(isset($body)) ? $body : null)
-        ->with('delayed_list',$delayed_list);    	
+            return view('schedules.delivery_route')
+            ->with('layout',$this->layout)
+            ->with('schedules',$active_list)
+            
+            ->with('approved_list',$approved_list)
+            ->with('delivery_date',date('D m/d/Y',strtotime($today)))
+            ->with('delayed_list',$delayed_list);       
+        } 
+        Flash::warning('No such employee. Cannot create route');
+        return Redirect::back();
     }
 
     public function postDeliveryRoute(Request $request) {
@@ -371,6 +426,9 @@ class SchedulesController extends Controller
     	$schedules->status = $next_status;
 
     	if ($schedules->save()) {
+
+
+
     		Flash::success('Reverted #'.$request->id.' to "Delivery Scheduled"');
     		return Redirect::route('schedules_checklist');
     	}
@@ -434,23 +492,19 @@ class SchedulesController extends Controller
     	$schedules->status = $next_status;
 
     	if ($schedules->save()) {
-            # remove the schedule id from the seession array
-            $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
-            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
-            if ($dr[$today]) {
-                // parse through the session and remove saved items
-                if (count($dr[$today])) {
-                    foreach ($dr[$today] as $key => $value) {
-                        if ($value['id'] == $request->id){
-                            unset($dr[$today][$key]);
-                        }
-                    }
+
+            // update droutes
+            $droutes = Droute::where('schedule_id',$request->id)->get();
+            if (count($droutes) > 0) {
+                foreach ($droutes as $droute) {
+                    $dds = Droute::find($droute->id);
+                    $dds->status = 2;
+                    $dds->save();
                 }
             }
-            $request->session()->put('delivery_route',$dr);
 
     		Flash::success('Updated #'.$request->id.' to "Picked Up"');
-    		return Redirect::route('schedules_delivery_route');
+    		return Redirect::back();
     	}
     }
     public function postApproveDroppedOff(Request $request){
@@ -459,22 +513,17 @@ class SchedulesController extends Controller
         $schedules->status = $next_status;
 
         if ($schedules->save()) {
-            # remove the schedule id from the seession array
-            $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
-            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
-            if ($dr[$today]) {
-                // parse through the session and remove saved items
-                if (count($dr[$today])) {
-                    foreach ($dr[$today] as $key => $value) {
-                        if ($value['id'] == $request->id){
-                            unset($dr[$today][$key]);
-                        }
-                    }
+            // update droutes
+            $droutes = Droute::where('schedule_id',$request->id)->get();
+            if (count($droutes) > 0) {
+                foreach ($droutes as $droute) {
+                    $dds = Droute::find($droute->id);
+                    $dds->status = 2;
+                    $dds->save();
                 }
             }
-            $request->session()->put('delivery_route',$dr);
             Flash::success('Updated #'.$request->id.' to "Dropped Off / Completed"');
-            return Redirect::route('schedules_delivery_route');
+            return Redirect::back();
         }
     }
     public function postApproveDelivered(Request $request){
@@ -513,20 +562,15 @@ class SchedulesController extends Controller
         $schedules = Schedule::find($schedule_id);
         $schedules->status = $status;
         if ($schedules->save()) {
-            # remove the schedule id from the seession array
-            $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
-            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
-            if ($dr[$today]) {
-                // parse through the session and remove saved items
-                if (count($dr[$today])) {
-                    foreach ($dr[$today] as $key => $value) {
-                        if ($value['id'] == $request->id){
-                            unset($dr[$today][$key]);
-                        }
-                    }
+            // update droutes
+            $droutes = Droute::where('schedule_id',$schedule_id)->get();
+            if (count($droutes) > 0) {
+                foreach ($droutes as $droute) {
+                    $dds = Droute::find($droute->id);
+                    $dds->status = 2;
+                    $dds->save();
                 }
             }
-            $request->session()->put('delivery_route',$dr);
 
         	// send email
 
@@ -543,13 +587,13 @@ class SchedulesController extends Controller
     	$old_status = $request->status;
     	switch($old_status) {
             case 2:
-                $new_status = 1;
-            break;
-            case 3:
                 $new_status = 2;
             break;
-            case 4: 
+            case 3:
                 $new_status = 3;
+            break;
+            case 4: 
+                $new_status = 4;
             break;
     		case 7: // Delayed - Processing not complete
     			$new_status = 4;
@@ -573,14 +617,17 @@ class SchedulesController extends Controller
     	if ($schedules->save()) {
             # remove the schedule id from the seession array
             $today = ($request->session()->has('delivery_date')) ? strtotime($request->session()->get('delivery_date')) : strtotime(date('Y-m-d 00:00:00'));
-            $dr = ($request->session()->has('delivery_route')) ? $request->session()->get('delivery_route') : false;
-            if ($dr[$today]) {
-
-                if (count($dr[$today])) {
-                    unset($dr[$today]);
+            
+            // update droutes
+            $droutes = Droute::where('schedule_id',$request->id)->get();
+            if (count($droutes) > 0) {
+                foreach ($droutes as $droute) {
+                    $dds = Droute::find($droute->id);
+                    $dds->status = 1;
+                    $dds->save();
                 }
             }
-            $request->session()->put('delivery_route',$dr);
+
     		Flash::warning('Successfully reverted #'.$schedule_id.' back.');
     		return Redirect::back();
     	}

@@ -33,7 +33,7 @@
 					<?php if(count($invoices) > 0): ?>
 						<?php foreach($invoices as $invoice): ?>
 						<tr>
-							<td><?php echo e($invoice->invoice_id); ?></td>
+							<td><?php echo e($invoice->id); ?></td>
 							<td><?php echo e($invoice->quantity); ?></td>
 							<td>
 								<ul style="list-style:none;">

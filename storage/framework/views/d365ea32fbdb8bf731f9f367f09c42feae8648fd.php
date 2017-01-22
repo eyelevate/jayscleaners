@@ -45,8 +45,8 @@
 		<?php echo Form::close(); ?>
 
 		<div class="panel-footer clearfix">
-			<a href="<?php echo e(route('schedules_checklist')); ?>" class="btn btn-lg btn-danger pull-left col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
-			<a href="<?php echo e(route('schedules_processing')); ?>" class="btn btn-lg btn-primary pull-right col-md-2 col-sm-6 col-xs-6">Process&nbsp;<i class="ion ion-chevron-right"></i></a>
+			<a href="<?php echo e(route('schedules_prepare_route')); ?>" class="btn btn-lg btn-danger pull-left col-md-2 col-sm-6 col-xs-6"><i class="ion ion-chevron-left"></i>&nbsp;Back</a>
+			<a href="<?php echo e(route('schedules_processing')); ?>" class="btn btn-lg btn-primary pull-right col-md-2 col-sm-6 col-xs-6">Final Step&nbsp;<i class="ion ion-chevron-right"></i></a>
 		</div>
 	</div>
 

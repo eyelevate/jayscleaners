@@ -236,6 +236,9 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/discounts/edit',['as'=>'discounts_edit_post','uses'=>'DiscountsController@postEdit']);
 		Route::post('/discounts/delete',['as'=>'discounts_delete_post','uses'=>'DiscountsController@postDelete']);
 
+		// Droutes
+		Route::post('/droutes/revert',['as'=>'droutes_revert','uses'=>'SchedulesController@postRevertSchedule']);
+		Route::get('/droutes/csv/{id}',['as'=>'droutes_csv','uses'=>'SchedulesController@getRouteCsv']);
 		//Invoices
 		Route::get('/invoices',['as'=>'invoices_index','uses'=>'InvoicesController@getIndex']);
 		Route::get('/invoices/dropoff/{id}',['as'=>'invoices_dropoff','uses'=>'InvoicesController@getAdd']);
@@ -293,7 +296,7 @@ Route::group(['middleware' => ['web']], function () {
 		// Schedules
 		Route::get('/schedules/checklist',['as'=>'schedules_checklist','uses'=>'SchedulesController@getChecklist']);
 		Route::post('/schedules/checklist',['as'=>'schedules_checklist_post','uses'=>'SchedulesController@postChecklist']);
-		Route::get('/schedules/delivery-route',['as'=>'schedules_delivery_route','uses'=>'SchedulesController@getDeliveryRoute']);
+		Route::get('/schedules/delivery-route/{id}',['as'=>'schedules_delivery_route','uses'=>'SchedulesController@getDeliveryRoute']);
 		Route::post('/schedules/delivery-route',['as'=>'schedules_delivery_route_post','uses'=>'SchedulesController@postDeliveryRoute']);
 		Route::get('/schedules/prepare-route',['as'=>'schedules_prepare_route','uses'=>'SchedulesController@getPrepareRoute']);
 		Route::post('/schedules/prepare-route',['as'=>'schedules_prepare_route_post','uses'=>'SchedulesController@postPrepareRoute']);
@@ -301,7 +304,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/schedules/processing',['as'=>'schedules_processing_post','uses'=>'SchedulesController@postProcessing']);
 		Route::get('/schedules/view/{id}', ['as'=>'schedules_view','uses' => 'SchedulesController@getView']);
 		Route::post('/schedules/admin-cancel',['as'=>'schedules_admin_cancel','uses'=>'SchedulesController@postAdminCancel']);
-
+		Route::post('/schedules/sort',['as'=>'schedules_sort','uses'=>'SchedulesController@postSort']);
 		Route::post('/schedules/approve-pickup', ['as'=>'schedules_approve_pickup','uses'=>'SchedulesController@postApprovePickup']);
 		Route::post('/schedules/approve-dropoff', ['as'=>'schedules_approve_dropoff','uses'=>'SchedulesController@postApproveDropoff']);
 		Route::post('/schedules/delay-delivery', ['as'=>'schedules_delay_delivery','uses'=>'SchedulesController@postDelayDelivery']);
