@@ -13,6 +13,42 @@
         }
     });
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHgMXHliJZJAxB0oBNmdVYYtaR1juWyuM&callback=initMap"async defer></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	google.charts.load("upcoming", {packages:["map"]});
+	google.charts.setOnLoadCallback(drawChartOriginal);
+
+	function drawChartOriginal() {
+		var setup = [
+			['lat','long','name']
+		];
+		<?php foreach ($setup as $row) { ?>
+			item_row = [<?php echo $row[0];?>,<?php echo $row[1];?>,<?php echo "'".$row[2]."'";?>];
+
+			setup.push(item_row);
+		<?php } ?>
+		var options = {
+			mapType: 'normal',
+			showLine: true,
+			showTooltip: true,
+			showInfoWindow: true,
+			useMapTypeControl: true,
+			icons: {
+				default: {
+					normal: 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Azure-icon.png',
+					selected: 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/48/Map-Marker-Ball-Right-Azure-icon.png'
+				}
+			}
+		};
+		var data = google.visualization.arrayToDataTable(setup);
+
+		var map = new google.visualization.Map(document.getElementById('map_div'));
+		map.draw(data, options);
+	}
+
+
+</script>
 @stop
 @section('notifications')
   {!! View::make('partials.layouts.nav-bar')->render() !!}
@@ -25,20 +61,7 @@
         {!! Form::open(['action' => 'SchedulesController@postDeliveryRoute','role'=>"form",'id'=>'search_form']) !!}
             {!! csrf_field() !!} 
 		<div class="panel-body">
-
-	        <div class="form-group{{ $errors->has('search') ? ' has-error' : '' }} search_div">
-	            <label class="col-md-12 col-lg-12 col-sm-12 col-xs-12 control-label padding-top-none">Delivery Date</label>
-
-	            <div id="search_container" class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-	                <input id="search_data" type="text" class="form-control" name="search" value="{{ old('search') ? old('search') : $delivery_date }}" readonly="true" style="background-color:#ffffff">
-
-	                @if ($errors->has('search'))
-	                    <span class="help-block">
-	                        <strong>{{ $errors->first('search') }}</strong>
-	                    </span>
-	                @endif
-	            </div>
-	        </div>
+			<div id="map_div"></div>
 		</div>
 
 		{!! Form::close() !!}

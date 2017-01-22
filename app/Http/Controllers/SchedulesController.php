@@ -370,12 +370,12 @@ class SchedulesController extends Controller
                                    ->get();
             $delayed_list = Schedule::prepareSchedule($delayed);
 
-
+            $setup = Schedule::prepareRouteSetup($schs);
 
             return view('schedules.delivery_route')
             ->with('layout',$this->layout)
             ->with('schedules',$active_list)
-            
+            ->with('setup',$setup)
             ->with('approved_list',$approved_list)
             ->with('delivery_date',date('D m/d/Y',strtotime($today)))
             ->with('delayed_list',$delayed_list);       
