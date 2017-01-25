@@ -369,7 +369,8 @@ class SchedulesController extends Controller
                                    ->orderBy('id','desc')
                                    ->union($pickup_delayed)
                                    ->get();
-            $delayed_list = Schedule::prepareSchedule($delayed);
+
+            $delayed_list = (count($delayed) > 0) ? Schedule::prepareSchedule($delayed) : [];
 
             $setup = Schedule::prepareRouteSetup($schs);
 
