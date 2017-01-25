@@ -269,6 +269,7 @@
 						{{ Form::select('reason',$schedule['delay_list'],'',['class'=>'form-control']) }}
 						@else
 						{{ Form::select('reason',['' => 'Select Delay Reason','9' => 'Delayed - Customer unavailable for dropoff'],'',['class'=>'form-control']) }}
+						@endif
 						</p>
 						<div>
 							<input type="submit" class="btn btn-danger" value="Submit Delay"/>
