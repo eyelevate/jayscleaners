@@ -371,7 +371,6 @@ class SchedulesController extends Controller
                                    ->get();
 
             $delayed_list = (count($delayed) > 0) ? Schedule::prepareSchedule($delayed) : [];
-            Job::dump($delayed_list);
             $setup = Schedule::prepareRouteSetup($schs);
 
             return view('schedules.delivery_route')
