@@ -187,13 +187,14 @@ class SchedulesController extends Controller
 
         $orders = Droute::where('delivery_date',$delivery_date)
             ->where('employee_id',$employee_id)
+            ->where('ordered','>',0)
             ->orderBy('ordered','desc')
             ->limit(1)
             ->get();
         $ordered = 1;
         if (count($orders) > 0) {
             foreach ($orders as $order) {
-                $ordered = ($order->ordered) ? $order->ordered + 1 : 1;
+                $ordered = $order->ordered + 1;
             }
         }
         $droutes = Droute::where('schedule_id',$schedule_id)->get();

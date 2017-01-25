@@ -653,7 +653,6 @@ class CardsController extends Controller
     public function getAdminsIndex($id = null) {
     	$companies = Company::find(Auth::user()->company_id);
 		$cards = Card::prepareForAdminView(Card::where('user_id',$id)->where('company_id',Auth::user()->company_id)->get());
-
     	$this->layout = 'layouts.dropoff';
 
     	return view('cards.admins_index')
