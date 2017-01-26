@@ -129,7 +129,7 @@ class SchedulesController extends Controller
                                ->orderBy('id','desc')
                                ->union($pickups)
                                ->get();
-
+        Job::dump($schedules);
         if (count($schedules) > 0) {
             $idx = 0;
             foreach ($schedules as $schedule) {
