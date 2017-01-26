@@ -136,7 +136,7 @@ class SchedulesController extends Controller
                 $schedule_id = $schedule->id;
                 $d_check = Droute::where('schedule_id',$schedule_id)->get();
                 if (count($d_check) > 0) {
-                    pass;
+                    
                 } else {
                     $idx++;
                     $d = new Droute();
