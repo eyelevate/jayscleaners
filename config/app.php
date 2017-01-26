@@ -159,8 +159,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Toin0u\Geocoder\GeocoderServiceProvider::class,
-        Milon\Barcode\BarcodeServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class
 
     ],
 
@@ -215,8 +214,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Geocoder' => Toin0u\Geocoder\Facade\Geocoder::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
-        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
-        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class
 
     ],
 
