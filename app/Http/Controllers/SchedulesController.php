@@ -129,15 +129,15 @@ class SchedulesController extends Controller
                                ->orderBy('id','desc')
                                ->union($pickups)
                                ->get();
-        Job::dump($schedules);
         if (count($schedules) > 0) {
             $idx = 0;
             foreach ($schedules as $schedule) {
                 $schedule_id = $schedule->id;
                 $d_check = Droute::where('schedule_id',$schedule_id)->get();
                 if (count($d_check) > 0) {
-                    
+                    Job::dump('found -'.$schedule_id);
                 } else {
+                    Job::dump('adding - '.$schedule_id);
                     $idx++;
                     $d = new Droute();
                     $d->company_id = Auth::user()->company_id;
