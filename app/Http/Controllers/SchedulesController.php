@@ -488,7 +488,7 @@ class SchedulesController extends Controller
 
     }
     public function postApprovePickedup(Request $request){
-    	$next_status = 3;
+    	$next_status = 4;
     	$schedules = Schedule::find($request->id);
     	$schedules->status = $next_status;
 
@@ -504,7 +504,7 @@ class SchedulesController extends Controller
                 }
             }
 
-    		Flash::success('Updated #'.$request->id.' to "Picked Up"');
+    		Flash::success('Updated #'.$request->id.' to "Processing"');
     		return Redirect::back();
     	}
     }
