@@ -19,8 +19,7 @@
         "guzzlehttp/guzzle": "~6.0",
         "toin0u/geocoder-laravel": "@stable",
         "milon/barcode": "^5.2",
-        "league/csv":"*.*",
-        "maatwebsite/excel": "^2.1.0"
+        "league/csv":"*.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
