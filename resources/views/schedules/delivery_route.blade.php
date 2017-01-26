@@ -62,6 +62,7 @@
             {!! csrf_field() !!} 
 		<div class="panel-body">
 			<div id="map_div"></div>
+			<div></div>
 		</div>
 
 		{!! Form::close() !!}
