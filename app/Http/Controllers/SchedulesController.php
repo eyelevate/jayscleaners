@@ -133,11 +133,13 @@ class SchedulesController extends Controller
             $idx = 0;
             foreach ($schedules as $schedule) {
                 $schedule_id = $schedule->id;
-                $d_check = Droute::where('schedule_id',$schedule_id)->get();
+                $d_check = Droute::where('schedule_id',$schedule_id)
+                    ->where('delivery_date',$today)
+                    ->get();
                 if (count($d_check) > 0) {
-                    Job::dump('found -'.$schedule_id);
+                    
                 } else {
-                    Job::dump('adding - '.$schedule_id);
+
                     $idx++;
                     $d = new Droute();
                     $d->company_id = Auth::user()->company_id;
