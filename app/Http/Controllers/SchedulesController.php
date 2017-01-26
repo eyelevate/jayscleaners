@@ -392,7 +392,7 @@ class SchedulesController extends Controller
 
         $request->session()->put('delivery_date',date('Y-m-d 00:00:00',strtotime($request->search)));
 
-        return Redirect::route('schedules_delivery_route');
+        return Redirect::back();
     }
 
     public function postApprovePickup(Request $request){
@@ -537,7 +537,7 @@ class SchedulesController extends Controller
     	// finish status change
     	if ($schedules->save()) {
     		Flash::success('Updated #'.$request->id.' to "Delivered"');
-    		return Redirect::route('schedules_delivery_route');
+    		return Redirect::back();
     	}
     }
 
@@ -551,7 +551,7 @@ class SchedulesController extends Controller
     	]);
 
     	Flash::success('Updated route settings!');
-    	return Redirect::route('schedules_delivery_route');
+    	return Redirect::back();
     }
 
     public function postDelayDelivery(Request $request) {
