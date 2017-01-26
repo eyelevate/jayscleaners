@@ -135,7 +135,9 @@ class SchedulesController extends Controller
             foreach ($schedules as $schedule) {
                 $schedule_id = $schedule->id;
                 $d_check = Droute::where('schedule_id',$schedule_id)->get();
-                if (count($d_check) == 0) {
+                if (count($d_check) > 0) {
+                    pass;
+                } else {
                     $idx++;
                     $d = new Droute();
                     $d->company_id = Auth::user()->company_id;
