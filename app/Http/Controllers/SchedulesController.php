@@ -185,34 +185,53 @@ class SchedulesController extends Controller
     }
 
     public function postSetupRoute(Request $request) {
-        Job::dump($request->schedule_ids);
-        // $schedule_id = $request->id;
-        // $employee_id = $request->employee_id;
-        // $delivery_date = $request->session()->get('delivery_date');
+        $employee_id = $request->employee_id;
+        $delivery_date = $request->session()->get('delivery_date');
+        if (count($request->schedule_ids) > 0) {
+            foreach ($request->schedule_ids as $key => $value) {
+                $schedule_id = $request->id;
+                $orders = Droute::where('delivery_date',$delivery_date)
+                    ->where('employee_id',$employee_id)
+                    ->orderBy('ordered','desc')
+                    ->limit(1)
+                    ->get();  
+                if (count($orders) > 0) {
+                    foreach ($orders as $order) {
+                       $ordered = $order->ordered + 1;
+                    }
+                } else {
+                    $ordered = 1;
+                }
 
-        // $orders = Droute::where('delivery_date',$delivery_date)
-        //     ->where('employee_id',$employee_id)
-        //     ->orderBy('ordered','desc')
-        //     ->limit(1)
-        //     ->get();
-        // $ordered = 1;
-        // if (count($orders) > 0) {
-        //     foreach ($orders as $order) {
-        //         $ordered = $order->ordered + 1;
-        //     }
-        // }
-        // $droutes = Droute::where('schedule_id',$schedule_id)
-        //     ->where('delivery_date',$delivery_date)
-        //     ->get();
+                $droutes = Droute::where('schedule_id',$schedule_id)
+                    ->where('delivery_date',$delivery_date)
+                    ->get();
+                if (count($droutes) > 0) {
+                    foreach ($droutes as $droute) {
+                        $dr = Droute::find($droute->id);
+                        $dr->employee_id = $employee_id;
+                        $dr->ordered = $ordered;
+                        $dr->save();                       
+                    }
+                }
+
+            }
+            Flash::success('Successfully added schedules to driver.');
+            return Redirect::back();
+        }
+
+
+
+        
         // if (count($droutes) > 0) {
         //     foreach ($droutes as $droute) {
-        //         $dr = Droute::find($droute->id);
-        //         $dr->employee_id = $employee_id;
-        //         $dr->ordered = $ordered;
-        //         if ($dr->save()) {
-        //             Flash::success('Successfully setup route with driver. You may update order of route or download csv file below.');
-        //             return Redirect::back();
-        //         }
+                // $dr = Droute::find($droute->id);
+                // $dr->employee_id = $employee_id;
+                // $dr->ordered = $ordered;
+                // if ($dr->save()) {
+                //     Flash::success('Successfully setup route with driver. You may update order of route or download csv file below.');
+                //     return Redirect::back();
+                // }
         //     }
         // } else {
         //     Flash::error('Could not find corresponding schedule, please contact administrator or reset schedule.');
