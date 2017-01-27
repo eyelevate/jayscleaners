@@ -85,6 +85,8 @@
   {!! View::make('partials.layouts.nav-bar')->render() !!}
 @stop
 @section('content')
+	{!! Form::open(['action' => 'SchedulesController@postSetupRoute','role'=>"form",'class'=>'pull-right']) !!}
+
 	<div class="panel panel-default {{ (count($setup) > 0) ? '' : 'hide' }}">
 		<div class="panel-heading">
 			<h3 class="panel-title">Prepare Route</h3>
@@ -154,6 +156,7 @@
             <button id="updateDrivers" class="btn btn-success btn-lg">Update Drivers</button>
 		</div>
 	</div>
+	{!! Form::close() !!}
 	@if (count($droutes) > 0)
 		
 		@foreach($droutes as $ordered)

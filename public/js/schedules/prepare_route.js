@@ -35,6 +35,16 @@ prepare = {
 			
 		});
 
+		$("#driverBody .driverTr").click(function() {
+			if ($(this).hasClass('success')) {
+				$(this).removeClass('success');
+				$(this).find('.schedule_id_driver').prop('checked',false);
+			} else {
+				$(this).addClass('success');
+				$(this).find('.schedule_id_driver').prop('checked',true);
+			}
+		});
+
 	}
 };
 
