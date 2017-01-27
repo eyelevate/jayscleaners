@@ -144,7 +144,21 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="panel-footer">
+		<div class="panel-footer form-horizontal">
+			<div class="form-group{{ $errors->has('employee_id') ? ' has-error' : '' }} clearfix">
+                <label class="col-md-12 control-label padding-top-none">Driver </label>
+
+                <div class="col-md-12 clearfix">
+                    
+                    {{ Form::select('employee_id',$drivers,old('employee_id'),['class'=>'form-control']) }}
+                    @if ($errors->has('employee_id'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('employee_id') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+            <button id="updateDrivers" class="btn btn-success btn-lg">Update Drivers</button>
 		</div>
 	</div>
 	@if (count($droutes) > 0)
