@@ -189,7 +189,7 @@ class SchedulesController extends Controller
         $delivery_date = $request->session()->get('delivery_date');
         if (count($request->schedule_ids) > 0) {
             foreach ($request->schedule_ids as $key => $value) {
-                $schedule_id = $request->id;
+                $schedule_id = $value;
 
                 $droutes = Droute::where('schedule_id',$schedule_id)
                     ->where('delivery_date',$delivery_date)
