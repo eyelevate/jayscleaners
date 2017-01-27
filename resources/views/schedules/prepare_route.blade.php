@@ -96,6 +96,7 @@
 			<table class="table table-condensed table-striped table-hover"> 
 				<thead>
 					<tr>
+						<th><input type="checkbox" id="checkAll"/></th>
 						<th>ID</th>
 						<th>Name</th>
 						<th>Street</th>
