@@ -85,7 +85,7 @@
   {!! View::make('partials.layouts.nav-bar')->render() !!}
 @stop
 @section('content')
-	{!! Form::open(['action' => 'SchedulesController@postSetupRoute','role'=>"form",'class'=>'pull-right']) !!}
+	{!! Form::open(['action' => 'SchedulesController@postSetupRoute','role'=>"form"]) !!}
 
 	<div class="panel panel-default {{ (count($setup) > 0) ? '' : 'hide' }}">
 		<div class="panel-heading">
