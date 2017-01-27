@@ -109,10 +109,12 @@
 				</thead>
 				<tbody id="driverBody">
 				@if (count($check) > 0)
+					<?php $idx = 0; ?>
 					@foreach($check as $schedule)
+						<?php $idx++; ?>
 					<tr class="driverTr">
 						<td>
-							<input class="schedule_id_driver" type="checkbox" value="{{ $schedule['id'] }}"/>
+							<input name="schedule_ids[{{ $idx }}]" class="schedule_id_driver" type="checkbox" value="{{ $schedule['id'] }}"/>
 						</td>
 						<td>
 							{{ $schedule['id'] }}
