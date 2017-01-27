@@ -103,15 +103,15 @@
 						<th>City</th>
 						<th>State</th>
 						<th>Zipcode</th>
-						<th>Latitude</th>
-						<th>Longitude</th>
-						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 				@if (count($check) > 0)
 					@foreach($check as $schedule)
 					<tr>
+						<td>
+							<input type="checkbox" value="{{ $schedule['id'] }}"/>
+						</td>
 						<td>
 							{{ $schedule['id'] }}
 						</td>
@@ -130,15 +130,7 @@
 						<td>
 							{{ $schedule['zipcode'] }}
 						</td>
-						<td>
-							{{ $schedule['latitude'] }}
-						</td>
-						<td>
-							{{ $schedule['longitude'] }}
-						</td>
-						<td>
-							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="#edit-{{ $schedule['id'] }}">Setup</a>
-						</td>
+
 					</tr>
 					@endforeach
 				@endif
