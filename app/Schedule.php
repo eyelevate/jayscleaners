@@ -432,8 +432,6 @@ class Schedule extends Model
         if($options){
             $trip['options'] = $options;
         }
-
-
         return $trip;
     }
     /**
