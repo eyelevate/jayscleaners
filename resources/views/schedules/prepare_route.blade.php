@@ -110,7 +110,7 @@
 					@foreach($check as $schedule)
 					<tr class="driverTr">
 						<td>
-							<input class="shedule_id_driver" type="checkbox" value="{{ $schedule['id'] }}"/>
+							<input class="schedule_id_driver" type="checkbox" value="{{ $schedule['id'] }}"/>
 						</td>
 						<td>
 							{{ $schedule['id'] }}
