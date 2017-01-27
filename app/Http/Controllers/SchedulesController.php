@@ -191,7 +191,6 @@ class SchedulesController extends Controller
 
         $orders = Droute::where('delivery_date',$delivery_date)
             ->where('employee_id',$employee_id)
-            ->where('ordered','>',0)
             ->orderBy('ordered','desc')
             ->limit(1)
             ->get();
@@ -201,7 +200,9 @@ class SchedulesController extends Controller
                 $ordered = $order->ordered + 1;
             }
         }
-        $droutes = Droute::where('schedule_id',$schedule_id)->get();
+        $droutes = Droute::where('schedule_id',$schedule_id)
+            ->where('delivery_date',$delivery_date)
+            ->get();
         if (count($droutes) > 0) {
             foreach ($droutes as $droute) {
                 $dr = Droute::find($droute->id);

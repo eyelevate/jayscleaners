@@ -63,6 +63,7 @@
             <?php echo csrf_field(); ?> 
 		<div class="panel-body">
 			<div id="map_div"></div>
+			<div></div>
 		</div>
 
 		<?php echo Form::close(); ?>
@@ -271,8 +272,13 @@
 					<div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<label class="control-label" style="text-align:right">Delay Delivery</label>
 						<p>
+						<?php if(isset($schedule['delay_list'])): ?>
 						<?php echo e(Form::select('reason',$schedule['delay_list'],'',['class'=>'form-control'])); ?>
 
+						<?php else: ?>
+						<?php echo e(Form::select('reason',['' => 'Select Delay Reason','9' => 'Delayed - Customer unavailable for dropoff'],'',['class'=>'form-control'])); ?>
+
+						<?php endif; ?>
 						</p>
 						<div>
 							<input type="submit" class="btn btn-danger" value="Submit Delay"/>
