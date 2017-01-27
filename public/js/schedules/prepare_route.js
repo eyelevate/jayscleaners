@@ -27,10 +27,10 @@ prepare = {
         $('#checkAll').change(function() {
 			if($(this).is(":checked")) {
 				$("#driverBody .driverTr").addClass('success');
-				$('.schedule_id_driver').attr('checked','checked');
+				$('.schedule_id_driver').prop('checked', true);
 			} else {
 				$("#driverBody .driverTr").removeClass('success');
-				$(".schedule_id_driver").removeAttr('checked');
+				$(".schedule_id_driver").prop('checked', false);
 			}
 			
 		});
