@@ -105,12 +105,12 @@
 						<th>Zipcode</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="driverBody">
 				@if (count($check) > 0)
 					@foreach($check as $schedule)
-					<tr>
+					<tr class="driverTr">
 						<td>
-							<input type="checkbox" value="{{ $schedule['id'] }}"/>
+							<input class="shedule_id_driver" type="checkbox" value="{{ $schedule['id'] }}"/>
 						</td>
 						<td>
 							{{ $schedule['id'] }}

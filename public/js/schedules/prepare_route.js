@@ -24,6 +24,17 @@ prepare = {
 			}
         });
 
+        $('#checkAll').change(function() {
+			if($(this).is(":checked")) {
+				$("#driverBody .driverTr").addClass('success');
+				$("#driverBody .driverTr .schedule_id_driver").prop('checked', true);
+			} else {
+				$("#driverBody .driverTr").removeClass('success');
+				$("#driverBody .driverTr .schedule_id_driver").prop('checked', false);
+			}
+			
+		});
+
 	}
 };
 
