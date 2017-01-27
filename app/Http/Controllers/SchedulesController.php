@@ -190,18 +190,6 @@ class SchedulesController extends Controller
         if (count($request->schedule_ids) > 0) {
             foreach ($request->schedule_ids as $key => $value) {
                 $schedule_id = $request->id;
-                $orders = Droute::where('delivery_date',$delivery_date)
-                    ->where('employee_id',$employee_id)
-                    ->orderBy('ordered','desc')
-                    ->limit(1)
-                    ->get();  
-                if (count($orders) > 0) {
-                    foreach ($orders as $order) {
-                       $ordered = $order->ordered + 1;
-                    }
-                } else {
-                    $ordered = 1;
-                }
 
                 $droutes = Droute::where('schedule_id',$schedule_id)
                     ->where('delivery_date',$delivery_date)
@@ -210,7 +198,6 @@ class SchedulesController extends Controller
                     foreach ($droutes as $droute) {
                         $dr = Droute::find($droute->id);
                         $dr->employee_id = $employee_id;
-                        $dr->ordered = $ordered;
                         $dr->save();                       
                     }
                 }
