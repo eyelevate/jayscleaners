@@ -186,7 +186,8 @@ class SchedulesController extends Controller
 
     public function postSetupRoute(Request $request) {
         $employee_id = $request->employee_id;
-        $delivery_date = $request->session()->get('delivery_date');
+        $today = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
+        $delivery_date = $today;
         if (count($request->schedule_ids) > 0) {
             foreach ($request->schedule_ids as $key => $value) {
                 $schedule_id = $value;
@@ -195,6 +196,7 @@ class SchedulesController extends Controller
                     ->where('delivery_date',$delivery_date)
                     ->get();
                 if (count($droutes) > 0) {
+
                     foreach ($droutes as $droute) {
                         $dr = Droute::find($droute->id);
                         $dr->employee_id = $employee_id;
