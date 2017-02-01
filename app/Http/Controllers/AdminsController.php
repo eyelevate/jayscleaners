@@ -1194,5 +1194,40 @@ class AdminsController extends Controller
         }
     }
 
+    public static function getDuplicates() {
+        $limit = 8476;
+        $users = User::whereBetween('id',[1,1000])->get();
+        $duplicates = [];
+        if (count($users) > 0) {
+            foreach ($users as $user) {
+                $phone = $user->phone;
+                $count_rows = User::where('phone',$phone)->get();
+                if (count($count_rows) > 1 ) {
+                    foreach ($count_rows as $cr) {
+                        if ($cr->id > $limit) {
+                            $del = User::find($cr->id);
+                            if ($del->delete()) {
+                                array_push($duplicates,$cr->id);
+                                // create custids here
+
+                                
+                            }
+                        }
+                    }
+                    
+                } 
+            }
+        }
+        return view('admins.duplicates')
+            ->with('duplicates',$duplicates)
+            ->with('layout','layouts.admin'); 
+
+
+    }
+
+    public static function postDuplicates() {
+
+    }
+
 
 }

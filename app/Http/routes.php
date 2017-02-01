@@ -154,6 +154,9 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/admins/dropoff-data',['as'=>'admins_dropoff_data','uses'=>'AdminsController@getDropoffData']);
 		Route::get('/admins/reset-passwords',['as'=>'admins_reset_passwords','uses'=>'AdminsController@getResetPasswords']);
 		Route::post('/admins/reset-passwords',['as'=>'admins_reset_passwords_post','uses'=>'AdminsController@postResetPasswords']);
+		Route::get('/admins/duplicates',['as'=>'admins_duplicates','uses'=>'AdminsController@getDuplicates']);
+		Route::post('/admins/duplicates',['as'=>'admins_duplicates_post','uses'=>'AdminsController@postDuplicates']);
+		
 		// Address
 		
 		Route::get('/address/admin/{id}', ['as'=>'address_admin_index','uses'=>'AddressesController@getAdminIndex']);
@@ -265,7 +268,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/invoices/manage',['as'=>'invoices_manage_post','uses'=>'InvoicesController@postManage']);
 		Route::post('/invoices/manage-update',['as'=>'invoices_manage_update_post','uses'=>'InvoicesController@postManageUpdate']);
 		Route::post('/invoices/manage-totals',['as'=>'invoices_manage_totals_post','uses'=>'InvoicesController@postManageTotals']);
-
+		Route::post('/invoices/search',['as'=>'invoices_search','uses'=>'InvoicesController@postSearch']);
 		//Inventory
 		Route::get('/inventories',  ['as'=>'inventories_index', 'uses' => 'InventoriesController@getIndex']);
 		Route::get('/inventories/add',['as'=>'inventories_add','uses'=>'InventoriesController@getAdd']);

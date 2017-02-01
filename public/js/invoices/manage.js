@@ -8,18 +8,7 @@ invoices = {
 		$.ajaxSetup({
 			headers: { 'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content') }
 		});
-		$("#pretax, #tax, #total").priceFormat({
-			'prefix':'',
-			limit:10
-		});
 
-		$(document).on("keypress", 'form', function (e) {
-			var code = e.keyCode || e.which;
-			if (code == 13) {
-				e.preventDefault();
-				return false;
-			}
-		});
 
 	},
 	events: function() {
@@ -131,7 +120,7 @@ requests = {
 					$("#total").val('0.00');
 				}
 			}
-		);		
+		);
 	}
 	
 };

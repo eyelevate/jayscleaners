@@ -939,14 +939,39 @@ class InvoicesController extends Controller
         }
     }
 
-    public function getManage() {
+    public function getManage(Request $request) {
         $locations = InvoiceItem::prepareLocation();
         $companies = Company::getCompany();
+        $invoices = ($request->session()->has('invoice')) ? Invoice::prepareInvoice(Auth::user()->company_id,$request->session()->pull('invoice')) : [];
+        $invoice_id = ($request->session()->has('invoice_id')) ? $request->session()->pull('invoice_id') : NULL;
+        $split = Invoice::splitInvoiceItems($invoices);
         $this->layout = 'layouts.dropoff';
         return view('invoices.manage')
         ->with('layout',$this->layout)
+        ->with('invoices',$invoices)
+        ->with('invoice_id',$invoice_id)
+        ->with('split',$split)
         ->with('companies',$companies)
         ->with('locations', $locations);
+    }
+
+    public function postSearch(Request $request) {
+        //Validate the request
+        $this->validate($request, [
+            'search' => 'required'
+        ]); 
+
+        $invoices = Invoice::where('id',$request->search)->get();
+        $request->session()->put('invoice',$invoices);
+        $request->session()->put('invoice_id',$request->search);
+        if (count($invoices) > 0) {
+            Flash::success('Invoice found. Please edit details below.');
+        } else {
+            Flash::error('No such invoice. Please try again');
+        }
+
+        return Redirect::back();
+
     }
 
     public function postManage(Request $request) {

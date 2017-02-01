@@ -1,6 +1,6 @@
 {!! Form::open(['action' => 'InvoicesController@postManage','role'=>"form"]) !!}
 {!! Form::hidden('id','',['id'=>'invoice_item_id']) !!}
-<div id="update" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+<div id="expand-{{ $item_id }}" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -8,58 +8,46 @@
 				<h4 class="modal-title">Item Update</h4>
 			</div>
 			<div class="modal-body clearfix">
-	            <div class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Store <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::select('company_id',$companies,'1',['id'=>'company_id','class'=>'form-control']) }}
-                   
-                </div>		            
-	            <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Location <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::select('status',$locations,'1',['id'=>'location','class'=>'form-control']) }}
-                   
-                </div>		
-                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Item <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::text('name','',['id'=>'name','class'=>'form-control','readonly'=>'true']) }}
-                   
-                </div>	
-                <div class="form-group{{ $errors->has('color') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Color <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::text('color','',['id'=>'color','class'=>'form-control','readonly'=>'true']) }}
-                   
-                </div>	
-                <div class="form-group{{ $errors->has('memo') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Memo <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::textarea('memo','',['id'=>'memo','class'=>'form-control','readonly'=>'true']) }}
-                   
-                </div>		
-	            <div class="form-group{{ $errors->has('pretax') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Subtotal <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::text('pretax','0.00',['id'=>'pretax','class'=>'form-control']) }}
-                   
-                </div>	
-	            <div class="form-group{{ $errors->has('tax') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Tax <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::text('tax','0.00',['id'=>'tax','class'=>'form-control','readonly'=>'true']) }}
-                  
-                </div>	
-	            <div class="form-group{{ $errors->has('total') ? ' has-error' : '' }}">
-                    <label class="control-label padding-top-none">Total <span style="color:#ff0000">*</span></label>
-
-                    {{ Form::text('total','0.00',['id'=>'total','class'=>'form-control']) }}
-                  
-                </div>		
+	
 			</div>
+            <div class="table-responsive">
+                <table class="table table-condensed table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Item</th>
+                            <th>Color</th>
+                            <th>Memo</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (count($items) > 0)
+                        <?php $subtotal = 0; ?>
+                        @foreach($items as $item)
+                            <?php $subtotal += $item['subtotal']; ?>
+                        <tr>
+                            <td>{{ $item['id'] }}</td>
+                            <td>{{ $item['item'] }}</td>
+                            <td>{{ $item['color'] }}</td>
+                            <td>{{ $item['memo'] }}</td>
+                            <td><input name="item[{{ $item['id'] }}]" type="text" value="{{ $item['subtotal'] }}"/></td>
+                        </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td  colspan="4" style="text-align:right;">Subtotal </td>
+                            <th><input id="subtotal-{{ $item_id }}" class="subtotals" type="text" value=""/></th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
-				<button id="finish-check" type="submit" class="btn btn-success btn-lg finish_button" >Update</button>
+				<button type="submit" class="btn btn-success btn-lg" >Update</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

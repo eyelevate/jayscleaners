@@ -71,6 +71,7 @@ class Invoice extends Model
                     
                     $color_count = [];
     				$item_count = [];
+                    $item_total = 0;
                     foreach ($data[$key]['items'] as $ikey => $ivalue) {
                         if(isset($item_count[$ivalue->item_id])) {
                             $item_count[$ivalue->item_id] += 1;
@@ -112,7 +113,8 @@ class Invoice extends Model
                         $item_detail[$data[$key]['invoice_id']][$ivalue['item_id']] = [
                             'qty' => $item_count[$ivalue['item_id']],
                             'item' => $inventoryItem->name,
-                            'color' => (isset($color_count[$ivalue->item_id])) ? $color_count[$ivalue->item_id] : []
+                            'color' => (isset($color_count[$ivalue->item_id])) ? $color_count[$ivalue->item_id] : [],
+                            'subtotal' => (isset($item_detail[$data[$key]['invoice_id']][$ivalue['item_id']]['subtotal'])) ? $ivalue->pretax + $item_detail[$data[$key]['invoice_id']][$ivalue['item_id']]['subtotal'] : $ivalue->pretax
                         ];
 
 
@@ -150,6 +152,32 @@ class Invoice extends Model
         $totals['total_html'] =  money_format('$%i',$totals['total']);
 
         return $totals;
+    }
+
+    public static function splitInvoiceItems($data) {
+        $split = [];
+
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $invoice_id = $value->id;
+                $split[$value->item_id] = [];
+                $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                if (count($invoice_items) > 0) {
+                    foreach ($invoice_items as $ii) {
+                        $items = InventoryItem::find($ii->item_id);
+                        $split[$ii->item_id][$ii->id] = [
+                            'id'=>$ii->id,
+                            'item'=>$items->name,
+                            'color'=>$ii->color,
+                            'memo'=>$ii->memo,
+                            'subtotal'=>$ii->pretax
+                        ];
+                    }
+                }
+            }
+        }
+
+        return $split;
     }
 
     public static function newInvoiceId(){
