@@ -62,9 +62,9 @@
 				@foreach($invoices as $invoice)
 					@if (count($invoice->item_details) > 0)
 						@foreach($invoice->item_details as $ikey => $item)
-						<tr style="cursor:pointer" data-toggle="modal" data-target="#expand-{{ $ikey }}">
-							<td style="text-align:center;" >{{ $item['qty'] }}</td>
-							<td>
+						<tr style="cursor:pointer" >
+							<td style="text-align:center;" data-toggle="modal" data-target="#expand-{{ $ikey }}">{{ $item['qty'] }}</td>
+							<td data-toggle="modal" data-target="#expand-{{ $ikey }}">
 								{{ $item['item'] }}
 
 								@if (count($item['color']) > 0)
