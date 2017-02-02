@@ -114,11 +114,13 @@
 @section('modals')
 	@if (count($split) > 0)
 		@foreach($split as $spl_key =>$spl_value)
-		{!! View::make('partials.invoices.manage')
-			->with('items',$spl_value)
-			->with('item_id',$spl_key)
-			->render()
-		!!}
+			{!! View::make('partials.invoices.manage')
+				->with('items',$split[$spl_key]['items'])
+				->with('invoice_id',$invoice_id)
+				->with('item_id',$spl_key)
+				->with('subtotal',$split[$spl_key]['total_subtotal'])
+				->render()
+			!!}
 		@endforeach
 
 	@endif

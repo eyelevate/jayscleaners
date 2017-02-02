@@ -1033,6 +1033,47 @@ class InvoicesController extends Controller
 
     }
 
+    public function postManageItems(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $items = $request->item;
+        $tax_rates = Tax::where('company_id',Auth::user()->company_id)->orderBy('id','desc')->limit(1)->get();
+        $tax = 0.096;
+
+        if (count($tax_rates) > 0) {
+            foreach ($tax_rates as $tax_rate) {
+                $tax = $tax_rate->rate;
+            }
+        }
+        if (count($items) > 0) {
+            
+            foreach ($items as $key => $value) {
+                $tax_total = round($value * $tax,2);
+                $aftertax = round($value + $tax_total,2);
+                $invoice_items = InvoiceItem::find($key);
+                $invoice_items->pretax = $value;
+                $invoice_items->tax = $tax_total;
+                $invoice_items->total = $aftertax;
+                $invoice_items->save();
+            }
+        }
+
+        // calculate new totals for invoice
+        $pretax = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
+        $tax = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
+        $total = InvoiceItem::where('invoice_id',$invoice_id)->sum('total');
+        $invoices = Invoice::find($invoice_id);
+        $invoices->pretax = $pretax;
+        $invoices->tax = $tax;
+        $invoices->total = $total;
+        if ($invoices->save()) {
+            Flash::success('You save successfully updated your invoice item price.');
+            $invoices = Invoice::where('id',$invoice_id)->get();
+            $request->session()->put('invoice',$invoices);
+            $request->session()->put('invoice_id',$invoice_id);
+            return Redirect::back();
+        }
+    }
+
     public function postManageUpdate(Request $request) {
         if ($request->ajax()) {
             $search = $request->search;

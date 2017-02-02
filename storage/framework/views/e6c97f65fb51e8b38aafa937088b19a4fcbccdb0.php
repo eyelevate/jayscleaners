@@ -1,6 +1,6 @@
-<?php echo Form::open(['action' => 'InvoicesController@postManage','role'=>"form"]); ?>
+<?php echo Form::open(['action' => 'InvoicesController@postManageItems','role'=>"form"]); ?>
 
-<?php echo Form::hidden('id','',['id'=>'invoice_item_id']); ?>
+<?php echo Form::hidden('invoice_id',$invoice_id); ?>
 
 <div id="expand-<?php echo e($item_id); ?>" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
@@ -25,24 +25,22 @@
                     </thead>
                     <tbody>
                     <?php if(count($items) > 0): ?>
-                        <?php $subtotal = 0; ?>
                         <?php foreach($items as $item): ?>
-                            <?php $subtotal += $item['subtotal']; ?>
-                        <tr>
-                            <td><?php echo e($item['id']); ?></td>
-                            <td><?php echo e($item['item']); ?></td>
-                            <td><?php echo e($item['color']); ?></td>
-                            <td><?php echo e($item['memo']); ?></td>
-                            <td><input name="item[<?php echo e($item['id']); ?>]" type="text" value="<?php echo e($item['subtotal']); ?>"/></td>
-                        </tr>
+                            <tr>
+                                <td><?php echo e($item['id']); ?></td>
+                                <td><?php echo e($item['item']); ?></td>
+                                <td><?php echo e($item['color']); ?></td>
+                                <td><?php echo e($item['memo']); ?></td>
+                                <td><input name="item[<?php echo e($item['id']); ?>]" type="text" value="<?php echo e($item['subtotal']); ?>"/></td>
+                            </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                     </tbody>
                     <tfoot>
-                        <tr>
+<!--                         <tr>
                             <td  colspan="4" style="text-align:right;">Total Subtotal </td>
-                            <th><input id="subtotal-<?php echo e($item_id); ?>" class="subtotals" type="text" value=""/></th>
-                        </tr>
+                            <th><input id="subtotal-<?php echo e($item_id); ?>" class="subtotals" type="text" value="<?php echo e(money_format('%i',$subtotal)); ?>"/></th>
+                        </tr> -->
                     </tfoot>
                 </table>
 

@@ -266,6 +266,7 @@ Route::group(['middleware' => ['web']], function () {
 		Route::get('/invoices/history/{id}',['as'=>'invoices_history','uses'=>'InvoicesController@getHistory']);
 		Route::get('/invoices/manage',['as'=>'invoices_manage','uses'=>'InvoicesController@getManage']);
 		Route::post('/invoices/manage',['as'=>'invoices_manage_post','uses'=>'InvoicesController@postManage']);
+		Route::post('/invoices/manage-items',['as'=>'invoices_manage_items_post','uses'=>'InvoicesController@postManageItems']);
 		Route::post('/invoices/manage-update',['as'=>'invoices_manage_update_post','uses'=>'InvoicesController@postManageUpdate']);
 		Route::post('/invoices/manage-totals',['as'=>'invoices_manage_totals_post','uses'=>'InvoicesController@postManageTotals']);
 		Route::post('/invoices/search',['as'=>'invoices_search','uses'=>'InvoicesController@postSearch']);

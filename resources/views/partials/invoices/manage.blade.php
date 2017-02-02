@@ -1,5 +1,5 @@
-{!! Form::open(['action' => 'InvoicesController@postManage','role'=>"form"]) !!}
-{!! Form::hidden('id','',['id'=>'invoice_item_id']) !!}
+{!! Form::open(['action' => 'InvoicesController@postManageItems','role'=>"form"]) !!}
+{!! Form::hidden('invoice_id',$invoice_id) !!}
 <div id="expand-{{ $item_id }}" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -23,24 +23,22 @@
                     </thead>
                     <tbody>
                     @if (count($items) > 0)
-                        <?php $subtotal = 0; ?>
                         @foreach($items as $item)
-                            <?php $subtotal += $item['subtotal']; ?>
-                        <tr>
-                            <td>{{ $item['id'] }}</td>
-                            <td>{{ $item['item'] }}</td>
-                            <td>{{ $item['color'] }}</td>
-                            <td>{{ $item['memo'] }}</td>
-                            <td><input name="item[{{ $item['id'] }}]" type="text" value="{{ $item['subtotal'] }}"/></td>
-                        </tr>
+                            <tr>
+                                <td>{{ $item['id'] }}</td>
+                                <td>{{ $item['item'] }}</td>
+                                <td>{{ $item['color'] }}</td>
+                                <td>{{ $item['memo'] }}</td>
+                                <td><input name="item[{{ $item['id'] }}]" type="text" value="{{ $item['subtotal'] }}"/></td>
+                            </tr>
                         @endforeach
                     @endif
                     </tbody>
                     <tfoot>
-                        <tr>
+<!--                         <tr>
                             <td  colspan="4" style="text-align:right;">Total Subtotal </td>
-                            <th><input id="subtotal-{{ $item_id }}" class="subtotals" type="text" value=""/></th>
-                        </tr>
+                            <th><input id="subtotal-{{ $item_id }}" class="subtotals" type="text" value="{{ money_format('%i',$subtotal) }}"/></th>
+                        </tr> -->
                     </tfoot>
                 </table>
 

@@ -122,10 +122,12 @@
 <?php $__env->startSection('modals'); ?>
 	<?php if(count($split) > 0): ?>
 		<?php foreach($split as $spl_key =>$spl_value): ?>
-		<?php echo View::make('partials.invoices.manage')
-			->with('items',$spl_value)
-			->with('item_id',$spl_key)
-			->render(); ?>
+			<?php echo View::make('partials.invoices.manage')
+				->with('items',$split[$spl_key]['items'])
+				->with('invoice_id',$invoice_id)
+				->with('item_id',$spl_key)
+				->with('subtotal',$split[$spl_key]['total_subtotal'])
+				->render(); ?>
 
 		<?php endforeach; ?>
 

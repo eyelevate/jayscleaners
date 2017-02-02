@@ -161,12 +161,14 @@ class Invoice extends Model
         if (count($data) > 0) {
             foreach ($data as $key => $value) {
                 $invoice_id = $value->id;
-                $split[$value->item_id] = [];
                 $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                $total_subtotal = 0;
                 if (count($invoice_items) > 0) {
                     foreach ($invoice_items as $ii) {
                         $items = InventoryItem::find($ii->item_id);
-                        $split[$ii->item_id][$ii->id] = [
+                        $total_subtotal += $ii->pretax;
+                        $split[$ii->item_id]['total_subtotal'] = $total_subtotal;
+                        $split[$ii->item_id]['items'][$ii->id] = [
                             'id'=>$ii->id,
                             'item'=>$items->name,
                             'color'=>$ii->color,
@@ -177,6 +179,7 @@ class Invoice extends Model
                 }
             }
         }
+
 
         return $split;
     }
