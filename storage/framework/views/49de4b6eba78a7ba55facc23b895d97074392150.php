@@ -54,12 +54,12 @@
 		<h3 class="box-title"><?php echo e(($invoice_id) ? 'Invoice Detail #'.$invoice_id : 'No Invoice Selected'); ?></h3>
 	</div>
 	<div class="table-responsive">
-		<table class="col-md-12 col-lg-12 col-sm-12 table-bordered table-striped table-hover table-condensed">
+		<table class="table-bordered table-striped table-hover table-condensed">
 			<thead>
 				<tr>
-					<th style="width:50px;">Qty</th>
-					<th>Item</th>
-					<th style="width:125px;">Subtotal</th>
+					<th class="col-sm-2 col-md-1 col-lg-1">Qty</th>
+					<th >Item</th>
+					<th class="col-sm-3 col-md-2 col-lg-2">Subtotal</th>
 				</tr>
 			</thead>
 			<tbody>
