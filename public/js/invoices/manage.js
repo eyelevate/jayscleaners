@@ -16,6 +16,13 @@ invoices = {
 			$(this).val('');
 		});
 
+		$(".item_value").on('focus_out',function(){
+			if ($(this).val() === '') {
+				var old_value = $(this).attr('old');
+				$(this).val(old_value);
+			}
+		});
+
 
 
 	}
