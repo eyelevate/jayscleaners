@@ -58,7 +58,7 @@
 			<thead>
 				<tr>
 					<th class="col-sm-2 col-md-1 col-lg-1">Qty</th>
-					<th >Item</th>
+					<th class="col-sm-7 col-md-9 col-lg-9">Item</th>
 					<th class="col-sm-3 col-md-2 col-lg-2">Subtotal</th>
 				</tr>
 			</thead>
