@@ -127,6 +127,7 @@ class Invoice extends Model
     			$data[$key]['quantity'] = $qty;
     			$data[$key]['tags'] = $total_pcs;
                 $data[$key]['pretax_html'] = money_format('$%i',$value->pretax);
+                $data[$key]['total_html'] = money_format('$%i',$value->total);
                 $data[$key]['total'] = money_format('$%i', $total * (1+$tax_rate));
     		}
     	}

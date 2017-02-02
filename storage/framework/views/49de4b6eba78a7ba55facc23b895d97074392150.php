@@ -47,6 +47,7 @@
 
 <?php echo Form::open(['action'=>'InvoicesController@postManage','role'=>'form']); ?>
 
+<?php echo Form::hidden('invoice_id',$invoice_id); ?>
 
 <div class="box box-success clearfix">
 	<div class="box-header">
@@ -66,9 +67,9 @@
 				<?php foreach($invoices as $invoice): ?>
 					<?php if(count($invoice->item_details) > 0): ?>
 						<?php foreach($invoice->item_details as $ikey => $item): ?>
-						<tr style="cursor:pointer" data-toggle="modal" data-target="#expand-<?php echo e($ikey); ?>">
-							<td style="text-align:center;" ><?php echo e($item['qty']); ?></td>
-							<td>
+						<tr style="cursor:pointer" >
+							<td style="text-align:center;" data-toggle="modal" data-target="#expand-<?php echo e($ikey); ?>"><?php echo e($item['qty']); ?></td>
+							<td data-toggle="modal" data-target="#expand-<?php echo e($ikey); ?>">
 								<?php echo e($item['item']); ?>
 
 
@@ -82,7 +83,7 @@
 
 								<?php endif; ?>
 							</td>
-							<td ><input class="col-sm-12 col-xs-12 col-md-12 col-lg-12" type="text" value="<?php echo e(money_format('%i',$item['subtotal'])); ?>"/></td>
+							<td ><input name="item[<?php echo e($ikey); ?>]" class="col-sm-12 col-xs-12 col-md-12 col-lg-12" type="text" value="<?php echo e(money_format('%i',$item['subtotal'])); ?>"/></td>
 						</tr>
 						<?php endforeach; ?>
 					<?php endif; ?>
@@ -104,13 +105,13 @@
 				</tr>
 				<tr>
 					<th colspan="2" style="text-align:right;">Total Aftertax </th>
-					<th><?php echo e((count($invoices) > 0) ? $invoices[0]['total'] : NULL); ?></th>
+					<th><?php echo e((count($invoices) > 0) ? $invoices[0]['total_html'] : NULL); ?></th>
 				</tr>
 			</tfoot>
 		</table>
 	</div>
 	<div class="box-footer clearfix">
-		<button>Edit Prices</button>
+		<button class="btn btn-lg btn-success" type="submit">Edit Prices</button>
 	</div>
 </div>
 <?php echo Form::close(); ?>

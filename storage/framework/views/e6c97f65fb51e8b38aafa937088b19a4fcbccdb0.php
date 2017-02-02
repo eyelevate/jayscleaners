@@ -40,7 +40,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td  colspan="4" style="text-align:right;">Subtotal </td>
+                            <td  colspan="4" style="text-align:right;">Total Subtotal </td>
                             <th><input id="subtotal-<?php echo e($item_id); ?>" class="subtotals" type="text" value=""/></th>
                         </tr>
                     </tfoot>

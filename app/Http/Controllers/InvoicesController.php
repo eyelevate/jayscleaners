@@ -975,42 +975,60 @@ class InvoicesController extends Controller
     }
 
     public function postManage(Request $request) {
-        $company_id = $request->company_id;
-        $location = $request->status;
-        $pretax = $request->pretax;
-        $tax = $request->tax;
-        $total = $request->total;
-        $id = $request->id;
+        $invoice_id = $request->invoice_id;
+        $items = $request->item;
+        $tax_rates = Tax::where('company_id',Auth::user()->company_id)->orderBy('id','desc')->limit(1)->get();
+        $tax = 0.096;
+        if (count($tax_rates) > 0) {
+            foreach ($tax_rates as $tax_rate) {
+                $tax = $tax_rate->rate;
+            }
+        }
+        $pretax = 0;
+        $tax_total = 0;
+        $total = 0;
+        if (count($items) > 0) {
+            foreach ($items as $key => $value) {
+                // divide the subtotal based on count
+                $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)->where('item_id',$key)->get();
+                $count_items = count($invoice_items);
+                if ($count_items > 0) {
+                    $divided_amount = money_format('%i',($value / $count_items));
+                    $count_down = $count_items;
+                    $count_down_subtotal = $value;
+                    foreach ($invoice_items as $iitem) {
+                        $count_down--;
+                        $count_down_subtotal -= $divided_amount;
+                        $invoice_item_id = $iitem->id;
+                        $invs_items = InvoiceItem::find($invoice_item_id);
 
-
-        $invoice_items = InvoiceItem::find($id);
-        $invoice_id = $invoice_items->invoice_id;
-        $invoice_items->company_id = $company_id;
-        $invoice_items->status = $location;
-        $invoice_items->pretax = $pretax;
-        $invoice_items->tax = $tax;
-        $invoice_items->total = $total;
-        if ($invoice_items->save()) {
-            $taxes = Tax::where('company_id',$company_id)->orderBy('id','desc')->limit(1)->get();
-            if (count($taxes) > 0) {
-                foreach ($taxes as $tax) {
-                    $tax_rate = $tax['rate'];
+                        // add any extra amount to last item
+                        $invs_pretax = ($count_down == 0) ? $divided_amount + $count_down_subtotal : $divided_amount;
+                        $invs_tax = round($invs_pretax * $tax,2);
+                        $invs_total = round($invs_pretax + $invs_tax,2);
+                        $invs_items->pretax = $invs_pretax;
+                        $invs_items->tax = money_format('%i',$invs_tax);
+                        $invs_items->total = money_format('%i',$invs_total);
+                        $pretax += $invs_pretax;
+                        $tax_total += $invs_tax;
+                        $total += $invs_total;
+                        $invs_items->save();
+                    }
                 }
-            } else {
-                $tax_rate = 0.096;
             }
-            $sum_pretax = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
-            $sum_tax = money_format('%i',round($sum_pretax * $tax_rate,2));
-            $sum_total = money_format('%i',$sum_pretax + $sum_tax);
+        }
 
-            $invoices = Invoice::find($invoice_id);
-            $invoices->pretax = $sum_pretax;
-            $invoices->tax = $sum_tax;
-            $invoices->total = $sum_total;
-            if ($invoices->save()) {
-                Flash::success('Successfully updated invoice item #'.$id);
-                return Redirect::route('invoices_manage');
-            }
+        // update invoice
+        $invoices = Invoice::find($invoice_id);
+        $invoices->pretax = $pretax;
+        $invoices->tax = $tax_total;
+        $invoices->total = $total;
+        if ($invoices->save()) {
+            Flash::success('Successfully updated prices');
+            $invoices = Invoice::where('id',$invoice_id)->get();
+            $request->session()->put('invoice',$invoices);
+            $request->session()->put('invoice_id',$invoice_id);
+            return Redirect::back();
         }
 
     }

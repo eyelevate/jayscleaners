@@ -43,7 +43,7 @@
 {!! Form::close() !!}
 
 {!! Form::open(['action'=>'InvoicesController@postManage','role'=>'form']) !!}
-
+{!! Form::hidden('invoice_id',$invoice_id) !!}
 <div class="box box-success clearfix">
 	<div class="box-header">
 		<h3 class="box-title">{{ ($invoice_id) ? 'Invoice Detail #'.$invoice_id : 'No Invoice Selected' }}</h3>
@@ -76,7 +76,7 @@
 									{{ rtrim($color_string,', ') }}
 								@endif
 							</td>
-							<td ><input class="col-sm-12 col-xs-12 col-md-12 col-lg-12" type="text" value="{{ money_format('%i',$item['subtotal']) }}"/></td>
+							<td ><input name="item[{{ $ikey }}]" class="col-sm-12 col-xs-12 col-md-12 col-lg-12" type="text" value="{{ money_format('%i',$item['subtotal']) }}"/></td>
 						</tr>
 						@endforeach
 					@endif
@@ -98,13 +98,13 @@
 				</tr>
 				<tr>
 					<th colspan="2" style="text-align:right;">Total Aftertax </th>
-					<th>{{ (count($invoices) > 0) ? $invoices[0]['total'] : NULL }}</th>
+					<th>{{ (count($invoices) > 0) ? $invoices[0]['total_html'] : NULL }}</th>
 				</tr>
 			</tfoot>
 		</table>
 	</div>
 	<div class="box-footer clearfix">
-		<button>Edit Prices</button>
+		<button class="btn btn-lg btn-success" type="submit">Edit Prices</button>
 	</div>
 </div>
 {!! Form::close() !!}
