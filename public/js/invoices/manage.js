@@ -15,7 +15,7 @@ invoices = {
 		$(".item_value").on('focus',function(){
 			$(this).val('');
 			// parse through the rest and place old value back if empty
-			$('.item_value').not($(this)).each(function(){
+			$('.item_value').not(':focus').each(function(){
 				if ($(this).val() === '') {
 					var old_value = $(this).attr('old');
 					$(this).val(old_value);
