@@ -31,7 +31,7 @@
                                 <td><?php echo e($item['item']); ?></td>
                                 <td><?php echo e($item['color']); ?></td>
                                 <td><?php echo e($item['memo']); ?></td>
-                                <td><input name="item[<?php echo e($item['id']); ?>]" class="item_value" type="text" value="<?php echo e($item['subtotal']); ?>"/></td>
+                                <td><input name="item[<?php echo e($item['id']); ?>]" class="item_value" type="text" old="<?php echo e($item['subtotal']); ?>" value="<?php echo e($item['subtotal']); ?>"/></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

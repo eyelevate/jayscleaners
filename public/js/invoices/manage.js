@@ -14,13 +14,7 @@ invoices = {
 	events: function() {
 		$(".item_value").on('focus',function(){
 			$(this).val('');
-			// parse through the rest and place old value back if empty
-			$('.item_value').not(':focus').each(function(){
-				if ($(this).val() === '') {
-					var old_value = $(this).attr('old');
-					$(this).val(old_value);
-				}
-			});
+			invoices.focused();
 			
 		});
 
@@ -28,6 +22,20 @@ invoices = {
 
 
 
+	},
+	focused: function() {
+		// parse through the rest and place old value back if empty
+		$('.item_value').each(function(){
+			if ($(this).is(':focus')) {
+				console.log('focused');
+			} else {
+				var old_value = $(this).attr('old');
+				if ($(this).val() === '') {
+					$(this).val(old_value);
+				}
+				
+			}
+		});
 	}
 };
 
