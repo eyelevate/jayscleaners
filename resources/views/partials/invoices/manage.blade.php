@@ -29,7 +29,7 @@
                                 <td>{{ $item['item'] }}</td>
                                 <td>{{ $item['color'] }}</td>
                                 <td>{{ $item['memo'] }}</td>
-                                <td><input name="item[{{ $item['id'] }}]" class="item_value" type="text" old="{{ $item['subtotal'] }}" value="{{ $item['subtotal'] }}"/></td>
+                                <td><input name="item[{{ $item['id'] }}]" class="item_value" type="text" old="{{ money_format('%i',$item['subtotal']) }}" value="{{ $item['subtotal'] }}"/></td>
                             </tr>
                         @endforeach
                     @endif
