@@ -83,7 +83,7 @@
 
 								<?php endif; ?>
 							</td>
-							<td ><input name="item[<?php echo e($ikey); ?>]" class="col-sm-12 col-xs-12 col-md-12 col-lg-12" type="text" value="<?php echo e(money_format('%i',$item['subtotal'])); ?>"/></td>
+							<td ><input class="item_value" old="<?php echo e(money_format('%i',$item['subtotal'])); ?>" name="item[<?php echo e($ikey); ?>]" class="col-sm-12 col-xs-12 col-md-12 col-lg-12" type="text" value="<?php echo e(money_format('%i',$item['subtotal'])); ?>"/></td>
 						</tr>
 						<?php endforeach; ?>
 					<?php endif; ?>

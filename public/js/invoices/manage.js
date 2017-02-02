@@ -12,7 +12,7 @@ invoices = {
 
 	},
 	events: function() {
-		$(".item_value").on('focus',function(){
+		$(".item_value").on('click',function(){
 			$(this).val('');
 			invoices.focused();
 			
