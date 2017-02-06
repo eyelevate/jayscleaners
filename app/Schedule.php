@@ -216,6 +216,11 @@ class Schedule extends Model
                             $totals = Invoice::prepareTotals($invs);
                             $schedules[$key]['invoices'] = $prepared_invoices;
                             $schedules[$key]['invoice_totals'] = $totals;
+                            $schedules[$key]['email_subject'] = 'Delivery delayed due to an unexpected event!';
+                            $schedules[$key]['email_greetings'] = 'Greetings '.$schedules[$key]['first_name'].' '.$schedules[$key]['last_name'].', ';
+                            $schedules[$key]['email_body'] = 'Your delivery has been delayed due an unexpected event. This could range from a broken machine to a delivery van issue. Please contact us for immediate assistance with your order or you may simply reschedule your delivery by clicking the button below.';
+                            $schedules[$key]['email_body'] .= ' Please click on the button below reschedule. Thank you for your understanding.';
+                            $schedules[$key]['email_button'] = '<a style="color: #ffffff; text-align:center;text-decoration: none;" href="'.route('delivery_update',$schedules[$key]['id']).'">Reschedule Pickup / Dropoff</a>';
     					break;
 
     					case 8:

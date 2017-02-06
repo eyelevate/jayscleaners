@@ -43,8 +43,8 @@ reports = {
 			var salesChart = new Chart(salesChartCanvas);
 
 			var salesChartData = {
-			labels: json.labels,
-			datasets: json.datasets
+				labels: json.labels,
+				datasets: json.datasets
 			};
 
 			var salesChartOptions = {
