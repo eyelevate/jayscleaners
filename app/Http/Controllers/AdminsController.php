@@ -1210,7 +1210,7 @@ class AdminsController extends Controller
                                 array_push($duplicates,$cr->id);
                                 // create custids here
 
-                                
+
                             }
                         }
                     }
@@ -1227,6 +1227,11 @@ class AdminsController extends Controller
 
     public static function postDuplicates() {
 
+    }
+
+    public static function getApiPrint($id = null) {
+        $header['Content-Type'] = 'application/xml';
+        return Response::make([], 200, $header);
     }
 
 
