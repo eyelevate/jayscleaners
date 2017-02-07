@@ -88,8 +88,8 @@ class Schedule extends Model
                     $schedules[$key]['zipcode'] = $zipcode;
     				$schedules[$key]['pickup_address_1'] = $pickup_address_1;
     				$schedules[$key]['pickup_address_2'] = $pickup_address_2;
-    				$schedules[$key]['contact_name'] = $addresses->concierge_name;
-    				$schedules[$key]['contact_number'] = $addresses->concierge_number;
+    				$schedules[$key]['contact_name'] = $contact_name;
+    				$schedules[$key]['contact_number'] = $contact_number;
                     if (strtotime($value->pickup_date) > 0) {
                         $schedules[$key]['pickup_date'] = date('D m/d/Y',strtotime($value->pickup_date));
                     } else {
