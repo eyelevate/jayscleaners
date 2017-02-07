@@ -29,13 +29,14 @@ class Schedule extends Model
                     $companies = Company::find($company_id);
     				$pickup_address_id = $data[$key]['pickup_address'];
     				$addresses = Address::find($pickup_address_id);
-    				$street = $addresses->street;
-    				$suite = $addresses->suite;
-    				$city = $addresses->city;
-    				$state = $addresses->state;
-    				$zipcode = $addresses->zipcode;
-    				$contact_name = $addresses->concierge_name;
-    				$contact_number = $addresses->concierge_number;
+                    if ($addresses) {}
+    				$street = ($addresses->street) ? $addresses->street : NULL;
+    				$suite = ($addresses->suite) ? $addresses->suite : NULL;
+    				$city = ($addresses->city) ? $addresses->city : NULL;
+    				$state = ($addresses->state) ? $addresses->state : NULL;
+    				$zipcode = ($addresses->zipcode) ? $addresses->zipcode : NULL;
+    				$contact_name = ($addresses->concierge_name) ? $addresses->concierge_name : NULL;
+    				$contact_number = ($addresses->concierge_number) ? $addresses->concierge_number : NULL;
     				$pickup_address_1 = ($suite) ? $street.' #'.$suite : $street;
     				$pickup_address_2 = ucFirst($city).', '.strtoupper($state).' '.$zipcode;
     				$pickup_delivery_id = $value->pickup_delivery_id;
