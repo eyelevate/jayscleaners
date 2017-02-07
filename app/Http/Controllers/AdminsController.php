@@ -1231,7 +1231,24 @@ class AdminsController extends Controller
 
     public static function getApiPrint($id = null) {
         $header['Content-Type'] = 'application/xml';
-        return Response::make([], 200, $header);
+        $content = '';
+        //Start print document creation.
+        $request = '<epos-print xmlns="http://www.epson-pos.com/schemas/2011/03/epos-print">';
+        //Create a print document
+        //<Configure the print character settings>
+        $request .= '<text lang="en"/>';
+        $request .= '<text smooth="true"/>';
+        $request .= '<text font="font_a"/>';
+        $request .= '<text width="4" height="4"/>';
+        $request .= '<text em="true"/>';
+        //<Specify the character string to print>
+        $request .= '<text>Hello, World!&#10;</text>';
+        //<Specify the feed cut>
+        $request .= '<cut type="feed"/>';
+        //End print document creation
+        $request .= '</epos-print>';
+
+        return Response::make($request, 200, $header);
     }
 
 
