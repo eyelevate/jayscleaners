@@ -30,6 +30,7 @@ class Schedule extends Model
     				$pickup_address_id = $data[$key]['pickup_address'];
     				$addresses = Address::find($pickup_address_id);
                     if (count($addresses) > 0) {
+                        $address_name = $addresses->name;
                         $street = $addresses->street;
                         $suite = $addresses->suite;
                         $city = $addresses->city;
@@ -40,6 +41,7 @@ class Schedule extends Model
                         $pickup_address_1 = ($suite) ? $street.' #'.$suite : $street;
                         $pickup_address_2 = ucFirst($city).', '.strtoupper($state).' '.$zipcode;
                     } else {
+                        $address_name = NULL;
                         $street = NULL;
                         $suite = NULL;
                         $city = NULL;
@@ -79,7 +81,7 @@ class Schedule extends Model
     				$schedules[$key]['pickup_address'] = $value->pickup_address;
     				$schedules[$key]['pickup_delivery_id'] = $value->pickup_delivery_id;
     				$schedules[$key]['dropoff_delivery_id'] = $value->dropoff_delivery_id;
-    				$schedules[$key]['address_name'] = $addresses->name;
+    				$schedules[$key]['address_name'] = $addresses_name;
                     $schedules[$key]['street'] = $street;
                     $schedules[$key]['city'] = $city;
                     $schedules[$key]['state'] = $state;
