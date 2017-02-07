@@ -81,7 +81,7 @@ class Schedule extends Model
     				$schedules[$key]['pickup_address'] = $value->pickup_address;
     				$schedules[$key]['pickup_delivery_id'] = $value->pickup_delivery_id;
     				$schedules[$key]['dropoff_delivery_id'] = $value->dropoff_delivery_id;
-    				$schedules[$key]['address_name'] = $addresses_name;
+    				$schedules[$key]['address_name'] = $address_name;
                     $schedules[$key]['street'] = $street;
                     $schedules[$key]['city'] = $city;
                     $schedules[$key]['state'] = $state;
