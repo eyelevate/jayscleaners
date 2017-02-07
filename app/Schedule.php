@@ -28,7 +28,18 @@ class Schedule extends Model
                     $company_id = $value->company_id;
                     $companies = Company::find($company_id);
     				$pickup_address_id = $data[$key]['pickup_address'];
+
     				$addresses = Address::find($pickup_address_id);
+                    $address_name = NULL;
+                    $street = NULL;
+                    $suite = NULL;
+                    $city = NULL;
+                    $state = NULL;
+                    $zipcode = NULL;
+                    $contact_name = NULL;
+                    $contact_number = NULL;
+                    $pickup_address_1 = NULL;
+                    $pickup_address_2 = NULL;
                     if (count($addresses) > 0) {
                         $address_name = $addresses->name;
                         $street = $addresses->street;
@@ -40,18 +51,7 @@ class Schedule extends Model
                         $contact_number = $addresses->concierge_number;
                         $pickup_address_1 = ($suite) ? $street.' #'.$suite : $street;
                         $pickup_address_2 = ucFirst($city).', '.strtoupper($state).' '.$zipcode;
-                    } else {
-                        $address_name = NULL;
-                        $street = NULL;
-                        $suite = NULL;
-                        $city = NULL;
-                        $state = NULL;
-                        $zipcode = NULL;
-                        $contact_name = NULL;
-                        $contact_number = NULL;
-                        $pickup_address_1 = NULL;
-                        $pickup_address_2 = NULL;
-                    }
+                    } 
     				
     				$pickup_delivery_id = $value->pickup_delivery_id;
     				$dropoff_delivery_id = $value->dropoff_delivery_id;
