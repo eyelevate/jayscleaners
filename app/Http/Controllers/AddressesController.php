@@ -270,15 +270,38 @@ class AddressesController extends Controller
     public function getDelete($id = NULL) {
     	$addresses = Address::find($id);
 
-    	if ($addresses->delete()) {
-        	Flash::success('Successfully deleted "'.$addresses->name.'"!');
+        $schedule_pickup = Schedule::where('pickup_address',$id)
+            ->where('status','<',12);
+        $schedules = Schedule::where('dropoff_address',$id)
+            ->union($schedule_pickup)
+            ->where('status','<',12)
+            ->get();
+        if (count($schedules) > 0) {
+            Flash::Error('Error: Address not deleted. You must edit / cancel any active schedules with this current address before deleting it from the system.');
+            return Redirect::back();
+        }
+        if ($addresses->delete()) {
+            Flash::success('Successfully deleted "'.$addresses->name.'"!');
 
-            return Redirect::route('address_index');    		
-    	}
+            return Redirect::route('address_index');            
+        }
+
+
     }
 
     public function getAdminDelete($id = null, Request $request) {
         $addresses = Address::find($id);
+        $schedule_pickup = Schedule::where('pickup_address',$id)
+            ->where('status','<',12);
+        $schedules = Schedule::where('dropoff_address',$id)
+            ->union($schedule_pickup)
+            ->where('status','<',12)
+            ->get();
+
+        if (count($schedules) > 0) {
+            Flash::Error('Error: Address not deleted. You must edit / cancel any active schedules with this current address before deleting it from the system.');
+            return Redirect::back();
+        } 
 
         if ($addresses->delete()) {
             Flash::success('Successfully deleted "'.$addresses->name.'"!');
