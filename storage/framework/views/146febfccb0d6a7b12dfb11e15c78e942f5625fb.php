@@ -164,6 +164,19 @@
 			<div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
 		</div>
 	</a><!-- ./col -->
+	<a href="<?php echo e(route('admins_rack_history')); ?>" class="col-lg-3 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-red">
+			<div class="inner">
+				<h3>Rack History</h3>
+				<p>View Rack History</p>
+			</div>
+			<div class="icon">
+				<i class="ion-ios-compose"></i>
+			</div>
+			<div class="small-box-footer">Click Here <i class="fa fa-arrow-circle-right"></i></div>
+		</div>
+	</a><!-- ./col -->
 </div><!-- /.row -->
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

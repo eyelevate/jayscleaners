@@ -54,13 +54,11 @@ use net\authorize\api\controller as AnetController;
 
 class AdminsController extends Controller
 {
+
     public function __construct() {
-
-
         //Set controller variables
-    	$this->layout = 'layouts.admin';
-
-    }
+        $this->layout = 'layouts.admin';
+    }   
     
     public function getIndex(Request $request) {
         $this->layout = 'layouts.admin';
@@ -121,6 +119,30 @@ class AdminsController extends Controller
         Flash::success('You have successfully been logged out');
         return Redirect::action('AdminsController@getLogin');
 
+    }
+
+    public static function getRackHistory(Request $request) {
+        $layout = 'layouts.dropoff';
+
+        return view('admins.rack_history')
+            ->with('layout',$layout); 
+    }
+
+    public static function postRackHistory(Request $request) {
+        $layout = 'layouts.dropoff';
+        $company_id = $request->company_id;
+
+        $search_dates = $request->search;
+
+        $search_start = date('Y-m-d 00:00:00',strtotime($search_dates));
+        $search_end = date('Y-m-d 23:59:59',strtotime($search_dates));
+
+        $history = Invoice::prepareInvoice($company_id,Invoice::whereBetween('rack_date',[$search_start,$search_end])->orderBy('rack_date','asc')->get());
+        return view('admins.rack_history')
+            ->with('history',$history)
+            ->with('company_id',$company_id)
+            ->with('search',$search_dates)
+            ->with('layout',$layout);
     }
 
     public function getOverview(){
@@ -1250,6 +1272,10 @@ class AdminsController extends Controller
 
         return Response::make($request, 200, $header);
     }
+
+    
+
+
 
 
 }

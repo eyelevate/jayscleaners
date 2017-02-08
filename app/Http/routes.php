@@ -157,7 +157,11 @@ Route::group(['middleware' => ['web']], function () {
 		Route::post('/admins/reset-passwords',['as'=>'admins_reset_passwords_post','uses'=>'AdminsController@postResetPasswords']);
 		Route::get('/admins/duplicates',['as'=>'admins_duplicates','uses'=>'AdminsController@getDuplicates']);
 		Route::post('/admins/duplicates',['as'=>'admins_duplicates_post','uses'=>'AdminsController@postDuplicates']);
+		Route::get('/admins/rack-history',['as'=>'admins_rack_history','uses'=>'AdminsController@getRackHistory']);
+		Route::post('/admins/rack-history',['as'=>'admins_rack_history_post','uses'=>'AdminsController@postRackHistory']);
 		
+
+
 		// Address
 		
 		Route::get('/address/admin/{id}', ['as'=>'address_admin_index','uses'=>'AddressesController@getAdminIndex']);
