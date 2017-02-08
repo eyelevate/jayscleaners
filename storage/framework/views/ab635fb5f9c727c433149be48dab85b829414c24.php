@@ -42,11 +42,28 @@
 
 					<?php echo $__env->yieldContent('content'); ?>
 					<section class="wrapper style3 container special">
-						<header>
-							<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
-							<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
-						</header>
-					</section>
+					<header>
+						<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+					</header>
+					<ul>
+						<li class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-bottom:20px;">
+							<ul>
+								<li><strong><u>For website / technical assistance</u></strong></li>
+								<li><i class="fa fa-envelope" aria-hidden="true"></i> Email Us: <strong>wondo@jayscleaners.com</strong></li>
+								<li><i class="fa fa-mobile" aria-hidden="true"></i> Phone Us: <strong>(206) 328-8158</strong></li>
+							</ul>
+						</li>
+
+						<li class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-bottom:20px;">
+							<ul>
+								<li><strong><u>For delivery / general assistance</u></strong></li>
+								<li><i class="fa fa-envelope" aria-hidden="true"></i> Email Us: <strong>young@jayscleaners.com</strong></li>
+								<li><i class="fa fa-mobile" aria-hidden="true"></i> Phone Us: <strong>(206) 453-5930</strong></li>
+							</ul>
+						</li>
+					</ul>
+
+				</section>
 				</div>
 				<p></p>
 			<!-- CTA -->
@@ -58,14 +75,26 @@
 				<footer id="footer">
 
 					<ul class="icons">
-						<li><a href="#" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
-						<li><a href="#" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>
-						<li><a href="#" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
+						<li><a target="__blank" href="https://www.yelp.com/biz/jays-dry-cleaners-roosevelt-seattle" class="icon circle fa-yelp" style="color:#ffffff; background-color:#DB6B67;"><span class="label">Yelp</span></a></li>
+						<li><a target="__blank" href="https://plus.google.com/+JaysDryCleanersRooseveltSeattle" class="icon circle fa-google-plus"><span class="label">Google+</span></a></li>
+						<li><a target="__blank" href="https://twitter.com/mrjayscleaners" class="icon circle fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a target="__blank" href="https://www.facebook.com/Jays-Cleaners-863927957082219/" class="icon circle fa-facebook"><span class="label">Facebook</span></a></li>	
 					</ul>
-
+					<ul class="icons">
+						<li>
+							<!-- (c) 2005, 2016. Authorize.Net is a registered trademark of CyberSource Corporation --> 
+							<div class="AuthorizeNetSeal"> 
+								<script type="text/javascript" language="javascript">var ANS_customer_id="ebe6e342-11f7-41de-b5f8-d1e8cdfa46c5";</script> 
+								<script type="text/javascript" language="javascript" src="//verify.authorize.net/anetseal/seal.js" ></script> 
+								<a href="http://www.authorize.net/" id="AuthorizeNetText" target="_blank">Online Payments</a> 
+							</div>
+						</li>
+					</ul>
 					<ul class="copyright">
 						<li>&copy; <?php echo e(date('Y')); ?></li><li> Jays Cleaners</li>
+						<li><a href="<?php echo e(route('pages_terms')); ?>">Terms & Privay Policy</a></li>
 					</ul>
+
 
 				</footer>
 		</div>

@@ -85,6 +85,9 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
+	<?php echo Form::open(['action' => 'SchedulesController@postSetupRoute','role'=>"form"]); ?>
+
+
 	<div class="panel panel-default <?php echo e((count($setup) > 0) ? '' : 'hide'); ?>">
 		<div class="panel-heading">
 			<h3 class="panel-title">Prepare Route</h3>
@@ -96,21 +99,24 @@
 			<table class="table table-condensed table-striped table-hover"> 
 				<thead>
 					<tr>
+						<th><input type="checkbox" id="checkAll"/></th>
 						<th>ID</th>
 						<th>Name</th>
 						<th>Street</th>
 						<th>City</th>
 						<th>State</th>
 						<th>Zipcode</th>
-						<th>Latitude</th>
-						<th>Longitude</th>
-						<th>Action</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="driverBody">
 				<?php if(count($check) > 0): ?>
+					<?php $idx = 0; ?>
 					<?php foreach($check as $schedule): ?>
-					<tr>
+						<?php $idx++; ?>
+					<tr class="driverTr">
+						<td>
+							<input name="schedule_ids[<?php echo e($idx); ?>]" class="schedule_id_driver" type="checkbox" value="<?php echo e($schedule['id']); ?>"/>
+						</td>
 						<td>
 							<?php echo e($schedule['id']); ?>
 
@@ -135,26 +141,33 @@
 							<?php echo e($schedule['zipcode']); ?>
 
 						</td>
-						<td>
-							<?php echo e($schedule['latitude']); ?>
 
-						</td>
-						<td>
-							<?php echo e($schedule['longitude']); ?>
-
-						</td>
-						<td>
-							<a class="btn btn-sm btn-info" href="" data-toggle="modal" data-target="#edit-<?php echo e($schedule['id']); ?>">Setup</a>
-						</td>
 					</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
 				</tbody>
 			</table>
 		</div>
-		<div class="panel-footer">
+		<div class="panel-footer form-horizontal">
+			<div class="form-group<?php echo e($errors->has('employee_id') ? ' has-error' : ''); ?> clearfix">
+                <label class="col-md-12 control-label padding-top-none">Driver </label>
+
+                <div class="col-md-12 clearfix">
+                    
+                    <?php echo e(Form::select('employee_id',$drivers,old('employee_id'),['class'=>'form-control'])); ?>
+
+                    <?php if($errors->has('employee_id')): ?>
+                        <span class="help-block">
+                            <strong><?php echo e($errors->first('employee_id')); ?></strong>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <button id="updateDrivers" class="btn btn-success btn-lg">Update Drivers</button>
 		</div>
 	</div>
+	<?php echo Form::close(); ?>
+
 	<?php if(count($droutes) > 0): ?>
 		
 		<?php foreach($droutes as $ordered): ?>

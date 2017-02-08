@@ -64,15 +64,15 @@
                     <div class="panel-heading"><strong>Delivery Update Form</strong></div>
                     <div id="pickup_body" class="panel-body">   
                         <div class="form-group<?php echo e($errors->has('pickup_address') ? ' has-error' : ''); ?>">
-                            <label class="col-md-4 control-label padding-top-none">Pickup Address</label>
+                            <label class="col-md-4 control-label padding-top-none">Pickup Card</label>
 
                             <div class="col-md-6">
                                 
                                 <?php echo e(Form::select('card_id',$cards,$card_id,['class'=>'form-control'])); ?>
 
-                                <?php if($errors->has('pickup_address')): ?>
+                                <?php if($errors->has('card_id')): ?>
                                     <span class="help-block">
-                                        <strong><?php echo e($errors->first('pickup_address')); ?></strong>
+                                        <strong><?php echo e($errors->first('card_id')); ?></strong>
                                     </span>
                                 <?php endif; ?>
 
@@ -103,7 +103,7 @@
 
                             <div id="pickup_container" class="col-md-6">
                                 <?php if($zipcode_status): ?> 
-                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : ($selected_date) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;">
+                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="<?php echo e((old('pickup_date')) ? old('pickup_date') : (strtotime($selected_date) > 0) ? date('D m/d/Y',strtotime($selected_date)) : ''); ?>" style="background-color:#ffffff;">
                                 <?php else: ?>
                                 <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="<?php echo e(old('pickup_date')); ?>" disabled="true">
                                 <?php endif; ?>
@@ -188,10 +188,25 @@
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <div class="form-group<?php echo e($errors->has('status') ? ' has-error' : ''); ?> ">
+                            <label class="col-md-4 control-label padding-top-none">Status</label>
+
+                            <div class="col-md-6">
+                                <?php echo e(Form::select('status',$status_list,old('status') ? old('status') : ($status) ? $status : null, ['class'=>'form-control'])); ?>
+
+
+                                <?php if($errors->has('status')): ?>
+                                    <span class="help-block">
+                                        <strong><?php echo e($errors->first('status')); ?></strong>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="panel-footer clearfix">
-                        <a href="<?php echo e(route('schedules_view',$customer_id)); ?>" class="btn btn-danger btn-lg">Cancel</a>
+                        <a href="<?php echo e(route('schedules_view',$customer_id)); ?>" class="btn btn-lg">Back</a>
+                        <button type="button" class="btn btn-lg btn-danger" data-toggle="modal" data-target="#cancel">Cancel Delivery</button>
                         <button id="pickup_submit" type="submit" class="btn btn-lg btn-primary pull-right" >Update</button>
                     </div>
                 <?php echo Form::close(); ?>
@@ -200,5 +215,12 @@
             </div>
         </div>
     </div>
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('modals'); ?>
+    <?php echo View::make('partials.deliveries.cancel')
+        ->with('schedule_id',$update_id)
+        ->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

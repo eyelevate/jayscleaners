@@ -2,7 +2,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <title>Jays Cleaners</title>
+      <title><?php echo e($company_name); ?></title>
       <style type="text/css">
          /* Client-specific Styles */
          #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */
@@ -119,7 +119,7 @@
                                  <tr>
                                     <td valign="middle" width="270" style="padding: 10px 0 10px 20px;" class="logo">
                                        <div class="imgpop">
-                                          <a href="<?php echo e(route('pages_index')); ?>" style="color:#ffffff; font-weight:bold; text-decoration:none;">Jays Cleaners</a>
+                                          <a href="<?php echo e(route('pages_index')); ?>" style="color:#ffffff; font-weight:bold; text-decoration:none;"><?php echo e($company_name); ?></a>
                                        </div>
                                     </td>
                                  </tr>
@@ -164,10 +164,22 @@
                         <td>
                            <table width="540" align="center" cellspacing="0" cellpadding="0" border="0" class="devicewidthinner">
                               <tbody>
+                                 <tr>
+                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 20px; color: #333333; text-align:left;line-height: 22px;" st-title="rightimage-title">
+                                       Status Update: your status has been upgraded to "<?php echo e($status_message); ?>" !
+                                    </td>
+                                 </tr>
+                                 <!-- end of title -->
+                                 <!-- Spacing -->
+                                 <tr>
+                                    <td width="100%" height="20"></td>
+                                 </tr>
+                                 <!-- Spacing -->
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                       Welcome valued customer!
+                                       <?php echo e($greeting); ?>
+
                                     </td>
                                  </tr>
                                  <!-- end of content -->
@@ -179,20 +191,26 @@
                                  <!-- content -->
                                  <tr>
                                     <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
-                                    	Thank you for your interest with Jays Cleaners! We have added <?php echo e($zipcode); ?> as a new zipcode to our delivery routes. We invite you to join us by starting your delivery today! Please use the link below to start your delivery.
+                                    	<?php echo e($body); ?>
+
                                     </td>
                                  </tr>
+                                 <!-- end of content -->
                                  <!-- Spacing -->
                                  <tr>
                                     <td width="100%" height="10"></td>
                                  </tr>
                                  <!-- Spacing -->
                                  <!-- content -->
-           
-                                 <!-- end of content -->
+                                 <tr>
+                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
+                                    	<?php echo e(($optional) ? $optional : ''); ?>
+
+                                    </td>
+                                 </tr>
                                  <!-- Spacing -->
                                  <tr>
-                                    <td width="100%" height="30"></td>
+                                    <td width="100%" height="20"></td>
                                  </tr>
                               </tbody>
                            </table>
@@ -227,15 +245,15 @@
                      <tr>
                         <td>
                            <table height="36" align="center" valign="middle" border="0" cellpadding="0" cellspacing="0" class="tablet-button" st-button="edit">
-                              <tbody>
-                                 <tr>
-                                    <td width="auto" align="center" valign="middle" height="36" style=" background-color:#0db9ea; border-top-left-radius:4px; border-bottom-left-radius:4px;border-top-right-radius:4px; border-bottom-right-radius:4px; background-clip: padding-box;font-size:13px; font-family:Helvetica, arial, sans-serif; text-align:center;  color:#ffffff; font-weight: 300; padding-left:25px; padding-right:25px;">                                                
-                                       <span style="color: #ffffff; font-weight: 300;">
-                                          <a style="color: #ffffff; text-align:center;text-decoration: none;" href="<?php echo e(route('pages_registration')); ?>">Sign Up</a>
+                             <tbody>
+                                <tr>
+                                   <td width="auto" align="center" valign="middle" height="36" style=" background-color:#0db9ea; border-top-left-radius:4px; border-bottom-left-radius:4px;border-top-right-radius:4px; border-bottom-right-radius:4px; background-clip: padding-box;font-size:13px; font-family:Helvetica, arial, sans-serif; text-align:center;  color:#ffffff; font-weight: 300; padding-left:25px; padding-right:25px;">                                                
+                                    <span style="color: #ffffff; font-weight: 300;">
+                                       <?php echo $button; ?>
                                        </span>
-                                    </td>
-                                 </tr>
-                              </tbody>
+                                   </td>
+                                </tr>
+                             </tbody>
                            </table>                                       
                         </td>
                      </tr>
@@ -245,7 +263,79 @@
                         <td width="100%" height="30"></td>
                      </tr>
                            <!-- Spacing -->
-                  </tbody>
+                        </tbody>
+               </table>
+               </td>
+         </tr>
+      </tbody>
+   </table>
+      <!-- end of textbox-with-title -->
+</div>
+<?php if($body_2): ?>
+<div class="block">
+   <!-- start textbox-with-title -->
+   <table width="100%" bgcolor="#f6f4f5" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" st-sortable="fulltext">
+         <tbody>
+         <tr>
+               <td>
+                     <table bgcolor="#ffffff" width="580" cellpadding="0" cellspacing="0" border="0" align="center" class="devicewidth" modulebg="edit">
+                        <tbody>
+                     <!-- Spacing -->
+                     <tr>
+                        <td width="100%" height="10"></td>
+                     </tr>
+
+                     <!-- Spacing -->
+                     <!-- Spacing -->
+                     <tr>
+                        <td width="100%" height="10"></td>
+                     </tr>
+                     <!-- Spacing -->
+                     <!-- button -->
+                     <!-- content -->
+                     <tr>
+                        <td>
+                           <table width="540" align="center" cellspacing="0" cellpadding="0" border="0" class="devicewidthinner">
+                              <tbody>
+                                 <!-- Spacing -->
+                                 <!-- content -->
+                                 <tr>
+                                    <td style="font-family: Helvetica, arial, sans-serif; font-size: 15px; color: #95a5a6; text-align:left;line-height: 24px;" st-content="rightimage-paragraph">
+                                       <?php echo e($body_2); ?>
+
+                                    </td>
+                                 </tr>
+                     
+                              </tbody>
+                           </table>
+                        </td>
+                     </tr>
+                     <!-- Spacing -->
+                     <tr>
+                        <td width="100%" height="20"></td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <table height="36" align="center" valign="middle" border="0" cellpadding="0" cellspacing="0" class="tablet-button" st-button="edit">
+                             <tbody>
+                                <tr>
+                                   <td width="auto" align="center" valign="middle" height="36" style=" background-color:#ff0000; border-top-left-radius:4px; border-bottom-left-radius:4px;border-top-right-radius:4px; border-bottom-right-radius:4px; background-clip: padding-box;font-size:13px; font-family:Helvetica, arial, sans-serif; text-align:center;  color:#ffffff; font-weight: 300; padding-left:25px; padding-right:25px;">                                                
+                                    <span style="color: #ffffff; font-weight: 300;">
+                                       <?php echo $button_2; ?>
+                                       </span>
+                                   </td>
+                                </tr>
+                             </tbody>
+                           </table>                                       
+                        </td>
+                     </tr>
+                     <!-- /button -->
+                     <!-- Spacing -->
+                     <tr>
+                        <td width="100%" height="30"></td>
+                     </tr>
+                           <!-- Spacing -->
+                        </tbody>
                </table>
                </td>
          </tr>
@@ -254,6 +344,7 @@
       <!-- end of textbox-with-title -->
 </div>
 
+<?php endif; ?>
 
 <div class="block">
    <!-- Start of preheader -->
