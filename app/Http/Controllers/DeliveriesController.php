@@ -956,7 +956,7 @@ class DeliveriesController extends Controller
         $addresses = Address::addressSelect(Address::where('user_id',$customer_id)->orderby('primary_address','desc')->get());
         
         $primary_address_id = $schedules->dropoff_address;
-        $addresses = Address::where('id',$schedules->dropoff_address)->get();
+        $addrs = Address::where('id',$schedules->dropoff_address)->get();
 
         $special_instructions = $schedules->special_instructions;
         $selected_date = false;
@@ -992,7 +992,7 @@ class DeliveriesController extends Controller
        }
 
 
-        $zipcodes = Zipcode::where('zipcode',$addresses->zipcode)->get();
+        $zipcodes = Zipcode::where('zipcode',$addrs->zipcode)->get();
         $zip_list = [];
         if (count($zipcodes) > 0) {
             foreach ($zipcodes as $key => $zip) {
