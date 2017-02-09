@@ -27,9 +27,6 @@
         disabled_dates: disabled_dates,
         direction: [true, true],
         show_select_today: true,
-        @if ($selected_date)
-        start_date :'{{ date("D m/d/Y",strtotime($selected_date)) }}',
-        @endif
         onSelect: function(a, b) {
             var pickup_address_id = $("#pickup_address option:selected").val();
             var pickup_delivery_id = $("#pickuptime option:selected").val();
