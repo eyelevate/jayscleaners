@@ -12,15 +12,7 @@ form = {
 
 	},
 	events: function() {
-		$("#pickup_address").on('change', function() {
 
-			var option_selected = this.value;
-			request.address_check_pickup(option_selected);
-		});
-		$("#dropoff_address").on('change', function() {
-			var option_selected = this.value;
-			request.address_check_dropoff(option_selected);
-		});
 
 	},
 	update_dropoff: function() {
