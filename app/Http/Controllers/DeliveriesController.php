@@ -647,7 +647,7 @@ class DeliveriesController extends Controller
                         'pickup_date' => $date,
                         'dropoff_date'=> $next_available_date,
                         'dropoff_delivery_id'=>null,
-                        'dropoff_addres'=>$address_id,
+                        'dropoff_address'=>$address_id,
                         'company_id'=>$company_id
                     ]);
 
@@ -1000,9 +1000,10 @@ class DeliveriesController extends Controller
 
             }
         }
-        $time_options = Delivery::setTimeArray($selected_date,$zip_list);
+        $time_options = Delivery::setTimeArray($schedules->pickup_date,$zip_list);
 
         $time_options_dropoff = Delivery::setTimeArray($schedules->dropoff_date, $zip_list);
+
 
 
         $zipcode_status = (count($zipcodes) > 0) ? true : false;
