@@ -24,7 +24,7 @@
         format:'D m/d/Y',
         disabled_dates: disabled_dates,
         direction: [true, false],
-        show_select_today: false,
+        show_select_today: true,
         <?php if($selected_date): ?>
         start_date :'<?php echo e(date("D m/d/Y",strtotime($selected_date))); ?>',
         <?php endif; ?>
@@ -39,7 +39,7 @@
         format:'D m/d/Y',
         disabled_dates: disabled_dates,
         direction: ['<?php echo e(date("D m/d/Y",strtotime($dropoff_date))); ?>', false],
-        show_select_today: false,
+        show_select_today: true,
         onSelect: function(a, b) {
             var dropoff_address_id = $("#pickup_address option:selected").val();
             request.set_time_dropoff(b, dropoff_address_id);
