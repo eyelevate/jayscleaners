@@ -116,7 +116,11 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Time</label>
 
                             <div class="col-md-6">
-                                {{ Form::select('pickup_time',$time_options,$schedule->pickup_delivery_id,['id'=>'pickuptime','class'=>'form-control']) }}
+                                @if ($selected_delivery_id)
+                                {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control']) }}
+                                @else
+                                {{ Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control', 'disabled'=>"true"]) }}
+                                @endif
                                 
                                 @if ($errors->has('pickup_time'))
                                     <span class="help-block">
