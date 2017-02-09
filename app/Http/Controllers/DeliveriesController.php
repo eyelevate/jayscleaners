@@ -1049,7 +1049,7 @@ class DeliveriesController extends Controller
         ->with('date_start',$schedules->pickup_date)
         ->with('time_options',$time_options)
         ->with('time_options_dropoff',$time_options_dropoff)
-        ->with('dropoff_delivery_id',$selected_dropoff_delivery_id)
+        ->with('dropoff_delivery_id',$schedules->dropoff_delivery_id)
         ->with('special_instructions',$special_instructions)
         ->with('customer_id',$customer_id)
         ->with('cards', $cards_select)
