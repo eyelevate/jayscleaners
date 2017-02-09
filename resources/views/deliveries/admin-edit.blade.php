@@ -25,7 +25,7 @@
         container:$("#pickup_container"),
         format:'D m/d/Y',
         disabled_dates: disabled_dates,
-        direction: [true, false],
+        direction: [true, true],
         show_select_today: true,
         @if ($selected_date)
         start_date :'{{ date("D m/d/Y",strtotime($selected_date)) }}',
