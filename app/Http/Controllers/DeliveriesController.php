@@ -1056,6 +1056,7 @@ class DeliveriesController extends Controller
         ->with('card_id',$card_id)
         ->with('status_list',$status_list)
         ->with('status',$schedules->status)
+        ->with('schedule',$schedules)
         ->with('update_id',$id);   
     }
     public function postAdminEdit(Request $request) {

@@ -100,7 +100,7 @@
 
                             <div id="pickup_container" class="col-md-6">
                                 @if ($zipcode_status) 
-                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : (strtotime($selected_date) > 0) ? date('D m/d/Y',strtotime($selected_date)) : '' }}" style="background-color:#ffffff;">
+                                <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($schedules->pickup_date) ? date('D m/d/Y',strtotime($schedules->pickup_date)) : '' }}" style="background-color:#ffffff;">
                                 @else
                                 <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" disabled="true">
                                 @endif
@@ -136,7 +136,7 @@
 
                             <div id="dropoff_container" class="col-md-6">
                                 @if ($zipcode_status) 
-                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ (old('dropoff_date')) ? old('dropoff_date') : ($dropoff_date) ? date('D m/d/Y',strtotime($dropoff_date)) : '' }}" style="background-color:#ffffff;">
+                                <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ (old('dropoff_date')) ? old('dropoff_date') : ($schedules->dropoff_date) ? date('D m/d/Y',strtotime($schedules->dropoff_date)) : '' }}" style="background-color:#ffffff;">
                                 @else
                                 <input id="dropoffdate" type="text" class="form-control" name="dropoff_date" value="{{ old('dropoff_date') }}" disabled="true">
                                 @endif
