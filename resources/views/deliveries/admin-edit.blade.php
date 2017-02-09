@@ -99,10 +99,10 @@
                             <label class="col-md-4 control-label padding-top-none">Pickup Date</label>
 
                             <div id="pickup_container" class="col-md-6">
-                                @if ($zipcode_status) 
+                                @if (strtotime($schedule->pickup_date) > 0) 
                                 <input id="pickupdate" type="text" class="form-control" name="pickup_date" value="{{ (old('pickup_date')) ? old('pickup_date') : ($schedule->pickup_date) ? date('D m/d/Y',strtotime($schedule->pickup_date)) : '' }}" style="background-color:#ffffff;">
                                 @else
-                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" disabled="true">
+                                <input id="pickupdate" type="text" class="datepicker form-control" name="pickup_date" value="{{ old('pickup_date') }}" >
                                 @endif
                                 @if ($errors->has('pickup_date'))
                                     <span class="help-block">
