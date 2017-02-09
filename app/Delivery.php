@@ -166,12 +166,12 @@ class Delivery extends Model
             }
         }
 
-        $cutoff = Delivery::getCutoff($data, 0);
-        if (count($cutoff) > 0) {
-            foreach ($cutoff as $key => $value) {
-                array_push($final, $value);
-            }
-        }
+        // $cutoff = Delivery::getCutoff($data, 0);
+        // if (count($cutoff) > 0) {
+        //     foreach ($cutoff as $key => $value) {
+        //         array_push($final, $value);
+        //     }
+        // }
 
         return $final;
     }
