@@ -40,6 +40,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/auto/{table}',['as'=>'admins_api_auto','uses'=>'AdminsController@getApiAuto']);
 	Route::post('/admins/api/auto', ['as'=>'admins_api_auto_post','uses'=>'AdminsController@postApiAuto']);
    	Route::get('/admins/api/print/{id}',['as'=>'admins_api_print','uses'=>'AdminsController@getApiPrint']);
+    
+   	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
     Route::group(['middleware' => ['forceSSL']], function(){
 	   
 	    Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
@@ -115,7 +117,7 @@ Route::group(['middleware' => ['web']], function () {
 	    	Route::get('/delivery/email-test',['as'=>'delivery_emailtest','uses'=>'DeliveriesController@getEmailTest']);
 	    	Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
 	    	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
-	    	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
+	    	
 
 	    	Route::get('/users/update', ['as' => 'users_update', 'uses'=>'UsersController@getUpdate']);
 	    	Route::post('/users/update', ['as' => 'users_update_post', 'uses'=>'UsersController@postUpdate']);

@@ -117,7 +117,7 @@
 
                             <div class="col-md-6">
                                 @if ($schedule->pickup_delivery_id > 0)
-                                {{ Form::select('pickup_time',$time_options,$selected_delivery_id,['id'=>'pickuptime','class'=>'form-control']) }}
+                                {{ Form::select('pickup_time',$time_options,$schedule->pickup_delivery_id,['id'=>'pickuptime','class'=>'form-control']) }}
                                 @else
                                 {{ Form::select('pickup_time',[''=>'select time'],null,['id'=>'pickuptime','class'=>'form-control']) }}
                                 @endif
