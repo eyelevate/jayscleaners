@@ -956,7 +956,7 @@ class DeliveriesController extends Controller
         $addresses = Address::addressSelect(Address::where('user_id',$customer_id)->orderby('primary_address','desc')->get());
         
         $primary_address_id = $schedules->dropoff_address;
-        $addrs = Address::where('id',$schedules->dropoff_address)->get();
+        $addrs = Address::find($schedules->dropoff_address);
 
         $special_instructions = $schedules->special_instructions;
         $selected_date = false;
