@@ -33,6 +33,9 @@ class Invoice extends Model
 	    		$total_pcs = 0;
                 $total = 0;
                 $tax_total = 0;
+                if (isset($data[$key]['customer_id'])) {
+                    $data[$key]['customer'] = User::find($value->customer_id);
+                }
     			if(isset($data[$key]['id'])){
     				$data[$key]['items'] = InvoiceItem::where('invoice_id',$data[$key]['id'])->get();
     			}
