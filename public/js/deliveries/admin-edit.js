@@ -67,7 +67,7 @@ request = {
 	set_time_pickup: function(b, id, d_id) {
 		var token = $('meta[name=csrf-token]').attr('content');
 		$.post(
-			'http://www.jayscleaners.com/delivery/set_time_update',
+			'/delivery/set_time_update',
 			{
 				"_token": token,
 				"date": b,
