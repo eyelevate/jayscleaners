@@ -96,6 +96,86 @@ class Delivery extends Model
     	return $final;
     }
 
+    static public function makeCalendarAdmin($data) {
+
+        $disabled_weekdates = '* * * 0,1,2,3,4,5,6,';
+
+        $calendar = ['0'=>['status'=>false],
+                     '1'=>['status'=>false],
+                     '2'=>['status'=>false],
+                     '3'=>['status'=>false],
+                     '4'=>['status'=>false],
+                     '5'=>['status'=>false],
+                     '6'=>['status'=>false]];
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $deliveries = Delivery::find($key);
+
+                $dow = $deliveries['day'];
+                switch($dow) {
+                    case 'Monday':
+                        $disabled_weekdates = str_replace('1,', '',$disabled_weekdates);
+                        $calendar[1] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+
+                    case 'Tuesday':
+                        $disabled_weekdates = str_replace('2,', '',$disabled_weekdates);
+                        $calendar[2] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+
+                    case 'Wednesday':
+                        $disabled_weekdates = str_replace('3,', '',$disabled_weekdates);
+                        $calendar[3] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+
+                    case 'Thursday':
+                        $disabled_weekdates = str_replace('4,', '',$disabled_weekdates);
+                        $calendar[4] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+
+                    case 'Friday':
+                        $disabled_weekdates = str_replace('5,', '',$disabled_weekdates);
+                        $calendar[5] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+
+                    case 'Saturday':
+                        $disabled_weekdates = str_replace('6,', '',$disabled_weekdates);
+                        $calendar[6] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+
+                    case 'Sunday':
+                        $disabled_weekdates = str_replace('0,', '',$disabled_weekdates);
+                        $calendar[0] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+
+                    default:
+                        $disabled_weekdates = str_replace($dow.',', '',$disabled_weekdates);
+                        
+                        $calendar[$dow] = ['status'=>true,'blackout_dates'=>json_decode($deliveries['blackout'])];
+                    break;
+                }
+            }
+        }
+
+        $blackout_dates = Delivery::getBlackoutDates($data);
+
+        $final = [$disabled_weekdates];
+        if (count($blackout_dates) > 0) {
+            foreach ($blackout_dates as $key => $value) {
+                array_push($final, $value);
+            }
+        }
+
+        $cutoff = Delivery::getCutoff($data, 0);
+        if (count($cutoff) > 0) {
+            foreach ($cutoff as $key => $value) {
+                array_push($final, $value);
+            }
+        }
+
+        return $final;
+    }
+
     static public function calendarPickupHtml() {
 
         $html = '<div class="form-group pickup_date_div ">';

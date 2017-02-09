@@ -1013,7 +1013,7 @@ class DeliveriesController extends Controller
             }
         }
 
-        $calendar_setup = Delivery::makeCalendar($calendar_dates);
+        $calendar_setup = Delivery::makeCalendarAdmin($calendar_dates);
 
         if ($zipcode_status == false) {
             Flash::error('Your primary address is not set or zipcode is not valid. Please select a new address. ');
