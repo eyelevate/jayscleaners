@@ -157,7 +157,7 @@ class Delivery extends Model
             }
         }
 
-        $blackout_dates = Delivery::getBlackoutDates($data);
+        $blackout_dates = Delivery::getBlackoutDatesAdmin($data);
 
         $final = [$disabled_weekdates];
         if (count($blackout_dates) > 0) {
@@ -219,6 +219,31 @@ class Delivery extends Model
         }
         // $bout = '';
         $bout = [date('d m Y',strtotime(date('Y-m-d H:i:s')))];
+        if (count($disabled_dates) > 0) {
+            $idx = 0;
+            foreach ($disabled_dates as $key => $value) {
+                $idx += 1;
+                $bout[$idx] = date('d m Y',strtotime($value));
+            }
+        }
+
+        return $bout;
+    }
+    static private function getBlackoutDatesAdmin($data){
+        $disabled_dates = [];
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $deliveries = Delivery::find($key);
+                $blackout_dates = json_decode($deliveries->blackout);
+                if (count($blackout_dates) > 0) {
+                    foreach ($blackout_dates as $bo) {
+                        $disabled_dates[$bo] = $bo;
+                    }
+                }
+            }   
+        }
+        // $bout = '';
+        $bout = [];
         if (count($disabled_dates) > 0) {
             $idx = 0;
             foreach ($disabled_dates as $key => $value) {
