@@ -84,7 +84,7 @@
 
                             <div class="col-md-6">
                                 
-                                {{ Form::select('pickup_address',$addresses,$primary_address_id,['class'=>'form-control','id'=>'pickup_address']) }}
+                                {{ Form::select('pickup_address',$addresses,$schedule->dropoff_address,['class'=>'form-control','id'=>'pickup_address']) }}
                                 @if ($errors->has('pickup_address'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('pickup_address') }}</strong>
@@ -154,7 +154,11 @@
 
                             <div class="col-md-6">
                                 
-								{{ Form::select('dropoff_time',$time_options_dropoff,$schedule->dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control']) }}
+								@if ($dropoff_delivery_id)
+                                {{ Form::select('dropoff_time',$time_options_dropoff,$dropoff_delivery_id,['id'=>'dropofftime','class'=>'form-control']) }}
+                                @else
+                                {{ Form::select('dropoff_time',[''=>'select time'],null,['id'=>'dropofftime','class'=>'form-control', 'disabled'=>"true"]) }}
+                                @endif
 
                                 @if ($errors->has('dropoff_time'))
                                     <span class="help-block">
