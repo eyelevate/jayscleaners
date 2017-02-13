@@ -49,7 +49,7 @@
 		<h3 class="box-title">{{ ($invoice_id) ? 'Invoice Detail #'.$invoice_id : 'No Invoice Selected' }}</h3>
 	</div>
 	<div class="table-responsive">
-		<table class="table-bordered table-striped table-hover table-condensed">
+		<table class="table-bordered table-striped table-hover table-condensed col-sm-12 col-xs-12 col-md-12 col-lg-12">
 			<thead>
 				<tr>
 					<th class="col-sm-2 col-md-1 col-lg-1">Qty</th>
