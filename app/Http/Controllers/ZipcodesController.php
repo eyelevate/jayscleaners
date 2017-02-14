@@ -21,6 +21,7 @@ use App\Req;
 use App\Zipcode;
 use App\ZipcodeRequest;
 use App\ZipcodeList;
+use App\Delivery;
 
 class ZipcodesController extends Controller
 {
@@ -63,6 +64,8 @@ class ZipcodesController extends Controller
         $this->layout = 'layouts.dropoff';
         $zipcodes = ZipcodeList::find($id);
         $deliveries = Delivery::prepareSelect(Delivery::all());
+        $edits = Zipcode::where('zipcode',$zipcodes->zipcode)->get();
+
 
         return view('zipcodes.edit')
         ->with('layout',$this->layout)
