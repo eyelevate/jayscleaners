@@ -132,7 +132,6 @@ class SchedulesController extends Controller
         if (count($schedules) > 0) {
             
             foreach ($schedules as $schedule) {
-                $idx++;
                 $schedule_id = $schedule->id;
                 $d_check = Droute::where('schedule_id',$schedule_id)
                     ->where('delivery_date',$today)
