@@ -62,9 +62,11 @@ class ZipcodesController extends Controller
     public function getEdit($id = null) {
         $this->layout = 'layouts.dropoff';
         $zipcodes = ZipcodeList::find($id);
+        $deliveries = Delivery::prepareSelect(Delivery::all());
 
         return view('zipcodes.edit')
         ->with('layout',$this->layout)
+        ->with('deliveries',$deliveries)
         ->with('zipcodes',$zipcodes);
     }
 

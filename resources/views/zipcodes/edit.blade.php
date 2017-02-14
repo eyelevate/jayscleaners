@@ -24,6 +24,16 @@
                         <strong>{{ $errors->first('zipcode') }}</strong>
                     </span>
                 @endif
+            </div>
+            <div class="form-group{{ $errors->has('routes') ? ' has-error' : '' }}">
+                <label class="control-label padding-top-none">Route(s) <span style="color:#ff0000">*</span></label>
+
+                {{ Form::select('routes',$deliveries,'',['class'=>'form-control']) }}
+                @if ($errors->has('routes'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('routes') }}</strong>
+                    </span>
+                @endif
             </div>			
 		</div>
 		<div class="panel-footer">

@@ -576,4 +576,15 @@ class Delivery extends Model
 
         return $ampm;
     }
+
+    public static function prepareSelect($data) {
+        $select = [''=>'select route'];
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $select[$value->id] = $value->day.' - '.$value->route_name.' : '.$value->start_time.' - '.$value->end_time;
+            }
+        }
+
+        return $select;
+    }
 }
