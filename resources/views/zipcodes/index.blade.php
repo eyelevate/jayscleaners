@@ -32,7 +32,7 @@
 						<td>{{ $zipcode->status }}</td>
 						<td>{{ date('D n/d/Y',strtotime($zipcode->created_at)) }}</td>
 						<td>
-							<a href="{{ route('zipcodes_edit',$zipcode->id) }}" class="btn btn-info btn-sm">edit</a>&nbsp;
+							<a href="/zipcodes/edit/{{ $zipcode->id }}" class="btn btn-info btn-sm">edit</a>&nbsp;
 							<a href="{{ route('zipcodes_delete',$zipcode->id) }}" class="btn btn-sm btn-danger">delete</a>
 						</td>
 					</tr>
