@@ -130,8 +130,9 @@ class SchedulesController extends Controller
                                ->union($pickups)
                                ->get();
         if (count($schedules) > 0) {
-            $idx = 0;
+            
             foreach ($schedules as $schedule) {
+                $idx++;
                 $schedule_id = $schedule->id;
                 $d_check = Droute::where('schedule_id',$schedule_id)
                     ->where('delivery_date',$today)
@@ -139,8 +140,18 @@ class SchedulesController extends Controller
                 if (count($d_check) > 0) {
                     
                 } else {
-
-                    $idx++;
+                    $idx = 1;
+                    // get the last ordered item in droutes for this day and add +1
+                    $last_droute_by_order = Droute::where('delivery_date',$today)
+                        ->orderBy('ordered','desc')
+                        ->limit(1)
+                        ->get();
+                    if (count($last_droute_by_order) > 0) {
+                        foreach ($last_droute_by_order as $last) {
+                            $idx = ($last->ordered + 1);
+                        }
+                    }
+                    
                     $d = new Droute();
                     $d->company_id = Auth::user()->company_id;
                     $d->schedule_id = $schedule->id;
