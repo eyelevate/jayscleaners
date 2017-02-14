@@ -64,7 +64,7 @@ class ZipcodesController extends Controller
         $this->layout = 'layouts.dropoff';
         $zipcodes = ZipcodeList::find($id);
         $deliveries = Delivery::prepareSelect(Delivery::all());
-        $edits = Zipcode::where('zipcode',$zipcodes->zipcode)->get();
+        $edits = Delivery::prepareZipcodeDelivery(Zipcode::where('zipcode',$zipcodes->zipcode)->get());
 
 
         return view('zipcodes.edit')

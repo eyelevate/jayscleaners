@@ -587,4 +587,14 @@ class Delivery extends Model
 
         return $select;
     }
+
+    public static function prepareZipcodeDelivery($zipcodes) {
+        if (count($zipcodes) > 0) {
+            foreach ($zipcodes as $key => $value) {
+                $delivery_id = $value->delivery_id;
+                $deliveries = Delivery::find($delivery_id);
+                $zipcodes[$key]['delivery'] = $deliveries;
+            }
+        }
+    }
 }

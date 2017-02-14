@@ -51,8 +51,8 @@
 					@foreach($edits as $edit)
 					<tr>
 						<td>{{ $edit->id }}</td>
-						<td>{{ $edit->name }}</td>
-						<td>{{ $edit->day }}</td>
+						<td>{{ $edit['delivery']->name }}</td>
+						<td>{{ $edit['delivery']->day }}</td>
 						<td><button type="button" class="delete_btn btn btn-sm btn-danger">Delete</button></td>
 					</tr>
 					@endforeach
