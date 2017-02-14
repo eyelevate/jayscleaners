@@ -36,6 +36,30 @@
                 @endif
             </div>			
 		</div>
+		<div class="table-responsive">
+			<table class="table table-hover table-striped table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Day</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				@if (count($edits) > 0)
+					@foreach($edits as $edit)
+					<tr>
+						<td>{{ $edit->id }}</td>
+						<td>{{ $edit->name }}</td>
+						<td>{{ $edit->day }}</td>
+						<td><button type="button" class="delete_btn btn btn-sm btn-danger">Delete</button></td>
+					</tr>
+					@endforeach
+				@endif
+				</tbody>
+			</table>
+		</div>
 		<div class="panel-footer">
 			<a href="{{ route('zipcodes_index') }}" class="btn btn-danger">Back</a>
 			<button class="btn btn-primary pull-right" type="submit">Edit</button>

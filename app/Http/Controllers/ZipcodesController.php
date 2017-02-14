@@ -70,6 +70,7 @@ class ZipcodesController extends Controller
         return view('zipcodes.edit')
         ->with('layout',$this->layout)
         ->with('deliveries',$deliveries)
+        ->with('edits',$edits)
         ->with('zipcodes',$zipcodes);
     }
 
