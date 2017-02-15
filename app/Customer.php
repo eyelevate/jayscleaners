@@ -57,21 +57,21 @@ class Customer extends Model
         //Sanitize the data
         $search = preg_replace("/[^A-Za-z0-9 ]/", '', $data);
         // singlebyte strings
-        $special_param = substr($data, 0, 1);
+        $special_param = substr($data, 0, 2);
 
         switch ($special_param) {
-            case '!': // by invoice id
+            case 'i%': // by invoice id
                 $results = Customer::searchByInvoiceId($search);
                 break;
-            case '@': //by customer mark
+            case 'm%': //by customer mark
                 $results = Customer::searchByCustomerMark($search);
                 break;
 
-            case '#': //by phone number
+            case 'p%': //by phone number
                 $results = Customer::searchByPhoneNumber($search);
                 break;
 
-            case '%': //by last name
+            case 'n%': //by last name
                 $results = Customer::searchByLastName($search);
                 break;
             default: //return regular search
@@ -224,6 +224,9 @@ class Customer extends Model
                 $results = Customer::searchByPhoneNumber($query);
             } elseif(strlen($query) == 6) { //must be our invoice
                 $results = Customer::searchByInvoiceId($query);
+            } elseif(strlen($query) == 4) { //must be customer id
+                $results = Customer::searchById($query);
+
             } else { //must be our customer id
                 $results = Customer::searchByCustomerMark($query);
             } 
@@ -260,6 +263,31 @@ class Customer extends Model
                 'flash'=>'No such invoice.'
             ];
         }   
+
+        return $results;
+    }
+
+    private static function searchById($query){
+        $results = [];
+        $users = User::find($query);
+
+        if(count($users) > 0){ // If only one customer is found
+            $results = [
+                'status'=>true,
+                'redirect'=>'customers_view',
+                'param'=>$query,
+                'data'=>$users,
+                'flash'=>'Found customer'
+            ];
+        } else { // else send the user to look for more customers
+            $results = [
+                'status'=>false,
+                'redirect'=>'customers_index_post',
+                'param'=>$query,
+                'data'=>null,
+                'flash'=>'No such customer.'
+            ];
+        }
 
         return $results;
     }
