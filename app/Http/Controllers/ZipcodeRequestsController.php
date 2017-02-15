@@ -62,7 +62,9 @@ class ZipcodeRequestsController extends Controller
     	$zipcodes = new ZipcodeList();
     	$zipcodes->zipcode = $request->zipcode;
     	$zipcodes->status = 1;
+        $zipcode_list_id = NULL;
     	if ($zipcodes->save()) {
+            $zipcode_list_id = $zipcodes->id;
 	    	// update zipcodes requests and send email
 	    	if (count($zipcode_requests) > 0) {
 	    		foreach ($zipcode_requests as $zr) {
@@ -93,15 +95,19 @@ class ZipcodeRequestsController extends Controller
 	        	'zipcode' => $zip
 	        ], function($message) use ($send_to, $zip)
 	        {
-	            $message->to('onedough83@gmail.com');
+	            $message->to($send_emails);
 	            $message->subject('We are now delivering to your zipcode - '.$zip.'!');
 	        })) {
 	            // redirect with flash
-	            Flash::success('Successfully accepted a new zipcode to delivery routes');
-	        } else {
+	            Flash::success('Successfully accepted a new zipcode to delivery routes. Please add in routes as needed.');
+	        
+            } else {
 	            Flash::success('Successfully accepted a new zipcode to delivery routes, however, we could not successfully send email confirmations.');
 	        }
     	} 
+        if (isset($zipcode_list_id)) {
+            return Redirect::route('zipcodes_edit',$zipcode_list_id);
+        } 
     	return Redirect::back();
     }
 
