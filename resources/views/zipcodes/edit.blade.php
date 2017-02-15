@@ -12,6 +12,7 @@
 <br/>
 {!! Form::open(['action' => 'ZipcodesController@postEdit','role'=>"form"]) !!}
 	{!! Form::hidden('id',$zipcodes->id) !!}
+	{!! Form::hidden('list_id',$list_id) !!}
 	<div class="panel panel-default">
 		<div class="panel-heading"><h4 class="panel-title">Edit Zipcode</h4></div>
 		<div class="panel-body" >
@@ -26,7 +27,7 @@
                 @endif
             </div>
             <div class="form-group{{ $errors->has('routes') ? ' has-error' : '' }}">
-                <label class="control-label padding-top-none">Route(s) <span style="color:#ff0000">*</span></label>
+                <label class="control-label padding-top-none">Add Route(s) <span style="color:#ff0000">*</span></label>
 
                 {{ Form::select('routes',$deliveries,'',['class'=>'form-control']) }}
                 @if ($errors->has('routes'))
@@ -36,6 +37,17 @@
                 @endif
             </div>			
 		</div>
+
+		<div class="panel-footer">
+			<a href="{{ route('zipcodes_index') }}" class="btn btn-danger">Back</a>
+			<button class="btn btn-primary pull-right" type="submit">Update</button>
+		</div>
+	</div>
+{!! Form::close() !!}
+{!! Form::open(['action'=>'ZipcodesController@postDelete','role'=>'form']) !!}
+	
+	<div class="panel panel-default">
+		<div class="panel-heading"><h4 class="panel-title">Zipcode Accepted Routes</h4></div>
 		<div class="table-responsive">
 			<table class="table table-hover table-striped table-bordered">
 				<thead>
@@ -53,17 +65,16 @@
 						<td>{{ $edit->id }}</td>
 						<td>{{ $edit['delivery']->route_name }}</td>
 						<td>{{ $edit['delivery']->day }}</td>
-						<td><button type="button" class="delete_btn btn btn-sm btn-danger">Delete</button></td>
+						<td>
+							<a type="button" class="btn btn-sm btn-danger" href="{{ route('zipcodes_delete',$edit['delivery']->id) }}">Delete</a>
+						</td>
 					</tr>
 					@endforeach
 				@endif
 				</tbody>
 			</table>
 		</div>
-		<div class="panel-footer">
-			<a href="{{ route('zipcodes_index') }}" class="btn btn-danger">Back</a>
-			<button class="btn btn-primary pull-right" type="submit">Edit</button>
-		</div>
 	</div>
+
 {!! Form::close() !!}
 @stop

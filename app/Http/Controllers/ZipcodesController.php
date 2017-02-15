@@ -64,11 +64,12 @@ class ZipcodesController extends Controller
         $this->layout = 'layouts.dropoff';
         $zipcodes = ZipcodeList::find($id);
         $deliveries = Delivery::prepareSelect(Delivery::all());
-        $edits = Delivery::prepareZipcodeDelivery(Zipcode::where('zipcode',$zipcodes->zipcode)->get());
+        $edits = Delivery::prepareZipcodeDelivery(Zipcode::where('zipcode',$zipcodes->zipcode)->withTrashed()->get());
 
 
         return view('zipcodes.edit')
         ->with('layout',$this->layout)
+        ->with('list_id',$id)
         ->with('deliveries',$deliveries)
         ->with('edits',$edits)
         ->with('zipcodes',$zipcodes);
@@ -79,16 +80,51 @@ class ZipcodesController extends Controller
             'zipcode' => 'required',
         ]);       
 
-        $zl = ZipcodeList::find($request->id); 
+        $zl = ZipcodeList::find($request->list_id); 
         $zl->zipcode = $request->zipcode;
         if ($zl->save()) {
+            // add a route if not null
+            $delivery_id = $request->routes;
+            if ($routes != '') {
+                $zips = new Zipcode();
+                $zips->company_id = Auth::user()->company_id;
+                $zips->delivery_id = $delivery_id;
+                $zips->zipcode = $request->zipcode;
+                $zips->status = 1;
+                $zips->save();
+                Flash::success('Successfully updated zipcode and added a route!');
+                return Redirect::back();
+            }
+
             Flash::success('Edited zipcode.');
-            return Redirect::route('zipcodes_index');
+            
         }
+        
     }
 
     public function getDelete($id = null) {
+        $zipcodes = Zipcode::find($id);
+        if ($zipcodes->delete()) {
+            Flash::success('Successfully removed route from zipcode.');
+            
+        } else {
+            Flash::error('Could not delete route from invoice. Please try again.');
+        }      
+        return Redirect::back();  
+    }
 
+    public function postDelete(Request $request) {
+        if ($request->ajax()) {
+            $delivery_id = $request->delivery_id;
+            $zipcode_id = $request->zipcode_id;
+            $zipcodes = Zipcode::find($zipcode_id);
+            if ($zipcodes->delete()) {
+                return response()->json(['status'=>true]);
+            } else {
+                return response()->json(['status'=>false]);
+            }
+            
+        }
     }
 
     public function getRequest($id = null){
