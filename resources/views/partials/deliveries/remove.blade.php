@@ -17,7 +17,7 @@
 
 			<div class="modal-footer clearfix">
 				<button type="button" class="btn pull-left" data-dismiss="modal">Close</button>
-				<a class="btn btn-sm btn-danger pull-right" href="{{ route('delivery_setup_delete',$delivery->id) }}">remove</a>
+				<a class="btn btn-sm btn-danger pull-right" href="{{ route('delivery_setup_delete',$id) }}">remove</a>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
