@@ -26,7 +26,7 @@
       <div class="small-box bg-aqua">
         <div class="inner">
           <h3>Invoice</h3>
-          <p>Drop / Pickup</p>
+          <p>Edit Invoice</p>
         </div>
         <div class="icon">
           <i class="ion ion-ios-paper-outline"></i>
