@@ -224,7 +224,7 @@ class Customer extends Model
                 $results = Customer::searchByPhoneNumber($query);
             } elseif(strlen($query) == 6) { //must be our invoice
                 $results = Customer::searchByInvoiceId($query);
-            } elseif(strlen($query) == 4) { //must be customer id
+            } elseif(strlen($query) >= 4 && strlen($query) < 6) { //must be customer id
                 $results = Customer::searchById($query);
 
             } else { //must be our customer id
