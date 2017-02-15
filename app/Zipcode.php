@@ -27,7 +27,7 @@ class Zipcode extends Model
         $zips = [];
         if (count($zipcodes) > 0) {
             foreach ($zipcodes as $z) {
-                array_push($z->zipcode,$z->zipcode);
+                $zips[$z->zipcode] = $z->zipcode;
             }
         }
     	return $zips;
