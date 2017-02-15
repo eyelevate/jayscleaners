@@ -71,7 +71,7 @@
 						<td>{{ date('D n/d/Y',strtotime($delivery->created_at)) }}</td>
 						<td>
 							<a class="btn btn-sm btn-info" href="{{ route('delivery_setup_edit',$delivery->id) }}">edit</a>&nbsp;
-							<a class="btn btn-sm btn-danger" href="{{ route('delivery_setup_delete',$delivery->id) }}">remove</a>
+							<a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-{{ $delivery->id }}">remove</a>
 						</td>
 					</tr>
 					@endforeach
@@ -86,4 +86,14 @@
 		</div>
 
 	</div>
+@stop
+@section('modals')
+	@if (count($deliveries))
+		@foreach($deliveries as $delivery)
+		{!! View::make('partials.deliveries.remove') 
+			->with('id',$delivery->id)
+			->render()
+		!!}
+		@endforeach
+	@endif
 @stop
