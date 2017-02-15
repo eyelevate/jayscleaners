@@ -85,7 +85,7 @@ class ZipcodesController extends Controller
         if ($zl->save()) {
             // add a route if not null
             $delivery_id = $request->routes;
-            if ($routes != '') {
+            if ($delivery_id != '') {
                 $zips = new Zipcode();
                 $zips->company_id = Auth::user()->company_id;
                 $zips->delivery_id = $delivery_id;
