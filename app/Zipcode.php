@@ -23,23 +23,13 @@ class Zipcode extends Model
     }
 
     static public function getAllZipcodes() {
-    	return [
-    		''=>'select zipcode',
-			'98101' => '98101',
-			'98102' => '98102',
-			'98103' => '98103',
- 			'98104' => '98104',
-			'98105' => '98105',
-			'98107' => '98107',
-			'98109' => '98109',
-			'98112' => '98112',
-			'98115' => '98115',
-			'98117' => '98117',
-			'98119' => '98119',
-			'98121' => '98121',
-			'98122' => '98122',
-			'98195' => '98195',
-			'98199' => '98199'
-    	];
+        $zipcodes = Zipcode::all();
+        $zips = [];
+        if (count($zipcodes) > 0) {
+            foreach ($zipcodes as $z) {
+                array_push($z->zipcode,$z->zipcode);
+            }
+        }
+    	return $zips;
     }
 }
