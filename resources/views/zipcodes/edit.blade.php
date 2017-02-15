@@ -66,7 +66,7 @@
 						<td>{{ $edit['delivery']->route_name }}</td>
 						<td>{{ $edit['delivery']->day }}</td>
 						<td>
-							<a type="button" class="btn btn-sm btn-danger" href="{{ route('zipcodes_delete',$edit['delivery']->id) }}">Delete</a>
+							<a type="button" class="btn btn-sm btn-danger" href="{{ route('zipcodes_delete',$edit->id) }}">Delete</a>
 						</td>
 					</tr>
 					@endforeach
