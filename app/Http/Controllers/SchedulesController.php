@@ -299,7 +299,8 @@ class SchedulesController extends Controller
 
     public function getRouteCSV(Request $request,$id = null) {
         if (isset($id)) {
-            $delivery_date = $request->session()->get('delivery_date');
+            $delivery_date = ($request->session()->has('delivery_date')) ? $request->session()->get('delivery_date') : date('Y-m-d 00:00:00');
+
             $csv = \League\Csv\Writer::createFromFileObject(new \SplTempFileObject());
             $droutes = Droute::where('employee_id',$id)
                 ->where('delivery_date',$delivery_date)
