@@ -307,7 +307,7 @@ class SchedulesController extends Controller
                 ->orderBy('ordered','asc')
                 ->get();
             // $csv->insertOne(\Schema::getColumnListing('droutes')); // optional change for map
-            $csv->insertOne(['First Name','Last Name','Phone','Street','City','State','Zipcode']);
+            $csv->insertOne(['First Name','Last Name','Street','City','State','Zipcode']);
             if (count($droutes) > 0) {
                 foreach ($droutes as $droute) {
                     $schedule_id = $droute->schedule_id;
