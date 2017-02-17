@@ -377,10 +377,10 @@ class SchedulesController extends Controller
             }
             
             $pickup_approved = Schedule::where('pickup_date',$today)
-                                   ->whereIn('status',[3,12])
+                                   ->whereIn('status',[3,4,12])
                                    ->orderBy('id','desc');
             $approved = Schedule::where('dropoff_date',$today)
-                                   ->whereIn('status',[3,12])
+                                   ->whereIn('status',[3,4,12])
                                    ->orderBy('id','desc')
                                    ->union($pickup_approved)
                                    ->get();
