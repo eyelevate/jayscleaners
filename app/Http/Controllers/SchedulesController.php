@@ -321,9 +321,9 @@ class SchedulesController extends Controller
                     $customer_id = $schedules->customer_id;
                     $users = User::find($customer_id);
                     $first_name = ucFirst($users->first_name);
-                    $last_name = ucFirst($users->last_name).' - '.$droute->ordered;
+                    $last_name = ucFirst($users->last_name);
                     $phone = Job::formatPhoneString($users->phone);
-                    $data = [$first_name,$last_name,$street,$city,$state,$zipcode];
+                    $data = [$droute->ordered,$first_name.' '.$last_name,$street,$city,$state,$zipcode];
                     $csv->insertOne($data);
                 }
                 $title = 'route-'.strtotime(date('Y-m-d H:i:s')).'.csv';
