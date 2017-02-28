@@ -220,7 +220,7 @@ class AdminsController extends Controller
         $users->first_name = $request->first_name;
         $users->last_name = $request->last_name;
         $users->role_id = 1; //Admin status
-        $users->contact_phone = $request->phone;
+        $users->phone = $request->phone;
         $users->company_id = $request->company_id;
         $users->password = bcrypt($request->password);
 
