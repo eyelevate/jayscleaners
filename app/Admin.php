@@ -1046,7 +1046,7 @@ class Admin extends Model
         } 
         if (isset($up['users'])){
             foreach ($up['users'] as $key => $value) {
-                $users = User::withTrashed()->where('user_id',$value['user_id'])->get();
+                $users = User::withTrashed()->where('id',$value['user_id'])->get();
                 if($users){
                     foreach ($users as $data) {
                         $user = User::withTrashed()->find($data->id);
