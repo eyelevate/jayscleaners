@@ -490,7 +490,8 @@ class Schedule extends Model
 
         if (count($schedules) > 0) {
             foreach ($schedules as $schedule) {
-                $company_id = 1;
+                Job::dump($schedule);
+                $company_id = $schedule->company_id;
                 $customer_id = $schedule->customer_id;
                 $users = User::find($customer_id);
                 $first_name = $users->first_name;
