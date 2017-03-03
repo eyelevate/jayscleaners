@@ -490,27 +490,29 @@ class Schedule extends Model
 
         if (count($schedules) > 0) {
             foreach ($schedules as $schedule) {
-                Job::dump($schedule);
-                $company_id = $schedule->company_id;
-                $customer_id = $schedule->customer_id;
-                $users = User::find($customer_id);
-                $first_name = $users->first_name;
-                $last_name = $users->last_name;
-                $address_id = $schedule->dropoff_address;
-       
-                if (isset($address_id)) {
-                    $addresses = Address::find($address_id);
-                    $address_name = $addresses->name;
-                    $address_street = $addresses->street;
-                    $address_suite = $addresses->suite;
-                    $address_city = $addresses->city;
-                    $address_state = $addresses->state;
-                    $address_zipcode = $addresses->zipcode;
-                    $tag = ucFirst($first_name).' '.ucFirst($last_name).' - '.$address_street;
-                    $address_string = $address_street.' '.$address_city.', '.$address_state.' '.$address_zipcode;
-                    $latlong = Schedule::getLatLong($address_string);
-                    array_push($setup, [$latlong['latitude'],$latlong['longitude'],$tag]); 
-                } 
+                if ($schedule) {
+                    $company_id = $schedule->company_id;
+                    $customer_id = $schedule->customer_id;
+                    $users = User::find($customer_id);
+                    $first_name = $users->first_name;
+                    $last_name = $users->last_name;
+                    $address_id = $schedule->dropoff_address;
+           
+                    if (isset($address_id)) {
+                        $addresses = Address::find($address_id);
+                        $address_name = $addresses->name;
+                        $address_street = $addresses->street;
+                        $address_suite = $addresses->suite;
+                        $address_city = $addresses->city;
+                        $address_state = $addresses->state;
+                        $address_zipcode = $addresses->zipcode;
+                        $tag = ucFirst($first_name).' '.ucFirst($last_name).' - '.$address_street;
+                        $address_string = $address_street.' '.$address_city.', '.$address_state.' '.$address_zipcode;
+                        $latlong = Schedule::getLatLong($address_string);
+                        array_push($setup, [$latlong['latitude'],$latlong['longitude'],$tag]); 
+                    } 
+                }
+
                                
             }
         }
