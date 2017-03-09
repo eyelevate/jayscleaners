@@ -18,7 +18,7 @@ class Company extends Model
     }
     public static function getCompany(){
 
-    	return [1=>'Montlake',2=>'Roosevelt'];
+    	return [1=>'Roosevelt',2=>'Montlake'];
     }
 
     public static function getStarch(){
