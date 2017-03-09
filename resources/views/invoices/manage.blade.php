@@ -103,13 +103,21 @@
 			</tfoot>
 		</table>
 	</div>
-	<div class="box-footer clearfix">
+	<div class="box-body clearfix">
 		<div class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
-
-            <div class="col-md-6">
-                {!! Form::select('company_id',$companies , {{ (count($invoices) > 0) ? $invoices[0]['company_id'] : Auth::user()->company_id }}, ['class'=>'form-control']) !!}
+			<label class="col-md-4 control-label">Location <span class="text text-danger">*</span></label>
+            <div>
+                {!! Form::select('company_id',$companies , (count($invoices) > 0) ? $invoices[0]['company_id'] : Auth::user()->company_id, ['class'=>'form-control']) !!}
+                @if ($errors->has('company_id'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('company_id') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
+	</div>
+	<div class="box-footer clearfix">
+		
 		<button class="btn btn-lg btn-success" type="submit">Edit Prices</button>
 	</div>
 </div>
