@@ -977,7 +977,7 @@ class InvoicesController extends Controller
     public function postManage(Request $request) {
         $invoice_id = $request->invoice_id;
         $items = $request->item;
-        $tax_rates = Tax::where('company_id',Auth::user()->company_id)->orderBy('id','desc')->limit(1)->get();
+        $tax_rates = Tax::where('company_id',$request->company_id)->orderBy('id','desc')->limit(1)->get();
         $tax = 0.096;
         if (count($tax_rates) > 0) {
             foreach ($tax_rates as $tax_rate) {
@@ -1022,6 +1022,7 @@ class InvoicesController extends Controller
         $invoices = Invoice::find($invoice_id);
         $invoices->pretax = $pretax;
         $invoices->tax = $tax_total;
+        $invoices->company_id = $request->company_id;
         $invoices->total = $total;
         if ($invoices->save()) {
             Flash::success('Successfully updated prices');
