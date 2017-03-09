@@ -333,7 +333,7 @@ class Admin extends Model
     	if (isset($up['inventories'])){
     		foreach ($up['inventories'] as $key => $value) {
     			$inventory = new Inventory();
-    			$inventory->company_id = $company_id;
+    			$inventory->company_id = $value['company_id'];
     			$inventory->name = $value['name'];
     			$inventory->description = $value['description'];
                 $inventory->laundry = $value['laundry'];
@@ -349,7 +349,7 @@ class Admin extends Model
     	if (isset($up['inventory_items'])){
     		foreach ($up['inventory_items'] as $key => $value) {
     			$inventory_item = new InventoryItem();
-    			$inventory_item->company_id = $company_id;
+    			$inventory_item->company_id = $value['company_id'];
     			$inventory_item->inventory_id = $value['inventory_id'];
     			$inventory_item->name = $value['name'];
     			$inventory_item->description = $value['description'];
@@ -370,7 +370,7 @@ class Admin extends Model
     			$invoice = new Invoice();
                 // $invoice->invoice_id = Invoice::newInvoiceId();
                 
-    			$invoice->company_id = $company_id;
+    			$invoice->company_id = $value['company_id'];
     			$invoice->customer_id = $value['customer_id'];
     			$invoice->quantity = $value['quantity'];
     			$invoice->pretax = $value['pretax'];
@@ -441,7 +441,7 @@ class Admin extends Model
     	if (isset($up['printers'])){
     		foreach ($up['printers'] as $key => $value) {
     			$printer = new Printer();
-    			$printer->company_id = $company_id;
+    			$printer->company_id = $value['company_id'];
     			$printer->name = $value['name'];
     			$printer->model = $value['model'];
     			$printer->nick_name = $value['nick_name'];
@@ -476,7 +476,7 @@ class Admin extends Model
     			$reward_transaction->transaction_id = $value['transaction_id'];
     			$reward_transaction->customer_id = $value['customer_id'];
     			$reward_transaction->employee_id = $value['employee_id'];
-    			$reward_transaction->company_id = $company_id;
+    			$reward_transaction->company_id = $value['company_id'];
     			$reward_transaction->type = $value['type'];
     			$reward_transaction->points = $value['points'];
     			$reward_transaction->credited = $value['credited'];
@@ -830,7 +830,7 @@ class Admin extends Model
                 if ($invoices){
                     foreach ($invoices as $data) {
                         $invoice = Invoice::withTrashed()->find($data->id);
-                        $invoice->company_id = $company_id;
+                        $invoice->company_id = $value['company_id'];
                         $invoice->customer_id = $value['customer_id'];
                         $invoice->quantity = $value['quantity'];
                         $invoice->pretax = $value['pretax'];
