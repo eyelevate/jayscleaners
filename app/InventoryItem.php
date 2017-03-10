@@ -56,23 +56,52 @@ class InventoryItem extends Model
 	}
 
 	public static function preparePricingList() {
+		$company_id = 1;
+		$pants_id = 7;
+		$blouse_id = 1;
+		$shirt_dc_id = 5;
+		$suit_id = 2;
+		$tux_shirt_id = 148;
+		$sweater_id = 15;
+		$tie_id = 10;
+		$jacket_id = 11;
+		$vest_id = 9;
+		$shorts_id = 139;
+		$jumper_id = 194;
+		$shirts_hanger_id = 17;
+		$shirts_folded_id = 18;
+
+		$pant = money_format('$%n',InventoryItem::find($pants_id)->price);
+		$blouse = money_format('$%n',InventoryItem::find($blouse_id)->price);
+		$shirts_dc = money_format('$%n',InventoryItem::find($shirt_dc_id)->price);
+		$suit = money_format('$%n',InventoryItem::find($suit_id)->price);
+		$tux_shirt = money_format('$%n',InventoryItem::find($tux_shirt_id)->price);
+		$sweater = money_format('$%n',InventoryItem::find($sweater_id)->price);
+		$tie = money_format('$%n',InventoryItem::find($tie_id)->price);
+		$jacket = money_format('$%n',InventoryItem::find($jacket_id)->price);
+		$vest = money_format('$%n',InventoryItem::find($vest_id)->price);
+		$shorts = money_format('$%n',InventoryItem::find($shorts_id)->price);
+		$jumper = money_format('$%n',InventoryItem::find($jumper_id)->price);
+		$shirts_hanger = money_format('$%n',InventoryItem::find($shirts_hanger_id)->price);
+		$shirts_folded = money_format('$%n',InventoryItem::find($shirts_folded_id)->price);
+
 		$list = [
 			'Dry Clean' => [
-				'Pants' => '$6.50',
-				'Blouse' => '$6.50',
-				'Shirt (Dry Clean)' => '$6.50',
-				'2pc Suit' => '$14.95',
-				'Tux Suit' => '$15.95',
-				'Sweater' => '$6.50',
-				'Tie' => '$4.75',
-				'Jacket' => '$8.95',
-				'Vest' => '$5.75',
-				'Shorts' => '$5.95',
-				'Jumper' => '$15.95'
+				'Pants' => $pant,
+				'Blouse' => $blouse,
+				'Shirt (Dry Clean)' => $shirts_dc,
+				'2pc Suit' => $suit,
+				'Tux Shirt' => $tux_shirt,
+				'Sweater' => $sweater,
+				'Tie' => $tie,
+				'Jacket' => $jacket,
+				'Vest' => $vest,
+				'Shorts' => $shorts,
+				'Jumper' => $jumper
 			],
 			'Laundry' => [
-				'Shirts (Hanger)' => '$1.70',
-				'Shirts (Folded)' => '$3.40'
+				'Shirts (Hanger)' => $shirts_hanger,
+				'Shirts (Folded)' => $shirts_folded
 			]
 		];
 
