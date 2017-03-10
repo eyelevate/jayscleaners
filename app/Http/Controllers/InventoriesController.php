@@ -32,7 +32,6 @@ class InventoriesController extends Controller
     }
     public function getIndex(){
     	$companies = Company::getCompany();
-    	
     	$inventories = Inventory::where('company_id',Auth::user()->company_id)
     	->where('status',1)
     	->orderBy('ordered','asc')
@@ -112,6 +111,21 @@ class InventoriesController extends Controller
         if($inventory->save()){
 			Flash::success('Successfully added a new inventory!');
 			return Redirect::route('inventories_index');
+        }
+    }
+
+    public function postSort(Request $request) {
+        if ($request->ajax()) {
+            $data = $request->sort;
+            if (count($data) > 0) {
+                foreach ($data as $key => $value) {
+                    $idx = $key + 1;
+                    $item_id = $value;
+                    $items = InventoryItem::find($item_id);
+                    $items->ordered = $idx;
+                    $items->save();
+                }
+            }
         }
     }
 

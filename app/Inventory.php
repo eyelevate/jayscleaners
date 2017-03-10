@@ -50,7 +50,7 @@ class Inventory extends Model
 	}
 
 	public static function prepareIconSelect(){
-		$root_folder = 'imgs/inventories/';
+		$root_folder = '/img/inventory/';
 		return [
 			$root_folder.'bedSheets_blue.png'=>'Bed Sheets Blue',
 			$root_folder.'bedSheets_green.png'=>'Bed Sheets Green',

@@ -32,9 +32,9 @@ class InventoryItem extends Model
 					unset($list[2]);
 					$image_name = (isset($list[3])) ? $list[3] : '';
 					if (isset($list[3])) {
-						$data[$key]['image'] = '/imgs/inventories/'.$image_name; 
+						$data[$key]['image'] = '/img/inventory/'.$image_name; 
 					} else {
-						$data[$key]['image'] = 'http://placehold.it/350x150'; 
+						$data[$key]['image'] = ''; 
 					}
 					
 					

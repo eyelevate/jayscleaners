@@ -60,20 +60,7 @@
 
 		</div>
 	</a><!-- ./col -->
-	<!-- Inventory Item Edit -->
-	<a id="inventory-item-edit" href="#item-edit" class="col-lg-3 col-md-3 col-xs-3">
-		<!-- small box -->
-		<div class="small-box bg-yellow" style="padding-bottom:10px" data-toggle="modal" data-target="#item-edit">
-			<div class="inner">
-				<h4>Edit Item</h4>
-				<p>Edit inventory item</p>
-			</div>
-	        <div class="icon">
-	          <i class="ion-edit"></i>
-	        </div>
 
-		</div>
-	</a><!-- ./col -->
 
 </div>
 @stop
@@ -101,8 +88,7 @@
 
 		</ul>
 	{!! Form::close() !!}
-	{!! Form::open(['action' => 'InventoryItemsController@postOrder', 'class'=>'form-horizontal','role'=>"form",'id'=>'item-form']) !!}
-	{!! csrf_field() !!}
+
 	<ul class="tab-content no-padding">
 		<!-- Morris chart - Sales -->
 		<?php $idx = -1;?>
@@ -110,40 +96,44 @@
 			@foreach($items as $key => $value)
 			<?php $idx++;?>
 			<li class="chart tab-pane {{ ($idx == 0) ? 'active' : '' }}" id="sales-{{ $key }}" style="position: relative; min-height: 300px; padding:5px;">
-			@if(isset($value['items']))
-				@foreach($value['items'] as $item)
-				<a id="item-{{ $item->id }}" href="#" class="items col-lg-3 col-md-3 col-xs-3">
-					<!-- small box -->
-					<div class="small-box bg-gray clearfix" style="max-height:125px; overflow:hidden">
-						<div class="inner" style="padding-bottom:50px;">
-							<h4><strong>{{ $item->name }}</strong></h4>
-							<small><strong>{{ $item->description }}</strong></small>
-					        <div class="icon" style="z-index:0">
-					          <img src="{{ $item->image }}" style="max-width:64px; opacity:0.8"/>
-					        </div>
-						</div>
-				        <div class="small-box-footer" style="position:absolute; width:100%; bottom:0px; background:rgba(0,0,0,0.6); font-size:15px;"><strong>{{ $item->price }}</strong></i></div>
-					</div>
-					<div class="hide">
-						{{ Form::hidden('item['.$item->id.'][id]',$item->id,['class'=>'item-id']) }}
-						{{ Form::hidden('item['.$item->id.'][name]',$item->name,['class'=>'item-name']) }}
-						{{ Form::hidden('item['.$item->id.'][description]',$item->description,['class'=>'item-description']) }}
-						{{ Form::hidden('item['.$item->id.'][ordered]',$item->ordered,['class'=>'item-order']) }}
-						{{ Form::hidden('item['.$item->id.'][price]',$item->price,['class'=>'item-price']) }}
-						{{ Form::hidden('item['.$item->id.'][image]',$item->image,['class'=>'item-image']) }}
-						{{ Form::hidden('item['.$item->id.'][tags]',$item->tags,['class'=>'item-tags']) }}
-						{{ Form::hidden('item['.$item->id.'][quantity]',$item->quantity,['class'=>'item-quantity']) }}
-						{{ Form::hidden('item['.$item->id.'][inventory_id]',$item->ordered,['class'=>'item-inventory_id']) }}
-
-					</div>
-				</a><!-- ./col -->					
-				@endforeach
-			@endif
+				<div class="table-responsive">			
+					<table class="table table-condensed table-hover table-striped">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Order</th>
+								<th>Name</th>
+								<th>Qty</th>
+								<th>Tags</th>
+								<th>Desc</th>
+								<th>Price</th>
+								<th>Img</th>
+								<th>A.</th>
+							</tr>
+						</thead>
+						<tbody class="sortable-tbody">
+						@if(isset($value['items']))
+							@foreach($value['items'] as $item)
+							<tr style="cursor:pointer;" id="item_list-{{ $item->id }}" order="{{ $item->ordered }}">
+								<td>{{ $item->id }}</td>
+								<td class="item_order">{{ $item->ordered }}</td>
+								<td>{{ $item->name }}</td>
+								<td>{{ $item->quantity }}</td>
+								<td>{{ $item->tags }}</td>
+								<td>{{ $item->description }}</td>
+								<td>{{ $item->price }}</td>
+								<td>{{ $item->image }}</td>
+								<td><button class="button" data-toggle="modal" data-target="#item_edit-{{ $item->id }}">Edit</button></td>
+							</tr>
+							@endforeach
+						@endif
+						</tbody>
+					</table>
+				</div>
 			</li>
 			@endforeach
 		@endif
 	</ul>
-	{!! Form::close() !!}
 </div><!-- /.nav-tabs-custom -->
 
 
@@ -166,14 +156,24 @@
 		->with('quantity_select',$quantity_select)
 		->render()
 	 !!}
-	{!! View::make('partials.inventories.item-edit')
-		->with('companies',$companies)
-		->with('group_select',$group_select)
-		->with('icon_select',$icon_select)
-		->with('tags_select',$tags_select)
-		->with('quantity_select',$quantity_select)
-		->render()
-	 !!}
+	@if(isset($items))
+		@foreach($items as $key => $value)
+			@if(isset($value['items']))
+				@foreach($value['items'] as $item)
+				{!! View::make('partials.inventories.item-edit')
+					->with('companies',$companies)
+					->with('item',$item)
+					->with('group_select',$group_select)
+					->with('icon_select',$icon_select)
+					->with('tags_select',$tags_select)
+					->with('quantity_select',$quantity_select)
+					->render()
+				!!}
+				@endforeach
+			@endif
+		@endforeach
+	@endif
+
 	{!! View::make('partials.inventories.group-delete')
 		->render()
 	 !!}

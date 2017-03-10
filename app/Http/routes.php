@@ -283,6 +283,7 @@ Route::group(['middleware' => ['web']], function () {
 			Route::get('/inventories/edit/{id}',['as'=>'inventories_edit','uses'=>'InventoriesController@getEdit']);
 			Route::post('/inventories/edit',['uses'=>'InventoriesController@postEdit']);
 			Route::post('/inventories/order',['uses'=>'InventoriesController@postOrder']);
+			Route::post('/inventories/sort',['uses'=>'InventoriesController@postSort']);
 			Route::get('/inventories/view/{id}',['as'=>'inventories_view','uses'=>'InventoriesController@getView']);
 
 			//Inventory
