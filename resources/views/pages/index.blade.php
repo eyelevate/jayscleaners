@@ -83,7 +83,7 @@
 	<span class="icon fa-home fa-fw" style="font-size:25px;"></span>
 	<h2>Welcome to Jays Cleaners. With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</h2>
 </header>
-<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-4.png" style="min-height:300px;"></section>
+<section class="parallax-window" data-parallax="scroll" data-image-src="/img/website/display-4.png" style="min-height:300px;"></section>
 <!-- Two -->
 <br/>
 <section class="wrapper style1 container special clearfix">
@@ -140,7 +140,7 @@
 </section>
 
 <div class="row-fluid">
-	<article class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-5.png" style="min-height:300px; position:relative;"></article>
+	<article class="parallax-window" data-parallax="scroll" data-image-src="/img/website/display-5.png" style="min-height:300px; position:relative;"></article>
 
 	<!-- One -->
 	<section class="wrapper style3 container special">
@@ -226,7 +226,7 @@
 
 	</section>
 </div>
-<section class="parallax-window" data-parallax="scroll" data-image-src="/imgs/website/display-2.png" style="min-height:300px;" ></section>
+<section class="parallax-window" data-parallax="scroll" data-image-src="/img/website/display-2.png" style="min-height:300px;" ></section>
 {!! View::make('partials.pages.services')->render() !!}
 
 
