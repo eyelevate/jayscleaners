@@ -1,4 +1,4 @@
-<?php 
+    <?php 
 
 namespace App;
 use App\Address;
@@ -247,14 +247,14 @@ class Report extends Model
         
         $inventories = Inventory::where('company_id',$company_id)->get();
         
-        $ps_quantity = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->sum('quantity');
-        $ps_subtotal = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->sum('pretax');
-        $ps_tax = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->sum('tax');
-        $ps_total = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->sum('total');
-        $ds_quantity = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->sum('quantity');
-        $ds_subtotal = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->sum('pretax');
-        $ds_tax = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->sum('tax');
-        $ds_total = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->sum('total');
+        $ps_quantity = Invoice::whereIn('id',$completed_invoice_ids)->sum('quantity');
+        $ps_subtotal = Invoice::whereIn('id',$completed_invoice_ids)->sum('pretax');
+        $ps_tax = Invoice::whereIn('id',$completed_invoice_ids)->sum('tax');
+        $ps_total = Invoice::whereIn('id',$completed_invoice_ids)->sum('total');
+        $ds_quantity = Invoice::whereIn('id',$dropoff_invoice_ids)->sum('quantity');
+        $ds_subtotal = Invoice::whereIn('id',$dropoff_invoice_ids)->sum('pretax');
+        $ds_tax = Invoice::whereIn('id',$dropoff_invoice_ids)->sum('tax');
+        $ds_total = Invoice::whereIn('id',$dropoff_invoice_ids)->sum('total');
         $pickup_summary_totals = [
             'quantity' => $ps_quantity, 
             'subtotal' => money_format('%n',$ps_subtotal), 

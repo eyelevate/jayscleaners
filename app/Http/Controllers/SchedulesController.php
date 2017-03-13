@@ -806,7 +806,7 @@ class SchedulesController extends Controller
                     $transactions->tax = $totals['tax'];
                     $transactions->aftertax = $totals['total'];
                     $transactions->total = $totals['total'];
-                    $transactions->type = 2;
+                    $transactions->type = 1;
                     $transactions->tendered = $totals['total'];
                     $transactions->transaction_id = $attempt_payment['trans_id'];
                     $transactions->status = 1;
