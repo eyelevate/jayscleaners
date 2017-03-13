@@ -1300,8 +1300,7 @@ class AdminsController extends Controller
     public static function postApiInvoiceData(Request $request) {
         $invoice_id = $request->id;
         $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)->get();
-        return response()->json([
-                'data'=>$invoice_items]);
+        return response()->json([$invoice_items]);
     }
 
     
