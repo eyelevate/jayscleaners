@@ -1299,7 +1299,7 @@ class AdminsController extends Controller
 
     public static function postApiInvoiceData(Request $request) {
         $invoice_id = $request->id;
-        $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)->get();
+        $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$invoice_id)->get());
         return response()->json($invoice_items);
     }
 
