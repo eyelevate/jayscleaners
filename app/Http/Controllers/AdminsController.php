@@ -1314,6 +1314,14 @@ class AdminsController extends Controller
         return response()->json($tags);
     }
 
+    public static function postApiInvoiceItemsIdData(Request $request) {
+        $invoice_item_id = $request->id;
+        $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('id',$invoice_item_id)->get());
+        $tags = Tag::prepareInvoiceItemTags($invoice_items);
+
+        return response()->json($tags);
+    }
+
     public static function postCreateTag(Request $request) {
         $invoice_id = $request->invoice_id;
         $invoice_item_id = $request->invoice_item_id;
