@@ -8,16 +8,8 @@ class Tag extends Model
 {
     use SoftDeletes;
 
-    public static function prepareTag($data, $invoice_id) {
-    	$tag_update = [0=>[],1=>[]];
-    	$tags = Tag::where('invoice_id',$invoice_id)
-    		->where('status',1)
-    		->get();
-    	if (count($tags) > 0) {
-    		foreach ($tags as $tag) {
-    			$tag_update['invoice'] = $tag;
-    		}
-    	}
+    public static function prepareTag($data) {
+
     	
     	if (count($data) > 0){
     		foreach ($data as $key => $value) {
@@ -37,13 +29,12 @@ class Tag extends Model
     				}
     			} else {
     				$data[$key]['rfid'] = null;
-    				$data[$key]['location_id'] = null;
+    				$data[$key]['location_id'] = 0;
     			}
     		}
     	}
 
-    	$tag_update[1] = $data;
 
-    	return $tag_update;
+    	return $data;
     }
 }
