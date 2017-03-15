@@ -42,7 +42,7 @@ class Tag extends Model
     		}
     	}
 
-    	$tag_update['items'] = $data;
+    	$tag_update[1] = $data;
 
     	return $tag_update;
     }
