@@ -41,6 +41,7 @@ use App\Reward;
 use App\RewardTransaction;
 use App\Report;
 use App\Schedule;
+use App\Tag;
 use App\Tax;
 use App\Transaction;
 use App\Zipcode;
@@ -1300,7 +1301,9 @@ class AdminsController extends Controller
     public static function postApiInvoiceData(Request $request) {
         $invoice_id = $request->id;
         $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$invoice_id)->get());
-        return response()->json($invoice_items);
+        $tags = Tags::prepareTags($invoice_items, $invoice_id);
+
+        return response()->json($tags);
     }
 
     
