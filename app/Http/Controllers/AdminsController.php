@@ -1298,20 +1298,45 @@ class AdminsController extends Controller
         return Response::make($request, 200, $header);
     }
 
-    public static function getApiInvoiceData(Request $request) {
-        $invoice_id = '076076';
+    public static function postApiInvoiceData(Request $request) {
+        $invoice_id = $request->id;
         $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$invoice_id)->get());
-        $tags = Tag::prepareTags($invoice_items);
+        $tags = Tag::prepareInvoiceTags($invoice_items);
 
         return response()->json($tags);
     }
 
-    public static function postApiInvoiceData(Request $request) {
+    public static function postApiInvoiceItemsData(Request $request) {
         $invoice_id = $request->id;
         $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$invoice_id)->get());
-        $tags = Tag::prepareTags($invoice_items);
+        $tags = Tag::prepareInvoiceItemTags($invoice_items);
 
         return response()->json($tags);
+    }
+
+    public static function postCreateTag(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $invoice_item_id = $request->invoice_item_id;
+        $rfid = $request->rfid;
+
+        return response()->json();
+
+    }
+
+    public static function postUpdateTag(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $invoice_item_id = $request->invoice_item_id;
+        $rfid = $request->rfid;
+
+        return response()->json();
+    }
+
+    public static function postDeleteTag(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $invoice_item_id = $request->invoice_item_id;
+        $rfid = $request->rfid;
+
+        return response()->json();
     }
 
     
