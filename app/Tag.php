@@ -8,7 +8,7 @@ class Tag extends Model
 {
     use SoftDeletes;
 
-    public static function prepareTag($data) {
+    public static function prepareTags($data) {
 
     	
     	if (count($data) > 0){
