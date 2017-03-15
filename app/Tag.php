@@ -28,7 +28,7 @@ class Tag extends Model
 
     				}
     			} else {
-    				$data[$key]['rfid'] = null;
+    				$data[$key]['rfid'] = '';
     				$data[$key]['location_id'] = 0;
     			}
     		}
