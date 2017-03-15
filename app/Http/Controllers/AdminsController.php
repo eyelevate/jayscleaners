@@ -1300,7 +1300,7 @@ class AdminsController extends Controller
 
     public static function postApiInvoiceData(Request $request) {
         $invoice_id = $request->id;
-        $invoice_items = Invoice::where('invoice_id',$invoice_id)->get();
+        $invoice_items = Invoice::where('id',$invoice_id)->get();
         $tags = Tag::prepareInvoiceTags($invoice_items);
 
         return response()->json($tags);
