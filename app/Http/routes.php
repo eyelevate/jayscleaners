@@ -40,7 +40,8 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/auto/{table}',['as'=>'admins_api_auto','uses'=>'AdminsController@getApiAuto']);
 	Route::post('/admins/api/auto', ['as'=>'admins_api_auto_post','uses'=>'AdminsController@postApiAuto']);
    	Route::get('/admins/api/print/{id}',['as'=>'admins_api_print','uses'=>'AdminsController@getApiPrint']);
-    Route::post('/admins/api/invoice-data',['as'=>'admins_api_invoice_data','uses'=>'AdminsController@postApiInvoiceData']);
+    Route::post('/admins/api/invoice-data',['uses'=>'AdminsController@postApiInvoiceData']);
+    Route::get('/admins/api/invoice-data',['as'=>'admins_api_invoice_data','uses'=>'AdminsController@getApiInvoiceData']);
     Route::group(['middleware' => ['forceSSL']], function(){
 	   
 	    Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);

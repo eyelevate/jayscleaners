@@ -1298,6 +1298,14 @@ class AdminsController extends Controller
         return Response::make($request, 200, $header);
     }
 
+    public static function getApiInvoiceData(Request $request) {
+        $invoice_id = '076076';
+        $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$invoice_id)->get());
+        $tags = Tags::prepareTags($invoice_items);
+
+        return response()->json($tags);
+    }
+
     public static function postApiInvoiceData(Request $request) {
         $invoice_id = $request->id;
         $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_id',$invoice_id)->get());
