@@ -1301,7 +1301,7 @@ class AdminsController extends Controller
     public static function postApiSetBarcode(Request $request) {
         $invoice_id = $request->invoice_id;
 
-        $barcodes = json_decode($request->barcode,true);
+        $barcodes = json_decode($request->data,true);
 
         if (count($barcodes) > 0) {
             foreach ($barcodes as $key => $value) {
