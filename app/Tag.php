@@ -30,11 +30,13 @@ class Tag extends Model
     					$rfid = $tag->rfid;
     					$location_id = $tag->location_id;
     					$data[$key]['rfid'] = $rfid;
+                        $data[$key]['barcode'] = $tag->barcode;
     					$data[$key]['location_id'] = $location_id;
 
     				}
     			} else {
     				$data[$key]['rfid'] = '';
+                    $data[$key]['barcode'] = '';
     				$data[$key]['location_id'] = 0;
     			}
     		}

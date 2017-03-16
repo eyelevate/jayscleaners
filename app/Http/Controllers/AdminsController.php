@@ -1300,7 +1300,7 @@ class AdminsController extends Controller
 
     public static function postApiSetBarcode(Request $request) {
         $invoice_id = $request->invoice_id;
-
+        $company_id = $request->company_id;
         $barcodes = json_decode($request->data,true);
 
         if (count($barcodes) > 0) {
@@ -1318,6 +1318,7 @@ class AdminsController extends Controller
                     foreach ($old_tags as $ot) {
                         $edit = Tag::find($ot->id);
                         $edit->barcode = $barcode;
+                        $edit->company_id = $company_id;
                         if ($edit->save()){
                             
                         }
@@ -1326,6 +1327,7 @@ class AdminsController extends Controller
                     $tags = new Tag();
                     $tags->invoice_id = $invoice_id;
                     $tags->invoice_item_id = $invoice_item_id;
+                    $tags->company_id = $company_id;
                     $tags->barcode = $barcode;
                     $tags->status = 1;
                     if ($tags->save()) {
