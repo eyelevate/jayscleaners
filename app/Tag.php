@@ -63,7 +63,7 @@ class Tag extends Model
     					$rfid = $tag->rfid;
                         $barcode = $tag->barcode;
     					$location_id = $tag->location_id;
-    					$data[$key]['rfid'] = $rfid;
+    					$data[$key]['rfid'] = ($tag->rfid == null) ? '' : $tag->rfid;
                         $data[$key]['barcode'] = $barcode;
     					$data[$key]['location_id'] = ($tag->location_id) ? $tag->location_id : 0;
     					
