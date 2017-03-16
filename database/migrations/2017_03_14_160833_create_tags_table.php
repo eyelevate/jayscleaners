@@ -16,6 +16,7 @@ class CreateTagsTable extends Migration
             $table->increments('id');
             $table->string('name',50)->nullable();
             $table->string('rfid',50)->nullable();
+            $table->string('barcode',50)->nullable();
             $table->integer('location_id', false, true)->length(11)->nullable();
             $table->integer('company_id', false, true)->length(11)->nullable();
             $table->integer('invoice_id', false, true)->length(11)->nullable();

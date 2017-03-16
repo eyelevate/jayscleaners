@@ -1298,6 +1298,44 @@ class AdminsController extends Controller
         return Response::make($request, 200, $header);
     }
 
+    public static function postApiSetBarcode(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $invoice_item_id = $request->invoice_item_id;
+        $barcode = $request->barcode;
+
+        // search tags with invoice id and invoice_item_id
+        $old_tags = Tag::where('invoice_id',$invoice_id)
+            ->where('invoice_item_id',$invoice_item_id)
+            ->where('status',1)
+            ->get();
+
+        $status = 400; // could not save anything
+
+        if (count($old_tags) > 0) {
+            foreach ($old_tags as $ot) {
+                $edit = Tag::find($ot->id);
+                $edit->barcode = $barcode;
+                if ($edit->save()){
+                    $status = 200; // edited
+                }
+            }
+        } else {
+            $tags = new Tag();
+            $tags->invoice_id = $invoice_id;
+            $tags->invoice_item_id = $invoice_item_id;
+            $tags->barcode = $barcode;
+            $tags->status = 1;
+            if ($tags->save()) {
+                $status = 300; // added new
+            }
+        }
+
+        return response()->json(['status'=>$status]);
+
+
+        
+    }
+
     public static function postApiInvoiceData(Request $request) {
         $invoice_id = $request->id;
         $invoice_items = Invoice::where('id',$invoice_id)->get();

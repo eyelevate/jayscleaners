@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::post('/admins/api/auto', ['as'=>'admins_api_auto_post','uses'=>'AdminsController@postApiAuto']);
    	Route::get('/admins/api/print/{id}',['as'=>'admins_api_print','uses'=>'AdminsController@getApiPrint']);
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
+    Route::post('/admins/api/set-barcode',['uses'=>'AdminsController@postApiSetBarcode']);
     Route::post('/admins/api/invoice-items-id-data',['uses'=>'AdminsController@postApiInvoiceItemsIdData']);
     Route::post('/admins/api/invoice-data',['uses'=>'AdminsController@postApiInvoiceData']);
     Route::post('/admins/api/create-tag',['uses'=>'AdminsController@postCreateTag']);
