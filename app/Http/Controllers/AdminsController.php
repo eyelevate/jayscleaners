@@ -1368,7 +1368,7 @@ class AdminsController extends Controller
         if (count($tags) > 0) {
             foreach ($tags as $tag) {
                 $invoice_item_id = $tag->invoice_item_id;
-                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_item_id',$invoice_item_id)->get());
+                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('id',$invoice_item_id)->get());
                 $t = Tag::prepareInvoiceItemTags($invoice_items);
             }
         }
@@ -1384,7 +1384,7 @@ class AdminsController extends Controller
         if (count($tags) > 0) {
             foreach ($tags as $tag) {
                 $invoice_item_id = $tag->invoice_item_id;
-                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_item_id',$invoice_item_id)->get());
+                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('id',$invoice_item_id)->get());
                 $t = Tag::prepareInvoiceItemTags($invoice_items);
             }
         }
