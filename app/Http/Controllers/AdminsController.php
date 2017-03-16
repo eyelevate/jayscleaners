@@ -1300,37 +1300,45 @@ class AdminsController extends Controller
 
     public static function postApiSetBarcode(Request $request) {
         $invoice_id = $request->invoice_id;
-        $invoice_item_id = $request->invoice_item_id;
-        $barcode = $request->barcode;
 
-        // search tags with invoice id and invoice_item_id
-        $old_tags = Tag::where('invoice_id',$invoice_id)
-            ->where('invoice_item_id',$invoice_item_id)
-            ->where('status',1)
-            ->get();
+        $barcodes = json_decode($request->barcode,true);
 
-        $status = 400; // could not save anything
+        if (count($barcodes) > 0) {
+            foreach ($barcodes as $key => $value) {
+                $invoice_item_id = $key;
+                $barcode = $value;
+                // search tags with invoice id and invoice_item_id
+                $old_tags = Tag::where('invoice_id',$invoice_id)
+                    ->where('invoice_item_id',$invoice_item_id)
+                    ->where('status',1)
+                    ->get();
 
-        if (count($old_tags) > 0) {
-            foreach ($old_tags as $ot) {
-                $edit = Tag::find($ot->id);
-                $edit->barcode = $barcode;
-                if ($edit->save()){
-                    $status = 200; // edited
+
+                if (count($old_tags) > 0) {
+                    foreach ($old_tags as $ot) {
+                        $edit = Tag::find($ot->id);
+                        $edit->barcode = $barcode;
+                        if ($edit->save()){
+                            
+                        }
+                    }
+                } else {
+                    $tags = new Tag();
+                    $tags->invoice_id = $invoice_id;
+                    $tags->invoice_item_id = $invoice_item_id;
+                    $tags->barcode = $barcode;
+                    $tags->status = 1;
+                    if ($tags->save()) {
+          
+                    }
                 }
-            }
-        } else {
-            $tags = new Tag();
-            $tags->invoice_id = $invoice_id;
-            $tags->invoice_item_id = $invoice_item_id;
-            $tags->barcode = $barcode;
-            $tags->status = 1;
-            if ($tags->save()) {
-                $status = 300; // added new
             }
         }
 
-        return response()->json(['status'=>$status]);
+
+        
+
+        return response()->json(['status'=>200]);
 
 
         
