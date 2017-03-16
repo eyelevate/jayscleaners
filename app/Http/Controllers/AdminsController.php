@@ -1348,10 +1348,9 @@ class AdminsController extends Controller
         }
 
         return response()->json(['status'=>200]);
-
-
-        
     }
+
+
 
     public static function postApiInvoiceData(Request $request) {
         $invoice_id = $request->id;
@@ -1359,6 +1358,38 @@ class AdminsController extends Controller
         $tags = Tag::prepareInvoiceTags($invoice_items);
 
         return response()->json($tags);
+    }
+
+    public static function getApiInvoiceItemsBarcode(Request $request) {
+        $barcode = '075562';
+        $tags = Tag::where('barcode',$barcode)
+            ->where('status',1)
+            ->get();
+        if (count($tags) > 0) {
+            foreach ($tags as $tag) {
+                $invoice_item_id = $tag->invoice_item_id;
+                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_item_id',$invoice_item_id)->get());
+                $t = Tag::prepareInvoiceItemTags($invoice_items);
+            }
+        }
+
+        return response()->json($t);
+    }
+
+    public static function postApiInvoiceItemsBarcode(Request $request) {
+        $barcode = $request->barcode;
+        $tags = Tag::where('barcode',$barcode)
+            ->where('status',1)
+            ->get();
+        if (count($tags) > 0) {
+            foreach ($tags as $tag) {
+                $invoice_item_id = $tag->invoice_item_id;
+                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('invoice_item_id',$invoice_item_id)->get());
+                $t = Tag::prepareInvoiceItemTags($invoice_items);
+            }
+        }
+
+        return response()->json($t);
     }
 
     public static function postApiInvoiceItemsData(Request $request) {
