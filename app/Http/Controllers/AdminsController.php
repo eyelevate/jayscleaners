@@ -1313,7 +1313,17 @@ class AdminsController extends Controller
                     ->where('status',1)
                     ->get();
 
+                // check to see if the barcode exists in the system for another item
+                $barcode_check = Tag::where('barcode',$barcode)->get();
+                if (count($barcode_check) > 0) {
+                    foreach ($barcode_check as $bc) {
+                        $bc_id = $bc->id;
+                        $bcs = Tag::find($bc_id);
+                        $bcs->delete(); // remove old barcode from another item. 
+                    }
+                }
 
+                // update barcode if row exists
                 if (count($old_tags) > 0) {
                     foreach ($old_tags as $ot) {
                         $edit = Tag::find($ot->id);
@@ -1323,7 +1333,7 @@ class AdminsController extends Controller
                             
                         }
                     }
-                } else {
+                } else { // create a new barcode if does not exists
                     $tags = new Tag();
                     $tags->invoice_id = $invoice_id;
                     $tags->invoice_item_id = $invoice_item_id;
@@ -1336,9 +1346,6 @@ class AdminsController extends Controller
                 }
             }
         }
-
-
-        
 
         return response()->json(['status'=>200]);
 
