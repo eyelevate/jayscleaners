@@ -1407,7 +1407,17 @@ class AdminsController extends Controller
         $barcode = $request->barcode;
         $rfid = $request->rfid;
 
-        // first check to see if rfid exists
+        // first check to see if this rfid has a duplicate
+        $rfids = Tag::where("rfid",$rfid)->get();
+        if (count($rfids) > 0) {
+            foreach ($rfids as $rf) {
+                $tag_update = Tag::find($rf->id);
+                $tag_update->rfid = NULL;
+                $tag_update->save();
+            }
+        }
+
+        // next check to see if tag exists and save
         $tags = Tag::where('invoice_item_id',$invoice_item_id)
             ->where('barcode',$barcode)
             ->where('invoice_id',$invoice_id)
