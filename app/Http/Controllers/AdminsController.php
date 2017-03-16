@@ -1360,22 +1360,6 @@ class AdminsController extends Controller
         return response()->json($tags);
     }
 
-    public static function getApiInvoiceItemsBarcode(Request $request) {
-        $barcode = '075562';
-        $tags = Tag::where('barcode',$barcode)
-            ->where('status',1)
-            ->get();
-        if (count($tags) > 0) {
-            foreach ($tags as $tag) {
-                $invoice_item_id = $tag->invoice_item_id;
-                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('id',$invoice_item_id)->get());
-                $t = Tag::prepareInvoiceItemTags($invoice_items);
-            }
-        }
-
-        return response()->json($t);
-    }
-
     public static function postApiInvoiceItemsBarcode(Request $request) {
         $barcode = $request->barcode;
         $tags = Tag::where('barcode',$barcode)
@@ -1420,9 +1404,28 @@ class AdminsController extends Controller
     public static function postUpdateTag(Request $request) {
         $invoice_id = $request->invoice_id;
         $invoice_item_id = $request->invoice_item_id;
+        $barcode = $request->barcode;
         $rfid = $request->rfid;
 
-        return response()->json();
+        // first check to see if rfid exists
+        $tags = Tag::where('invoice_item_id',$invoice_item_id)
+            ->where('barcode',$barcode)
+            ->where('invoice_id',$invoice_id)
+            ->get();
+
+        if (count($tags) > 0) {
+            foreach ($tags as $tag) {
+                $tag_update = Tag::find($tag->id);
+                $tag_update->rfid = $rfid;
+                if ($tag_update->save()){
+                    return response()->json(['status'=>true]);
+                }
+            }
+        }
+
+        return response()->json(['status'=>false]);
+
+        
     }
 
     public static function postDeleteTag(Request $request) {
