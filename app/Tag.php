@@ -61,14 +61,17 @@ class Tag extends Model
     			if (count($tags)) {
     				foreach ($tags as $tag) {
     					$rfid = $tag->rfid;
+                        $barcode = $tag->barcode;
     					$location_id = $tag->location_id;
     					$data[$key]['rfid'] = $rfid;
+                        $data[$key]['barcode'] = $barcode;
     					$data[$key]['location_id'] = $location_id;
     					
 
     				}
     			} else {
     				$data[$key]['rfid'] = '';
+                    $data[$key]['barcode'] = '';
     				$data[$key]['location_id'] = 0;
 
     			}
