@@ -1485,13 +1485,15 @@ class AdminsController extends Controller
         $invoice_items->save();
         
 
-        // calculate new totals for invoice
-        $discount_id = $invoices->discount_id;
+        
 
         $pretax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
         $tax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
         $total_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('total');
         $invoices = Invoice::find($invoice_id);
+
+        // calculate new totals for invoice
+        $discount_id = $invoices->discount_id;
         
         if (isset($discount_id)) {
             $pretax_sum = Discount::prepareDiscount($invoice_items,$discount_id);
