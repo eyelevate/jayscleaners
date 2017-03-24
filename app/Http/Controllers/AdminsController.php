@@ -26,7 +26,7 @@ use App\Credit;
 use App\Layout;
 use App\Company;
 use App\Custid;
-use App\Discount;
+
 use App\Passmanage;
 use App\Invoice;
 use App\InvoiceItem;
