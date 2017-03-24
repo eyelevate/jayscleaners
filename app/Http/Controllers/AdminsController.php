@@ -1508,7 +1508,8 @@ class AdminsController extends Controller
                 }
 
                 if (isset($discount_rate)) {
-                    $new_pretax_sum = money_format('%i',round($pretax_sum / (1+$discount_rate),2));
+                    $discounted_amount = round($pretax_sum * $discount_rate,2);
+                    $new_pretax_sum = money_format('%i',$pretax_sum - $discounted_amount);
                 }
 
                 
