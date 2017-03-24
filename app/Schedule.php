@@ -607,7 +607,8 @@ class Schedule extends Model
     static public function makePayment($company_id, $profile_id, $payment_id, $total) {
 
         $re = [];
-
+        // hard coding young-do's store for now. can update later if i choose to add my authnet account back
+        $company_id = 1;
         $companies = Company::find($company_id);
         $payment_api_login = $companies->payment_api_login;
         $payment_api_password = $companies->payment_gateway_id;

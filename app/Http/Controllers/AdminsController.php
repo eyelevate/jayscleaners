@@ -26,6 +26,7 @@ use App\Credit;
 use App\Layout;
 use App\Company;
 use App\Custid;
+use App\Discount;
 use App\Passmanage;
 use App\Invoice;
 use App\InvoiceItem;
@@ -1490,6 +1491,11 @@ class AdminsController extends Controller
         $tax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
         $total_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('total');
         $invoices = Invoice::find($invoice_id);
+        $discount_id = $invoices->discount;
+
+        $total_after_discounts = Discount::prepareDiscount($invoice_items,$discount_id);
+
+
         $invoices->pretax = $pretax_sum;
         $invoices->tax = $tax_sum;
         $invoices->total = $total_sum;
