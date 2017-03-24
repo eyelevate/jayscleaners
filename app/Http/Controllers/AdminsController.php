@@ -1493,10 +1493,32 @@ class AdminsController extends Controller
         $discount_id = $invoices->discount_id;
         
         if (isset($discount_id)) {
-            $pretax_sum = Discount::prepareDiscountPretaxInvoiceSum($invoice_id,$discount_id);
+            $discounts = Discount::find($discount_id);
+            $new_pretax_sum = 0;
+
+            if ($discounts) {
+                $discount_rate = $discounts->rate;
+                $discount_price = $discounts->price;
+                $discount_inventory_id = $discounts->inventory_id;
+                $discount_item_id = $discounts->item_id;
+                
+                if (isset($discount_price)) {
+                    
+                    $new_pretax_sum = ($pretax_sum - $discount_price);
+                }
+
+                if (isset($discount_rate)) {
+                    $new_pretax_sum = money_format('%i',round($pretax_sum * (1+$discount_rate),2));
+                }
+
+                
+            }
+
+
+            $pretax_sum = $new_pretax_sum;
             $tax_sum = money_format('%i',round($pretax_sum * $tax,2));
             $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
-        }
+        } 
 
         $invoices->pretax = $pretax_sum;
         $invoices->tax = $tax_sum;

@@ -126,47 +126,5 @@ class Discount extends Model
         return $select;
     }
 
-    public static function prepareDiscountPretaxInvoiceSum($invoice_id, $discount_id) {
-        $new_pretax = 0;
-        $make_discount = false;
 
-        $invoice_items = InvoiceItem::where('invoice_id',$invoice_id)->get();
-
-        if (count($invoice_items) > 0) {
-            foreach ($invoice_items as $invoice_item) {
-                $pretax = $invoice_item->pretax;
-                $discounts = Discount::find($discount_id);
-                if ($discounts) {
-                    $discount_rate = $discounts->rate;
-                    $discount_price = $discounts->price;
-                    $discount_inventory_id = $discounts->inventory_id;
-                    $discount_item_id = $discounts->item_id;
-                    if (isset($discount_inventory_id)) {
-                        if ($discount_inventory_id == $invoice_item->inventory_id) {
-                            $make_discount = true;
-                        }
-                    }
-
-                    if (isset($discount_item_id)) {
-                        if ($discount_item_id == $invoice_item->item_id) {
-                            $make_discount = true;
-                        }
-                    }
-
-                    if ($make_discount) {
-                        if (isset($discount_price)) {
-                            $new_pretax += ($pretax - $discount_price);
-                        }
-
-                        if (isset($discount_rate)) {
-                            $new_pretax += money_format('%i',round($pretax * (1+$discount_rate),2));
-                        }
-                    }
-                    
-                }
-            }
-            
-        }
-        return $new_pretax;
-    }
 }
