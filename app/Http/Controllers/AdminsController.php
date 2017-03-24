@@ -1475,7 +1475,7 @@ class AdminsController extends Controller
         }
 
         // update the item row
-        $invoice_items = InvoiceItem::find($key);
+        $invoice_items = InvoiceItem::find($item_id);
         $invoice_items->pretax = $pretax;
         $tax_total = round($pretax * $tax,2);
         $aftertax = round($pretax + $tax_total,2);
