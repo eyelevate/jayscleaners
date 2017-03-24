@@ -1487,13 +1487,19 @@ class AdminsController extends Controller
 
 
         // calculate new totals for invoice
+        $discount_id = $invoices->discount;
+
         $pretax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
         $tax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
         $total_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('total');
         $invoices = Invoice::find($invoice_id);
-        $discount_id = $invoices->discount;
+        
+        if (isset($discount_id)) {
+            $pretax_sum = Discount::prepareDiscount($invoice_items,$discount_id);
+            $tax_sum = money_format('%i',round($pretax_sum * $tax_rate,2));
+            $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
+        }
 
-        $total_after_discounts = Discount::prepareDiscount($invoice_items,$discount_id);
 
 
         $invoices->pretax = $pretax_sum;
