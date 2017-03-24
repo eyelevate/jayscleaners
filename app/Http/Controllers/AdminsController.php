@@ -1498,7 +1498,7 @@ class AdminsController extends Controller
         
         if (isset($discount_id)) {
             $pretax_sum = Discount::prepareDiscount($invoice_items,$discount_id);
-            $tax_sum = money_format('%i',round($pretax_sum * $tax_rate,2));
+            $tax_sum = money_format('%i',round($pretax_sum * $tax,2));
             $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
         }
 
@@ -1547,7 +1547,7 @@ class AdminsController extends Controller
         
         if (isset($discount_id)) {
             $pretax_sum = Discount::prepareDiscount($invoice_items,$discount_id);
-            $tax_sum = money_format('%i',round($pretax_sum * $tax_rate,2));
+            $tax_sum = money_format('%i',round($pretax_sum * $tax,2));
             $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
         }
 
