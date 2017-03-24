@@ -1503,12 +1503,12 @@ class AdminsController extends Controller
                 $discount_item_id = $discounts->item_id;
                 
                 if (isset($discount_price)) {
-                    
+
                     $new_pretax_sum = ($pretax_sum - $discount_price);
                 }
 
                 if (isset($discount_rate)) {
-                    $new_pretax_sum = money_format('%i',round($pretax_sum * (1+$discount_rate),2));
+                    $new_pretax_sum = money_format('%i',round($pretax_sum / (1+$discount_rate),2));
                 }
 
                 
