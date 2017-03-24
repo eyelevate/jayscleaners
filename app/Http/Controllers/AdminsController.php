@@ -1463,56 +1463,6 @@ class AdminsController extends Controller
         return response()->json();
     }
 
-
-    public function getUpdateInvoiceItemPretax(Request $request) {
-        $item_id = 195202;
-        $invoice_id = 75791;
-        $pretax = "15.50";
-        $tax_rates = Tax::where('company_id',1)->orderBy('id','desc')->limit(1)->get();
-        $tax = 0.096;
-        if (count($tax_rates) > 0) {
-            foreach ($tax_rates as $tax_rate) {
-                $tax = $tax_rate->rate;
-            }
-        }
-
-        // update the item row
-        $invoice_items = InvoiceItem::find($item_id);
-        $invoice_items->pretax = $pretax;
-        $tax_total = round($pretax * $tax,2);
-        $aftertax = round($pretax + $tax_total,2);
-        $invoice_items->tax = $tax_total;
-        $invoice_items->total = $aftertax;
-        $invoice_items->save();
-        
-
-        
-
-        $pretax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
-        $tax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
-        $total_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('total');
-        $invoices = Invoice::find($invoice_id);
-
-        // calculate new totals for invoice
-        $discount_id = $invoices->discount_id;
-        
-        if (isset($discount_id)) {
-            $pretax_sum = Discount::prepareDiscount($invoice_items,$discount_id);
-            $tax_sum = money_format('%i',round($pretax_sum * $tax,2));
-            $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
-        }
-
-        $invoices->pretax = $pretax_sum;
-        $invoices->tax = $tax_sum;
-        $invoices->total = $total_sum;
-        if ($invoices->save()) {
-            return response()->json(['status'=>true]);
-        }
-
-        return response()->json(['status'=>false]);
-    }
-
-
     public function postUpdateInvoiceItemPretax(Request $request) {
         $item_id = $request->id;
         $invoice_id = $request->invoice_id;
@@ -1534,9 +1484,6 @@ class AdminsController extends Controller
         $invoice_items->total = $aftertax;
         $invoice_items->save();
         
-
-        
-
         $pretax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
         $tax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
         $total_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('total');
@@ -1546,7 +1493,7 @@ class AdminsController extends Controller
         $discount_id = $invoices->discount_id;
         
         if (isset($discount_id)) {
-            $pretax_sum = Discount::prepareDiscount($invoice_items,$discount_id);
+            $pretax_sum = Discount::prepareDiscountPretaxInvoiceSum($invoice_id,$discount_id);
             $tax_sum = money_format('%i',round($pretax_sum * $tax,2));
             $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
         }
