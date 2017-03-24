@@ -1375,21 +1375,7 @@ class AdminsController extends Controller
 
         return response()->json($t);
     }
-    public static function getApiInvoiceItemsRfid(Request $request) {
-        $rfid = "E280116060000205005A134D";
-        $tags = Tag::where('rfid',$rfid)
-            ->where('status',1)
-            ->get();
-        if (count($tags) > 0) {
-            foreach ($tags as $tag) {
-                $invoice_item_id = $tag->invoice_item_id;
-                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('id',$invoice_item_id)->get());
-                $t = Tag::prepareInvoiceItemTags($invoice_items);
-            }
-        }
 
-        return response()->json($t);
-    }
     public static function postApiInvoiceItemsRfid(Request $request) {
         $rfid = $request->rfid;
         $tags = Tag::where('rfid',$rfid)
@@ -1480,7 +1466,7 @@ class AdminsController extends Controller
         $item_id = $request->id;
         $invoice_id = $request->invoice_id;
         $pretax = $request->pretax;
-        $tax_rates = Tax::where('company_id',Auth::user()->company_id)->orderBy('id','desc')->limit(1)->get();
+        $tax_rates = Tax::where('company_id',1)->orderBy('id','desc')->limit(1)->get();
         $tax = 0.096;
         if (count($tax_rates) > 0) {
             foreach ($tax_rates as $tax_rate) {

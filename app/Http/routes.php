@@ -42,7 +42,6 @@ Route::group(['middleware' => ['web']], function () {
    	Route::get('/admins/api/print/{id}',['as'=>'admins_api_print','uses'=>'AdminsController@getApiPrint']);
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
     Route::post('/admins/api/invoice-items-barcode',['uses'=>'AdminsController@postApiInvoiceItemsBarcode']);
-	Route::get('/admins/api/invoice-items-rfid',['uses'=>'AdminsController@getApiInvoiceItemsRfid']);
     Route::post('/admins/api/invoice-items-rfid',['uses'=>'AdminsController@postApiInvoiceItemsRfid']);
     Route::post('/admins/api/set-barcode',['uses'=>'AdminsController@postApiSetBarcode']);
     Route::post('/admins/api/invoice-items-id-data',['uses'=>'AdminsController@postApiInvoiceItemsIdData']);
