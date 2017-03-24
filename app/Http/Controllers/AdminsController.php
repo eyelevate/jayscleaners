@@ -1375,6 +1375,36 @@ class AdminsController extends Controller
 
         return response()->json($t);
     }
+    public static function getApiInvoiceItemsRfid(Request $request) {
+        $rfid = "E280116060000205005A134D";
+        $tags = Tag::where('rfid',$rfid)
+            ->where('status',1)
+            ->get();
+        if (count($tags) > 0) {
+            foreach ($tags as $tag) {
+                $invoice_item_id = $tag->invoice_item_id;
+                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('id',$invoice_item_id)->get());
+                $t = Tag::prepareInvoiceItemTags($invoice_items);
+            }
+        }
+
+        return response()->json($t);
+    }
+    public static function postApiInvoiceItemsRfid(Request $request) {
+        $rfid = $request->rfid;
+        $tags = Tag::where('rfid',$rfid)
+            ->where('status',1)
+            ->get();
+        if (count($tags) > 0) {
+            foreach ($tags as $tag) {
+                $invoice_item_id = $tag->invoice_item_id;
+                $invoice_items = InvoiceItem::prepareEdit(InvoiceItem::where('id',$invoice_item_id)->get());
+                $t = Tag::prepareInvoiceItemTags($invoice_items);
+            }
+        }
+
+        return response()->json($t);
+    }
 
     public static function postApiInvoiceItemsData(Request $request) {
         $invoice_id = $request->id;
@@ -1444,6 +1474,44 @@ class AdminsController extends Controller
         $rfid = $request->rfid;
 
         return response()->json();
+    }
+
+    public function postUpdateInvoiceItemPretax(Request $request) {
+        $item_id = $request->id;
+        $invoice_id = $request->invoice_id;
+        $pretax = $request->pretax;
+        $tax_rates = Tax::where('company_id',Auth::user()->company_id)->orderBy('id','desc')->limit(1)->get();
+        $tax = 0.096;
+        if (count($tax_rates) > 0) {
+            foreach ($tax_rates as $tax_rate) {
+                $tax = $tax_rate->rate;
+            }
+        }
+
+        // update the item row
+        $invoice_items = InvoiceItem::find($key);
+        $invoice_items->pretax = $pretax;
+        $tax_total = round($pretax * $tax,2);
+        $aftertax = round($pretax + $tax_total,2);
+        $invoice_items->tax = $tax_total;
+        $invoice_items->total = $aftertax;
+        $invoice_items->save();
+        
+
+
+        // calculate new totals for invoice
+        $pretax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
+        $tax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
+        $total_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('total');
+        $invoices = Invoice::find($invoice_id);
+        $invoices->pretax = $pretax_sum;
+        $invoices->tax = $tax_sum;
+        $invoices->total = $total_sum;
+        if ($invoices->save()) {
+            return response()->json(['status'=>true]);
+        }
+
+        return response()->json(['status'=>false]);
     }
 
     

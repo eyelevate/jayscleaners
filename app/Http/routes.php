@@ -42,9 +42,12 @@ Route::group(['middleware' => ['web']], function () {
    	Route::get('/admins/api/print/{id}',['as'=>'admins_api_print','uses'=>'AdminsController@getApiPrint']);
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
     Route::post('/admins/api/invoice-items-barcode',['uses'=>'AdminsController@postApiInvoiceItemsBarcode']);
+	Route::get('/admins/api/invoice-items-rfid',['uses'=>'AdminsController@getApiInvoiceItemsRfid']);
+    Route::post('/admins/api/invoice-items-rfid',['uses'=>'AdminsController@postApiInvoiceItemsRfid']);
     Route::post('/admins/api/set-barcode',['uses'=>'AdminsController@postApiSetBarcode']);
     Route::post('/admins/api/invoice-items-id-data',['uses'=>'AdminsController@postApiInvoiceItemsIdData']);
     Route::post('/admins/api/invoice-data',['uses'=>'AdminsController@postApiInvoiceData']);
+    Route::post('/admins/api/update-invoice-item-pretax',['uses'=>'AdminsController@postUpdateInvoiceItemPretax']);
     Route::post('/admins/api/create-tag',['uses'=>'AdminsController@postCreateTag']);
     Route::post('/admins/api/update-tag',['uses'=>'AdminsController@postUpdateTag']);
     Route::post('/admins/api/delete-tag',['uses'=>'AdminsController@postDeleteTag']);
