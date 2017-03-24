@@ -1485,9 +1485,8 @@ class AdminsController extends Controller
         $invoice_items->save();
         
 
-
         // calculate new totals for invoice
-        $discount_id = $invoices->discount;
+        $discount_id = $invoices->discount_id;
 
         $pretax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('pretax');
         $tax_sum = InvoiceItem::where('invoice_id',$invoice_id)->sum('tax');
@@ -1499,8 +1498,6 @@ class AdminsController extends Controller
             $tax_sum = money_format('%i',round($pretax_sum * $tax_rate,2));
             $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
         }
-
-
 
         $invoices->pretax = $pretax_sum;
         $invoices->tax = $tax_sum;
