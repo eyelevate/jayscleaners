@@ -1467,6 +1467,7 @@ class AdminsController extends Controller
         $item_id = $request->id;
         $invoice_id = $request->invoice_id;
         $pretax = $request->pretax;
+        $company_id = $request->company_id;
         $tax_rates = Tax::where('company_id',1)->orderBy('id','desc')->limit(1)->get();
         $tax = 0.096;
         if (count($tax_rates) > 0) {
@@ -1477,6 +1478,7 @@ class AdminsController extends Controller
 
         // update the item row
         $invoice_items = InvoiceItem::find($item_id);
+        $invoice_items->company_id = $company_id;
         $invoice_items->pretax = $pretax;
         $tax_total = round($pretax * $tax,2);
         $aftertax = round($pretax + $tax_total,2);
