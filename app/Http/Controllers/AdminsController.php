@@ -1545,6 +1545,18 @@ class AdminsController extends Controller
         return response()->json("false");
     }
 
+    public function postDeleteRackSingle(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $rack = NULL;
+
+        $invoices = Invoice::find($invoice_id);
+        $invoices->rack = $rack;
+        if ($invoices->save()) {
+            return response()->json("true");
+        }
+        return response()->json("false");
+    }
+
     
 
 

@@ -51,6 +51,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/update-tag',['uses'=>'AdminsController@postUpdateTag']);
     Route::post('/admins/api/delete-tag',['uses'=>'AdminsController@postDeleteTag']);
     Route::post('/admins/api/rack-single',['uses'=>'AdminsController@postRackSingle']);
+    Route::post('/admins/api/delete-rack-single',['uses'=>'AdminsController@postDeleteRackSingle']);
 
     Route::group(['middleware' => ['forceSSL']], function(){
 	   
