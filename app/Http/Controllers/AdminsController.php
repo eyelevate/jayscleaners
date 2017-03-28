@@ -1533,6 +1533,18 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postRackSingle(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $rack = $request->rack;
+
+        $invoices = Invoice::find($invoice_id);
+        $invoices->rack = $rack;
+        if ($invoices->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     
 
 
