@@ -1540,9 +1540,9 @@ class AdminsController extends Controller
         $invoices = Invoice::find($invoice_id);
         $invoices->rack = $rack;
         if ($invoices->save()) {
-            return response()->json(['status'=>true]);
+            return response()->json([true]);
         }
-        return response()->json(['status'=>false]);
+        return response()->json([false]);
     }
 
     
