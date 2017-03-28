@@ -1536,9 +1536,11 @@ class AdminsController extends Controller
     public function postRackSingle(Request $request) {
         $invoice_id = $request->invoice_id;
         $rack = $request->rack;
+        $rack_date = date('Y-m-d H:i:s');
 
         $invoices = Invoice::find($invoice_id);
         $invoices->rack = $rack;
+        $invoices->rack_date = $rack_date;
         if ($invoices->save()) {
             return response()->json("true");
         }
