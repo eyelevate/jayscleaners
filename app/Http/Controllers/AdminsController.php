@@ -1588,7 +1588,7 @@ class AdminsController extends Controller
             $full_name = explode(' ', $search);
             Job::dump($full_name);
             
-            if (count($full_name) == 1) {  // check full name
+            if (count($full_name) > 1) {  // check full name
                 $last_name = $full_name[0];
                 $first_name = $full_name[1];
                 $data = User::where('last_name','like',"%".$last_name."%")
@@ -1597,6 +1597,7 @@ class AdminsController extends Controller
                     ->get();
 
             } else { // check last name
+                $last_name = $full_name[0];
                 $data = User::where('last_name','like',"%".$last_name."%")
                     ->get();
             }
