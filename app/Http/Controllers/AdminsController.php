@@ -1561,7 +1561,7 @@ class AdminsController extends Controller
     }
 
     public function getSingleUserData(Request $request, $data = null) {
-        $search = "choung";
+        $search = $data;
         $data = [];
 
         // check if numeric
