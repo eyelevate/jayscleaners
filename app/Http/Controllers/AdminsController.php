@@ -1560,6 +1560,76 @@ class AdminsController extends Controller
         return response()->json("false");
     }
 
+    public function getSingleUserData(Request $request, $data = null) {
+        $search = "choung";
+        $data = [];
+
+        // check if numeric
+        if (is_numeric($search)) {
+            // check length if 7-10 digits its a phone number
+            if (strlen($search) > 6) {
+                $data = User::where('phone','like',"%".$search."%")->get();
+
+            } elseif(strlen($search) == 6) { // if 6 digits its an invoice
+                $invoices = Invoice::find($search);
+                if ($invoices) {
+                    $user_id = $invoices->customer_id;
+                    $data = User::where('id',$user_id)->get();
+                }
+            } else { // if less than 6 its an id
+                $data = User::where('id',$search)->get();
+            }
+            
+
+            
+        } else { // probably a name turn it into an array then check for last and first name
+            // check marks
+            // convert string into an array by words
+            $full_name = explode(' ', $search);
+            
+            if (count($full_name) > 1) {  // check full name
+                $last_name = $full_name[0];
+                $first_name = $full_name[1];
+                $data = User::where('last_name','like',"%".$last_name."%")
+                    ->where('first_name','like',"%".$first_name."%")
+                    ->orderBy('last_name','asc')
+                    ->get();
+
+            } else { // check last name
+                $data = User::where('last_name','like',"%".$last_name."%")
+                    ->get();
+            }
+            // $custids = Custid::where('mark',$search)->get();
+            // if (count($custids) > 0) {
+            //     foreach ($custids as $custid) {
+            //         $user_id = $custid->customer_id;
+            //         $data = User::where('id',$user_id)->get();
+            //     }
+            // } else {
+                
+
+               
+            // }
+            
+        }
+
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $user_id = $value->id;
+                $custids = Custid::where('customer_id',$user_id)->get();
+                if (count($custids) > 0) {
+                    foreach ($custids as $custid) {
+                        $mark = $custid->mark;
+                        $data[$key]['mark'] = $mark;
+
+                    }
+                }
+            }
+        } 
+
+        return response()->json($data);
+    }
+
     public function postSingleUserData(Request $request) {
         $search = $request->search;
         $data = [];

@@ -53,6 +53,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/rack-single',['uses'=>'AdminsController@postRackSingle']);
     Route::post('/admins/api/delete-rack-single',['uses'=>'AdminsController@postDeleteRackSingle']);
     Route::post('/admins/api/single-user-data',['uses'=>'AdminsController@postSingleUserData']);
+    Route::get('/admins/api/single-user-data/{data}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){
 	   
