@@ -1584,31 +1584,32 @@ class AdminsController extends Controller
             
         } else { // probably a name turn it into an array then check for last and first name
             // check marks
-            $custids = Custid::where('mark',$search)->get();
-            if (count($custids) > 0) {
-                foreach ($custids as $custid) {
-                    $user_id = $custid->customer_id;
-                    $data = User::where('id',$user_id)->get();
-                }
-            } else {
-                // convert string into an array by words
-                $full_name = explode(' ', $search);
-                
-                if (count($full_name) > 1) {  // check full name
-                    $last_name = $full_name[0];
-                    $first_name = $full_name[1];
-                    $data = User::where('last_name','like',"%".$last_name."%")
-                        ->where('first_name','like',"%".$first_name."%")
-                        ->orderBy('last_name','asc')
-                        ->get();
+            // convert string into an array by words
+            $full_name = explode(' ', $search);
+            
+            if (count($full_name) > 1) {  // check full name
+                $last_name = $full_name[0];
+                $first_name = $full_name[1];
+                $data = User::where('last_name','like',"%".$last_name."%")
+                    ->where('first_name','like',"%".$first_name."%")
+                    ->orderBy('last_name','asc')
+                    ->get();
 
-                } else { // check last name
-                    $data = User::where('last_name','like',"%".$last_name."%")
-                        ->get();
-                }
+            } else { // check last name
+                $data = User::where('last_name','like',"%".$last_name."%")
+                    ->get();
+            }
+            // $custids = Custid::where('mark',$search)->get();
+            // if (count($custids) > 0) {
+            //     foreach ($custids as $custid) {
+            //         $user_id = $custid->customer_id;
+            //         $data = User::where('id',$user_id)->get();
+            //     }
+            // } else {
+                
 
                
-            }
+            // }
             
         }
 
