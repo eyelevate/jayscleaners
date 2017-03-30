@@ -1584,7 +1584,7 @@ class AdminsController extends Controller
             
         } else { // probably a name turn it into an array then check for last and first name
             // check marks
-            $custids = CustId::where('mark',$search)->get();
+            $custids = Custid::where('mark',$search)->get();
             if (count($custids) > 0) {
                 foreach ($custids as $custid) {
                     $user_id = $custid->customer_id;
@@ -1611,6 +1611,20 @@ class AdminsController extends Controller
             }
             
         }
+
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
+                $user_id = $value->id;
+                $custids = Custid::where('customer_id',$user_id)->get();
+                if (count($custids) > 0) {
+                    foreach ($custids as $custid) {
+                        $mark = $custid->mark;
+                        $data[$key]['mark'] = $mark;
+
+                    }
+                }
+            }
+        } 
 
         return response()->json($data);
     }
