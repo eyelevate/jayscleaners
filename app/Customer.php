@@ -237,23 +237,15 @@ class Customer extends Model
     }
     private static function searchByInvoiceId($query){
         $results = [];
-        $invoices = Invoice::where('id',$query)->get();
-        if(count($invoices) == 1){ // Only one invoice returned
+        $invoices = Invoice::find($query);
+        if($invoices){ // Only one invoice returned
+            $customer_id = $invoices->customer_id;
             $results = [
                 'status'=>true,
-                'redirect'=>'invoices_view',
-                'param'=>$query,                        
+                'redirect'=>'customers_view',
+                'param'=>$customer_id,                        
                 'data'=>$invoices,
                 'flash'=>'Successfully found invoice #'.$query
-            ];
-        } elseif(count($invoices) > 1) { // found multiple instances of search data
-
-            $results = [
-                'status'=>true,
-                'redirect'=>'invoices_index_post',
-                'param'=>$query,                        
-                'data'=>$invoices,
-                'flash'=>'Successfully found '.count($invoices).' invoice(s) matching "'.$query.'"!'
             ];
         } else { // nothing found
             $results = [
