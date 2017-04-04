@@ -52,7 +52,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/delete-tag',['uses'=>'AdminsController@postDeleteTag']);
     Route::post('/admins/api/rack-single',['uses'=>'AdminsController@postRackSingle']);
     Route::post('/admins/api/delete-rack-single',['uses'=>'AdminsController@postDeleteRackSingle']);
-    Route::post('/admins/api/single-user-data',['uses'=>'AdminsController@postSingleUserData']);
+    Route::post('/admins/api/single-user-data',['uses'=>'AdminsController@postApiSingleUserData']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){

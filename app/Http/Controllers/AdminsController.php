@@ -1634,7 +1634,7 @@ class AdminsController extends Controller
     //     return response()->json($data);
     // }
 
-    public function postSingleUserData(Request $request) {
+    public function postApiSingleUserData(Request $request) {
         $search = $request->search;
         $data = [];
 
@@ -1653,8 +1653,6 @@ class AdminsController extends Controller
             } else { // if less than 6 its an id
                 $data = User::where('id',$search)->get();
             }
-            
-
             
         } else { // probably a name turn it into an array then check for last and first name
             // check marks
@@ -1698,7 +1696,6 @@ class AdminsController extends Controller
                     foreach ($custids as $custid) {
                         $mark = $custid->mark;
                         $data[$key]['mark'] = $mark;
-
                     }
                 }
             }
