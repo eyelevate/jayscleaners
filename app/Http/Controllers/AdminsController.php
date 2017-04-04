@@ -1596,22 +1596,24 @@ class AdminsController extends Controller
                     ->orderBy('last_name','asc')
                     ->get();
 
-            } else { // check last name
+            } else { // check last name or mark
                 $last_name = $full_name[0];
-                $data = User::where('last_name','like',"%".$last_name."%")
+                $lnames = User::where('last_name','like',"%".$last_name."%")
                     ->get();
-            } 
-            // $custids = Custid::where('mark',$search)->get();
-            // if (count($custids) > 0) {
-            //     foreach ($custids as $custid) {
-            //         $user_id = $custid->customer_id;
-            //         $data = User::where('id',$user_id)->get();
-            //     }
-            // } else {
-                 
 
-               
-            // }
+                if (count($lnames) > 0 ) {
+                    $data = $lnames;
+                } else {
+                    $marks = Custid::where('mark',$searcg)->get();
+                    if (count($marks) > 0) {
+                        foreach ($marks as $mark) {
+                            $customer_id = $mark->customer_id;
+                            $data = User::where('id',$customer_id)->get();
+                        }
+                    }
+
+                }
+            } 
             
         }
 
@@ -1667,22 +1669,24 @@ class AdminsController extends Controller
                     ->orderBy('last_name','asc')
                     ->get();
 
-            } else { // check last name
+            } else { // check last name or mark
                 $last_name = $full_name[0];
-                $data = User::where('last_name','like',"%".$last_name."%")
+                $lnames = User::where('last_name','like',"%".$last_name."%")
                     ->get();
-            } 
-            // $custids = Custid::where('mark',$search)->get();
-            // if (count($custids) > 0) {
-            //     foreach ($custids as $custid) {
-            //         $user_id = $custid->customer_id;
-            //         $data = User::where('id',$user_id)->get();
-            //     }
-            // } else {
-                 
 
-               
-            // }
+                if (count($lnames) > 0 ) {
+                    $data = $lnames;
+                } else {
+                    $marks = Custid::where('mark',$searcg)->get();
+                    if (count($marks) > 0) {
+                        foreach ($marks as $mark) {
+                            $customer_id = $mark->customer_id;
+                            $data = User::where('id',$customer_id)->get();
+                        }
+                    }
+
+                }
+            } 
             
         }
 
