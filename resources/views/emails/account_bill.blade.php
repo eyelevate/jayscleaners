@@ -253,7 +253,7 @@
 											  <tbody>
 											     <tr>
 											        <td width="auto" align="right" valign="middle" height="15" style=" background-color:#ffffff; background-clip: padding-box;font-size:18px; font-family:Helvetica, arial, sans-serif; text-align:right;  color:#95a5a6; font-weight: 200; padding-right:5px;">
-											        	Transaction #:&nbsp;
+											        	Invoice #:&nbsp;
 											        </td>
 											        <td width="auto" align="left" valign="middle" height="15" style="background-color:#ffffff; color:#95a5a6; background-clip:padding-box; font-size:18px; font-weight:bold; font-family: Helvetica, arial, sans-serif; text-align:left;">
 											        	{{ $transactions->id }}
