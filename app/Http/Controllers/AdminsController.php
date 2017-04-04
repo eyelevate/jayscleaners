@@ -1561,78 +1561,78 @@ class AdminsController extends Controller
     }
 
 
-    public function getSingleUserData(Request $request, $search = null) {
+    // public function getSingleUserData(Request $request, $search = null) {
         
-        $data = [];
+    //     $data = [];
 
-        // check if numeric
-        if (is_numeric($search)) {
-            // check length if 7-10 digits its a phone number
-            if (strlen($search) > 6) {
-                $data = User::where('phone','like',"%".$search."%")->get();
+    //     // check if numeric
+    //     if (is_numeric($search)) {
+    //         // check length if 7-10 digits its a phone number
+    //         if (strlen($search) > 6) {
+    //             $data = User::where('phone','like',"%".$search."%")->get();
 
-            } elseif(strlen($search) == 6) { // if 6 digits its an invoice
-                $invoices = Invoice::find($search);
-                if ($invoices) {
-                    $user_id = $invoices->customer_id;
-                    $data = User::where('id',$user_id)->get();
-                }
-            } else { // if less than 6 its an id
-                $data = User::where('id',$search)->get();
-            }
+    //         } elseif(strlen($search) == 6) { // if 6 digits its an invoice
+    //             $invoices = Invoice::find($search);
+    //             if ($invoices) {
+    //                 $user_id = $invoices->customer_id;
+    //                 $data = User::where('id',$user_id)->get();
+    //             }
+    //         } else { // if less than 6 its an id
+    //             $data = User::where('id',$search)->get();
+    //         }
             
 
             
-        } else { // probably a name turn it into an array then check for last and first name
-            // check marks
-            // convert string into an array by words
-            $full_name = explode(' ', $search);
+    //     } else { // probably a name turn it into an array then check for last and first name
+    //         // check marks
+    //         // convert string into an array by words
+    //         $full_name = explode(' ', $search);
                 
-            if (count($full_name) > 1) {  // check full name
-                $last_name = $full_name[0];
-                $first_name = $full_name[1];
-                $data = User::where('last_name','like',"%".$last_name."%")
-                    ->where('first_name','like',"%".$first_name."%")
-                    ->orderBy('last_name','asc')
-                    ->get();
+    //         if (count($full_name) > 1) {  // check full name
+    //             $last_name = $full_name[0];
+    //             $first_name = $full_name[1];
+    //             $data = User::where('last_name','like',"%".$last_name."%")
+    //                 ->where('first_name','like',"%".$first_name."%")
+    //                 ->orderBy('last_name','asc')
+    //                 ->get();
 
-            } else { // check last name or mark
-                $last_name = $full_name[0];
-                $lnames = User::where('last_name','like',"%".$last_name."%")
-                    ->get();
+    //         } else { // check last name or mark
+    //             $last_name = $full_name[0];
+    //             $lnames = User::where('last_name','like',"%".$last_name."%")
+    //                 ->get();
 
-                if (count($lnames) > 0 ) {
-                    $data = $lnames;
-                } else {
-                    $marks = Custid::where('mark',$search)->get();
-                    if (count($marks) > 0) {
-                        foreach ($marks as $mark) {
-                            $customer_id = $mark->customer_id;
-                            $data = User::where('id',$customer_id)->get();
-                        }
-                    }
+    //             if (count($lnames) > 0 ) {
+    //                 $data = $lnames;
+    //             } else {
+    //                 $marks = Custid::where('mark',$search)->get();
+    //                 if (count($marks) > 0) {
+    //                     foreach ($marks as $mark) {
+    //                         $customer_id = $mark->customer_id;
+    //                         $data = User::where('id',$customer_id)->get();
+    //                     }
+    //                 }
 
-                }
-            } 
+    //             }
+    //         } 
             
-        }
+    //     }
 
-        if (count($data) > 0) {
-            foreach ($data as $key => $value) {
-                $user_id = $value->id;
-                $custids = Custid::where('customer_id',$user_id)->get();
-                if (count($custids) > 0) {
-                    foreach ($custids as $custid) {
-                        $mark = $custid->mark;
-                        $data[$key]['mark'] = $mark;
+    //     if (count($data) > 0) {
+    //         foreach ($data as $key => $value) {
+    //             $user_id = $value->id;
+    //             $custids = Custid::where('customer_id',$user_id)->get();
+    //             if (count($custids) > 0) {
+    //                 foreach ($custids as $custid) {
+    //                     $mark = $custid->mark;
+    //                     $data[$key]['mark'] = $mark;
 
-                    }
-                }
-            }
-        } 
+    //                 }
+    //             }
+    //         }
+    //     } 
 
-        return response()->json($data);
-    }
+    //     return response()->json($data);
+    // }
 
     public function postSingleUserData(Request $request) {
         $search = $request->search;
