@@ -1604,7 +1604,7 @@ class AdminsController extends Controller
                 if (count($lnames) > 0 ) {
                     $data = $lnames;
                 } else {
-                    $marks = Custid::where('mark',$searcg)->get();
+                    $marks = Custid::where('mark',$search)->get();
                     if (count($marks) > 0) {
                         foreach ($marks as $mark) {
                             $customer_id = $mark->customer_id;
@@ -1677,7 +1677,7 @@ class AdminsController extends Controller
                 if (count($lnames) > 0 ) {
                     $data = $lnames;
                 } else {
-                    $marks = Custid::where('mark',$searcg)->get();
+                    $marks = Custid::where('mark',$search)->get();
                     if (count($marks) > 0) {
                         foreach ($marks as $mark) {
                             $customer_id = $mark->customer_id;
