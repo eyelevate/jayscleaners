@@ -267,7 +267,7 @@ class InvoicesController extends Controller
             foreach ($items as $itms) { // iterate through the first index (inventory group)
                 $invoices = Invoice::find($request->invoice_id);
                 $invoices->due_date = date('Y-m-d H:i:s',strtotime($request->due_date));
-                $invoices->status = 1;   
+                   
                 $qty = 0;
                 $subtotal = 0;
                 $tax = 0;
