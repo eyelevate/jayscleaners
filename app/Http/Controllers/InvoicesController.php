@@ -256,6 +256,7 @@ class InvoicesController extends Controller
 
     public function postEdit(Request $request) {
         $items = Input::get('item');
+        $company_id = Auth::user()->company_id;
         $tax_rate = $tax_rate = Tax::where('company_id',Auth::user()->company_id)->where('status',1)->first()->rate;
         if(count($items) > 0) { //Check if any items were selected
 
