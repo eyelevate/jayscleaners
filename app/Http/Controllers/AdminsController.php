@@ -1728,6 +1728,26 @@ class AdminsController extends Controller
         return $invoices;
     }
 
+    public function postApiSyncRackableInvoices(Request $request) {
+        $company_id = $request->company_id;
+        $yesterday_start = date('Y-m-d 00:00:00',strtotime("yesterday"));
+        $today_end = date('Y-m-d 23:59:59');
+
+        $invoices = Invoice::withTrashed()
+            ->whereBetween('created_at',[$yesterday_start,$today_end])
+            ->where('company_id',$company_id)
+            ->get();
+        if (count($invoices) > 0) {
+            foreach ($invoices as $key => $value) {
+                $invoice_id = $value->id;
+                $iitems = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                if (count($iitems) > 0) {
+                    $invoices[$key]['invoice_items'] = $iitems;
+                }
+            }
+        }
+    }
+
     
 
 

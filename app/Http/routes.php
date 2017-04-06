@@ -54,6 +54,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/delete-rack-single',['uses'=>'AdminsController@postDeleteRackSingle']);
     Route::post('/admins/api/single-user-data',['uses'=>'AdminsController@postApiSingleUserData']);
     Route::post('/admins/api/sync-customer',['uses'=>'AdminsController@postApiSyncCustomer']);
+    Route::post('/admins/api/sync-rackable-invoices',['uses'=>'AdminsController@postApiSyncRackableInvoices']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){
