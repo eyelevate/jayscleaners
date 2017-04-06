@@ -135,7 +135,18 @@ class Admin extends Model
     			$update_rows += count($inventory_items);
     		}
     		if(count($invoices) > 0){
-    			$update['invoices'] = $invoices;
+    			
+
+                // for invoices make a special double check
+                if (count($invoices) > 0) {
+                    foreach ($invoices as $key => $value) {
+                        $invoice_id = $value->id;
+                        $iitems = InvoiceItem::withTrashed()->where('invoice_id',$invoice_id)->get();
+                    }
+                }
+
+                $update['invoices'] = $invoices;
+
     			$update_rows += count($invoices);
     		}
     		if(count($invoice_items) > 0){
