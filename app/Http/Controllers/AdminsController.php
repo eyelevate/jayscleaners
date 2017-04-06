@@ -1725,7 +1725,7 @@ class AdminsController extends Controller
             $invoices = [];
         }
 
-        return $invoices;
+        return response()->json($invoices);
     }
 
     public function postApiSyncRackableInvoices(Request $request) {
@@ -1745,7 +1745,11 @@ class AdminsController extends Controller
                     $invoices[$key]['invoice_items'] = $iitems;
                 }
             }
+        } else {
+            $invoices = [];
         }
+
+        return response()->json($invoices);
     }
 
     
