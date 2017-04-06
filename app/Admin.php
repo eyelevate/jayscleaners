@@ -136,13 +136,11 @@ class Admin extends Model
     		}
     		if(count($invoices) > 0){
     			
-
                 // for invoices make a special double check
-                if (count($invoices) > 0) {
-                    foreach ($invoices as $key => $value) {
-                        $invoice_id = $value->id;
-                        $iitems = InvoiceItem::withTrashed()->where('invoice_id',$invoice_id)->get();
-                    }
+                foreach ($invoices as $key => $value) {
+                    $invoice_id = $value->id;
+                    $iitems = InvoiceItem::withTrashed()->where('invoice_id',$invoice_id)->get();
+                    $invoices[$key]['invoice_items'] = $iitems;
                 }
 
                 $update['invoices'] = $invoices;
