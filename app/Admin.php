@@ -140,7 +140,12 @@ class Admin extends Model
                 foreach ($invoices as $key => $value) {
                     $invoice_id = $value->id;
                     $iitems = InvoiceItem::withTrashed()->where('invoice_id',$invoice_id)->get();
-                    $invoices[$key]['invoice_items'] = $iitems;
+                    if (count($iitems) > 0) {
+                        $invoices[$key]['invoice_items'] = $iitems;
+                    } else {
+                        $invocies[$key]['invoice_items'] = [];
+                    }
+                    
                 }
 
                 $update['invoices'] = $invoices;
