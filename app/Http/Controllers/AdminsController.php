@@ -1733,6 +1733,7 @@ class AdminsController extends Controller
         $today_end = date('Y-m-d 23:59:59');
 
         $invoices = Invoice::withTrashed()
+            ->where('status','<',5)
             ->whereBetween('created_at',[$yesterday_start,$today_end])
             ->get();
         if (count($invoices) > 0) {
