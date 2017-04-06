@@ -1704,6 +1704,30 @@ class AdminsController extends Controller
         return response()->json($data);
     }
 
+
+    public function postApiSyncCustomer(Request $request) {
+        $customer_id = $request->customer_id;
+
+        $invoices = Invoice::withTrashed()
+            ->where('customer_id',$customer_id)
+            ->where('status','<',5)
+            ->get();
+
+        if (count($invoices) > 0) {
+            foreach ($invoices as $key => $value) {
+                $invoice_id = $value->id;
+                $iitems = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                if (count($iitems) > 0) {
+                    $invoices[$key]['invoice_items'] = $iitems;
+                }
+            }
+        } else {
+            $invoices = [];
+        }
+
+        return $invoices;
+    }
+
     
 
 
