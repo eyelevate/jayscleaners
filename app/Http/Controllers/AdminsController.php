@@ -1751,6 +1751,25 @@ class AdminsController extends Controller
         return response()->json($invoices);
     }
 
+    public function postApiSyncRackableInvoice(Request $request) {
+        $invoice_id = $request->invoice_id;
+        $invoices = Invoice::withTrashed()
+            ->where('id',$invoice_id)
+            ->get();
+        if (count($invoices) > 0) {
+            foreach ($invoices as $key => $value) {
+                $iitems = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                if (count($iitems) > 0) {
+                    $invoices[$key]['invoice_items'] = $iitems;
+                }
+            }
+        } else {
+            $invoices = [];
+        }
+
+        return response()->json($invoices);
+    }
+
     
 
 
