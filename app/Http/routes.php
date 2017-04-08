@@ -58,7 +58,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/sync-rackable-invoices',['uses'=>'AdminsController@postApiSyncRackableInvoices']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
-    Route::group(['middleware' => ['forceSSL']], function(){
+    // Route::group(['middleware' => ['forceSSL']], function(){
 	   
 	    Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
 	    Route::get('/services',['as'=>'pages_services','uses'=>'PagesController@getServices']);
@@ -377,7 +377,7 @@ Route::group(['middleware' => ['web']], function () {
 			Route::post('/zipcode-requests/deny', ['as'=>'zipcode_request_deny', 'uses' => 'ZipcodeRequestsController@postDeny']);
 			//ACL Rules
 		});
-	});
+	// });
 
 });
 

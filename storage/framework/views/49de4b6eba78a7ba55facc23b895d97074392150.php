@@ -126,7 +126,7 @@
 	</div>
 	<div class="box-footer clearfix">
 		
-		<button class="btn btn-lg btn-success" type="submit">Edit Prices</button>
+		<button class="btn btn-lg btn-success" type="submit">Edit Invoice</button>
 	</div>
 </div>
 <?php echo Form::close(); ?>
