@@ -824,6 +824,7 @@ class AdminsController extends Controller
                     $data[$table] = Credit::whereBetween('id',[$start,$end])->get();
                     break;
                     
+                    
                 case 'custids':
                     $data[$table] = Custid::whereBetween('id',[$start,$end])->get();
                     break;
