@@ -14,7 +14,7 @@
 	                    <label class="col-md-4 control-label">Location <span class="text text-danger">*</span></label>
 
 	                    <div class="col-md-6">
-	                        {!! Form::select('company_id',$companies , '', ['id'=>'groupEdit-company_id','class'=>'form-control']) !!}
+	                        {!! Form::select('company_id',$companies , Auth::user()->company_id, ['id'=>'groupEdit-company_id','class'=>'form-control']) !!}
 	                        @if ($errors->has('company_id'))
 	                            <span class="help-block">
 	                                <strong>{{ $errors->first('company_id') }}</strong>
