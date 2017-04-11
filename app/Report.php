@@ -138,8 +138,8 @@ class Report extends Model
 
         /** transaction types
         * 1. credit
-        * 2. cash
-        * 3. check
+        * 2. check
+        * 3. cash
         * 4. online cc
         * 5. account
         * 6. other
@@ -150,26 +150,6 @@ class Report extends Model
 
         $report = [];
         setlocale(LC_MONETARY, 'en_US.utf8');
-        $test = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->get();
-        $t1 = 0;
-        $t2 = 0;
-        $t3 = 0;
-        $t4 = 0;
-        $t5 = 0;
-        if (count($test)> 0) {
-            foreach ($test as $t) {
-                $t1 += $t['pretax'];
-                $t2 += $t['tax'];
-                $t3 += $t['discount'];
-                $t4 += $t['credit'];
-                $t5 += $t['total'];
-            }
-        } 
-        Job::dump('test');
-        Job::dump('test');
-        Job::dump('test');
-        Job::dump(['pretax'=>$t1,'tax'=>$t2,'discount'=>$t3,'credit'=>$t4,'total'=>$t5]);
-
         // pickup 
         $pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('pretax');
         $tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->sum('tax');
