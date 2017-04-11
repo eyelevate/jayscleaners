@@ -153,11 +153,21 @@
 					<td>{{ $reports['total_splits']['check']['tax'] }}</td>
 					<td>{{ $reports['total_splits']['check']['total'] }}</td>
 				</tr>
+				<tr>
+					<td>Account - not included until paid</td>
+					<td>{{ $reports['total_splits']['account']['subtotal'] }}</td>
+					<td>{{ $reports['total_splits']['account']['tax'] }}</td>
+					<td>{{ $reports['total_splits']['account']['total'] }}</td>
+				</tr>
 			</tbody>
 			<tfoot>
 				<tr>
 					<th colspan="3" style="text-align:right">Subtotal</th>
 					<td>{{ $reports['totals']['subtotal'] }}</td>
+				</tr>
+				<tr>
+					<th colspan="3" style="text-align:right">Discount</th>
+					<td>{{ $reports['totals']['discount'] }}</td>
 				</tr>
 				<tr>
 					<th colspan="3" style="text-align:right">Tax</th>
@@ -167,10 +177,7 @@
 					<th colspan="3" style="text-align:right">Credit</th>
 					<td>{{ $reports['totals']['credit'] }}</td>
 				</tr>
-				<tr>
-					<th colspan="3" style="text-align:right">Discount</th>
-					<td>{{ $reports['totals']['discount'] }}</td>
-				</tr>
+				
 				<tr>
 					<th colspan="3" style="text-align:right">Total</th>
 					<td>{{ $reports['totals']['total'] }}</td>
