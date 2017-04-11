@@ -160,23 +160,23 @@ class Report extends Model
         $cash_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('pretax');
         $cash_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('tax');
         $cash_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('discount');
-        $cash_total = ($cash_pretax + $cash_discount) + $cash_tax;
+        $cash_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('total');
         $check_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('pretax');
         $check_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('tax');
         $check_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('discount');
-        $check_total = ($check_pretax + $check_discount) + $check_tax;
+        $check_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('total');
         $cc_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('pretax');
         $cc_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('tax');
         $cc_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('discount');
-        $cc_total = ($cc_pretax + $cc_discount) + $cc_tax;
+        $cc_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('total');
         $online_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('pretax');
         $online_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('tax');
         $online_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('discount');
-        $online_total = ($online_pretax + $online_discount) + $online_tax;
+        $online_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('total');
         $account_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',5)->sum('pretax');
         $account_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',5)->sum('tax');
         $account_discount = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',5)->sum('discount');
-        $account_total = ($account_pretax + $account_discount) + $account_tax;
+        $account_total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',5)->sum('total');
 
 
         $report = [
