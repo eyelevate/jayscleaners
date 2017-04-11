@@ -145,8 +145,8 @@ class Report extends Model
         * 6. other
         **/
 
-        $start_date = date('Y-m-d H:i:s',$start);
-        $end_date = date('Y-m-d H:i:s',$end);
+        $start_date = date('Y-m-d 00:00:00',$start);
+        $end_date = date('Y-m-d 23:59:59',$end);
 
         $report = [];
         setlocale(LC_MONETARY, 'en_US.utf8');
