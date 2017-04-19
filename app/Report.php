@@ -255,7 +255,7 @@ class Report extends Model
         $inv_summary = [];
         $dropoff_summary = [];
         
-        $inventories = Inventory::where('company_id',$company_id)->get();
+        $inventories = Inventory::all();
         
         $ps_quantity = Invoice::whereIn('id',$completed_invoice_ids)->sum('quantity');
         $ps_subtotal = Invoice::whereIn('id',$completed_invoice_ids)->sum('pretax');
@@ -303,7 +303,7 @@ class Report extends Model
                 $pretax = Invoice::whereIn('id',$cmplist)->sum('pretax');
                 $tax = Invoice::whereIn('id',$cmplist)->sum('tax');
                 $total = Invoice::whereIn('id',$cmplist)->sum('total');
-                $inv_summary[$inventory_id] = [
+                $inv_summary[$inventory->name] = [
                     'name' => $inventory->name,
                     'totals' => [
                         'quantity' => $qty, 
@@ -318,7 +318,7 @@ class Report extends Model
                 $drop_pretax = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('pretax');
                 $drop_tax = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('tax');
                 $drop_total = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('total');
-                $dropoff_summary[$inventory_id] = [
+                $dropoff_summary[$inventory->name] = [
                     'name' => $inventory->name,
                     'totals' => [
                         'quantity' => $drop_qty, 
