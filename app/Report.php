@@ -282,7 +282,7 @@ class Report extends Model
         $itemsToInvoice = [];
         if (count($completed_invoice_ids) > 0) {
             foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
-                $check_inventory_id = InventoryItem::where('invoice_id',$iidvalue)->first()->pluck('inventory_id');
+                $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->first()->pluck('inventory_id');
                 $itemsToInvoice[$check_inventory_id][$iidkey] = $iidvalue;
 
             }
