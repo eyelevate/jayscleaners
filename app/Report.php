@@ -289,16 +289,13 @@ class Report extends Model
         }
         if (count($completed_invoice_ids) > 0) {
             foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
-                $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->get();
+                $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->pluck('inventory_id');
                 if (count($check_inventory_id) > 0) {
-                    foreach ($check_inventory_id as $ciivalue) {
-                        array_push($itemsToInvoice[$ciivalue->inventory_id], $iidvalue);    
-                    }
-                    
+                    Job::dump($iidkey.' - '.$check_inventory_id[0]);
+                    array_push($itemsToInvoice[$check_inventory_id[0]], $iidvalue);
                 }
             }
         }
-        Job::dump($itemsToInvoice);
         if (count($itemsToInvoice) > 0) {
             foreach ($itemsToInvoice as $inventory_id => $cmplist) {
                 $inventory = Inventory::find($inventory_id);
