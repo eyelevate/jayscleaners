@@ -279,6 +279,16 @@ class Report extends Model
 
         // #make a list of inventory item id to inventory id
         $itemsToInventory = Report::itemsToInventory($company_id);
+        $itemsToInvoice = [];
+        if (count($completed_invoice_ids) > 0) {
+            foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
+                $check_inventory_id = InventoryItem::where('invoice_id',$iidvalue)->first()->pluck('inventory_id');
+                $itemsToInvoice[$check_inventory_id][$iidkey] = $iidvalue;
+
+            }
+        }
+        Job::dump($itemsToInvoice);
+
 
         if (count($inventories) > 0) {
             // $items = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->pluck('id');
