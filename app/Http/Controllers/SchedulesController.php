@@ -806,7 +806,7 @@ class SchedulesController extends Controller
                     $transactions->tax = $totals['tax'];
                     $transactions->aftertax = $totals['total'];
                     $transactions->total = $totals['total'];
-                    $transactions->type = 1;
+                    $transactions->type = 2;
                     $transactions->tendered = $totals['total'];
                     $transactions->transaction_id = $attempt_payment['trans_id'];
                     $transactions->status = 1;
@@ -863,6 +863,7 @@ class SchedulesController extends Controller
 
                 if ($void['status']) {
                     $transaction_status = true;
+                    $trans->type = NULL;
                     $trans->status = 2; // voided
                 } else {
                     Flash::error('Void failure: '.$void['message']);
@@ -870,6 +871,7 @@ class SchedulesController extends Controller
                     $refund = Card::makeRefund($company_id, $payment_transaction_id);
                     if ($refund) {
                         $transaction_status = true;
+                        $trans->type = NULL;
                         $trans->status = 2; // refunded
                     } else {
                         Flash::error('Transaction could not be voided / refunded. Please manually refund.');
