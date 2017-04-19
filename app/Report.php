@@ -291,10 +291,14 @@ class Report extends Model
             foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
                 $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->pluck('inventory_id');
                 if (count($check_inventory_id) > 0) {
-                    array_push($itemsToInvoice[$check_inventory_id[0]], $iidvalue);
+                    foreach ($check_inventory_id as $ciivalue) {
+                        array_push($itemsToInvoice[$ciivalue], $iidvalue);    
+                    }
+                    
                 }
             }
         }
+        Job::dump($itemsToInvoice);
         if (count($itemsToInvoice) > 0) {
             foreach ($itemsToInvoice as $inventory_id => $cmplist) {
                 $inventory = Inventory::find($inventory_id);
