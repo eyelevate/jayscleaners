@@ -297,9 +297,16 @@ class Report extends Model
             }
         }
 
+
+        
+
         Job::dump($itemsToInvoice);
         if (count($itemsToInvoice) > 0) {
+
             foreach ($itemsToInvoice as $inventory_id => $cmplist) {
+                if ($inventory_id > 5) {
+                    break;
+                }
                 $inventory = Inventory::find($inventory_id);
                 $qty = Invoice::whereIn('id',$cmplist)->sum('quantity');
                 $pretax = Invoice::whereIn('id',$cmplist)->sum('pretax');
