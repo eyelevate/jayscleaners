@@ -291,7 +291,7 @@ class Report extends Model
             foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
                 $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->pluck('inventory_id');
                 Job::dump($check_inventory_id);
-                array_push($itemsToInvoice[$check_inventory_id], $iidvalue);
+ 
                 
 
             }
