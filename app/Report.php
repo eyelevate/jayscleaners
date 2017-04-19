@@ -221,7 +221,6 @@ class Report extends Model
             ],
 
         ];
-        Job::dump($company_id);
         $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id');
         $completed_invoice_ids = [];
         if (count($query) > 0) {
@@ -286,32 +285,24 @@ class Report extends Model
                 $itemsToInvoice[$inventory_id] = [];
             }
         }
-        Job::dump($completed_invoice_ids);
         if (count($completed_invoice_ids) > 0) {
             foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
                 $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->pluck('inventory_id');
-                Job::dump($check_inventory_id);
                 if (count($check_inventory_id) > 0) {
                     array_push($itemsToInvoice[$check_inventory_id[0]], $iidvalue);
                 }
             }
         }
         Job::dump($itemsToInvoice);
-
-
-        if (count($inventories) > 0) {
-            // $items = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->pluck('id');
-            // $dropoff_items = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->pluck('id');
-            foreach ($inventories as $inventory) {               
-                $inventory_id = $inventory->id;
-                $inventory_name = $inventory->name;
-                $qty = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('quantity');
-                $pretax = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('pretax');
-                $tax = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('tax');
-                $total = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->sum('pretax');
-                
+        if (count($itemsToInvoice) > 0) {
+            foreach ($itemsToInvoice as $inventory_id => $cmplist) {
+                $inventory = Inventory::find($inventory_id);
+                $qty = Invoice::whereIn('id',$cmplist)->sum('quantity');
+                $pretax = Invoice::whereIn('id',$cmplist)->sum('pretax');
+                $tax = Invoice::whereIn('id',$cmplist)->sum('tax');
+                $total = Invoice::whereIn('id',$cmplist)->sum('total');
                 $inv_summary[$inventory_id] = [
-                    'name' => $inventory_name,
+                    'name' => $inventory->name,
                     'totals' => [
                         'quantity' => $qty, 
                         'subtotal' =>money_format('%n', $pretax), 
@@ -320,12 +311,13 @@ class Report extends Model
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
+
                 $drop_qty = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('quantity');
                 $drop_pretax = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('pretax');
                 $drop_tax = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('tax');
                 $drop_total = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory_id)->sum('total');
                 $dropoff_summary[$inventory_id] = [
-                    'name' => $inventory_name,
+                    'name' => $inventory->name,
                     'totals' => [
                         'quantity' => $drop_qty, 
                         'subtotal' => money_format('%n',$drop_pretax), 
@@ -334,7 +326,6 @@ class Report extends Model
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
-
             }
         }
 
