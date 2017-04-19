@@ -221,7 +221,7 @@ class Report extends Model
             ],
 
         ];
-        $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id');
+        $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('status','<',5)->pluck('id');
         $completed_invoice_ids = [];
         if (count($query) > 0) {
             $trans_id_list = [];
