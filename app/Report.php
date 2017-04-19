@@ -221,7 +221,7 @@ class Report extends Model
             ],
 
         ];
-
+        Job::dump($company_id);
         $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id');
         $completed_invoice_ids = [];
         if (count($query) > 0) {
@@ -230,7 +230,7 @@ class Report extends Model
                 $transaction_id = $qid;
                 array_push($trans_id_list, $transaction_id);
             }
-            $invs = Invoice::whereIn('transaction_id',$trans_id_list)->where('status',5)->pluck('id');
+            $invs = Invoice::whereIn('transaction_id',$trans_id_list)->where('status',5)->where('company_id',$company_id)->pluck('id');
             if (count($invs) > 0) {
                 foreach ($invs as $invid) {
                     $invoice_id = $invid;
