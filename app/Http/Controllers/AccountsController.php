@@ -221,6 +221,7 @@ class AccountsController extends Controller
                     // send email
                     $from = 'noreply@jayscleaners.com';
                     // Email customer
+                    // if (Mail::send('emails.account_bill-nodelivery', [
                     if (Mail::send('emails.account_bill', [
                         'transactions' => $transactions,
                         'customers' => $customers
@@ -355,11 +356,18 @@ class AccountsController extends Controller
         $this->layout = 'layouts.bill';
         return view('accounts.pay_my_bill')
         ->with('layout',$this->layout); 
+        // $this->layout = 'layouts.bill-nodelivery';
+        // return view('accounts.pay_my_bill-nodelivery')
+        // ->with('layout',$this->layout); 
     }
 
     public function getOneTimePayment(){
         $this->layout = 'layouts.bill';
+        // $this->layout = 'layouts.bill-nodelivery';
         $transactions = [];
+        // return view('accounts.one_time_payment-nodelivery')
+        // ->with('transactions',$transactions)
+        // ->with('layout',$this->layout); 
         return view('accounts.one_time_payment')
         ->with('transactions',$transactions)
         ->with('layout',$this->layout); 
@@ -367,6 +375,7 @@ class AccountsController extends Controller
 
     public function postOneTimePayment(Request $request) {
         $this->layout = 'layouts.bill';
+        // $this->layout = 'layouts.bill-nodelivery';
         $transaction_id = $request->transaction_id;
         $customer_id = $request->customer_id;
         $transactions = Transaction::where('customer_id',$customer_id)
@@ -377,18 +386,20 @@ class AccountsController extends Controller
         $request->session()->put('transaction_status',$transaction_status);
         $request->session()->put('transactions',$transactions);
         return Redirect::route('accounts_oneTimeFinish');
-        // return view('accounts.one_time_payment')
-        // ->with('transactions',$transactions)
-        // ->with('layout',$this->layout);
+
     }
 
     public function getOneTimeFinish(Request $request) {
         $this->layout = 'layouts.bill';
+        // $this->layout = 'layouts.bill-nodelivery';
         $transaction_status = $request->session()->has('transaction_status') ? $request->session()->get('transaction_status') : false;
         if ($transaction_status) {
 
             $transactions = $request->session()->get('transactions');
 
+            // return view('accounts.one_time_finish-nodelivery')
+            // ->with('transactions',$transactions)
+            // ->with('layout',$this->layout);   
             return view('accounts.one_time_finish')
             ->with('transactions',$transactions)
             ->with('layout',$this->layout);             
@@ -420,7 +431,7 @@ class AccountsController extends Controller
             }
         }
         $exp_date = date('my',strtotime($r->exp_year.'-01-'.$r->exp_month));
-        $company_id = $r->company_id;
+        $company_id = 1; // Hard code Young's Api for payment
         $companies = Company::find($company_id);
         $api_login = $companies->payment_api_login;
         $api_pass = $companies->payment_gateway_id;
@@ -483,6 +494,7 @@ class AccountsController extends Controller
                             $from = 'noreply@jayscleaners.com';
                             // Email customer
                             if (Mail::send('emails.account_receipt', [
+                            // if (Mail::send('emails.account_receipt-nodelivery', [
                                 'transactions' => $save,
                                 'customers'=>$customers
                             ], function($message) use ($send_to)
@@ -696,6 +708,7 @@ class AccountsController extends Controller
                                 $from = 'noreply@jayscleaners.com';
                                 $transactions = Transaction::whereIn('id',$transaction_ids)->get();
                                 // Email customer
+                                // if (Mail::send('emails.account_receipts-nodelivery', [
                                 if (Mail::send('emails.account_receipts', [
                                     'transactions' => $transactions,
                                     'amount_paid' => $total,
@@ -831,6 +844,7 @@ class AccountsController extends Controller
                                 $send_to = $r->email;
                                 $from = 'noreply@jayscleaners.com';
                                 // Email customer
+                                // if (Mail::send('emails.account_receipts-nodelivery', [
                                 if (Mail::send('emails.account_receipts', [
                                     'transactions' => $transactions,
                                     'amount_paid' => $total,

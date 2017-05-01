@@ -64,21 +64,8 @@ Route::group(['middleware' => ['web']], function () {
 	    Route::get('/services',['as'=>'pages_services','uses'=>'PagesController@getServices']);
 	    Route::get('/business-hours',['as'=>'pages_business_hours','uses'=>'PagesController@getBusinessHours']);
 	    Route::get('/contact-us',['as'=>'pages_contact_us','uses'=>'PagesController@getContactUs']);
-	    Route::get('/login',['as'=>'pages_login','uses'=>'PagesController@getLogin']);
-	    Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
-	    Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
-	    Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
 	    Route::get('/pricing',  ['as'=>'pages_pricing', 'uses' => 'PagesController@getPricing']);
-	    Route::get('/reset-password/{token}',['as'=>'pages_reset_password','uses'=>'PagesController@getResetPassword']);
-	    Route::post('/reset-password',['as'=>'pages_reset_password_post','uses'=>'PagesController@postResetPassword']);
 	    Route::get('/terms-of-service',['as'=>'pages_terms','uses'=>'PagesController@getTerms']);
-	    Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
-	    Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
-	    Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
-	    Route::get('/zipcodes/request/{id}',['as'=>'zipcodes_request','uses'=>'ZipcodesController@getRequest']);
-	    Route::post('/zipcodes/request',['as'=>'zipcodes_request_post','uses'=>'ZipcodesController@postRequest']);
-	    
-
 	    Route::get('/home', 'HomeController@index');
 
 	    // Accounts
@@ -88,6 +75,19 @@ Route::group(['middleware' => ['web']], function () {
 	    Route::post('/one-time-payment',['as'=>'accounts_oneTimePayment_post','uses'=>'AccountsController@postOneTimePayment']);
 	    Route::post('/one-time-finish',['as'=>'accounts_oneTimeProcess_post','uses'=>'AccountsController@postOneTimeFinish']);
 
+
+	    // Delivery Customer Page
+	    Route::get('/login',['as'=>'pages_login','uses'=>'PagesController@getLogin']);
+	    Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
+	    Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
+	    Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
+	    Route::get('/reset-password/{token}',['as'=>'pages_reset_password','uses'=>'PagesController@getResetPassword']);
+	    Route::post('/reset-password',['as'=>'pages_reset_password_post','uses'=>'PagesController@postResetPassword']);
+	    Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
+	    Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
+	    Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
+	    Route::get('/zipcodes/request/{id}',['as'=>'zipcodes_request','uses'=>'ZipcodesController@getRequest']);
+	    Route::post('/zipcodes/request',['as'=>'zipcodes_request_post','uses'=>'ZipcodesController@postRequest']);
 
 
 		//Frontend Authentication
@@ -134,11 +134,8 @@ Route::group(['middleware' => ['web']], function () {
 	    	Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
 	    	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
 	    	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
-
 	    	Route::get('/users/update', ['as' => 'users_update', 'uses'=>'UsersController@getUpdate']);
 	    	Route::post('/users/update', ['as' => 'users_update_post', 'uses'=>'UsersController@postUpdate']);
-
-
 	    	Route::get('/update-contact', ['as'=>'pages_update_contact','uses'=>'PagesController@getUpdateContact']);
 	    	Route::post('/pages/one-touch',['as'=>'pages_onetouch','uses'=>'PagesController@postOneTouch']);
 		});
@@ -321,6 +318,9 @@ Route::group(['middleware' => ['web']], function () {
 			Route::get('/reports',  ['as'=>'reports_index', 'uses' => 'ReportsController@getIndex']);
 			Route::post('/reports', ['as'=>'reports_index_post', 'uses'=>'ReportsController@postIndex']);
 			Route::get('/reports/make/{start}/{end}/{company_id}', ['as'=>'reports_make', 'uses'=>'ReportsController@getMake']);
+			Route::get('/reports/view/{start}/{end}/{company_id}', ['as'=>'reports_view', 'uses'=>'ReportsController@getView']);
+			
+
 			// Schedules
 			Route::get('/schedules/checklist',['as'=>'schedules_checklist','uses'=>'SchedulesController@getChecklist']);
 			Route::post('/schedules/checklist',['as'=>'schedules_checklist_post','uses'=>'SchedulesController@postChecklist']);

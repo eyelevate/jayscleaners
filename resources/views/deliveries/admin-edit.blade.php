@@ -37,7 +37,7 @@
         container:$("#dropoff_container"),
         format:'D m/d/Y',
         disabled_dates: disabled_dates,
-        direction: ['{{ date("D m/d/Y",strtotime($dropoff_date)) }}', false],
+        direction: ['{{ date("D m/d/Y",strtotime($dropoff_date)) }}', true],
         show_select_today: true,
         onSelect: function(a, b) {
             var dropoff_address_id = $("#pickup_address option:selected").val();

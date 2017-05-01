@@ -132,8 +132,7 @@
                                  <tr>
                                     <td width="270" valign="middle" style="font-family: Helvetica, Arial, sans-serif;font-size: 14px; color: #ffffff;line-height: 24px; padding: 10px 0;" align="right" class="menu" st-content="menu">
                                        <a href="{{ route('pages_index') }}" style="text-decoration: none; color: #ffffff;">HOME</a>
-                                       &nbsp;|&nbsp;
-                                       <a href="{{ route('delivery_pickup') }}" style="text-decoration: none; color: #ffffff;">Delivery</a>
+
                                     </td>
                                     <td width="20"></td>
                                  </tr>

@@ -9,78 +9,16 @@
 
 <?php $__env->startSection('navigation'); ?>
 	<header id="header" class="alt">
-	<?php if($auth): ?>
-		<?php echo View::make('partials.layouts.navigation_logged_in')
-			->render(); ?>
+	<?php echo View::make('partials.layouts.navigation-nodelivery')
+		->render(); ?>
 
-	<?php else: ?>
-		<?php echo View::make('partials.layouts.navigation_logged_out')
-			->render(); ?>
-
-	<?php endif; ?>
 	</header>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('banner'); ?>
-	<?php if($auth): ?>
-
 	<header>
 		<h2>Jays Cleaners</h2>
 	</header>
-	<p>Welcome back <strong><?php echo e(Auth::user()->username); ?></strong>
-	<br />
-	Start your delivery today!
-	<br /><br/>							
-	<ul class="buttons vertical">
-		<li><a href="<?php echo e(route('delivery_start')); ?>" class="button fit">Schedule Delivery</a></li>
-		<?php if(count($schedules) > 0): ?>
-		<li>
-			<p><strong>OR</strong></p>
-		</li>
-		<li>
-			<?php echo Form::open(['action' => 'PagesController@postOneTouch', 'class'=>'form-horizontal','role'=>"form"]); ?>
-
-  			<?php echo csrf_field(); ?>
-
-			<ul class="buttons vertical">
-				<li><input data-toggle="modal" data-target="#loading" type="submit" class="button fit" value="Repeat Last Delivery"/></li>
-			</ul>  			
-			<?php echo Form::close(); ?>
-
-		</li>
-		<?php endif; ?>
-	</ul>
-
-	<?php else: ?>
-
-	<?php echo Form::open(['action' => 'PagesController@postZipcodes', 'class'=>'form-horizontal','role'=>"form"]); ?>
-
-	<?php echo csrf_field(); ?>
-
-	<header>
-		<h2>Jays Cleaners</h2>
-	</header>
-	<p><strong>Free</strong> delivery and pickup!
-	<br />
-	Start your delivery today!
-	<br /><br/>
-	<header>
-        <?php echo Form::text('zipcode', old('zipcode'), ['placeholder'=>'Enter your zipcode', 'style'=>'background-color:#ffffff; color:#000000;']); ?>
-
-        <?php if($errors->has('zipcode')): ?>
-            <span class="help-block">
-                <strong style="color:#ffffff"><?php echo e($errors->first('zipcode')); ?></strong>
-            </span>
-        <?php endif; ?>
-	</header>							
-	<ul class="buttons vertical">
-		<li><input type="submit" class="button fit" text="Start"/></li>
-	</ul>
-	<?php echo Form::close(); ?>
-
-
-	<?php endif; ?>
-
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -93,7 +31,7 @@
 <br/>
 <section class="wrapper style1 container special clearfix">
 	<div class="row">
-		<div class="4u 12u(narrower)" style="background-color:#f3f6fa;">
+		<div class="6u 12u(narrower)" style="background-color:#f3f6fa;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
@@ -113,7 +51,7 @@
 			</section>
 
 		</div>
-		<div class="4u 12u(narrower)" style="background-color:#f3f6fa;">
+		<div class="6u 12u(narrower)" style="background-color:#f3f6fa;">
 
 			<section class="read_articles" style="background-color:#F3F6FA; padding: 5px;">
 				
@@ -126,20 +64,7 @@
 			</section>
 
 		</div>
-		<div class="4u 12u(narrower)" style="background-color:#f3f6fa;">
 
-			<section class="read_articles" style="background-color:#F3F6FA; padding:5px;">
-				
-				<header>
-					<span class="icon featured fa-truck"></span>
-					<h3>Delivery Specialists</h3>
-				</header>
-				<p>Create an Account using our <a href="<?php echo e(route('pages_registration')); ?>">Sign Up</a> page and set up a delivery schedule today. Returning Members can simply <a href="<?php echo e(route('pages_login')); ?>">Login</a> to schedule a delivery.</p>  
-				<p>Special Instructions for any article or garment and delivery location (concierge, front porch, etc) can be included on each delivery schedule. Once you are finished, we will send you an email confirmation.</p>
-				<a href="<?php echo e(route('delivery_pickup')); ?>" class="btn btn-lg btn-info">Schedule A Delivery</a>
-			</section>
-
-		</div>
 
 	</div>
 </section>
@@ -157,8 +82,7 @@
 			</header>
 			<section class="clearfix">
 			<p>
-				We proudly serve the Seattle region at our conveniently located Montlake and Roosevelt locations.  Additionally, we offer free pickup/delivery to local Seattle neighborhood
-				homes, offices, business and more.
+				We proudly serve the Seattle region at our conveniently located Montlake and Roosevelt locations.
 			</p>
 			<?php if(count($companies) > 0): ?>
 				<?php foreach($companies as $company): ?>

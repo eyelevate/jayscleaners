@@ -208,8 +208,17 @@ class Account extends Model
 			    		->get();
 			    	if (count($last_trans) > 0) {
 			    		foreach ($last_trans as $last) {
-			    			$last_paid_date = date('F d, Y',strtotime($last->account_paid_on));
-			    			$last_paid_amount = money_format('$%i',$last->account_paid);
+			    			if (isset($last->account_paid_on)) {
+			    				$last_paid_date = date('F d, Y',strtotime($last->account_paid_on));
+			    			} else {
+			    				$last_paid_date = 'N/A';
+			    			}
+			    			if (isset($last_paid_amount)) {
+			    				$last_paid_amount = money_format('$%i',$last->account_paid);
+			    			} else {
+			    				$last_paid_amount = 'N/A';
+			    			}
+			    			
 			    		}
 			    	} else {
 			    		$last_paid_date = 'Not Paid';
@@ -327,6 +336,11 @@ class Account extends Model
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
 			    	$html .= '<th colspan="3"></th>';
+			    	$html .= '<th>Discount</th>'; 
+			    	$html .= '<td color="#ff0000">'.money_format('$%i',$transaction->discount).'</td>';
+			    	$html .= '</tr>';
+			    	$html .= '<tr>';
+			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>Tax</th>'; 
 			    	$html .= '<td>'.money_format('$%i',$transaction->tax).'</td>';
 			    	$html .= '</tr>';
@@ -339,11 +353,6 @@ class Account extends Model
 			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>Credit</th>'; 
 			    	$html .= '<td color="#ff0000">'.money_format('$%i',$transaction->credit).'</td>';
-			    	$html .= '</tr>';
-			    	$html .= '<tr>';
-			    	$html .= '<th colspan="3"></th>';
-			    	$html .= '<th>Discount</th>'; 
-			    	$html .= '<td color="#ff0000">'.money_format('$%i',$transaction->discount).'</td>';
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
 			    	$html .= '<th colspan="3"></th>';
@@ -400,6 +409,11 @@ class Account extends Model
 				    	$html .= '<th colspan="3"></th>';
 				    	$html .= '<th>Subtotal</th>'; 
 				    	$html .= '<td>'.money_format('$%i',$transaction->pretax).'</td>';
+				    	$html .= '</tr>';
+				    	$html .= '<tr>';
+				    	$html .= '<th colspan="3"></th>';
+				    	$html .= '<th>Discount</th>'; 
+				    	$html .= '<td color="#ff0000">'.money_format('$%i',$transaction->discount).'</td>';
 				    	$html .= '</tr>';
 				    	$html .= '<tr>';
 				    	$html .= '<th colspan="3"></th>';

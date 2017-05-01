@@ -87,4 +87,19 @@ class ReportsController extends Controller
         ->with('reports',$reports);
 
     }
+
+    public function getView($start = null, $end = null, $company_id = null) {
+
+        $start_date = date('D n/d/Y',$start);
+        $end_date = date('D n/d/Y',$end);
+
+        $reports = Report::prepareInvoiceReport($start, $end, $company_id);
+        return view('reports.make')
+        ->with('layout',$this->layout)
+        ->with('reports',$reports)
+        ->with('start_date',$start_date)
+        ->with('end_date',$end_date)
+        ->with('reports',$reports);
+
+    }
 }

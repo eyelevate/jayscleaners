@@ -363,5 +363,11 @@ class Report extends Model
 
         return $itemsToInventory;
     }
+
+    public static function prepareInvoiceReport($start, $end, $company_id) {
+        $data = [];
+
+        return $data;
+    }
 }
 
