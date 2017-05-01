@@ -243,7 +243,7 @@ class Account extends Model
 			    	$html .= '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>';
 			    	$html .= '<hr style="border:1px dashed #5e5e5e"/>';
 			    	$html .= '<ol>';
-			    	$html .= '<li>You may pay your bill online by visiting <a style="text-decoration:underline; color: blue; font-style:italic;" href="'.route('accounts_payMyBill').'">www.jayscleaners.com/paymybill</a>. Sign in is required.</li>';
+			    	$html .= '<li>You may pay your bill online by visiting <a style="text-decoration:underline; color: blue; font-style:italic;" href="'.route('accounts_payMyBill').'">www.jayscleaners.com/pay-my-bill</a>.</li>';
 			    	$html .= '<li>You may pay your bill in person at one of our physical locations. (Montlake / Roosevelt)</li>';
 			    	$html .= '<li>We accept check, credit card, cash payments only. Thank you.</li>';
 			    	$html .= '</ol>';
@@ -520,7 +520,7 @@ class Account extends Model
 		    	$html .= '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>';
 		    	$html .= '<hr style="border:1px dashed #5e5e5e"/>';
 		    	$html .= '<ol>';
-		    	$html .= '<li>You may pay your bill online by visiting <a style="text-decoration:underline; color: blue; font-style:italic;" href="'.route('accounts_payMyBill').'">www.jayscleaners.com/pay-my-bill</a>. Sign in is required.</li>';
+		    	$html .= '<li>You may pay your bill online by visiting <a style="text-decoration:underline; color: blue; font-style:italic;" href="'.route('accounts_payMyBill').'">www.jayscleaners.com/pay-my-bill</a>.</li>';
 		    	$html .= '<li>You may pay your bill in person at one of our physical locations. (Montlake / Roosevelt)</li>';
 		    	$html .= '<li>We accept check, credit card, cash payments only. Thank you.</li>';
 		    	$html .= '</ol>';
