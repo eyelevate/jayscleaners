@@ -337,7 +337,7 @@ class Account extends Model
 			    	$html .= '<tr>';
 			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>Discount</th>'; 
-			    	$html .= '<td color="#ff0000">'.money_format('$%i',$transaction->discount).'</td>';
+			    	$html .= '<td color="#ff0000">'.money_format('($%i)',$transaction->discount).'</td>';
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
 			    	$html .= '<th colspan="3"></th>';
@@ -352,7 +352,7 @@ class Account extends Model
 			    	$html .= '<tr>';
 			    	$html .= '<th colspan="3"></th>';
 			    	$html .= '<th>Credit</th>'; 
-			    	$html .= '<td color="#ff0000">'.money_format('$%i',$transaction->credit).'</td>';
+			    	$html .= '<td color="#ff0000">'.money_format('($%i)',$transaction->credit).'</td>';
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
 			    	$html .= '<th colspan="3"></th>';
@@ -413,7 +413,7 @@ class Account extends Model
 				    	$html .= '<tr>';
 				    	$html .= '<th colspan="3"></th>';
 				    	$html .= '<th>Discount</th>'; 
-				    	$html .= '<td color="#ff0000">'.money_format('$%i',$transaction->discount).'</td>';
+				    	$html .= '<td color="#ff0000">'.money_format('($%i)',$transaction->discount).'</td>';
 				    	$html .= '</tr>';
 				    	$html .= '<tr>';
 				    	$html .= '<th colspan="3"></th>';
@@ -613,6 +613,11 @@ class Account extends Model
 		    	$html .= '</tr>';
 		    	$html .= '<tr>';
 		    	$html .= '<th colspan="3"></th>';
+		    	$html .= '<th>Discount</th>'; 
+		    	$html .= '<td color="#ff0000">'.money_format('($%i)',$transactions->discount).'</td>';
+		    	$html .= '</tr>';
+		    	$html .= '<tr>';
+		    	$html .= '<th colspan="3"></th>';
 		    	$html .= '<th>Tax</th>'; 
 		    	$html .= '<td>'.money_format('$%i',$transactions->tax).'</td>';
 		    	$html .= '</tr>';
@@ -624,12 +629,7 @@ class Account extends Model
 		    	$html .= '<tr>';
 		    	$html .= '<th colspan="3"></th>';
 		    	$html .= '<th>Credit</th>'; 
-		    	$html .= '<td color="#ff0000">'.money_format('$%i',$transactions->credit).'</td>';
-		    	$html .= '</tr>';
-		    	$html .= '<tr>';
-		    	$html .= '<th colspan="3"></th>';
-		    	$html .= '<th>Discount</th>'; 
-		    	$html .= '<td color="#ff0000">'.money_format('$%i',$transactions->discount).'</td>';
+		    	$html .= '<td color="#ff0000">'.money_format('($%i)',$transactions->credit).'</td>';
 		    	$html .= '</tr>';
 		    	$html .= '<tr>';
 		    	$html .= '<th colspan="3"></th>';
