@@ -221,8 +221,8 @@ class AccountsController extends Controller
                     // send email
                     $from = 'noreply@jayscleaners.com';
                     // Email customer
-                    // if (Mail::send('emails.account_bill-nodelivery', [
-                    if (Mail::send('emails.account_bill', [
+                    if (Mail::send('emails.account_bill-nodelivery', [
+                    // if (Mail::send('emails.account_bill', [
                         'transactions' => $transactions,
                         'customers' => $customers
                     ], function($message) use ($send_to, $title, $pdf_title)
@@ -353,29 +353,29 @@ class AccountsController extends Controller
     } 
 
     public function getPayMyBill(){
-        $this->layout = 'layouts.bill';
-        return view('accounts.pay_my_bill')
-        ->with('layout',$this->layout); 
-        // $this->layout = 'layouts.bill-nodelivery';
-        // return view('accounts.pay_my_bill-nodelivery')
+        // $this->layout = 'layouts.bill';
+        // return view('accounts.pay_my_bill')
         // ->with('layout',$this->layout); 
+        $this->layout = 'layouts.bill-nodelivery';
+        return view('accounts.pay_my_bill-nodelivery')
+        ->with('layout',$this->layout); 
     }
 
     public function getOneTimePayment(){
-        $this->layout = 'layouts.bill';
-        // $this->layout = 'layouts.bill-nodelivery';
+        // $this->layout = 'layouts.bill';
+        $this->layout = 'layouts.bill-nodelivery';
         $transactions = [];
-        // return view('accounts.one_time_payment-nodelivery')
-        // ->with('transactions',$transactions)
-        // ->with('layout',$this->layout); 
-        return view('accounts.one_time_payment')
+        return view('accounts.one_time_payment-nodelivery')
         ->with('transactions',$transactions)
         ->with('layout',$this->layout); 
+        // return view('accounts.one_time_payment')
+        // ->with('transactions',$transactions)
+        // ->with('layout',$this->layout); 
     }
 
     public function postOneTimePayment(Request $request) {
-        $this->layout = 'layouts.bill';
-        // $this->layout = 'layouts.bill-nodelivery';
+        // $this->layout = 'layouts.bill';
+        $this->layout = 'layouts.bill-nodelivery';
         $transaction_id = $request->transaction_id;
         $customer_id = $request->customer_id;
         $transactions = Transaction::where('customer_id',$customer_id)
@@ -390,19 +390,19 @@ class AccountsController extends Controller
     }
 
     public function getOneTimeFinish(Request $request) {
-        $this->layout = 'layouts.bill';
-        // $this->layout = 'layouts.bill-nodelivery';
+        // $this->layout = 'layouts.bill';
+        $this->layout = 'layouts.bill-nodelivery';
         $transaction_status = $request->session()->has('transaction_status') ? $request->session()->get('transaction_status') : false;
         if ($transaction_status) {
 
             $transactions = $request->session()->get('transactions');
 
-            // return view('accounts.one_time_finish-nodelivery')
-            // ->with('transactions',$transactions)
-            // ->with('layout',$this->layout);   
-            return view('accounts.one_time_finish')
+            return view('accounts.one_time_finish-nodelivery')
             ->with('transactions',$transactions)
-            ->with('layout',$this->layout);             
+            ->with('layout',$this->layout);   
+            // return view('accounts.one_time_finish')
+            // ->with('transactions',$transactions)
+            // ->with('layout',$this->layout);             
         } else {
             Flash::error('Your session has expired. Please enter in the invoice # and the customer # located on your most current account billing statement. Thank you.');
             return Redirect::route('accounts_oneTimePayment');
@@ -493,8 +493,8 @@ class AccountsController extends Controller
                             $send_to = $r->email;
                             $from = 'noreply@jayscleaners.com';
                             // Email customer
-                            if (Mail::send('emails.account_receipt', [
-                            // if (Mail::send('emails.account_receipt-nodelivery', [
+                            // if (Mail::send('emails.account_receipt', [
+                            if (Mail::send('emails.account_receipt-nodelivery', [
                                 'transactions' => $save,
                                 'customers'=>$customers
                             ], function($message) use ($send_to)
@@ -708,8 +708,8 @@ class AccountsController extends Controller
                                 $from = 'noreply@jayscleaners.com';
                                 $transactions = Transaction::whereIn('id',$transaction_ids)->get();
                                 // Email customer
-                                // if (Mail::send('emails.account_receipts-nodelivery', [
-                                if (Mail::send('emails.account_receipts', [
+                                if (Mail::send('emails.account_receipts-nodelivery', [
+                                // if (Mail::send('emails.account_receipts', [
                                     'transactions' => $transactions,
                                     'amount_paid' => $total,
                                     'customers'=>$customers
@@ -844,8 +844,8 @@ class AccountsController extends Controller
                                 $send_to = $r->email;
                                 $from = 'noreply@jayscleaners.com';
                                 // Email customer
-                                // if (Mail::send('emails.account_receipts-nodelivery', [
-                                if (Mail::send('emails.account_receipts', [
+                                if (Mail::send('emails.account_receipts-nodelivery', [
+                                // if (Mail::send('emails.account_receipts', [
                                     'transactions' => $transactions,
                                     'amount_paid' => $total,
                                     'customers'=>$customers

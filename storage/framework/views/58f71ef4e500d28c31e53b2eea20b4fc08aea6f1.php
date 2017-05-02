@@ -17,18 +17,22 @@
 
 <?php $__env->startSection('banner'); ?>
 	<header>
-		<h2>Jays Cleaners</h2>
+		<h2 style="font-size:50px;">Jays Cleaners</h2>
 	</header>
+	<section>
+		<p>Welcome to Jays Cleaners.</p> 
+		<p>With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</p>
+	</section>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 <header class="special container">
 	<span class="icon fa-home fa-fw" style="font-size:25px;"></span>
-	<h2>Welcome to Jays Cleaners. With over <strong>70 years</strong> of experience, <strong>let us work for you</strong>.</h2>
+	<h2>Welcome to the Home Page. Find out more about us below.</h2>
 </header>
 <section class="parallax-window" data-parallax="scroll" data-image-src="/img/website/display-4.png" style="min-height:300px;"></section>
 <!-- Two -->
-<br/>
+<br/><br/>
 <section class="wrapper style1 container special clearfix">
 	<div class="row">
 		<div class="6u 12u(narrower)" style="background-color:#f3f6fa;">

@@ -34,8 +34,8 @@ use App\ZipcodeList;
 class PagesController extends Controller
 {
     public function __construct() {
-    	$this->layout = 'layouts.home';
-        // $this->layout = 'layouts.home-nodelivery';
+    	// $this->layout = 'layouts.home';
+        $this->layout = 'layouts.home-nodelivery';
     }
     /**
      * Display a listing of the resource.
@@ -47,17 +47,17 @@ class PagesController extends Controller
         $auth = (Auth::check()) ? Auth::user() : False;
         $companies = Company::prepareForView(Company::all());
         $schedules = ($auth) ? Schedule::prepareSchedule(Schedule::where('customer_id',Auth::user()->id)->orderBy('id','desc')->limit(1)->get()) : false;
-        // return view('pages.index-nodelivery')
-        // ->with('layout',$this->layout)
-        // ->with('schedules',$schedules)
-        // ->with('companies',$companies)
-        // ->with('auth',$auth);
-
-        return view('pages.index')
+        return view('pages.index-nodelivery')
         ->with('layout',$this->layout)
         ->with('schedules',$schedules)
         ->with('companies',$companies)
         ->with('auth',$auth);
+
+        // return view('pages.index')
+        // ->with('layout',$this->layout)
+        // ->with('schedules',$schedules)
+        // ->with('companies',$companies)
+        // ->with('auth',$auth);
     }
 
     public function getLogin() {
@@ -303,39 +303,39 @@ class PagesController extends Controller
     }
 
     public function getServices() {
-        $this->layout = 'layouts.frontend_basic';
-        return view('pages.services')
-        ->with('layout',$this->layout);
-
-        // $this->layout = 'layouts.frontend-nodelivery';
-
-        // return view('pages.services-nodelivery')
+        // $this->layout = 'layouts.frontend_basic';
+        // return view('pages.services')
         // ->with('layout',$this->layout);
+
+        $this->layout = 'layouts.frontend-nodelivery';
+
+        return view('pages.services-nodelivery')
+        ->with('layout',$this->layout);
 
     }
 
     public function getBusinessHours() {
-        $this->layout = 'layouts.frontend_basic';
-        // $this->layout = 'layouts.frontend-nodelivery';
+        // $this->layout = 'layouts.frontend_basic';
+        $this->layout = 'layouts.frontend-nodelivery';
         $companies = Company::prepareForView(Company::all());
-        // return view('pages.business-hours-nodelivery')
-        // ->with('companies',$companies)
-        // ->with('layout',$this->layout);
-        return view('pages.business-hours')
+        return view('pages.business-hours-nodelivery')
         ->with('companies',$companies)
         ->with('layout',$this->layout);
+        // return view('pages.business-hours')
+        // ->with('companies',$companies)
+        // ->with('layout',$this->layout);
     }
 
     public function getContactUs() {
-        $this->layout = 'layouts.frontend_basic';
-        // $this->layout = 'layouts.frontend-nodelivery';
+        // $this->layout = 'layouts.frontend_basic';
+        $this->layout = 'layouts.frontend-nodelivery';
         $companies = Company::prepareForView(Company::all());
-        // return view('pages.contact-us-nodelivery')
-        // ->with('companies',$companies)
-        // ->with('layout',$this->layout); 
-        return view('pages.contact-us')
+        return view('pages.contact-us-nodelivery')
         ->with('companies',$companies)
-        ->with('layout',$this->layout);        
+        ->with('layout',$this->layout); 
+        // return view('pages.contact-us')
+        // ->with('companies',$companies)
+        // ->with('layout',$this->layout);        
     }
 
     public function getUpdateContact() {
@@ -350,14 +350,14 @@ class PagesController extends Controller
     public function getPricing() {
 
         $price_list = InventoryItem::preparePricingList();
-        $this->layout = 'layouts.frontend_basic';
-        return view('pages.pricing')
-        ->with('price_list',$price_list)
-        ->with('layout',$this->layout);
-        // $this->layout = 'layouts.frontend-nodelivery';
-        // return view('pages.pricing-nodelivery')
+        // $this->layout = 'layouts.frontend_basic';
+        // return view('pages.pricing')
         // ->with('price_list',$price_list)
         // ->with('layout',$this->layout);
+        $this->layout = 'layouts.frontend-nodelivery';
+        return view('pages.pricing-nodelivery')
+        ->with('price_list',$price_list)
+        ->with('layout',$this->layout);
     }
 
     public function getResetPassword($token = null) {
@@ -411,12 +411,12 @@ class PagesController extends Controller
     }
 
     public function getTerms() {
-        $this->layout = 'layouts.bill';
-        return view('pages.terms')
-            ->with('layout',$this->layout);
-
-        // $this->layout = 'layouts.bill-nodelivery';
-        // return view('pages.terms-nodelivery')
+        // $this->layout = 'layouts.bill';
+        // return view('pages.terms')
         //     ->with('layout',$this->layout);
+
+        $this->layout = 'layouts.bill-nodelivery';
+        return view('pages.terms-nodelivery')
+            ->with('layout',$this->layout);
     }
 }
