@@ -43,7 +43,7 @@
 					@yield('content')
 					<section class="wrapper style3 container special">
 					<header>
-						<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+						<h2>Need assistance? You can contact us by <strong>phone</strong> or <strong>email</strong></h2>
 					</header>
 					<ul>
 

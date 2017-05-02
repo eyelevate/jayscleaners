@@ -38,7 +38,7 @@
 				@yield('content')
 				<section class="wrapper style3 container special">
 					<header>
-						<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
+						<h2>Need assistance? You can contact us by <strong>phone</strong> or <strong>email</strong></h2>
 					</header>
 					<ul>
 						<li class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:20px;">
