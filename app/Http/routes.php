@@ -249,7 +249,8 @@ Route::group(['middleware' => ['web']], function () {
 			Route::get('/delivery/setup/edit/{id}',['as'=>'delivery_setup_edit','uses'=>'DeliveriesController@getSetupEdit']);
 			Route::post('/delivery/setup/edit',['as'=>'delivery_setup_edit_post','uses'=>'DeliveriesController@postSetupEdit']);
 			Route::get('/delivery/setup/delete/{id}',['as'=>'delivery_setup_delete','uses'=>'DeliveriesController@getSetupDelete']);
-			
+			Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
+	    	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
 
 			// Discounts
 			Route::get('/discounts',['as'=>'discounts_index','uses'=>'DiscountsController@getIndex']);
