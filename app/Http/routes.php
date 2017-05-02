@@ -249,8 +249,25 @@ Route::group(['middleware' => ['web']], function () {
 			Route::get('/delivery/setup/edit/{id}',['as'=>'delivery_setup_edit','uses'=>'DeliveriesController@getSetupEdit']);
 			Route::post('/delivery/setup/edit',['as'=>'delivery_setup_edit_post','uses'=>'DeliveriesController@postSetupEdit']);
 			Route::get('/delivery/setup/delete/{id}',['as'=>'delivery_setup_delete','uses'=>'DeliveriesController@getSetupDelete']);
-			Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
+
+			Route::get('/delivery',['as'=>'delivery_index','uses'=>'DeliveriesController@getIndex']);
+			Route::get('/delivery/confirmation', ['as'=>'delivery_confirmation','uses'=>'DeliveriesController@getConfirmation']);
+	    	Route::post('/delivery/confirmation', ['as'=>'delivery_confirmation_post','uses'=>'DeliveriesController@postConfirmation']);
+			Route::get('/delivery/pickup', ['as'=>'delivery_pickup','uses'=>'DeliveriesController@getPickupForm']);
+	    	Route::post('/delivery/pickup', ['as'=>'delivery_pickup_post','uses'=>'DeliveriesController@postPickupForm']);
+			Route::get('/delivery/dropoff', ['as'=>'delivery_dropoff','uses'=>'DeliveriesController@getDropoffForm']);
+	    	Route::post('/delivery/dropoff', ['as'=>'delivery_dropoff_post','uses'=>'DeliveriesController@postDropoffForm']);
+	    	Route::post('/delivery/check_address', ['as'=>'delivery_check_address','uses'=>'DeliveriesController@postCheckAddress']);
+	    	Route::post('/delivery/set_time', ['as'=>'delivery_set_time','uses'=>'DeliveriesController@postSetTime']);
+	    	Route::get('/delivery/cancel',['as'=>'delivery_cancel','uses'=>'DeliveriesController@getCancel']);
+	    	Route::get('delivery/delete/{id}', ['as' => 'delivery_delete', 'uses'=>'DeliveriesController@getDelete', function ($id) {}]);
+	    	Route::get('/delivery/history',['as'=>'delivery_history','uses'=>'DeliveriesController@getHistory']);
+	    	Route::get('/delivery/start',['as'=>'delivery_start','uses'=>'DeliveriesController@getStart']);
+	    	Route::get('/delivery/thank-you',['as'=>'delivery_thankyou','uses'=>'DeliveriesController@getThankYou']);
+	    	Route::get('/delivery/email-test',['as'=>'delivery_emailtest','uses'=>'DeliveriesController@getEmailTest']);
+	    	Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
 	    	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
+	    	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
 
 			// Discounts
 			Route::get('/discounts',['as'=>'discounts_index','uses'=>'DiscountsController@getIndex']);
