@@ -54,13 +54,14 @@ class ReportsController extends Controller
 
         $start_date = date('Y-m-d 00:00:00');
         $end_date = date('Y-m-d 23:59:59');
-        $invoices = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('customer_id',10013)->get();
+        $invoices = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',2)->get();
         if (count($invoices) > 0) {
             foreach ($invoices as $inv) {
-                $ii = Invoice::find($inv->id);
-                if ($ii->delete()) {
-                    Job::dump($inv->id.' -- '.$inv->customer_id.' -- '.$inv->created_at.' -- '.$inv->updated_at.' -- Deleted');
-                }
+                Job::dump($inv->id.' -- '.$inv->customer_id.' -- '.$inv->created_at.' -- '.$inv->updated_at.' -- ');
+                // $ii = Invoice::find($inv->id);
+                // if ($ii->delete()) {
+                //     Job::dump($inv->id.' -- '.$inv->customer_id.' -- '.$inv->created_at.' -- '.$inv->updated_at.' -- Deleted');
+                // }
                 
             }
         }
