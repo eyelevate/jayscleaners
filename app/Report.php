@@ -160,6 +160,8 @@ class Report extends Model
         $total_view = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->where('customer_id',14812)->get();
         $customers = User::find(14812);
         Job::dump($customers);
+        $invoices = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('customer_id',14812)->get();
+        Job::dump($invoices);
         foreach ($total_view as $ttv) {
             Job::dump($ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at);
         }
