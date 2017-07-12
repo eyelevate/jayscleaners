@@ -158,9 +158,12 @@ class Report extends Model
         $total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->sum('total');
 
         $total_view = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->where('customer_id',14812)->get();
-        $customers = User::find(14812);
-        Job::dump($customers);
-        $invoices = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('customer_id',14812)->get();
+        // $customers = User::find(14812);
+        // Job::dump($customers);
+        $invoices = Invoice::where('customer_id',14812)->orderBy('id','desc')->limit('100')->get();
+        foreach ($invoices as $invoice) {
+            Job::dump($invoice->id.' -- '.$invoice->transaction_id.' -- '.$invoice->created_at);
+        }
         Job::dump($invoices);
         foreach ($total_view as $ttv) {
             Job::dump($ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at);
