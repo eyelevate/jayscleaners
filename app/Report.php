@@ -162,11 +162,11 @@ class Report extends Model
         // Job::dump($customers);
         $sd = date('Y-m-d 09:56:00',$start);
         $ed = date('Y-m-d 11:16:00',$end);
-        $total_view = Transaction::whereBetween('created_at',[$sd,$ed])->where('company_id',$company_id)->where('type','<',5)->get();
+        $total_view = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->get();
 
         foreach ($total_view as $kk => $ttv) {
 
-            $invoices = Invoice::where('transaction_id',$ttv->id)->get();
+            $invoices = Invoice::where('customer_id',$ttv->customer_id)->where('transaction_id',$ttv->id)->get();
             if (count($invoices) > 0) {
                 foreach ($invoices as $inv) {
                      Job::dump($kk.' -- '.$ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at.' -- Found and OK');
