@@ -164,8 +164,8 @@ class Report extends Model
         $ed = date('Y-m-d 11:16:00',$end);
         $total_view = Transaction::whereBetween('created_at',[$sd,$ed])->where('company_id',$company_id)->where('type','<',5)->get();
 
-        foreach ($total_view as $ttv) {
-            Job::dump($ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at);
+        foreach ($total_view as $kk => $ttv) {
+            Job::dump($kk.' -- '.$ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at);
         }
 
         $cash_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',3)->sum('pretax');
