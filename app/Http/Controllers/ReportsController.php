@@ -51,6 +51,16 @@ class ReportsController extends Controller
         $summaries = Report::prepareGlimpse();
         $drops = Report::prepareDropoffGlimpse();
 
+
+        $start_date = date('Y-m-d 00:00:00');
+        $end_date = date('Y-m-d 23:59:59');
+        $invoices = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',2)->get();
+        if (count($invoices) > 0) {
+            foreach ($invoices as $inv) {
+                Job::dump($inv->id.' -- '.$inv->customer_id.' -- '.$inv->created_at.' -- '.$inv->updated_at);
+            }
+        }
+
         return view('reports.index')
         ->with('layout',$this->layout)
         ->with('dates',$dates)
