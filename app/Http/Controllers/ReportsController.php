@@ -79,6 +79,7 @@ class ReportsController extends Controller
         $end_date = date('D n/d/Y',$end);
 
         $reports = Report::prepareQueryReport($start, $end, $company_id);
+        dd($reports);
         return view('reports.make')
         ->with('layout',$this->layout)
         ->with('reports',$reports)
