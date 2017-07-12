@@ -157,7 +157,7 @@ class Report extends Model
         $credit = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->sum('credit');
         $total = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->sum('total');
 
-        $total_view = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->get();
+        $total_view = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->where('customer_id',14812)->get();
         
         foreach ($total_view as $ttv) {
             Job::dump($ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at);
