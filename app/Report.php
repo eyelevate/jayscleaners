@@ -172,7 +172,11 @@ class Report extends Model
                      Job::dump($kk.' -- '.$ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at.' -- Found and OK');
                 }
             } else {
-                 Job::dump($kk.' -- '.$ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at.' -- NOT FOUND DELETING NOW');
+                 
+                 $tr = Transaction::find($ttv->id);
+                 if ($tr->delete()) {
+                    Job::dump($kk.' -- '.$ttv->id.' -- '.$ttv->customer_id.' -- '.$ttv->created_at.' -- NOT FOUND DELETING NOW');
+                 }
             }
             
 
