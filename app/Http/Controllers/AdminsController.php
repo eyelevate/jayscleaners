@@ -1729,9 +1729,9 @@ class AdminsController extends Controller
     }
 
     public function getApiSearchCustomer($query = null) {
-        $query_word_count = str_word_count($query);
+        $query_word_count = explode(" ",$query);
         $results = [];
-        if ($query_word_count > 0) {
+        if (count($query_word_count) > 0) {
             //check if string
             if (is_string($query)) {
                 $string_array = explode(" ", $query);
