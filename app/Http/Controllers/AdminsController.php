@@ -1729,6 +1729,7 @@ class AdminsController extends Controller
     }
 
     public function getApiSearchCustomer($query = null) {
+        $users = new User();
         $query_word_count = explode(" ",$query);
         $results = [];
         if (count($query_word_count) > 1) {
@@ -1738,7 +1739,7 @@ class AdminsController extends Controller
                 $last_name = $query_word_count[0];
                 $first_name = $query_word_count[1];
                 // look by last_name and first name
-                $results = User::where('last_name','like',"%".$last_name."%")
+                $results = $users->where('last_name','like',"%".$last_name."%")
                 ->where('first_name','like','%'.$first_name.'%')
                 ->get();
             }  
@@ -1746,32 +1747,35 @@ class AdminsController extends Controller
             //check if string
             if (is_numeric($query)) {
                 if (strlen($query) > 5) { // Phone
-                    $results = User::where('phone',$query)->get();
+                    $results = $users->where('phone',$query)->get();
                 } else {
-                    $results = User::where('user_id',$query)->get();
+                    $results = $users->where('user_id',$query)->get();
                 }
             } else { // check marks table
                 $marks = Custid::where('mark',$query)->get();
                 if (count($marks) > 0) {
                     foreach ($marks as $mark) {
                         $customer_id = $mark->customer_id;
-                        $results = User::where('id',$customer_id)->get();
+                        $results = $users->where('id',$customer_id)->get();
                         break;
                     }
                 } else {
                     $last_name = $query_word_count[0];
                     // look by last_name and first name
-                    $results = User::where('last_name','like',"%".$last_name."%")
+                    $results = $users->where('last_name','like',"%".$last_name."%")
                     ->get();
                 }
             }
         } 
+
+        dd($users->custids);
 
         return response()->json($results);
     }
 
 
     public function postApiSearchCustomer(Request $request) {
+        $users = new User();
         $query = $request->query;
         $query_word_count = explode(" ",$query);
         $results = [];
@@ -1782,7 +1786,7 @@ class AdminsController extends Controller
                 $last_name = $query_word_count[0];
                 $first_name = $query_word_count[1];
                 // look by last_name and first name
-                $results = User::where('last_name','like',"%".$last_name."%")
+                $results = $users->where('last_name','like',"%".$last_name."%")
                 ->where('first_name','like','%'.$first_name.'%')
                 ->get();
             }  
@@ -1790,22 +1794,22 @@ class AdminsController extends Controller
             //check if string
             if (is_numeric($query)) {
                 if (strlen($query) > 5) { // Phone
-                    $results = User::where('phone',$query)->get();
+                    $results = $users->where('phone',$query)->get();
                 } else {
-                    $results = User::where('id',$query)->get();
+                    $results = $users->where('id',$query)->get();
                 }
             } else { // check marks table
                 $marks = Custid::where('mark',$query)->get();
                 if (count($marks) > 0) {
                     foreach ($marks as $mark) {
                         $customer_id = $mark->customer_id;
-                        $results = User::where('id',$customer_id)->get();
+                        $results = $users->where('id',$customer_id)->get();
                         break;
                     }
                 } else {
                     $last_name = $query_word_count[0];
                     // look by last_name and first name
-                    $results = User::where('last_name','like',"%".$last_name."%")
+                    $results = $users->where('last_name','like',"%".$last_name."%")
                     ->get();
                 }
             }

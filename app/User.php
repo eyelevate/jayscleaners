@@ -29,6 +29,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function custids()
+    {
+        return $this->hasMany(Custid::class,'customer_id');
+    }
+
 
     static public function role($role_id) {
         switch ($role_id) {
