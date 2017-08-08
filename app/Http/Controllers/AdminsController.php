@@ -1744,13 +1744,6 @@ class AdminsController extends Controller
             }  
         } elseif (count($query_word_count) == 1) {
             //check if string
-            if (is_string($query)) {
-                $last_name = $query_word_count[0];
-                // look by last_name and first name
-                $results = User::where('last_name','like',"%".$last_name."%")
-                ->get();
-            } 
-        } else {
             if (is_numeric($query)) {
                 if (strlen($query) > 5) { // Phone
                     $results = User::where('phone',$query)->get();
@@ -1765,9 +1758,14 @@ class AdminsController extends Controller
                         $results = User::where('id',$customer_id)->get();
                         break;
                     }
+                } else {
+                    $last_name = $query_word_count[0];
+                    // look by last_name and first name
+                    $results = User::where('last_name','like',"%".$last_name."%")
+                    ->get();
                 }
             }
-        }
+        } 
 
         return response()->json($results);
     }
@@ -1790,13 +1788,6 @@ class AdminsController extends Controller
             }  
         } elseif (count($query_word_count) == 1) {
             //check if string
-            if (is_string($query)) {
-                $last_name = $query_word_count[0];
-                // look by last_name and first name
-                $results = User::where('last_name','like',"%".$last_name."%")
-                ->get();
-            } 
-        } else {
             if (is_numeric($query)) {
                 if (strlen($query) > 5) { // Phone
                     $results = User::where('phone',$query)->get();
@@ -1811,9 +1802,14 @@ class AdminsController extends Controller
                         $results = User::where('id',$customer_id)->get();
                         break;
                     }
+                } else {
+                    $last_name = $query_word_count[0];
+                    // look by last_name and first name
+                    $results = User::where('last_name','like',"%".$last_name."%")
+                    ->get();
                 }
             }
-        }
+        } 
         return response()->json($results);
     }
 
