@@ -1814,9 +1814,6 @@ class AdminsController extends Controller
                 }
             }
         }
-
-        return response()->json($results);
-
         return response()->json($results);
     }
 
