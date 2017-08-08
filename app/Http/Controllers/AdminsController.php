@@ -1767,7 +1767,14 @@ class AdminsController extends Controller
                 }
             }
         } 
-
+        if (count($results) > 0) {
+            foreach ($results as $key => $value) {
+                if (isset($value->custids)) {
+                    $results[$key]['custids'] = $value->custids;
+                }
+                
+            }
+        }
 
         return response()->json($results);
     }
