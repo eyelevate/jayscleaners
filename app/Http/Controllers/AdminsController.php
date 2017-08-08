@@ -1834,8 +1834,9 @@ class AdminsController extends Controller
     public function postApiCustomerDelete(Request $request, User $user) {
         $user->find($request->customer_id);
         if ($user->delete()) {
-            return response()->json(true);
+            return response()->json(['status'=>true]);
         }
+        return response()->json(['status'=>false]);
     }
 
     
