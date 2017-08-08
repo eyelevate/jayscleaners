@@ -1709,8 +1709,7 @@ class AdminsController extends Controller
     public function postApiSyncCustomer(Request $request) {
         $customer_id = $request->customer_id;
 
-        $invoices = Invoice::withTrashed()
-            ->where('customer_id',$customer_id)
+        $invoices = Invoice::where('customer_id',$customer_id)
             ->where('status','<',5)
             ->get();
 
