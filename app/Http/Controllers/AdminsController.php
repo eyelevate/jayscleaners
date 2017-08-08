@@ -1748,7 +1748,7 @@ class AdminsController extends Controller
                 if (strlen($query) > 5) { // Phone
                     $results = User::where('phone',$query)->get();
                 } else {
-                    $results = User::where('id',$query)->get();
+                    $results = User::where('user_id',$query)->get();
                 }
             } else { // check marks table
                 $marks = Custid::where('mark',$query)->get();
@@ -1792,7 +1792,7 @@ class AdminsController extends Controller
                 if (strlen($query) > 5) { // Phone
                     $results = User::where('phone',$query)->get();
                 } else {
-                    $results = User::where('id',$query)->get();
+                    $results = User::where('user_id',$query)->get();
                 }
             } else { // check marks table
                 $marks = Custid::where('mark',$query)->get();
