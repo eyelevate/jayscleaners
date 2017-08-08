@@ -1749,7 +1749,7 @@ class AdminsController extends Controller
                 if (strlen($query) > 5) { // Phone
                     $results = $users->where('phone',$query)->get();
                 } else {
-                    $results = $users->where('user_id',$query)->get();
+                    $results = $users->where('id',$query)->get();
                 }
             } else { // check marks table
                 $marks = Custid::where('mark',$query)->get();
@@ -1785,41 +1785,7 @@ class AdminsController extends Controller
         $query = $request->query;
         $query_word_count = explode(" ",$query);
         $results = [];
-        if (count($query_word_count) > 1) {
-            //check if string
-            if (is_string($query)) {
-                
-                $last_name = $query_word_count[0];
-                $first_name = $query_word_count[1];
-                // look by last_name and first name
-                $results = $users->where('last_name','like',"%".$last_name."%")
-                ->where('first_name','like','%'.$first_name.'%')
-                ->get();
-            }  
-        } elseif (count($query_word_count) == 1) {
-            //check if string
-            if (is_numeric($query)) {
-                if (strlen($query) > 5) { // Phone
-                    $results = $users->where('phone',$query)->get();
-                } else {
-                    $results = $users->where('id',$query)->get();
-                }
-            } else { // check marks table
-                $marks = Custid::where('mark',$query)->get();
-                if (count($marks) > 0) {
-                    foreach ($marks as $mark) {
-                        $customer_id = $mark->customer_id;
-                        $results = $users->where('id',$customer_id)->get();
-                        break;
-                    }
-                } else {
-                    $last_name = $query_word_count[0];
-                    // look by last_name and first name
-                    $results = $users->where('last_name','like',"%".$last_name."%")
-                    ->get();
-                }
-            }
-        } 
+
         return response()->json($results);
     }
 
