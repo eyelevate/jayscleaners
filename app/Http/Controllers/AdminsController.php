@@ -1768,6 +1768,7 @@ class AdminsController extends Controller
             }
         } 
 
+        dd($results->custids);
 
         return response()->json($results);
     }
