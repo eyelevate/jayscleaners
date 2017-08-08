@@ -31,7 +31,7 @@ class User extends Authenticatable
 
     public function custids()
     {
-        return $this->hasMany(Custid::class,'customer_id');
+        return $this->hasMany(Custid::class,'customer_id','id');
     }
 
 

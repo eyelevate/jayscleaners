@@ -18,6 +18,11 @@ class Custid extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'customer_id','id');
+    }
     
     public static function createOriginalMark($users){
     	$mark = '';
