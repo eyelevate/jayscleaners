@@ -1728,7 +1728,7 @@ class AdminsController extends Controller
         return response()->json($invoices);
     }
 
-    public function postApiSearchCustomer(Request $request) {
+    public function getApiSearchCustomer(Request $request) {
         $query = $request->query;
         $query_word_count = str_word_count($query);
         $results = [];
