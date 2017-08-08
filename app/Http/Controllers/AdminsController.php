@@ -1728,6 +1728,43 @@ class AdminsController extends Controller
         return response()->json($invoices);
     }
 
+    public function postApiSearchCustomer(Request $request) {
+        $query = $request->query;
+        $query_word_count = str_word_count($query);
+        $results = [];
+        if ($query_word_count > 0) {
+            //check if string
+            if (is_string($query)) {
+                $string_array = explode(" ", $query);
+                $last_name = $string_array[0];
+                $first_name = $string_array[1];
+                // look by last_name and first name
+                $results = User::where('last_name','like',"%".$last_name."%")
+                ->where('first_name','like','%'.$first_name.'%')
+                ->get();
+            }  
+        } else {
+            if (is_numeric($query)) {
+                if (strlen($query) > 5) { // Phone
+                    $results = User::where('phone',$query)->get();
+                } else {
+                    $results = User::where('id',$query)->get();
+                }
+            } else { // check marks table
+                $marks = Custid::where('mark',$query)->get();
+                if (count($marks) > 0) {
+                    foreach ($marks as $mark) {
+                        $customer_id = $mark->customer_id;
+                        $results = User::where('id',$customer_id)->get();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return response()->json($results);
+    }
+
     public function postApiSyncRackableInvoices(Request $request) {
         $yesterday_start = date('Y-m-d 00:00:00',strtotime("yesterday"));
         $today_end = date('Y-m-d 23:59:59');
