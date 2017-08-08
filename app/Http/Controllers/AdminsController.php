@@ -1831,8 +1831,8 @@ class AdminsController extends Controller
         return response()->json($invoices);
     }
 
-    public function postApiCustomerDelete(Request $request, User $user) {
-        $user->find($request->customer_id);
+    public function postApiCustomerDelete(Request $request) {
+        $user = User::find($request->customer_id);
         if ($user->delete()) {
             return response()->json(['status'=>true]);
         }
