@@ -1741,30 +1741,28 @@ class AdminsController extends Controller
                 // look by last_name and first name
                 $results = $users->where('last_name','like',"%".$last_name."%")
                 ->where('first_name','like','%'.$first_name.'%')
-                ->custids()
                 ->get();
             }  
         } elseif (count($query_word_count) == 1) {
             //check if string
             if (is_numeric($query)) {
                 if (strlen($query) > 5) { // Phone
-                    $results = $users->where('phone',$query)->custids()->get();
+                    $results = $users->where('phone',$query)->get();
                 } else {
-                    $results = $users->where('user_id',$query)->custids()->get();
+                    $results = $users->where('user_id',$query)->get();
                 }
             } else { // check marks table
                 $marks = Custid::where('mark',$query)->get();
                 if (count($marks) > 0) {
                     foreach ($marks as $mark) {
                         $customer_id = $mark->customer_id;
-                        $results = $users->where('id',$customer_id)->custids()->get();
+                        $results = $users->where('id',$customer_id)->get();
                         break;
                     }
                 } else {
                     $last_name = $query_word_count[0];
                     // look by last_name and first name
                     $results = $users->where('last_name','like',"%".$last_name."%")
-                    ->custids()
                     ->get();
                 }
             }
