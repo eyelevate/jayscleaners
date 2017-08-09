@@ -1911,9 +1911,9 @@ class AdminsController extends Controller
         $customer->phone =$u['phone'];
         $customer->last_name =$u['last_name'];
         $customer->first_name =$u['first_name'];
-        $customer->email =$u['email'];
-        $customer->invoice_memo =$u['invoice_memo'];
-        $customer->important_memo =$u['important_memo'];
+        $customer->email =($u['email'] != '') ? $u['email'] : NULL;
+        $customer->invoice_memo =($u['invoice_memo'] != '') ? $u['invoice_memo'] : NULL;
+        $customer->important_memo =($u['important_memo'] != '') ? $u['important_memo'] : NULL;
         $customer->shirt =$u['shirt'];
         $customer->starch =$u['starch'];
         $customer->street = ($u['street'] != '') ? $u['street'] :  NULL;
