@@ -2095,7 +2095,9 @@ class AdminsController extends Controller
     }
 
     public function postApiInventoriesByCompany(Request $request) {
-        $inventories = Inventory::where('company_id',$request->company_id)->get();
+        $inventories = Inventory::where('company_id',$request->company_id)
+        ->orderBy('ordered','asc')
+        ->get();
         if (count($inventories) > 0) {
             foreach ($inventories as $key => $value) {
                 $inventories[$key]['inventory_items'] = $value->inventory_items;
@@ -2126,7 +2128,7 @@ class AdminsController extends Controller
     }
 
     public function postApiColorsQuery(Request $request) {
-        $colors = Color::where('company_id',$request->company_id)->get();
+        $colors = Color::where('company_id',$request->company_id)->orderBy('ordered','asc')->get();
         if (!is_null($colors)) {
             return response()->json(['status'=>true,'data'=>$colors]);
         }

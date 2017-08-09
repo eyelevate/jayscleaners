@@ -13,7 +13,7 @@ class Inventory extends Model
 	use SoftDeletes;
 
 	public function inventory_items() {
-		return $this->hasMany('App\InventoryItem');
+		return $this->hasMany('App\InventoryItem')->orderBy('ordered','asc');
 	}
 	public static function prepareTagSelect(){
 		return [
