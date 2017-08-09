@@ -1987,6 +1987,33 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiEditInvoice(Request $request) {
+        $invoice = Invoice::find($request->invoice_id);
+        $i = json_decode($request->invoice,true);
+        $invoice->company_id =$i['company_id'];
+        $invoice->customer_id =$i['customer_id'];
+        $invoice->quantity = $i['quantity'];
+        $invoice->pretax = $i['pretax'];
+        $invoice->tax = $i['tax'];
+        $invoice->total = $i['total'];
+        $invoice->due_date = $i['due_date'];
+        $invoice->reward_id = ($i['reward_id']) ? $i['reward_id'] : NULL;
+        $invoice->discount_id = ($i['discount_id'] != '') ? $i['discount_id'] : NULL;
+        $invoice->memo = ($i['memo']) ? $i['memo'] :  NULL;
+        $invoice->status = $i['status'];
+        $invoice->rack = ($i['rack']) ? $i['rack'] : NULL;
+        $invoice->rack_date = ($i['rack_date']) ? $i['rack_date'] : NULL;
+        $invoice->transaction_id = ($i['transaction_id']) ? $i['transaction_id'] : NULL;
+        $invoice->schedule_id = ($i['schedule_id']) ? $i['schedule_id'] : NULL; 
+
+        if ($invoice->save()) {            
+
+            return response()->json(['status'=>true,'invoice'=>$invoice]);
+        }
+    
+        return response()->json(['status'=>false]);
+    }
+
     public function postApiCreateInvoiceItem(Request $request) {
         $ii = json_decode($request->items,true);
         $invoice_item = new InvoiceItem();
@@ -2090,6 +2117,33 @@ class AdminsController extends Controller
         $colors = Color::where('company_id',$request->company_id)->get();
         if (!is_null($colors)) {
             return response()->json(['status'=>true,'data'=>$colors]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiMarksQuery(Request $request) {
+        $custids = Custid::where('customer_id',$request->customer_id)
+        ->where('status',$request->status)
+        ->get();
+        if (!is_null($custids)) {
+            return response()->json(['status'=>true,'data'=>$custids]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiMemosQuery(Request $request) {
+        $memos = Memo::where('company_id',$request->company_id)->get();
+        if (!is_null($memos)) {
+            return response()->json(['status'=>true,'data'=>$memos]);
+        }
+        return response()->json(['status'=>false]);
+    }
+    public function postApiTaxesQuery(Request $request) {
+        $taxes = Tax::where('company_id',$request->company_id)
+        ->where('status',$request->status)
+        ->get();
+        if (!is_null($taxes)) {
+            return response()->json(['status'=>true,'data'=>$taxes]);
         }
         return response()->json(['status'=>false]);
     }

@@ -65,6 +65,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/sync-rackable-invoice',['uses'=>'AdminsController@postApiSyncRackableInvoice']);
     Route::post('/admins/api/sync-rackable-invoices',['uses'=>'AdminsController@postApiSyncRackableInvoices']);
     Route::post('/admins/api/create-invoice',['uses'=>'AdminsController@postApiCreateInvoice']);
+    Route::post('/admins/api/edit-invoice',['uses'=>'AdminsController@postApiEditInvoice']);
     Route::post('/admins/api/company-grab',['uses'=>'AdminsController@postApiCompanyGrab']);
     Route::post('/admins/api/invoice-grab',['uses'=>'AdminsController@postApiInvoiceGrab']);
     Route::post('/admins/api/item-grab',['uses'=>'AdminsController@postApiItemGrab']);
@@ -75,6 +76,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/discount-grab',['uses'=>'AdminsController@postApiDiscountGrab']);
     Route::post('/admins/api/create-invoice-item',['uses'=>'AdminsController@postApiCreateInvoiceItem']);
     Route::post('/admins/api/colors-query',['uses'=>'AdminsController@postApiColorsQuery']);
+    Route::post('/admins/api/marks-query',['uses'=>'AdminsController@postApiMarksQuery']);
+    Route::post('/admins/api/memos-query',['uses'=>'AdminsController@postApiMemosQuery']);
+    Route::post('/admins/api/taxes-query',['uses'=>'AdminsController@postApiTaxesQuery']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){
