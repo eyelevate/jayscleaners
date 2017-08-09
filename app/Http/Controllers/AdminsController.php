@@ -1904,6 +1904,35 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiAddCustomer(Request $request) {
+        $customer = new User();
+        $u = json_decode($request->users,true);
+        $customer->company_id =$u['company_id'];
+        $customer->phone =$u['phone'];
+        $customer->last_name =$u['last_name'];
+        $customer->first_name =$u['first_name'];
+        $customer->email =$u['email'];
+        $customer->invoice_memo =$u['invoice_memo'];
+        $customer->important_memo =$u['important_memo'];
+        $customer->shirt =$u['shirt'];
+        $customer->starch =$u['starch'];
+        $customer->street =$u['street'];
+        $customer->suite =$u['suite'];
+        $customer->city =$u['city'];
+        $customer->zipcode =$u['zipcode'];
+        $customer->concierge_name =$u['concierge_name'];
+        $customer->concierge_number =$u['concierge_number'];
+        $customer->special_instructions =$u['special_instructions'];
+        $customer->account =$u['account'];
+        $customer->role_id = $u['role_id'];
+
+        if ($customer->save()) {
+            return response()->json($customer);
+        }
+    
+        return response()->json(['status'=>false]);
+    }
+
     
 
 

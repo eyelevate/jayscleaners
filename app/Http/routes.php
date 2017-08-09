@@ -57,6 +57,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/create-mark',['uses'=>'AdminsController@postApiCreateMark']);
     Route::post('/admins/api/delete-mark',['uses'=>'AdminsController@postApiDeleteMark']);
     Route::post('/admins/api/delete-customer',['uses'=>'AdminsController@postApiCustomerDelete']);
+	Route::post('/admins/api/add-customer',['uses'=>'AdminsController@postApiAddCustomer']);
     Route::post('/admins/api/edit-customer',['uses'=>'AdminsController@postApiEditCustomer']);
     Route::get('/admins/api/sc/{query}',['uses'=>'AdminsController@getApiSearchCustomer']);
     Route::post('/admins/api/single-user-data',['uses'=>'AdminsController@postApiSingleUserData']);
