@@ -1860,6 +1860,22 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiDeleteMark(Request $request) {
+        $custids = Custid::where('mark',$request->mark)->get();
+        if (count($custids) > 0) {
+            foreach ($custids as $custid) {
+                $id = $custid->id;
+                $c = Custid::find($id);
+                if ($c->delete()) {
+                    return response()->json(['status'=>true]);
+                }
+            }
+        }
+        
+    
+        return response()->json(['status'=>false]);
+    }
+
     
 
 
