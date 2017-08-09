@@ -2079,9 +2079,17 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
     public function postApiDiscountGrab(Request $request) {
-        $discounts = Discount::find($request->discount_id)->get();
+        $discounts = Discount::find($request->discount_id);
         if (!is_null($discounts)) {
             return response()->json(['status'=>true,'data'=>$discounts]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiColorsQuery(Request $request) {
+        $colors = Color::where('company_id',$request->company_id)->get();
+        if (!is_null($colors)) {
+            return response()->json(['status'=>true,'data'=>$colors]);
         }
         return response()->json(['status'=>false]);
     }
