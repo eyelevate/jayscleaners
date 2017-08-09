@@ -2056,6 +2056,18 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiInvoiceGrabWithTrashed(Request $request) {
+        $invoices = Invoice::withTrashed()->where('id',$request->invoice_id)->get();
+        if (!is_null($invoices)) {
+            foreach ($invoices as $key => $value) {
+                $invoices[$key]['invoice_items'] = $value->invoice_items;
+            }
+            
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     public function postApiItemGrab(Request $request) {
         $items = InventoryItem::find($request->item_id);
         if (!is_null($items)) {

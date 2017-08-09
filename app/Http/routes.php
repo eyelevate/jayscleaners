@@ -68,6 +68,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/edit-invoice',['uses'=>'AdminsController@postApiEditInvoice']);
     Route::post('/admins/api/company-grab',['uses'=>'AdminsController@postApiCompanyGrab']);
     Route::post('/admins/api/invoice-grab',['uses'=>'AdminsController@postApiInvoiceGrab']);
+    Route::post('/admins/api/invoice-grab-with-trashed',['uses'=>'AdminsController@postApiInvoiceGrabWithTrashed']);
     Route::post('/admins/api/item-grab',['uses'=>'AdminsController@postApiItemGrab']);
     Route::post('/admins/api/inventory-grab',['uses'=>'AdminsController@postApiInventoryGrab']);
     Route::post('/admins/api/invoice-item-grab',['uses'=>'AdminsController@postApiInvoiceItemGrab']);
