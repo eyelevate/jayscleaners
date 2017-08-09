@@ -2040,6 +2040,26 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiDiscountQuery(Request $request) {
+        $discounts = Discount::where('company_id',$request->company_id)
+        ->where('start_date','<=',$request->start_date)
+        ->where('end_date','>=',$request->end_date)
+        ->where('inventory_id',$request->inventory_id)
+        ->get();
+        if (count($discounts) > 0) {
+
+            return response()->json(['status'=>true,'data'=>$discounts]);
+        }
+        return response()->json(['status'=>false]);
+    }
+    public function postApiDiscountGrab(Request $request) {
+        $discounts = Discount::find($request->discount_id)->get();
+        if (!is_null($discounts)) {
+            return response()->json(['status'=>true,'data'=>$discounts]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
 
     
 
