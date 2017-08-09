@@ -1997,7 +1997,7 @@ class AdminsController extends Controller
     public function postApiInvoiceGrab(Request $request) {
         $invoices = Invoice::find($request->invoice_id);
         if (!is_null($invoices)) {
-            // $invoices['invoice_items'] = $invoices->invoice_items;
+            $invoices['invoice_items'] = $invoices->invoice_items;
             return response()->json(['status'=>true,'data'=>$invoices]);
         }
         return response()->json(['status'=>false]);
