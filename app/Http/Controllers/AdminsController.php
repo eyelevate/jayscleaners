@@ -1878,7 +1878,7 @@ class AdminsController extends Controller
 
     public function postApiEditCustomer(Request $request) {
         $customer = User::find($request->customer_id);
-        $u = $request->users;
+        $u = json_decode($request->users,true);
         $customer->company_id =$u['company_id'];
         $customer->phone =$u['phone'];
         $customer->last_name =$u['last_name'];
