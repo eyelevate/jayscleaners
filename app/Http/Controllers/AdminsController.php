@@ -1986,6 +1986,31 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiCreateInvoiceItem(Request $request) {
+        $ii = json_decode($request->items,true);
+        $invoice_item = new InvoiceItem();
+        $invoice_item->invoice_id = $ii['invoice_id'];
+        $invoice_item->item_id = $ii['item_id'];
+        $invoice_item->inventory_id = $ii['item_id'];
+        $invoice_item->company_id = $ii['company_id'];
+        $invoice_item->customer_id = $ii['customer_id'];
+        $invoice_item->quantity = $ii['quantity'];
+        $invoice_item->color = $ii['color'];
+        $invoice_item->memo = $ii['memo'];
+        $invoice_item->pretax = $ii['pretax'];
+        $invoice_item->tax = $ii['tax'];
+        $invoice_item->total = $ii['total'];
+        $invoice_item->status = $ii['status'];
+        
+        if ($invoice_item->save()) {
+            
+
+            return response()->json(['status'=>true,'data'=>$invoice_item]);
+        }
+    
+        return response()->json(['status'=>false]);
+    }
+
     public function postApiCompanyGrab(Request $request) {
         $companies = Company::find($request->company_id);
         if (!is_null($companies)) {

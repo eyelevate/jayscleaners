@@ -73,6 +73,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/inventories-by-company',['uses'=>'AdminsController@postApiInventoriesByCompany']);
     Route::post('/admins/api/discount-query',['uses'=>'AdminsController@postApiDiscountQuery']);
     Route::post('/admins/api/discount-grab',['uses'=>'AdminsController@postApiDiscountGrab']);
+    Route::post('/admins/api/create-invoice-item',['uses'=>'AdminsController@postApiCreateInvoiceItem']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){
