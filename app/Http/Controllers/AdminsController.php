@@ -2020,6 +2020,15 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiInvoiceItemGrab(Request $request) {
+        $invoice_item = InvoiceItem::find($request->item_id);
+        if (!is_null($invoice_item)) {
+            
+            return response()->json(['status'=>true,'data'=>$invoice_item]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
 
     
 
