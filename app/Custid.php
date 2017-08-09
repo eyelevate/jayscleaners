@@ -31,7 +31,7 @@ class Custid extends Model
     	// $user_id = User::where('company_id',$users->company_id)->orderBy('id','desc')->pluck('user_id');
 
     	$first_mark = strtoupper(substr($users->last_name, 0,1));
-    	$second_mark = $users->user_id;
+    	$second_mark = $users->id;
 		switch($users->starch) {
 			case '1':
 				$last_mark = 'N';
