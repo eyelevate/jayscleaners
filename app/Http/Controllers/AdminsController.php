@@ -1929,7 +1929,7 @@ class AdminsController extends Controller
 
         if ($customer->save()) {
             // Create mark
-            $mark = createOriginalMark($customer);
+            $mark = Custid::createOriginalMark($customer);
             $custids = new Custid();
             $custids->company_id = $customer->company_id;
             $custids->customer_id = $customer->id;
