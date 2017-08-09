@@ -1847,6 +1847,19 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiCreateMark(Request $request) {
+        $custid = new Custid();
+        $custid->mark = $request->mark;
+        $custid->company_id = $request->company_id;
+        $custid->customer_id = $request->customer_id;
+        $custid->status = 1;
+        if ($custid->save()) {
+            return response()->json(['status'=>true]);
+        }
+    
+        return response()->json(['status'=>false]);
+    }
+
     
 
 
