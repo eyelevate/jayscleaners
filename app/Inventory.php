@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Inventory extends Model
 {
 	use SoftDeletes;
+
+	public function inventory_items() {
+		return $this->hasMany('App\InventoryItem');
+	}
 	public static function prepareTagSelect(){
 		return [
 			0 => 'None',

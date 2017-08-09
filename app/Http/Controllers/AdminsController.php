@@ -2029,6 +2029,14 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiInventoriesByCompany(Request $request) {
+        $inventories = Inventory::where('company_id',$request->company_id)->get();
+        if (count($inventories) > 0) {
+            return response()->json(['status'=>true,'data'=>$inventories]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
 
     
 
