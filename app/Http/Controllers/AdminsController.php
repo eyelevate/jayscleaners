@@ -1944,7 +1944,7 @@ class AdminsController extends Controller
     }
 
     public function postApiCreateInvoice(Request $request) {
-        $invoice = new User();
+        $invoice = new Invoice();
         $i = json_decode($request->invoice,true);
         $ii = json_decode($request->items,true);
         $invoice->company_id =$i['company_id'];
@@ -1956,8 +1956,6 @@ class AdminsController extends Controller
         $invoice->due_date = $i['due_date'];
         $invoice->memo = $i['memo'];
         $invoice->status = $i['status'];
-
-
 
         if ($invoice->save()) {
             $invoice_id = $invoice->id;
