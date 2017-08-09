@@ -2160,6 +2160,52 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiInvoiceQueryTransactionId(Request $request) {
+        $invoices = Invoice::where('transaction_id',$request->transaction_id)->get();
+        if (!is_null($invoices)) {
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiRemoveInvoiceByTransaction(Request $request) {
+        $invoices = Invoice::withTrashed()->where('id',$request->invoice_id)->restore();
+        $invoices = Invoice::find($request->invoice_id);
+        $invoices->transaction_id = NULL;
+        $invoices->status = $request->status;
+        if ($invoices->save()) {
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiRestoreInvoice(Request $request) {
+        $invoices = Invoice::withTrashed()->where('id',$request->invoice_id)->restore();
+        $invoice_items = InvoiceItem::withTrashed()->where('invoice_id',$request->invoice_id)->restore();
+        $invoices = Invoice::find($request->invoice_id);
+        $invoices->status = $request->status;
+        if ($invoices->save()) {
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiTransactionGrab(Request $request) {
+        $transactions = Transaction::find($request->transaction_id);
+        if (!is_null($transactions)) {
+            return response()->json(['status'=>true,'data'=>$transactions]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiDeleteInventoryItem(Request $request) {
+        $items = InventoryItem::find($request->item_id);
+        if ($items->delete()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
 
     
 
