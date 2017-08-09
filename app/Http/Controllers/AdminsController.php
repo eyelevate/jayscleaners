@@ -2129,7 +2129,7 @@ class AdminsController extends Controller
 
     public function postApiColorsQuery(Request $request) {
         $colors = Color::where('company_id',$request->company_id)->orderBy('ordered','asc')->get();
-        if (!is_null($colors)) {
+        if (count($colors) > 0) {
             return response()->json(['status'=>true,'data'=>$colors]);
         }
         return response()->json(['status'=>false]);
