@@ -13,6 +13,11 @@ class Invoice extends Model
 {
     use SoftDeletes;
 
+
+    public function invoice_items() {
+        return $this->hasMany('App\InvoiceItem','invoice_id');
+    }
+
     /**
     * Statuses
     * 1 - ACTIVE 

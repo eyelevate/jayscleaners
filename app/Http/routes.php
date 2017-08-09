@@ -66,6 +66,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/sync-rackable-invoices',['uses'=>'AdminsController@postApiSyncRackableInvoices']);
     Route::post('/admins/api/create-invoice',['uses'=>'AdminsController@postApiCreateInvoice']);
     Route::post('/admins/api/company-grab',['uses'=>'AdminsController@postApiCompanyGrab']);
+    Route::post('/admins/api/invoice-grab',['uses'=>'AdminsController@postApiInvoiceGrab']);
+    Route::post('/admins/api/item-grab',['uses'=>'AdminsController@postApiItemGrab']);
+    Route::post('/admins/api/inventory-grab',['uses'=>'AdminsController@postApiInventoryGrab']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){

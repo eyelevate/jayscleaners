@@ -1994,6 +1994,32 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiInvoiceGrab(Request $request) {
+        $invoices = Invoice::find($request->invoice_id);
+        if (!is_null($invoices)) {
+            $invoices['invoice_items'] = $invoices->invoice_items;
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiItemGrab(Request $request) {
+        $items = InventoryItem::find($request->item_id);
+        if (!is_null($items)) {
+            
+            return response()->json(['status'=>true,'data'=>$items]);
+        }
+        return response()->json(['status'=>false]);
+    }
+    public function postApiInventoryGrab(Request $request) {
+        $inventory = Inventory::find($request->inventory_id);
+        if (!is_null($inventory)) {
+            
+            return response()->json(['status'=>true,'data'=>$inventory]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
 
     
 
