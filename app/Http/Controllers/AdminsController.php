@@ -1839,6 +1839,14 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiCheckMark(Request $request) {
+        $custids = Custid::where('mark',$request->mark)->first();
+        if (is_null($custids)) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     
 
 
