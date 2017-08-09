@@ -1926,7 +1926,17 @@ class AdminsController extends Controller
         $customer->account =$u['account'];
         $customer->role_id = $u['role_id'];
 
+
         if ($customer->save()) {
+            // Create mark
+            $mark = createOriginalMark($customer);
+            $custids = new Custid();
+            $custids->company_id = $customer->company_id;
+            $custids->customer_id = $customer->id;
+            $custids->mark = $mark;
+            $custids->status = 1;
+            $custids->save();
+
             return response()->json($customer);
         }
     
