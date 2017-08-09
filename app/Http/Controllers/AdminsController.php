@@ -1954,6 +1954,7 @@ class AdminsController extends Controller
         $invoice->tax = $i['tax'];
         $invoice->total = $i['total'];
         $invoice->due_date = $i['due_date'];
+        $invoice->discount_id = ($i['discount_id'] != '') ? $i['discount_id'] : NULL;
         $invoice->memo = $i['memo'];
         $invoice->status = $i['status'];
 
