@@ -1937,7 +1937,7 @@ class AdminsController extends Controller
             $custids->status = 1;
             $custids->save();
 
-            return response()->json($customer);
+            return response()->json(['status'=>true,'data'=>$customer]);
         }
     
         return response()->json(['status'=>false]);
