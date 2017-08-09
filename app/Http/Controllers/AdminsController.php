@@ -1916,13 +1916,13 @@ class AdminsController extends Controller
         $customer->important_memo =$u['important_memo'];
         $customer->shirt =$u['shirt'];
         $customer->starch =$u['starch'];
-        $customer->street =$u['street'];
-        $customer->suite =$u['suite'];
-        $customer->city =$u['city'];
-        $customer->zipcode =$u['zipcode'];
-        $customer->concierge_name =$u['concierge_name'];
-        $customer->concierge_number =$u['concierge_number'];
-        $customer->special_instructions =$u['special_instructions'];
+        $customer->street = ($u['street'] != '') ? $u['street'] :  NULL;
+        $customer->suite =($u['suite'] != '') ? $u['suite'] :  NULL;
+        $customer->city =($u['city'] != '') ? $u['city'] :  NULL;
+        $customer->zipcode =($u['zipcode'] != '') ? $u['zipcode'] :  NULL;
+        $customer->concierge_name =($u['concierge_name'] != '') ? $u['concierge_name'] :  NULL;
+        $customer->concierge_number =($u['concierge_number'] != '') ? $u['concierge_number'] :  NULL;
+        $customer->special_instructions =($u['special_instructions'] != '') ? $u['special_instructions'] :  NULL;
         $customer->account =$u['account'];
         $customer->role_id = $u['role_id'];
 
