@@ -1923,7 +1923,7 @@ class AdminsController extends Controller
         $customer->concierge_name =($u['concierge_name'] != '') ? $u['concierge_name'] :  NULL;
         $customer->concierge_number =($u['concierge_number'] != '') ? $u['concierge_number'] :  NULL;
         $customer->special_instructions =($u['special_instructions'] != '') ? $u['special_instructions'] :  NULL;
-        $customer->account =$u['account'];
+        $customer->account =($u['account'] == 1) ? $u['account'] : NULL;
         $customer->role_id = $u['role_id'];
 
 
@@ -1942,6 +1942,60 @@ class AdminsController extends Controller
     
         return response()->json(['status'=>false]);
     }
+
+    public function postApiCreateInvoice(Request $request) {
+        $invoice = new User();
+        $i = json_decode($request->invoice,true);
+        $ii = json_decode($request->items,true);
+        $invoice->company_id =$i['company_id'];
+        $invoice->customer_id =$i['customer_id'];
+        $invoice->quantity = $i['quantity'];
+        $invoice->pretax = $i['pretax'];
+        $invoice->tax = $i['tax'];
+        $invoice->total = $i['total'];
+        $invoice->due_date = $i['due_date'];
+        $invoice->memo = $i['memo'];
+        $invoice->status = $i['status'];
+
+
+
+        if ($invoice->save()) {
+            $invoice_id = $invoice->id;
+            // Create mark
+            if (count($ii) > 0) {
+                foreach ($ii as $iitem) {
+                    $invoice_item = new InvoiceItem();
+                    $invoice_item->invoice_id = $invoice_id;
+                    $invoice_item->item_id = $iitem['item_id'];
+                    $invoice_item->inventory_id = $iitem['item_id'];
+                    $invoice_item->company_id = $iitem['company_id'];
+                    $invoice_item->customer_id = $iitem['customer_id'];
+                    $invoice_item->quantity = $iitem['quantity'];
+                    $invoice_item->color = $iitem['color'];
+                    $invoice_item->memo = $iitem['memo'];
+                    $invoice_item->pretax = $iitem['pretax'];
+                    $invoice_item->tax = $iitem['tax'];
+                    $invoice_item->total = $iitem['total'];
+                    $invoice_item->status = $iitem['status'];
+                    $invoice_item->save();
+                }
+            }
+            
+
+            return response()->json(['status'=>true,'invoice'=>$invoice]);
+        }
+    
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiCompanyGrab(Request $request) {
+        $companies = Company::find($request->company_id);
+        if (!is_null($companies)) {
+            return response()->json(['status'=>true,'data'=>$companies]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
 
     
 
