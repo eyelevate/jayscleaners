@@ -73,6 +73,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/create-invoice',['uses'=>'AdminsController@postApiCreateInvoice']);
     Route::post('/admins/api/edit-invoice',['uses'=>'AdminsController@postApiEditInvoice']);
     Route::post('/admins/api/invoice-grab',['uses'=>'AdminsController@postApiInvoiceGrab']);
+    Route::post('/admins/api/invoice-grab-count',['uses'=>'AdminsController@postApiInvoiceGrabCount']);
     Route::post('/admins/api/invoice-grab-with-trashed',['uses'=>'AdminsController@postApiInvoiceGrabWithTrashed']);
     Route::post('/admins/api/invoice-query-transaction-id',['uses'=>'AdminsController@postApiInvoiceQueryTransactionId']);
     Route::post('/admins/api/invoice-grab-pickup',['uses'=>'AdminsController@postApiInvoiceGrabPickup']);
