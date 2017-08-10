@@ -1427,6 +1427,22 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public static function postApiDeleteInvoiceItems(Request $request) {
+        $rows = json_decode($request->rows,true);
+        $total_rows = count($rows);
+        $row_count = 0;
+        if (count($rows) > 0) {
+            foreach ($rows as $row) {
+                $invoice_items = InvoiceItem::find($row);
+                if ($invoice_items->delete()){
+                    $row_count++;
+                }
+            }
+        }
+    
+        return response()->json(['status'=>true,'rows_deleted'=>$row_count,'total_rows'=>$total_rows]);
+    }
+
     public static function postCreateTag(Request $request) {
         $invoice_id = $request->invoice_id;
         $invoice_item_id = $request->invoice_item_id;
