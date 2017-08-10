@@ -1410,6 +1410,23 @@ class AdminsController extends Controller
         return response()->json($tags);
     }
 
+    public static function postApiEditInvoiceItem(Request $request) {
+        $invoice_item_id = $request->invoice_item_id;
+        $ii = json_decode($request->invoice_items,true);
+        $invoice_items = InvoiceItem::find($invoice_item_id);
+        $invoice_items->quantity = $ii['quantity'];
+        $invoice_items->color = $ii['color'];
+        $invoice_items->memo = $ii['memo'];
+        $invoice_items->pretax = $ii['pretax'];
+        $invoice_items->tax = $ii['tax'];
+        $invoice_items->total = $ii['total'];
+        if ($invoice_items->save()) {
+            return response()->json(['status'=>true,'data'=>$invoice_items]);
+        }
+    
+        return response()->json(['status'=>false]);
+    }
+
     public static function postCreateTag(Request $request) {
         $invoice_id = $request->invoice_id;
         $invoice_item_id = $request->invoice_item_id;
