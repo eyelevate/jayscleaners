@@ -39,71 +39,87 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/authenticate/{username}/{pw}',['as'=>'admins_api_authenticate','uses'=>'AdminsController@getAuthentication']);
 	Route::get('/admins/api/auto/{table}',['as'=>'admins_api_auto','uses'=>'AdminsController@getApiAuto']);
 	Route::post('/admins/api/auto', ['as'=>'admins_api_auto_post','uses'=>'AdminsController@postApiAuto']);
-   	Route::get('/admins/api/print/{id}',['as'=>'admins_api_print','uses'=>'AdminsController@getApiPrint']);
+
+    #Api-Card
+    Route::post('/admins/api/card-grab',['uses'=>'AdminsController@postApiCardGrab']);
+    Route::post('/admins/api/update-card',['uses'=>'AdminsController@postApiUpdateCard']);
+    Route::post('/admins/api/create-card',['uses'=>'AdminsController@postApiCreateCard']);
+    #Api-Colors
+    Route::post('/admins/api/colors-query',['uses'=>'AdminsController@postApiColorsQuery']);
+    #Api-Company
+    Route::post('/admins/api/company-grab',['uses'=>'AdminsController@postApiCompanyGrab']);
+    #Api-Custid
+    Route::post('/admins/api/check-mark',['uses'=>'AdminsController@postApiCheckMark']);
+    Route::post('/admins/api/create-mark',['uses'=>'AdminsController@postApiCreateMark']);
+    Route::post('/admins/api/delete-mark',['uses'=>'AdminsController@postApiDeleteMark']);
+    Route::post('/admins/api/marks-query',['uses'=>'AdminsController@postApiMarksQuery']);
+    #Api-Discount
+    Route::post('/admins/api/discount-query',['uses'=>'AdminsController@postApiDiscountQuery']);
+    Route::post('/admins/api/discount-grab',['uses'=>'AdminsController@postApiDiscountGrab']);
+    Route::post('/admins/api/discount-grab-by-company',['uses'=>'AdminsController@postApiDiscountGrabByCompany']);
+    #Api-Inventory
+    Route::post('/admins/api/inventory-grab',['uses'=>'AdminsController@postApiInventoryGrab']);
+    Route::post('/admins/api/inventories-by-company',['uses'=>'AdminsController@postApiInventoriesByCompany']);
+    #Api-InventoryItem
+    Route::post('/admins/api/item-grab',['uses'=>'AdminsController@postApiItemGrab']);
+    Route::post('/admins/api/delete-inventory-item',['uses'=>'AdminsController@postApiDeleteInventoryItem']);
+    #Api-Invoice
+    Route::post('/admins/api/invoice-data',['uses'=>'AdminsController@postApiInvoiceData']);
+    Route::post('/admins/api/rack-single',['uses'=>'AdminsController@postRackSingle']);
+    Route::post('/admins/api/delete-rack-single',['uses'=>'AdminsController@postDeleteRackSingle']);
+    Route::post('/admins/api/sync-rackable-invoice',['uses'=>'AdminsController@postApiSyncRackableInvoice']);
+    Route::post('/admins/api/sync-rackable-invoices',['uses'=>'AdminsController@postApiSyncRackableInvoices']);
+    Route::post('/admins/api/create-invoice',['uses'=>'AdminsController@postApiCreateInvoice']);
+    Route::post('/admins/api/edit-invoice',['uses'=>'AdminsController@postApiEditInvoice']);
+    Route::post('/admins/api/invoice-grab',['uses'=>'AdminsController@postApiInvoiceGrab']);
+    Route::post('/admins/api/invoice-grab-with-trashed',['uses'=>'AdminsController@postApiInvoiceGrabWithTrashed']);
+    Route::post('/admins/api/invoice-query-transaction-id',['uses'=>'AdminsController@postApiInvoiceQueryTransactionId']);
+    Route::post('/admins/api/invoice-grab-pickup',['uses'=>'AdminsController@postApiInvoiceGrabPickup']);
+    Route::post('/admins/api/update-invoice-pickup',['uses'=>'AdminsController@postApiUpdateInvoicePickup']);
+    Route::post('/admins/api/restore-invoice',['uses'=>'AdminsController@postApiRestoreInvoice']);
+    #Api-InvoiceItem
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
     Route::post('/admins/api/invoice-items-barcode',['uses'=>'AdminsController@postApiInvoiceItemsBarcode']);
     Route::post('/admins/api/invoice-items-rfid',['uses'=>'AdminsController@postApiInvoiceItemsRfid']);
     Route::post('/admins/api/set-barcode',['uses'=>'AdminsController@postApiSetBarcode']);
     Route::post('/admins/api/invoice-items-id-data',['uses'=>'AdminsController@postApiInvoiceItemsIdData']);
-    Route::post('/admins/api/invoice-data',['uses'=>'AdminsController@postApiInvoiceData']);
     Route::post('/admins/api/update-invoice-item-pretax',['uses'=>'AdminsController@postUpdateInvoiceItemPretax']);
     Route::post('/admins/api/create-tag',['uses'=>'AdminsController@postCreateTag']);
     Route::post('/admins/api/update-tag',['uses'=>'AdminsController@postUpdateTag']);
     Route::post('/admins/api/delete-tag',['uses'=>'AdminsController@postDeleteTag']);
-    Route::post('/admins/api/rack-single',['uses'=>'AdminsController@postRackSingle']);
-    Route::post('/admins/api/delete-rack-single',['uses'=>'AdminsController@postDeleteRackSingle']);
+    Route::post('/admins/api/invoice-item-grab',['uses'=>'AdminsController@postApiInvoiceItemGrab']);
+    Route::post('/admins/api/create-invoice-item',['uses'=>'AdminsController@postApiCreateInvoiceItem']);
+    Route::post('/admins/api/invoice-item-discount-find',['uses'=>'AdminsController@postApiInvoiceItemDiscountFind']);
+    Route::post('/admins/api/invoice-item-discount-find-item-id',['uses'=>'AdminsController@postApiInvoiceItemDiscountFindItemId']);
+    Route::post('/admins/api/edit-invoice-item',['uses'=>'AdminsController@postApiEditInvoiceItem']);
+    Route::post('/admins/api/delete-invoice-items',['uses'=>'AdminsController@postApiDeleteInvoiceItems']);
+    #Api-Memo
+    Route::post('/admins/api/memos-query',['uses'=>'AdminsController@postApiMemosQuery']);
+    #Api-Printer
+    Route::get('/admins/api/print/{id}',['as'=>'admins_api_print','uses'=>'AdminsController@getApiPrint']);
+    #Api-Profile
+    Route::post('/admins/api/profiles-query',['uses'=>'AdminsController@postApiProfilesQuery']);
+    Route::post('/admins/api/create-profile',['uses'=>'AdminsController@postApiCreateProfile']);
+    #Api-Tax
+    Route::post('/admins/api/taxes-query',['uses'=>'AdminsController@postApiTaxesQuery']);
+    #Api-Transaction
+    Route::post('/admins/api/transaction-grab',['uses'=>'AdminsController@postApiTransactionGrab']);
+    Route::post('/admins/api/create-transaction',['uses'=>'AdminsController@postApiCreateTransaction']);
+    Route::post('/admins/api/update-transaction',['uses'=>'AdminsController@postApiUpdateTransaction']);
+    Route::post('/admins/api/last-transaction-grab',['uses'=>'AdminsController@postApiLastTransactionGrab']);
+    Route::post('/admins/api/remove-invoice-by-transaction',['uses'=>'AdminsController@postApiRemoveInvoiceByTransaction']);
+    #Api-User
     Route::post('/admins/api/scc',['uses'=>'AdminsController@postApiSearchCustomer']);
-    Route::post('/admins/api/check-mark',['uses'=>'AdminsController@postApiCheckMark']);
-    Route::post('/admins/api/create-mark',['uses'=>'AdminsController@postApiCreateMark']);
-    Route::post('/admins/api/delete-mark',['uses'=>'AdminsController@postApiDeleteMark']);
     Route::post('/admins/api/delete-customer',['uses'=>'AdminsController@postApiCustomerDelete']);
 	Route::post('/admins/api/add-customer',['uses'=>'AdminsController@postApiAddCustomer']);
     Route::post('/admins/api/edit-customer',['uses'=>'AdminsController@postApiEditCustomer']);
     Route::get('/admins/api/sc/{query}',['uses'=>'AdminsController@getApiSearchCustomer']);
     Route::post('/admins/api/single-user-data',['uses'=>'AdminsController@postApiSingleUserData']);
     Route::post('/admins/api/sync-customer',['uses'=>'AdminsController@postApiSyncCustomer']);
-    Route::post('/admins/api/sync-rackable-invoice',['uses'=>'AdminsController@postApiSyncRackableInvoice']);
-    Route::post('/admins/api/sync-rackable-invoices',['uses'=>'AdminsController@postApiSyncRackableInvoices']);
-    Route::post('/admins/api/create-invoice',['uses'=>'AdminsController@postApiCreateInvoice']);
-    Route::post('/admins/api/edit-invoice',['uses'=>'AdminsController@postApiEditInvoice']);
-    Route::post('/admins/api/company-grab',['uses'=>'AdminsController@postApiCompanyGrab']);
-    Route::post('/admins/api/invoice-grab',['uses'=>'AdminsController@postApiInvoiceGrab']);
-    Route::post('/admins/api/invoice-grab-with-trashed',['uses'=>'AdminsController@postApiInvoiceGrabWithTrashed']);
-    Route::post('/admins/api/invoice-query-transaction-id',['uses'=>'AdminsController@postApiInvoiceQueryTransactionId']);
-    Route::post('/admins/api/remove-invoice-by-transaction',['uses'=>'AdminsController@postApiRemoveInvoiceByTransaction']);
-    Route::post('/admins/api/item-grab',['uses'=>'AdminsController@postApiItemGrab']);
-    Route::post('/admins/api/inventory-grab',['uses'=>'AdminsController@postApiInventoryGrab']);
-    Route::post('/admins/api/invoice-item-grab',['uses'=>'AdminsController@postApiInvoiceItemGrab']);
-    Route::post('/admins/api/inventories-by-company',['uses'=>'AdminsController@postApiInventoriesByCompany']);
-    Route::post('/admins/api/discount-query',['uses'=>'AdminsController@postApiDiscountQuery']);
-    Route::post('/admins/api/discount-grab',['uses'=>'AdminsController@postApiDiscountGrab']);
-    Route::post('/admins/api/discount-grab-by-company',['uses'=>'AdminsController@postApiDiscountGrabByCompany']);
-    Route::post('/admins/api/create-invoice-item',['uses'=>'AdminsController@postApiCreateInvoiceItem']);
-    Route::post('/admins/api/colors-query',['uses'=>'AdminsController@postApiColorsQuery']);
-    Route::post('/admins/api/marks-query',['uses'=>'AdminsController@postApiMarksQuery']);
-    Route::post('/admins/api/memos-query',['uses'=>'AdminsController@postApiMemosQuery']);
-    Route::post('/admins/api/taxes-query',['uses'=>'AdminsController@postApiTaxesQuery']);
-    Route::post('/admins/api/transaction-grab',['uses'=>'AdminsController@postApiTransactionGrab']);
-    Route::post('/admins/api/restore-invoice',['uses'=>'AdminsController@postApiRestoreInvoice']);
-    Route::post('/admins/api/delete-inventory-item',['uses'=>'AdminsController@postApiDeleteInventoryItem']);
-    Route::post('/admins/api/edit-invoice-item',['uses'=>'AdminsController@postApiEditInvoiceItem']);
-    Route::post('/admins/api/delete-invoice-items',['uses'=>'AdminsController@postApiDeleteInvoiceItems']);
-    Route::post('/admins/api/profiles-query',['uses'=>'AdminsController@postApiProfilesQuery']);
-    Route::post('/admins/api/invoice-grab-pickup',['uses'=>'AdminsController@postApiInvoiceGrabPickup']);
-    Route::post('/admins/api/invoice-item-discount-find',['uses'=>'AdminsController@postApiInvoiceItemDiscountFind']);
-    Route::post('/admins/api/invoice-item-discount-find-item-id',['uses'=>'AdminsController@postApiInvoiceItemDiscountFindItemId']);
-
-    Route::post('/admins/api/update-card',['uses'=>'AdminsController@postApiUpdateCard']);
-    Route::post('/admins/api/create-card',['uses'=>'AdminsController@postApiCreateCard']);
-    Route::post('/admins/api/create-profile',['uses'=>'AdminsController@postApiCreateProfile']);
-    Route::post('/admins/api/update-customer-pickup',['uses'=>'AdminsController@postApiUpdateCustomerPickup']);
-    Route::post('/admins/api/update-invoice-pickup',['uses'=>'AdminsController@postApiUpdateInvoicePickup']);
+    Route::post('/admins/api/check-account',['uses'=>'AdminsController@postApiCheckAccount']);
     Route::post('/admins/api/update-customer-account-total',['uses'=>'AdminsController@postApiUpdateCustomerAccountTotal']);
     Route::post('/admins/api/update-customer-credits',['uses'=>'AdminsController@postApiUpdateCustomerCredits']);
-    Route::post('/admins/api/last-transaction-grab',['uses'=>'AdminsController@postApiLastTransactionGrab']);
-    Route::post('/admins/api/check-account',['uses'=>'AdminsController@postApiCheckAccount']);
-    Route::post('/admins/api/create-transaction',['uses'=>'AdminsController@postApiCreateTransaction']);
-    Route::post('/admins/api/update-transaction',['uses'=>'AdminsController@postApiUpdateTransaction']);
+    Route::post('/admins/api/update-customer-pickup',['uses'=>'AdminsController@postApiUpdateCustomerPickup']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){
