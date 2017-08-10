@@ -101,6 +101,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/update-customer-account-total',['uses'=>'AdminsController@postApiUpdateCustomerAccountTotal']);
     Route::post('/admins/api/update-customer-credits',['uses'=>'AdminsController@postApiUpdateCustomerCredits']);
     Route::post('/admins/api/last-transaction-grab',['uses'=>'AdminsController@postApiLastTransactionGrab']);
+    Route::post('/admins/api/check-account',['uses'=>'AdminsController@postApiCheckAccount']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){

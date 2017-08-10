@@ -2405,6 +2405,16 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiCheckAccount(Request $request) {
+        $trans = Transaction::where('customer_id',$request->customer_id)
+        ->where('status',3)
+        ->get();
+        if (count($trans)>0) {
+            return response()->json(['status'=>true,'data'=>$trans]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
 
     
 
