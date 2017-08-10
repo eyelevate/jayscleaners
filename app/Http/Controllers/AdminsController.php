@@ -1952,6 +1952,13 @@ class AdminsController extends Controller
     public function postApiDeleteInvoice(Request $request) {
         $invoices = Invoice::find($request->invoice_id);
         if ($invoices->delete()) {
+            $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)->get();
+            if (count($invoice_items) > 0) {
+                foreach ($invoice_items as $invoice_item) {
+                    $ii = InvoiceItem::find($invoice_item->id);
+                    $ii->delete();
+                }
+            }
             return response()->json(['status'=>true]);
         }
         return response()->json(['status'=>false]);
