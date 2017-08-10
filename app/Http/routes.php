@@ -77,6 +77,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/inventories-by-company',['uses'=>'AdminsController@postApiInventoriesByCompany']);
     Route::post('/admins/api/discount-query',['uses'=>'AdminsController@postApiDiscountQuery']);
     Route::post('/admins/api/discount-grab',['uses'=>'AdminsController@postApiDiscountGrab']);
+    Route::post('/admins/api/discount-grab-by-company',['uses'=>'AdminsController@postApiDiscountGrabByCompany']);
     Route::post('/admins/api/create-invoice-item',['uses'=>'AdminsController@postApiCreateInvoiceItem']);
     Route::post('/admins/api/colors-query',['uses'=>'AdminsController@postApiColorsQuery']);
     Route::post('/admins/api/marks-query',['uses'=>'AdminsController@postApiMarksQuery']);
@@ -87,6 +88,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/delete-inventory-item',['uses'=>'AdminsController@postApiDeleteInventoryItem']);
     Route::post('/admins/api/edit-invoice-item',['uses'=>'AdminsController@postApiEditInvoiceItem']);
     Route::post('/admins/api/delete-invoice-items',['uses'=>'AdminsController@postApiDeleteInvoiceItems']);
+    Route::post('/admins/api/profiles-query',['uses'=>'AdminsController@postApiProfilesQuery']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){

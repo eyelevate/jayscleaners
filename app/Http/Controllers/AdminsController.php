@@ -2155,6 +2155,16 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiDiscountGrabByCompany(Request $request) {
+        $discounts = Discount::where('company_id',$request->company_id)
+        ->orderBy('id','desc')
+        ->get();
+        if (!is_null($discounts)) {
+            return response()->json(['status'=>true,'data'=>$discounts]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     public function postApiColorsQuery(Request $request) {
         $colors = Color::where('company_id',$request->company_id)->orderBy('ordered','asc')->get();
         if (count($colors) > 0) {
@@ -2232,6 +2242,16 @@ class AdminsController extends Controller
         $items = InventoryItem::find($request->item_id);
         if ($items->delete()) {
             return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiProfilesQuery(Request $request) {
+        $profiles = Profile::where('company_id',$request->company_id)
+        ->where('user_id',$request->customer_id)
+        ->get();
+        if (count($profiles)>0) {
+            return response()->json(['status'=>true,'data'=>$profiles]);
         }
         return response()->json(['status'=>false]);
     }
