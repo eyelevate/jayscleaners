@@ -2148,6 +2148,14 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiInvoiceGrabCount(Request $request) {
+        $customer_id = $request->customer_id;
+
+        $count = Invoice::where('customer_id',$customer_id)->count();
+
+        return response()->json(['status'=>true,'count'=>$count]);
+    }
+
     public function postApiSyncCustomer(Request $request) {
         $customer_id = $request->customer_id;
 
@@ -2188,7 +2196,7 @@ class AdminsController extends Controller
         $invoice_item = new InvoiceItem();
         $invoice_item->invoice_id = $ii['invoice_id'];
         $invoice_item->item_id = $ii['item_id'];
-        $invoice_item->inventory_id = $ii['item_id'];
+        $invoice_item->inventory_id = $ii['inventory_id'];
         $invoice_item->company_id = $ii['company_id'];
         $invoice_item->customer_id = $ii['customer_id'];
         $invoice_item->quantity = $ii['quantity'];
