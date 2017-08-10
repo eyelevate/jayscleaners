@@ -2032,12 +2032,11 @@ class AdminsController extends Controller
         $invoice->total = $i['total'];
         $invoice->due_date = $i['due_date'];
         $invoice->discount_id = ($i['discount_id'] != '') ? $i['discount_id'] : NULL;
-        $invoice->memo = ($i['memo']) ? $i['memo'] :  NULL;
 
 
         if ($invoice->save()) {            
 
-            return response()->json(['status'=>true,'invoice'=>$invoice]);
+            return response()->json(['status'=>true]);
         }
     
         return response()->json(['status'=>false]);
