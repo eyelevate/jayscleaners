@@ -61,7 +61,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/edit-customer',['uses'=>'AdminsController@postApiEditCustomer']);
     Route::get('/admins/api/sc/{query}',['uses'=>'AdminsController@getApiSearchCustomer']);
     Route::post('/admins/api/single-user-data',['uses'=>'AdminsController@postApiSingleUserData']);
-    Route::post('/admins/api/sync-customer',['uses'=>'AdminsController@postApiSyncCustomer']);
+    Route::post('/admins/api/invoice-grab',['uses'=>'AdminsController@postApiInvoiceGrab']);
     Route::post('/admins/api/sync-rackable-invoice',['uses'=>'AdminsController@postApiSyncRackableInvoice']);
     Route::post('/admins/api/sync-rackable-invoices',['uses'=>'AdminsController@postApiSyncRackableInvoices']);
     Route::post('/admins/api/create-invoice',['uses'=>'AdminsController@postApiCreateInvoice']);
@@ -89,6 +89,18 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/edit-invoice-item',['uses'=>'AdminsController@postApiEditInvoiceItem']);
     Route::post('/admins/api/delete-invoice-items',['uses'=>'AdminsController@postApiDeleteInvoiceItems']);
     Route::post('/admins/api/profiles-query',['uses'=>'AdminsController@postApiProfilesQuery']);
+    Route::post('/admins/api/invoice-grab-pickup',['uses'=>'AdminsController@postApiInvoiceGrabPickup']);
+    Route::post('/admins/api/invoice-item-discount-find',['uses'=>'AdminsController@postApiInvoiceItemDiscountFind']);
+    Route::post('/admins/api/invoice-item-discount-find-item-id',['uses'=>'AdminsController@postApiInvoiceItemDiscountFindItemId']);
+
+    Route::post('/admins/api/update-card',['uses'=>'AdminsController@postApiUpdateCard']);
+    Route::post('/admins/api/create-card',['uses'=>'AdminsController@postApiCreateCard']);
+    Route::post('/admins/api/create-profile',['uses'=>'AdminsController@postApiCreateProfile']);
+    Route::post('/admins/api/update-customer-pickup',['uses'=>'AdminsController@postApiUpdateCustomerPickup']);
+    Route::post('/admins/api/update-invoice-pickup',['uses'=>'AdminsController@postApiUpdateInvoicePickup']);
+    Route::post('/admins/api/update-customer-account-total',['uses'=>'AdminsController@postApiUpdateCustomerAccountTotal']);
+    Route::post('/admins/api/update-customer-credits',['uses'=>'AdminsController@postApiUpdateCustomerCredits']);
+    Route::post('/admins/api/last-transaction-grab',['uses'=>'AdminsController@postApiLastTransactionGrab']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     Route::group(['middleware' => ['forceSSL']], function(){

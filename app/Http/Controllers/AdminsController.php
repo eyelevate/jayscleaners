@@ -1739,7 +1739,7 @@ class AdminsController extends Controller
     }
 
 
-    public function postApiSyncCustomer(Request $request) {
+    public function postApiInvoiceGrab(Request $request) {
         $customer_id = $request->customer_id;
 
         $invoices = Invoice::where('customer_id',$customer_id)
@@ -1757,8 +1757,38 @@ class AdminsController extends Controller
         } else {
             $invoices = [];
         }
+        if (count($invoices) > 0) {
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        } 
 
-        return response()->json($invoices);
+        return response()->json(['status'=>false]);
+        
+    }
+
+    public function postApiInvoiceGrabPickup(Request $request) {
+        $customer_id = $request->customer_id;
+
+        $invoices = Invoice::where('customer_id',$customer_id)
+            ->where('status','<',3)
+            ->get();
+
+        if (count($invoices) > 0) {
+            foreach ($invoices as $key => $value) {
+                $invoice_id = $value->id;
+                $iitems = InvoiceItem::where('invoice_id',$invoice_id)->get();
+                if (count($iitems) > 0) {
+                    $invoices[$key]['invoice_items'] = $iitems;
+                }
+            }
+        } else {
+            $invoices = [];
+        }
+
+        if (count($invoices) > 0) {
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        } 
+
+        return response()->json(['status'=>false]);
     }
 
     public function getApiSearchCustomer($query = null) {
@@ -2252,6 +2282,125 @@ class AdminsController extends Controller
         ->get();
         if (count($profiles)>0) {
             return response()->json(['status'=>true,'data'=>$profiles]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiInvoiceItemDiscountFind(Request $request) {
+        $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)
+        ->where('inventory_id',$request->inventory_id)
+        ->get();
+        if (count($invoice_items)>0) {
+            return response()->json(['status'=>true,'data'=>$invoice_items]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiInvoiceItemDiscountFindItemId(Request $request) {
+        $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)
+        ->where('item_id',$request->item_id)
+        ->get();
+        if (count($invoice_items)>0) {
+            return response()->json(['status'=>true,'data'=>$invoice_items]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiUpdateCard(Request $request) {
+        $card = Card::find($request->card_id);
+        $c = json_decode($request->cards,true);
+        $card->street = $c['street'];
+        $card->suite = $c['suite'];
+        $card->city = $c['city'];
+        $card->state = $c['state'];
+        $card->exp_month = $c['exp_month'];
+        $card->exp_year = $c['exp_year'];
+        if ($card->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiCreateCard(Request $request) {
+        $card = new Card();
+        $c = json_decode($request->cards,true);
+        $card->payment_id = $c['payment_id'];
+        $card->root_payment_id = ($c['root_payment_id'] != '') ? $c['root_payment_id'] : NULL;
+        $card->street = $c['street'];
+        $card->suite = $c['suite'];
+        $card->city = $c['city'];
+        $card->state = $c['state'];
+        $card->exp_month = $c['exp_month'];
+        $card->exp_year = $c['exp_year'];
+        if ($card->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiCreateProfile(Request $request) {
+        $profile = new Profile();
+        $p = json_decode($request->profile,true);
+        $profile->company_id = $p['company_id'];
+        $profile->payment_id = $p['payment_id'];
+        $profile->profile_id = $p['profile_id'];
+        $profile->status = $c['status'];
+        if ($profile->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiUpdateCustomerPickup(Request $request) {
+        $user = User::find($request->customer_id);
+
+        $u = json_decode($request->customer,true);
+        $user->credits = $u['credits'];
+        $user->account_total = $u['account_total'];
+        if ($user->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiUpdateInvoicePickup(Request $request) {
+        $invoice = Invoice::find($request->invoice_id);
+
+        $i = json_decode($request->invoice,true);
+        $invoice->status = $i['status'];
+        $invoice->transaction_id = $i['transaction_id'];
+        if ($invoice->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiUpdateCustomerAccountTotal(Request $request) {
+        $user = User::find($request->customer_id);
+        $user->account_total = $request->account_total;
+        if ($user->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiUpdateCustomerCredits(Request $request) {
+        $user = User::find($request->customer_id);
+        $user->credits = $request->credits;
+        if ($user->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+    public function postApiLastTransactionGrab(Request $request) {
+        $trans = Transaction::where('id','>',0)
+        ->where('customer_id',$request->customer_id)
+        ->orderBy('id','desc')
+        ->limit(1)
+        ->get();
+
+        if (count($trans)>0) {
+            return response()->json(['status'=>true,'data'=>$trans]);
         }
         return response()->json(['status'=>false]);
     }
