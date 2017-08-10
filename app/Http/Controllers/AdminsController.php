@@ -2415,7 +2415,51 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiCreateTransaction(Request $request) {
+        $trans = new Transaction;
+        $t = json_decode($request->transaction,true);
+        $trans->customer_id = $request->customer_id;
+        $trans->company_id = $t['company_id'];
+        $trans->pretax = $t['pretax'];
+        $trans->tax = $t['tax'];
+        $trans->aftertax = $t['aftertax'];
+        $trans->credit = $t['credit'];
+        $trans->discount = $t['discount'];
+        $trans->total = $t['total'];
+        $trans->account_paid = $t['account_paid'];
+        $trans->account_paid_on = $t['account_paid_on'];
+        $trans->type = $t['type'];
+        $trans->last_four = $t['last_four'];
+        $trans->tendered = $t['tendered'];
+        $trans->transaction_id = $t['transaction_id'];
+        $trans->status = 3;
+        if ($trans->save()) {
+            return response()->json(['status'=>true,'data'=>$trans]);
+        }
+        return response()->json(['status'=>false]);
+    }
 
+    public function postApiUpdateTransaction(Request $request) {
+        $transactions = Transaction::where('status',3)
+        ->where('customer_id',$customer_id)
+        ->get();
+        $t = json_decode($request->transaction,true);
+        if (count($transactions) > 0) {
+            foreach ($transactions as $tran) {
+                $trans = Transaction::find($tran->id);
+                $trans->pretax = $t['pretax'];
+                $trans->tax = $t['tax'];
+                $trans->aftertax = $t['aftertax'];
+                $trans->credit = $t['credit'];
+                $trans->discount = $t['discount'];
+                $trans->total = $t['total'];
+                if ($trans->save()) {
+                    return response()->json(['status'=>true,'data'=>$trans]);
+                }
+            }
+        }
+        return response()->json(['status'=>false]);
+    }
     
 
 
