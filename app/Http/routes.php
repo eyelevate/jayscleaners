@@ -42,6 +42,7 @@ Route::group(['middleware' => ['web']], function () {
 
     #Api-Card
     Route::post('/admins/api/card-grab',['uses'=>'AdminsController@postApiCardGrab']);
+    Route::post('/admins/api/card-grab-root',['uses'=>'AdminsController@postApiCardGrabRoot']);
     Route::post('/admins/api/update-card',['uses'=>'AdminsController@postApiUpdateCard']);
     Route::post('/admins/api/create-card',['uses'=>'AdminsController@postApiCreateCard']);
     #Api-Colors
@@ -77,6 +78,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/invoice-grab-pickup',['uses'=>'AdminsController@postApiInvoiceGrabPickup']);
     Route::post('/admins/api/update-invoice-pickup',['uses'=>'AdminsController@postApiUpdateInvoicePickup']);
     Route::post('/admins/api/restore-invoice',['uses'=>'AdminsController@postApiRestoreInvoice']);
+    Route::post('/admins/api/rack-invoice',['uses'=>'AdminsController@postApiRackInvoice']);
     #Api-InvoiceItem
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
     Route::post('/admins/api/invoice-items-barcode',['uses'=>'AdminsController@postApiInvoiceItemsBarcode']);

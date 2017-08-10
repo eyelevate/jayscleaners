@@ -1747,6 +1747,14 @@ class AdminsController extends Controller
         }
         return response()->json(['status'=>false]);
     }
+    public function postApiCardGrabRoot(Request $request) {
+        $card = Card::where('payment_id',$request->root_id)->first();
+
+        if (!is_null($card)) {
+            return response()->json(['status'=>true,'data'=>$card]);
+        }
+        return response()->json(['status'=>false]);
+    }
     public function postApiCreateCard(Request $request) {
         $card = new Card();
         $c = json_decode($request->cards,true);
@@ -2081,6 +2089,22 @@ class AdminsController extends Controller
         return response()->json($invoices);
     }
 
+
+    public function postApiRackInvoice(Request $request) {
+        $invoice = Invoice::find($request->invoice_id);
+
+        $i = json_decode($request->rack,true);
+        $invoice->rack =$i['rack'];
+        $invoice->rack_date =$i['rack_date'];
+        $invoice->status = 2;
+
+        if ($invoice->save()) {            
+
+            return response()->json(['status'=>true]);
+        }
+    
+        return response()->json(['status'=>false]);
+    }
     public function postApiSyncRackableInvoice(Request $request) {
         $invoice_id = $request->invoice_id;
         $invoices = Invoice::withTrashed()
