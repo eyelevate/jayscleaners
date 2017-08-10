@@ -2022,27 +2022,18 @@ class AdminsController extends Controller
 
     public function postApiEditInvoice(Request $request) {
         $invoice = Invoice::find($request->invoice_id);
-        $qty = InvoiceItem::where('invoice_id',$request->invoice_id)->sum('quantity');
-        $pretax = InvoiceItem::where('invoice_id',$request->invoice_id)->sum('pretax');
-        $tax = InvoiceItem::where('invoice_id',$request->invoice_id)->sum('tax');
-        $total = InvoiceItem::where('invoice_id',$request->invoice_id)->sum('total');
 
         $i = json_decode($request->invoice,true);
         $invoice->company_id =$i['company_id'];
         $invoice->customer_id =$i['customer_id'];
-        $invoice->quantity = $quantity;
-        $invoice->pretax = $pretax;
-        $invoice->tax = $tax;
-        $invoice->total = $total;
+        $invoice->quantity = $i['quantity'];
+        $invoice->pretax = $i['pretax'];
+        $invoice->tax = $i['tax'];
+        $invoice->total = $i['total'];
         $invoice->due_date = $i['due_date'];
-        $invoice->reward_id = ($i['reward_id']) ? $i['reward_id'] : NULL;
         $invoice->discount_id = ($i['discount_id'] != '') ? $i['discount_id'] : NULL;
         $invoice->memo = ($i['memo']) ? $i['memo'] :  NULL;
-        $invoice->status = $i['status'];
-        $invoice->rack = ($i['rack']) ? $i['rack'] : NULL;
-        $invoice->rack_date = ($i['rack_date']) ? $i['rack_date'] : NULL;
-        $invoice->transaction_id = ($i['transaction_id']) ? $i['transaction_id'] : NULL;
-        $invoice->schedule_id = ($i['schedule_id']) ? $i['schedule_id'] : NULL; 
+
 
         if ($invoice->save()) {            
 
