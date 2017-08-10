@@ -1949,6 +1949,13 @@ class AdminsController extends Controller
         }
         return response()->json(['status'=>false]);
     }
+    public function postApiDeleteInvoice(Request $request) {
+        $invoices = Invoice::find($request->invoice_id);
+        if ($invoices->delete()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
     public function postApiUpdateInvoicePickup(Request $request) {
         $invoice = Invoice::find($request->invoice_id);
 
