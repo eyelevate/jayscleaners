@@ -2153,7 +2153,7 @@ class AdminsController extends Controller
 
         $count = Invoice::where('customer_id',$customer_id)->count();
 
-        return response()->json(['status'=>true,'count'=>$count]);
+        return response()->json(['count'=>$count]);
     }
 
     public function postApiInvoiceSearchHistory(Request $request) {
