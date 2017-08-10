@@ -2092,10 +2092,8 @@ class AdminsController extends Controller
 
     public function postApiRackInvoice(Request $request) {
         $invoice = Invoice::find($request->invoice_id);
-
-        $i = json_decode($request->rack,true);
-        $invoice->rack =$i['rack'];
-        $invoice->rack_date =$i['rack_date'];
+        $invoice->rack =$request->rack;
+        $invoice->rack_date =$request->rack_date;
         $invoice->status = 2;
 
         if ($invoice->save()) {            
