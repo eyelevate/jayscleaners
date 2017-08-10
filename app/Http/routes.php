@@ -40,6 +40,9 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/admins/api/auto/{table}',['as'=>'admins_api_auto','uses'=>'AdminsController@getApiAuto']);
 	Route::post('/admins/api/auto', ['as'=>'admins_api_auto_post','uses'=>'AdminsController@postApiAuto']);
 
+	#Api-Address
+	Route::post('/admins/api/address-grab',['uses'=>'AdminsController@postApiAddressGrab']);
+	Route::post('/admins/api/create-address',['uses'=>'AdminsController@postApiCreateAddress']);
     #Api-Card
     Route::post('/admins/api/card-grab',['uses'=>'AdminsController@postApiCardGrab']);
     Route::post('/admins/api/card-grab-root',['uses'=>'AdminsController@postApiCardGrabRoot']);
@@ -105,6 +108,8 @@ Route::group(['middleware' => ['web']], function () {
     #Api-Profile
     Route::post('/admins/api/profiles-query',['uses'=>'AdminsController@postApiProfilesQuery']);
     Route::post('/admins/api/create-profile',['uses'=>'AdminsController@postApiCreateProfile']);
+    #Api-Schedule
+    Route::post('/admins/api/create-schedule',['uses'=>'AdminsController@postApiCreateSchedule']);
     #Api-Tax
     Route::post('/admins/api/taxes-query',['uses'=>'AdminsController@postApiTaxesQuery']);
     #Api-Transaction
@@ -126,6 +131,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/update-customer-credits',['uses'=>'AdminsController@postApiUpdateCustomerCredits']);
     Route::post('/admins/api/update-customer-pickup',['uses'=>'AdminsController@postApiUpdateCustomerPickup']);
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
+
+    #Api-zipcode
+    Route::post('/admins/api/zipcode-query',['uses'=>'AdminsController@postApiZipcodeQuery']);
 
     Route::group(['middleware' => ['forceSSL']], function(){
 	   

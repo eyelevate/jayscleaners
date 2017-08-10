@@ -1738,6 +1738,36 @@ class AdminsController extends Controller
         return response()->json($data);
     }
 
+    #Address
+    public function postApiCreateAddress(Request $request) {
+        $addr = new Address();
+        $a = json_decode($request->address);
+        $addr->company_id = $a->company_id;
+        $addr->name = $a->name;
+        $addr->street = $a->street;
+        $addr->suite = $a->suite;
+        $addr->city = $a->city;
+        $addr->state = $a->state;
+        $addr->zipcode = $a->zipcode;
+        $addr->primary_address = $a->primary_address;
+        $addr->concierge_name = $a->concierge_name;
+        $addr->concierge_number = $a->concierge_number;
+        $addr->status = $a->status;
+        if ($addr->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiAddressGrab(Request $request) {
+        $addr = Address::find($request->address_id);
+
+        if (!is_null($addr)) {
+            return response()->json(['status'=>true,'data'=>$addr]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     #Card
     public function postApiCardGrab(Request $request) {
         $card = Card::find($request->card_id);
@@ -2353,6 +2383,28 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    #Schedule
+    public function postApiCreateSchedule(Request $request) {
+        $s = new Schedule();
+        $c = json_decode($request->schedule);
+        $s->company_id = $c->company_id;
+        $s->customer_id = $c->customer_id;
+        $s->card_id = $c->card_id;
+        $s->pickup_date = $c->pickup_date;
+        $s->pickup_address = $c->pickup_address;
+        $s->pickup_delivery_id = $c->pickup_delivery_id;
+        $s->dropoff_date = $c->dropoff_date;
+        $s->dropoff_address = $c->dropoff_address;
+        $s->dropoff_delivery_id = $c->dropoff_delivery_id;
+        $s->special_instructions = $c->special_instructions;
+        $s->type = $c->type;
+        $s->status = $c->status;
+        if ($s->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     #Tax
     public function postApiTaxesQuery(Request $request) {
         $taxes = Tax::where('company_id',$request->company_id)
@@ -2529,6 +2581,15 @@ class AdminsController extends Controller
         return response()->json($results);
     }
 
+    #zipcode
+    public function postApiZipcodeQuery(Request $request) {
+        $zips = Zipcode::where('zipcode',$request->zipcode)->get();
+
+        if (count($zips) > 0) {
+            return response()->json(['status'=>true,'data'=>$zips]);
+        }
+        return response()->json(['status'=>false]);
+    }
     #Last
 
 
