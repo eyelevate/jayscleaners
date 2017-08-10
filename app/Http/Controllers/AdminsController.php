@@ -2156,6 +2156,21 @@ class AdminsController extends Controller
         return response()->json(['status'=>true,'count'=>$count]);
     }
 
+    public function postApiInvoiceSearchHistory(Request $request) {
+        $customer_id = $request->customer_id;
+        $start = $request->start;
+        $end = $request->end;
+
+        $invoices = Invoice::where('customer_id',$customer_id)
+        ->orderBy('id','desc')
+        ->limit([$start,$end])
+        ->get();
+        if (count($invoices) >0){
+            return response()->json(['status'=>true,'count'=>$invoices]);
+        } 
+        return response()->json(['status'=>false]);
+    }
+
     public function postApiSyncCustomer(Request $request) {
         $customer_id = $request->customer_id;
 
