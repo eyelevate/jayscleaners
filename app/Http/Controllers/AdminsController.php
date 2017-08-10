@@ -1881,6 +1881,15 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    #Delivery
+    public function postApiDeliveryGrab(Request $request) {
+        $delivery = Delivery::find($request->delivery_id);
+        if (!is_null($delivery)) {
+            return response()->json(['status'=>true,'data'=>$delivery]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     #Discount
     public function postApiInvoiceItemDiscountFind(Request $request) {
         $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)
@@ -2401,6 +2410,23 @@ class AdminsController extends Controller
         $s->status = $c->status;
         if ($s->save()) {
             return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiScheduleQuery(Request $request) {
+        $sch = Schedule::where('customer_id',$request->customer_id)
+        ->where('status','<',12)
+        ->get();
+        if (count($sch) > 0) {
+            return response()->json(['status'=>true,'data'=>$sch]);
+        }
+        return response()->json(['status'=>false]);
+    }
+    public function postApiScheduleGrab(Request $request) {
+        $sch = Schedule::find($request->id);
+        if (!is_null($sch)) {
+            return response()->json(['status'=>true,'data'=>$sch]);
         }
         return response()->json(['status'=>false]);
     }

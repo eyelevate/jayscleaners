@@ -57,6 +57,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/create-mark',['uses'=>'AdminsController@postApiCreateMark']);
     Route::post('/admins/api/delete-mark',['uses'=>'AdminsController@postApiDeleteMark']);
     Route::post('/admins/api/marks-query',['uses'=>'AdminsController@postApiMarksQuery']);
+    #Api-delivery
+    Route::post('/admins/api/delivery-grab',['uses'=>'AdminsController@postApiDeliveryGrab']);
     #Api-Discount
     Route::post('/admins/api/discount-query',['uses'=>'AdminsController@postApiDiscountQuery']);
     Route::post('/admins/api/discount-grab',['uses'=>'AdminsController@postApiDiscountGrab']);
@@ -110,6 +112,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/create-profile',['uses'=>'AdminsController@postApiCreateProfile']);
     #Api-Schedule
     Route::post('/admins/api/create-schedule',['uses'=>'AdminsController@postApiCreateSchedule']);
+    Route::post('/admins/api/schedule-query',['uses'=>'AdminsController@postApiScheduleQuery']);
+    Route::post('/admins/api/schedule-grab',['uses'=>'AdminsController@postApiScheduleGrab']);
     #Api-Tax
     Route::post('/admins/api/taxes-query',['uses'=>'AdminsController@postApiTaxesQuery']);
     #Api-Transaction
