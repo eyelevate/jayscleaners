@@ -2431,8 +2431,7 @@ class AdminsController extends Controller
         $trans->type = $t['type'];
         $trans->last_four = $t['last_four'];
         $trans->tendered = $t['tendered'];
-        $trans->transaction_id = $t['transaction_id'];
-        $trans->status = 3;
+        $trans->status = $t['status'];
         if ($trans->save()) {
             return response()->json(['status'=>true,'data'=>$trans]);
         }
