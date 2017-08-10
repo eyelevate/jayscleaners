@@ -1739,7 +1739,7 @@ class AdminsController extends Controller
     }
 
 
-    public function postApiInvoiceGrab(Request $request) {
+    public function postApiSyncCustomer(Request $request) {
         $customer_id = $request->customer_id;
 
         $invoices = Invoice::where('customer_id',$customer_id)
