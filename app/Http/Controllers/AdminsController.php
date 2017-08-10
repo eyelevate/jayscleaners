@@ -2166,7 +2166,7 @@ class AdminsController extends Controller
         ->limit([$start,$end])
         ->get();
         if (count($invoices) >0){
-            return response()->json(['status'=>true,'count'=>$invoices]);
+            return response()->json(['status'=>true,'data'=>$invoices]);
         } 
         return response()->json(['status'=>false]);
     }
