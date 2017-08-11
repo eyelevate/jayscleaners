@@ -2686,6 +2686,9 @@ class AdminsController extends Controller
         ->limit(10)
         ->get();
         if (count($customers) >0){
+            foreach ($customers as $key => $value) {
+                $customers['custids'] = $value->custids;
+            }
             return response()->json(['status'=>true,'data'=>$customers]);
         } 
         return response()->json(['status'=>false]);
@@ -2701,6 +2704,9 @@ class AdminsController extends Controller
         ->limit(10)
         ->get();
         if (count($customers) >0){
+            foreach ($customers as $key => $value) {
+                $customers['custids'] = $value->custids;
+            }
             return response()->json(['status'=>true,'data'=>$customers]);
         } 
         return response()->json(['status'=>false]);
