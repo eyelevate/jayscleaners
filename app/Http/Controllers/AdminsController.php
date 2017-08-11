@@ -2683,8 +2683,8 @@ class AdminsController extends Controller
         $customers = User::where('last_name','like',$request->last_name.'%')
         ->orderBy('last_name','asc')
         ->orderBy('first_name','asc')
-        ->offset($start)
-        ->limit(10)
+        ->skip($start)
+        ->take(10)
         ->get();
         if (count($customers) >0){
             foreach ($customers as $key => $value) {
@@ -2702,8 +2702,8 @@ class AdminsController extends Controller
         $customers = User::where('last_name','like',$request->last_name.'%')
         ->orderBy('last_name','asc')
         ->orderBy('first_name','asc')
-        ->offset($start)
-        ->limit(10)
+        ->skip($start)
+        ->take(10)
         ->get();
         if (count($customers) >0){
             foreach ($customers as $key => $value) {
