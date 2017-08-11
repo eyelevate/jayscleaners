@@ -52,6 +52,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/colors-query',['uses'=>'AdminsController@postApiColorsQuery']);
     #Api-Company
     Route::post('/admins/api/company-grab',['uses'=>'AdminsController@postApiCompanyGrab']);
+    #Api-Credit
+    Route::post('/admins/api/create-credit',['uses'=>'AdminsController@postApiCreateCredit']);
+    Route::post('/admins/api/edit-credit',['uses'=>'AdminsController@postApiEditCredit']);
     #Api-Custid
     Route::post('/admins/api/check-mark',['uses'=>'AdminsController@postApiCheckMark']);
     Route::post('/admins/api/create-mark',['uses'=>'AdminsController@postApiCreateMark']);
@@ -134,6 +137,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/update-customer-account-total',['uses'=>'AdminsController@postApiUpdateCustomerAccountTotal']);
     Route::post('/admins/api/update-customer-credits',['uses'=>'AdminsController@postApiUpdateCustomerCredits']);
     Route::post('/admins/api/update-customer-pickup',['uses'=>'AdminsController@postApiUpdateCustomerPickup']);
+    
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     #Api-zipcode

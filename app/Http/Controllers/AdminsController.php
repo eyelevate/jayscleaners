@@ -1834,6 +1834,30 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    #Credit
+    public function postApiCreateCredit(Request $request) {
+        $credit = new Credit();
+        $c = json_decode($request->credits);
+        $credit->employee_id = $c->employee_id;
+        $credit->customer_id = $c->customer_id;
+        $credit->amount = $c->amount;
+        $credit->reason = $c->reason;
+        $credit->status = $c->status;
+        if ($credit->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiEditCredit(Request $request) {
+        $user = User::find($request->customer_id);
+        $user->credits = $request->credits;
+        if ($user->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     #Custid
     public function postApiMarksQuery(Request $request) {
         $custids = Custid::where('customer_id',$request->customer_id)
@@ -2472,6 +2496,8 @@ class AdminsController extends Controller
         }
         return response()->json(['status'=>false]);
     }
+
+    
     public function postApiEditCustomer(Request $request) {
         $customer = User::find($request->customer_id);
         $u = json_decode($request->users,true);
