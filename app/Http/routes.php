@@ -143,8 +143,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/update-customer-credits',['uses'=>'AdminsController@postApiUpdateCustomerCredits']);
     Route::post('/admins/api/update-customer-pickup',['uses'=>'AdminsController@postApiUpdateCustomerPickup']);
     Route::post('/admins/api/customers-row-cap',['uses'=>'AdminsController@postApiCustomersRowCap']);
-    Route::post('/admins/api/customers-search-results-next',['uses'=>'AdminsController@postApiCustomersSearchResultsNext']);
-    Route::post('/admins/api/customers-search-results-prev',['uses'=>'AdminsController@postApiCustomersSearchResultsPrev']);
+    Route::post('/admins/api/customers-search-results',['uses'=>'AdminsController@postApiCustomersSearchResults']);
     
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 

@@ -2676,35 +2676,36 @@ class AdminsController extends Controller
         return response()->json($results);
     }
 
-    public function postApiCustomersSearchResultsNext(Request $request) {
+    public function postApiCustomersSearchResults(Request $request) {
         
         $start = $request->start;
-
-        $customers = User::where('last_name','like',$request->last_name.'%')
-        ->orderBy('last_name','asc')
-        ->orderBy('first_name','asc')
-        ->skip($start)
-        ->take(10)
-        ->get();
-        if (count($customers) >0){
-            foreach ($customers as $key => $value) {
-                $customers[$key]['custids'] = $value->custids;
-            }
-            return response()->json(['status'=>true,'data'=>$customers]);
+        $query_word_count = explode(" ",$query);
+        $customers = [];
+        if (count($query_word_count) > 1) {
+            //check if string
+            if (is_string($query)) {
+                
+                $last_name = $query_word_count[0];
+                $first_name = $query_word_count[1];
+                // look by last_name and first name
+                $customers = User::where('last_name','like',$last_name.'%')
+                ->where('first_name','like',$first_name.'%')
+                ->orderBy('last_name','asc')
+                ->orderBy('first_name','asc')
+                ->skip($start)
+                ->get(10)
+                ->get();
+            }  
+        } elseif (count($query_word_count) == 1) {
+            //check if string
+            $customers = User::where('last_name','like',$last_name.'%')
+                ->orderBy('last_name','asc')
+                ->orderBy('first_name','asc')
+                ->skip($start)
+                ->get(10)
+                ->get();
         } 
-        return response()->json(['status'=>false]);
-    }
 
-    public function postApiCustomersSearchResultsPrev(Request $request) {
-        
-        $start = $request->start;
-
-        $customers = User::where('last_name','like',$request->last_name.'%')
-        ->orderBy('last_name','asc')
-        ->orderBy('first_name','asc')
-        ->skip($start)
-        ->take(10)
-        ->get();
         if (count($customers) >0){
             foreach ($customers as $key => $value) {
                 $customers[$key]['custids'] = $value->custids;
