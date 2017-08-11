@@ -55,6 +55,7 @@ Route::group(['middleware' => ['web']], function () {
     #Api-Credit
     Route::post('/admins/api/create-credit',['uses'=>'AdminsController@postApiCreateCredit']);
     Route::post('/admins/api/edit-credit',['uses'=>'AdminsController@postApiEditCredit']);
+    Route::post('/admins/api/credit-query',['uses'=>'AdminsController@postApiCreditQuery']);
     #Api-Custid
     Route::post('/admins/api/check-mark',['uses'=>'AdminsController@postApiCheckMark']);
     Route::post('/admins/api/create-mark',['uses'=>'AdminsController@postApiCreateMark']);

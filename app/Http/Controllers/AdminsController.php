@@ -1858,6 +1858,14 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiCreditQuery(Request $request) {
+        $credits = Credit::where('customer_id',$request->customer_id)->get();
+        if (!is_null($credits)) {
+            return response()->json(['status'=>true,'data'=>$credits]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
     #Custid
     public function postApiMarksQuery(Request $request) {
         $custids = Custid::where('customer_id',$request->customer_id)
