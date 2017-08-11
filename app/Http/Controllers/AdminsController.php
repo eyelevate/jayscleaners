@@ -2683,7 +2683,7 @@ class AdminsController extends Controller
         $customers = [];
         if (count($query_word_count) > 1) {
             //check if string
-            if (is_string($query)) {
+            if (is_string($request->query)) {
                 
                 $last_name = $query_word_count[0];
                 $first_name = $query_word_count[1];
