@@ -2677,8 +2677,8 @@ class AdminsController extends Controller
     }
 
     public function postApiCustomersSearchResults(Request $request) {
-        $query = json_decode($request->query,true);
-        $query_word_count = count(json_decode($request->query));
+        $query = json_decode($request->list,true);
+        $query_word_count = count(json_decode($request->list));
         $start = $request->start;
         $customers = [];
         if (count($query_word_count) > 1) {
@@ -2715,8 +2715,8 @@ class AdminsController extends Controller
     }
 
     public function postApiCustomersRowCap(Request $request) {
-        $query = json_decode($request->query,true);
-        $query_word_count = count(json_decode($request->query));
+        $query = json_decode($request->list,true);
+        $query_word_count = count(json_decode($request->list));
         $customers = 0;
         if (count($query_word_count) > 1) {
             //check if string
