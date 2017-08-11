@@ -2692,7 +2692,7 @@ class AdminsController extends Controller
             ->orderBy('last_name','asc')
             ->orderBy('first_name','asc')
             ->skip($start)
-            ->get(10)
+            ->take(10)
             ->get();
         } elseif (count($query_word_count) == 1) {
             $last_name = $query_word_count[0];
@@ -2701,7 +2701,7 @@ class AdminsController extends Controller
                 ->orderBy('last_name','asc')
                 ->orderBy('first_name','asc')
                 ->skip($start)
-                ->get(10)
+                ->take(10)
                 ->get();
         } 
 
@@ -2732,10 +2732,7 @@ class AdminsController extends Controller
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')->count();
         } 
-        if (!is_null($customers)){
-            return response()->json(['status'=>true,'data'=>$customers]);
-        } 
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>true,'data'=>$customers]); 
     }
 
     #zipcode
