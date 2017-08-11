@@ -2677,15 +2677,15 @@ class AdminsController extends Controller
     }
 
     public function postApiCustomersSearchResults(Request $request) {
-        
+        $query = json_decode($request->query,true);
+        $query_word_count = count(json_decode($request->query));
         $start = $request->start;
-        $query_word_count = explode(" ",$request->query);
         $customers = [];
         if (count($query_word_count) > 1) {
             //check if string
                 
-            $last_name = $query_word_count[0];
-            $first_name = $query_word_count[1];
+            $last_name = $query[0];
+            $first_name = $query[1];
             // look by last_name and first name
             $customers = User::where('last_name','like',$last_name.'%')
             ->where('first_name','like',$first_name.'%')
@@ -2695,7 +2695,7 @@ class AdminsController extends Controller
             ->take(10)
             ->get();
         } elseif (count($query_word_count) == 1) {
-            $last_name = $query_word_count[0];
+            $last_name = $query[0];
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')
                 ->orderBy('last_name','asc')
@@ -2715,20 +2715,20 @@ class AdminsController extends Controller
     }
 
     public function postApiCustomersRowCap(Request $request) {
-        
-        $query_word_count = explode(" ",$request->query);
+        $query = json_decode($request->query,true);
+        $query_word_count = count(json_decode($request->query));
         $customers = 0;
         if (count($query_word_count) > 1) {
             //check if string
                 
-            $last_name = $query_word_count[0];
-            $first_name = $query_word_count[1];
+            $last_name = $query[0];
+            $first_name = $query[1];
             // look by last_name and first name
             $customers = User::where('last_name','like',$last_name.'%')
             ->where('first_name','like',$first_name.'%')
             ->count();
         } elseif (count($query_word_count) == 1) {
-            $last_name = $query_word_count[0];
+            $last_name = $query[0];
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')->count();
         } 
