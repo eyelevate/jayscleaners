@@ -91,7 +91,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/restore-invoice',['uses'=>'AdminsController@postApiRestoreInvoice']);
     Route::post('/admins/api/rack-invoice',['uses'=>'AdminsController@postApiRackInvoice']);
     Route::post('/admins/api/delete-invoice',['uses'=>'AdminsController@postApiDeleteInvoice']);
-  
+
     #Api-InvoiceItem
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
     Route::post('/admins/api/invoice-items-barcode',['uses'=>'AdminsController@postApiInvoiceItemsBarcode']);
@@ -142,6 +142,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/update-customer-account-total',['uses'=>'AdminsController@postApiUpdateCustomerAccountTotal']);
     Route::post('/admins/api/update-customer-credits',['uses'=>'AdminsController@postApiUpdateCustomerCredits']);
     Route::post('/admins/api/update-customer-pickup',['uses'=>'AdminsController@postApiUpdateCustomerPickup']);
+    Route::post('/admins/api/customers-row-cap',['uses'=>'AdminsController@postApiCustomersRowCap']);
+    Route::post('/admins/api/customers-search-results-next',['uses'=>'AdminsController@postApiCustomersSearchResultsNext']);
+    Route::post('/admins/api/customers-search-results-prev',['uses'=>'AdminsController@postApiCustomersSearchResultsPrev']);
     
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 

@@ -2676,6 +2676,46 @@ class AdminsController extends Controller
         return response()->json($results);
     }
 
+    public function postApiCustomersSearchResultsNext(Request $request) {
+        
+        $start = $request->start;
+
+        $customers = User::where('last_name','like','%'.$request->last_name.'%')
+        ->orderBy('last_name','asc')
+        ->offset($start)
+        ->limit(10)
+        ->get();
+        if (count($customers) >0){
+            return response()->json(['status'=>true,'data'=>$customers]);
+        } 
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiCustomersSearchResultsPrev(Request $request) {
+        
+        $start = $request->start;
+
+        $customers = User::where('last_name','like','%'.$request->last_name.'%')
+        ->orderBy('last_name','asc')
+        ->offset($start)
+        ->limit(10)
+        ->get();
+        if (count($customers) >0){
+            return response()->json(['status'=>true,'data'=>$customers]);
+        } 
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiCustomersRowCap(Request $request) {
+        
+
+        $customers = User::where('last_name','like','%'.$request->last_name.'%')->count();
+        if (!is_null($customers)){
+            return response()->json(['status'=>true,'data'=>$customers]);
+        } 
+        return response()->json(['status'=>false]);
+    }
+
     #zipcode
     public function postApiZipcodeQuery(Request $request) {
         $zips = Zipcode::where('zipcode',$request->zipcode)->get();
