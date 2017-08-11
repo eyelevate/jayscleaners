@@ -2715,8 +2715,21 @@ class AdminsController extends Controller
 
     public function postApiCustomersRowCap(Request $request) {
         
-
-        $customers = User::where('last_name','like','%'.$request->last_name.'%')->count();
+        $query_word_count = explode(" ",$request->query);
+        $customers = [];
+        if (count($query_word_count) > 1) {
+            //check if string
+                
+            $last_name = $query_word_count[0];
+            $first_name = $query_word_count[1];
+            // look by last_name and first name
+            $customers = User::where('last_name','like',$last_name.'%')
+            ->where('first_name','like',$first_name.'%')
+            ->count();
+        } elseif (count($query_word_count) == 1) {
+            //check if string
+            $customers = User::where('last_name','like',$last_name.'%')->count();
+        } 
         if (!is_null($customers)){
             return response()->json(['status'=>true,'data'=>$customers]);
         } 
