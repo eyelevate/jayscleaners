@@ -2678,10 +2678,10 @@ class AdminsController extends Controller
 
     public function postApiCustomersSearchResults(Request $request) {
         $query = json_decode($request->list,true);
-        $query_word_count = count(json_decode($request->list));
+        $query_word_count = count(json_decode($request->list,true));
         $start = $request->start;
         $customers = [];
-        if (count($query_word_count) > 1) {
+        if (isset($query[1])) {
             //check if string
                 
             $last_name = $query[0];
@@ -2694,7 +2694,7 @@ class AdminsController extends Controller
             ->skip($start)
             ->take(10)
             ->get();
-        } elseif (count($query_word_count) == 1) {
+        } else {
             $last_name = $query[0];
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')
@@ -2718,7 +2718,7 @@ class AdminsController extends Controller
         $query = json_decode($request->list,true);
         $query_word_count = count(json_decode($request->list));
         $customers = 0;
-        if (count($query_word_count) > 1) {
+        if (isset($query[1])) {
             //check if string
                 
             $last_name = $query[0];
@@ -2727,7 +2727,7 @@ class AdminsController extends Controller
             $customers = User::where('last_name','like',$last_name.'%')
             ->where('first_name','like',$first_name.'%')
             ->count();
-        } elseif (count($query_word_count) == 1) {
+        } else {
             $last_name = $query[0];
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')->count();
