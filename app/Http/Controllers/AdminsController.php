@@ -2680,7 +2680,7 @@ class AdminsController extends Controller
         
         $start = $request->start;
 
-        $customers = User::where('last_name','like','%'.$request->last_name.'%')
+        $customers = User::where('last_name','like',$request->last_name.'%')
         ->orderBy('last_name','asc')
         ->offset($start)
         ->limit(10)
@@ -2698,7 +2698,7 @@ class AdminsController extends Controller
         
         $start = $request->start;
 
-        $customers = User::where('last_name','like','%'.$request->last_name.'%')
+        $customers = User::where('last_name','like',$request->last_name.'%')
         ->orderBy('last_name','asc')
         ->offset($start)
         ->limit(10)
