@@ -2695,6 +2695,7 @@ class AdminsController extends Controller
             ->get(10)
             ->get();
         } elseif (count($query_word_count) == 1) {
+            $last_name = $query_word_count[0];
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')
                 ->orderBy('last_name','asc')
@@ -2727,6 +2728,7 @@ class AdminsController extends Controller
             ->where('first_name','like',$first_name.'%')
             ->count();
         } elseif (count($query_word_count) == 1) {
+            $last_name = $query_word_count[0];
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')->count();
         } 
