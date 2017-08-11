@@ -91,6 +91,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/restore-invoice',['uses'=>'AdminsController@postApiRestoreInvoice']);
     Route::post('/admins/api/rack-invoice',['uses'=>'AdminsController@postApiRackInvoice']);
     Route::post('/admins/api/delete-invoice',['uses'=>'AdminsController@postApiDeleteInvoice']);
+  
     #Api-InvoiceItem
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
     Route::post('/admins/api/invoice-items-barcode',['uses'=>'AdminsController@postApiInvoiceItemsBarcode']);
@@ -122,7 +123,10 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/taxes-query',['uses'=>'AdminsController@postApiTaxesQuery']);
     #Api-Transaction
     Route::post('/admins/api/transaction-grab',['uses'=>'AdminsController@postApiTransactionGrab']);
+    Route::post('/admins/api/transaction-query',['uses'=>'AdminsController@postApiTransactionQuery']);
     Route::post('/admins/api/create-transaction',['uses'=>'AdminsController@postApiCreateTransaction']);
+    Route::post('/admins/api/pay-account',['uses'=>'AdminsController@postApiPayAccount']);
+    Route::post('/admins/api/pay-account-customer',['uses'=>'AdminsController@postApiPayAccountCustomer']);
     Route::post('/admins/api/update-transaction',['uses'=>'AdminsController@postApiUpdateTransaction']);
     Route::post('/admins/api/last-transaction-grab',['uses'=>'AdminsController@postApiLastTransactionGrab']);
     Route::post('/admins/api/remove-invoice-by-transaction',['uses'=>'AdminsController@postApiRemoveInvoiceByTransaction']);

@@ -2357,6 +2357,16 @@ class AdminsController extends Controller
         }
         return response()->json(['status'=>false]);
     }
+    public function postApiTransactionQuery(Request $request) {
+        $transactions = Transaction::where('customer_id',$request->customer_id)
+        ->where('status','>',1)
+        ->orderBy('id','desc')
+        ->get();
+        if (count($transactions)>0) {
+            return response()->json(['status'=>true,'data'=>$transactions]);
+        }
+        return response()->json(['status'=>false]);
+    }
     public function postApiUpdateTransaction(Request $request) {
         $transactions = Transaction::where('status',3)
         ->where('customer_id',$customer_id)
@@ -2378,6 +2388,31 @@ class AdminsController extends Controller
         }
         return response()->json(['status'=>false]);
     }
+
+    public function postApiPayAccount(Request $request) {
+        $trans = Transaction::find($request->transaction_id);
+        $t = json_decode($request->trans);
+        $trans->tendered = $t->tendered;
+        $trans->account_paid = $t->account_paid;
+        $trans->account_paid_on = $t->account_paid_on;
+        $trans->status = $t->status;
+        $trans->type = $t->type;
+        if ($trans->save()) {
+            return response()->json(['status'=>true,'data'=>$trans]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+    public function postApiPayAccountCustomer(Request $request) {
+        $customer = User::find($request->customer_id);
+        $customer->account_total = $request->balance;
+        if ($customer->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
+    }
+
+
     public function postApiCreateTransaction(Request $request) {
         $trans = new Transaction;
         $t = json_decode($request->transaction,true);
