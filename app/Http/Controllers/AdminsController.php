@@ -2683,19 +2683,17 @@ class AdminsController extends Controller
         $customers = [];
         if (count($query_word_count) > 1) {
             //check if string
-            if (is_string($request->query)) {
                 
-                $last_name = $query_word_count[0];
-                $first_name = $query_word_count[1];
-                // look by last_name and first name
-                $customers = User::where('last_name','like',$last_name.'%')
-                ->where('first_name','like',$first_name.'%')
-                ->orderBy('last_name','asc')
-                ->orderBy('first_name','asc')
-                ->skip($start)
-                ->get(10)
-                ->get();
-            }  
+            $last_name = $query_word_count[0];
+            $first_name = $query_word_count[1];
+            // look by last_name and first name
+            $customers = User::where('last_name','like',$last_name.'%')
+            ->where('first_name','like',$first_name.'%')
+            ->orderBy('last_name','asc')
+            ->orderBy('first_name','asc')
+            ->skip($start)
+            ->get(10)
+            ->get();
         } elseif (count($query_word_count) == 1) {
             //check if string
             $customers = User::where('last_name','like',$last_name.'%')
