@@ -2717,7 +2717,7 @@ class AdminsController extends Controller
     public function postApiCustomersRowCap(Request $request) {
         
         $query_word_count = explode(" ",$request->query);
-        $customers = [];
+        $customers = 0;
         if (count($query_word_count) > 1) {
             //check if string
                 
