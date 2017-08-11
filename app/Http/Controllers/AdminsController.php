@@ -2248,8 +2248,8 @@ class AdminsController extends Controller
 
         $invoices = Invoice::where('customer_id',$customer_id)
         ->orderBy('id','desc')
-        ->offset($start)
-        ->limit(10)
+        ->skip($start)
+        ->take(10)
         ->get();
         if (count($invoices) >0){
             return response()->json(['status'=>true,'data'=>$invoices]);
