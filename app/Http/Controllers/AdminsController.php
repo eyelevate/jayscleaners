@@ -2380,6 +2380,7 @@ class AdminsController extends Controller
                 $trans->credit = $t['credit'];
                 $trans->discount = $t['discount'];
                 $trans->total = $t['total'];
+                $trans->status = 3;
                 if ($trans->save()) {
                     return response()->json(['status'=>true,'data'=>$trans]);
                 }
@@ -2513,6 +2514,7 @@ class AdminsController extends Controller
     public function postApiUpdateCustomerAccountTotal(Request $request) {
         $user = User::find($request->customer_id);
         $user->account_total = $request->account_total;
+
         if ($user->save()) {
             return response()->json(['status'=>true]);
         }
@@ -2632,8 +2634,12 @@ class AdminsController extends Controller
         } elseif (count($query_word_count) == 1) {
             //check if string
             if (is_numeric($query)) {
-                if (strlen($query) > 5) { // Phone
+                if (strlen($query) >= 7) { // Phone
                     $results = $users->where('phone',$query)->get();
+                } elseif(strlen($query) == 6) {
+                    $invoice = Invoice::find($query);
+                    $customer_id = $invoice->customer_id;
+                    $results = $users->where('id',$customer_id)->get();
                 } else {
                     $results = $users->where('id',$query)->get();
                 }
@@ -2652,7 +2658,9 @@ class AdminsController extends Controller
                     ->get();
                 }
             }
-        } 
+        } elseif (count($query_word_count) == 6) {
+
+        }
         if (count($results) > 0) {
             foreach ($results as $key => $value) {
                 if (isset($value->custids)) {
