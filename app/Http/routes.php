@@ -91,6 +91,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/restore-invoice',['uses'=>'AdminsController@postApiRestoreInvoice']);
     Route::post('/admins/api/rack-invoice',['uses'=>'AdminsController@postApiRackInvoice']);
     Route::post('/admins/api/delete-invoice',['uses'=>'AdminsController@postApiDeleteInvoice']);
+    Route::post('/admins/api/invoice-get-totals',['uses'=>'AdminsController@postApiInvoiceGetTotals']);
 
     #Api-InvoiceItem
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);

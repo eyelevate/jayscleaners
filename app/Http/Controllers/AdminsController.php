@@ -2034,6 +2034,46 @@ class AdminsController extends Controller
         }
         return response()->json(['status'=>false]);
     }
+    public function postApiInvoiceGetTotals(Request $request) {
+        $totals = [];
+        $i = json_decode($request->invoices,true);
+        $totals['quantity'] = Invoice::whereIn('id',$i)->sum('quantity');
+        $totals['pretax'] = Invoice::whereIn('id',$i)->sum('pretax');
+        $totals['tax'] = Invoice::whereIn('id',$i)->sum('tax');
+        $totals['total'] = Invoice::whereIn('id',$i)->sum('total');
+        $totals['discount'] = 0;
+        $invs = Invoice::whereIn('id',$i)->get();
+        if(count($invs)>0) {
+            foreach ($invs as $inv) {
+                $discount_id = $inv->discount_id;
+                if (isset($discount_id)) {
+                    $discount = Discount::find($discount_id);
+                    $d_type = $discount->type;
+                    $d_item_id = $discount->item_id;
+                    $d_inventory_id = $discount->inventory_id;
+                    $d_invoice_items_total = InvoiceItem::where('inventory_id',$d_inventory_id)
+                        ->where('invoice_id',$inv->id)
+                        ->sum('pretax');
+                    switch ($d_type) {
+                        case 1:
+                            $d_rate = $discount->rate;
+                            $totals['discount'] += ($d_invoice_items_total > 0) ? round($d_rate * $d_invoice_items_total,2) : 0 ;
+                            break;
+                        
+                        default:
+                            $d_price = $discount->price;
+                            $totals['discount'] += ($d_invoice_items_total > 0) ? $d_price : 0;
+                            break;
+                    }
+                    
+                    
+
+                }
+            }
+        }
+
+        return response()->json(['status'=>true,'data'=>$totals]);
+    }
     public function postApiUpdateInvoicePickup(Request $request) {
         $invoice = Invoice::find($request->invoice_id);
 
