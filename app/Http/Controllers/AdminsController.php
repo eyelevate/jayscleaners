@@ -2675,7 +2675,13 @@ class AdminsController extends Controller
             //check if string
             if (is_numeric($query)) {
                 if (strlen($query) >= 7) { // Phone
+                    // first check to see if there is an exact search
                     $results = $users->where('phone',$query)->get();
+
+                    if (count($results) == 0) {
+                        $results = $users->where('phone','like','%'.$query.'%')->get();
+                    }
+
                 } elseif(strlen($query) == 6) {
                     $invoice = Invoice::find($query);
                     $customer_id = $invoice->customer_id;
