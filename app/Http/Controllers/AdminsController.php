@@ -2215,17 +2215,27 @@ class AdminsController extends Controller
 
 
     public function postApiRackInvoice(Request $request) {
-        $invoice = Invoice::find($request->invoice_id);
-        $invoice->rack =$request->rack;
-        $invoice->rack_date =$request->rack_date;
-        $invoice->status = 2;
-
-        if ($invoice->save()) {            
-
-            return response()->json(['status'=>true]);
+        $racks = json_decode($request->racks);
+        $count_racks = count($racks);
+        $errors = [];
+        if ($count_racks > 0) {
+            foreach ($racks as $key => $value) {
+                $invoice = Invoice::find($key);
+                $invoice->rack =$value;
+                $invoice->rack_date =date('Y-m-d H:i:s');
+                $invoice->status = 2;
+                if($invoice->save()) {
+                    $count_racks--;
+                } else {
+                    array_push($errors, $key);
+                }
+            }
         }
-    
-        return response()->json(['status'=>false]);
+        if ($count_racks == 0){
+            return response()->json(['status'=>true]);
+        } 
+        return response()->json(['status'=>false,'data'=>$errors]);
+
     }
     public function postApiSyncRackableInvoice(Request $request) {
         $invoice_id = $request->invoice_id;
