@@ -2424,12 +2424,12 @@ class AdminsController extends Controller
         if (count($transactions) > 0) {
             foreach ($transactions as $tran) {
                 $trans = Transaction::find($tran->id);
-                $trans->pretax = $t['pretax'];
-                $trans->tax = $t['tax'];
-                $trans->aftertax = $t['aftertax'];
-                $trans->credit = $t['credit'];
-                $trans->discount = $t['discount'];
-                $trans->total = $t['total'];
+                $trans->pretax += $t['pretax'];
+                $trans->tax += $t['tax'];
+                $trans->aftertax += $t['aftertax'];
+                $trans->credit -= $t['credit'];
+                $trans->discount += $t['discount'];
+                $trans->total += $t['total'];
                 $trans->status = 3;
                 if ($trans->save()) {
                     return response()->json(['status'=>true,'data'=>$trans]);
