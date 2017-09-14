@@ -2418,9 +2418,12 @@ class AdminsController extends Controller
     }
     public function postApiUpdateTransaction(Request $request) {
         $transactions = Transaction::where('status',3)
-        ->where('customer_id',$customer_id)
+        ->where('customer_id',$request->customer_id)
         ->get();
         $t = json_decode($request->transaction,true);
+        
+
+        
         if (count($transactions) > 0) {
             foreach ($transactions as $tran) {
                 $trans = Transaction::find($tran->id);
@@ -2432,10 +2435,19 @@ class AdminsController extends Controller
                 $trans->total += $t['total'];
                 $trans->status = 3;
                 if ($trans->save()) {
-                    return response()->json(['status'=>true,'data'=>$trans]);
+                    $customer = User::find($request->customer_id);
+                    $old_total = $customer->account_total;
+                    $new_total = $old_total + $t['total'];
+                    $customer->account_total = $new_total;
+                    if ($customer->save()) {
+                        return response()->json(['status'=>true,'data'=>$trans]);
+                    }
+                    
                 }
             }
         }
+
+
         return response()->json(['status'=>false]);
     }
 
@@ -2583,8 +2595,10 @@ class AdminsController extends Controller
         $user = User::find($request->customer_id);
 
         $u = json_decode($request->customer,true);
-        $user->credits = $u['credits'];
-        $user->account_total = $u['account_total'];
+        $old_credits = $user->credits;
+        $new_credits = (is_numeric($old_credits)) ? $old_credits - $u['credits'] : 0;
+        $user->credits = $new_credits;
+        // $user->account_total = $u['account_total'];
         if ($user->save()) {
             return response()->json(['status'=>true]);
         }
