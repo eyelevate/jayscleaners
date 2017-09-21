@@ -282,6 +282,10 @@ class Report extends Model
                 $itemsToInvoice[$inventory_id] = [];
             }
         }
+        $y = time() * 1000;
+        $z = $y - $x;
+
+        dd("start={$x} stop={$y} diff={$z}");
         // Job::dump($completed_invoice_ids);
         if (count($completed_invoice_ids) > 0) {
             foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
@@ -297,10 +301,7 @@ class Report extends Model
             }
         }
 
-        $y = time() * 1000;
-        $z = $y - $x;
-
-        dd("start={$x} stop={$y} diff={$z}");
+        
 
         if (count($itemsToInvoice) > 0) {
 
