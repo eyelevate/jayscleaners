@@ -275,10 +275,10 @@ class Report extends Model
         $inventories = Inventory::where('company_id',$company_id)->get();
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
-                ;
+                
                 if($inventory->invoiceItems) {
-
-                    dd($inventory->invoiceItems()->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))->first());
+                    $sum = $inventory->invoiceItems()->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))->first();
+                    dd($sum);
                 }
                 
             }
