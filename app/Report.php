@@ -279,9 +279,22 @@ class Report extends Model
         if (count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $inventory_id = ($inventory->id > 5) ? $inventory->id - 5 : $inventory->id;
-                $item_get = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->get();
+                InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->chunk(200,function($chunks) {
+                    foreach ($chunks as $chunk) {
+                        $sum_invs = $chunk->invoice;
+                        dd($sum_invs);
+                    }
+                    $pickup_summary[$inventory_id] = [
+                        'name' => $inventory->name,
+                        'totals' => [
+                            'quantity' => $qty, 
+                            'subtotal' =>money_format('%n', $pretax), 
+                        ],
+                        'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
+                    ];
+                });
                 
-                $itemsToInvoice[$inventory_id] = $item_get;
+                
             }
         }
 
