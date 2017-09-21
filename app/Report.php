@@ -278,9 +278,8 @@ class Report extends Model
         $itemsToInvoice = [];
         if (count($inventories) > 0) {
             foreach ($inventories as $inventory) {
-                $inventory_id = $inventory->id;
-                $item_get = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)
-                    ->where('inventory_id',$inventory_id)->get();
+                $inventory_id = ($inventory->id > 5) ? $inventory->id - 5 : $inventory->id;
+                $item_get = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->get();
                 
                 $itemsToInvoice[$inventory_id] = $item_get;
             }
