@@ -32,8 +32,8 @@
 				@foreach($reports['dropoff_summary'] as $ds)
 				<tr>
 					<td>{{ $ds['name'] }}</td>
-					<td>{{ $ds['totals']['quantity'] }}</td>
-					<td>{{ $ds['totals']['subtotal'] }}</td>
+					<td width="150">{{ $ds['totals']['quantity'] }}</td>
+					<td width="150">{{ $ds['totals']['subtotal'] }}</td>
 				</tr>
 				@endforeach
 			@endif
@@ -78,8 +78,8 @@
 				@foreach($reports['pickup_summary'] as $ps)
 				<tr>
 					<td>{{ $ps['name'] }}</td>
-					<td>{{ $ps['totals']['quantity'] }}</td>
-					<td>{{ $ps['totals']['subtotal'] }}</td>
+					<td width="150">{{ $ps['totals']['quantity'] }}</td>
+					<td width="150">{{ $ps['totals']['subtotal'] }}</td>
 				</tr>
 				@endforeach
 			@endif
@@ -115,8 +115,7 @@
 			<thead>
 				<tr>
 					<th>Type</th>
-					<th>Subtotal</th>
-					<th>Discount</th>
+					<th width="150">Subtotal</th>
 
 				</tr>
 			</thead>
@@ -124,30 +123,25 @@
 				<tr>
 					<td>Cash</td>
 					<td>{{ $reports['total_splits']['cash']['subtotal'] }}</td>
-					<td>({{ $reports['total_splits']['cash']['discount'] }})</td>
 				</tr>
 				<tr>
 					<td>Credit Card</td>
 					<td>{{ $reports['total_splits']['credit']['subtotal'] }}</td>
-					<td>({{ $reports['total_splits']['credit']['discount'] }})</td>
 
 				</tr>
 				<tr>
 					<td>Online</td>
 					<td>{{ $reports['total_splits']['online']['subtotal'] }}</td>
-					<td>({{ $reports['total_splits']['online']['discount'] }})</td>
 
 				</tr>
 				<tr>
 					<td>Check</td>
 					<td>{{ $reports['total_splits']['check']['subtotal'] }}</td>
-					<td>({{ $reports['total_splits']['check']['discount'] }})</td>
 
 				</tr>
 				<tr>
 					<td>Account - not included until paid</td>
 					<td>{{ $reports['total_splits']['account']['subtotal'] }}</td>
-					<td>({{ $reports['total_splits']['account']['discount'] }})</td>
 
 				</tr>
 			</tbody>
