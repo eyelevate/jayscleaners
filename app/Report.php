@@ -438,7 +438,7 @@ class Report extends Model
                 // $tax = Invoice::whereIn('id',$cmplist)->sum('tax');
                 // $total = Invoice::whereIn('id',$cmplist)->sum('total');
 
-                $inv_summary[$inventory_id] = [
+                $pickup_summary[$inventory_id] = [
                     'name' => $inventory->name,
                     'totals' => [
                         'quantity' => $qty, 
@@ -484,7 +484,7 @@ class Report extends Model
             }
         }
 
-        $report['pickup_summary'] = $inv_summary;
+        $report['pickup_summary'] = $pickup_summary;
         $report['pickup_summary_totals'] = $pickup_summary_totals;
         $report['dropoff_summary'] = $dropoff_summary;
         $report['dropoff_summary_totals'] = $dropoff_summary_totals;

@@ -84,7 +84,7 @@
 				@foreach($reports['pickup_summary'] as $ps)
 				<tr>
 					<td>{{ $ps['name'] }}</td>
-					<td></td>
+					<td>{{ $ps['totals']['quantity'] }}</td>
 					<td>{{ $ps['totals']['subtotal'] }}</td>
 					<td>{{ $ps['totals']['tax'] }}</td>
 					<td>{{ $ps['totals']['total'] }}</td>
