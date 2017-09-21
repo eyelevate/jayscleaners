@@ -180,12 +180,14 @@ class Report extends Model
             ->where('type',3)
             ->select(\DB::raw('sum(pretax) as pretax'),\DB::raw('sum(tax) as tax'),\DB::raw('sum(discount) as discount'),\DB::raw('sum(aftertax) as total'))
             ->get();
+        dd($summary_totals);
         $cash_pretax = 0;
         $cash_tax = 0;
         $cash_discount = 0;
         $cash_total = 0;
         if (count($summary_totals) > 0) {
             foreach ($summary_totals as $summary) {
+                dd($summary);
                 $cash_pretax = $summary->pretax;
                 $cash_tax = $summary->tax;
                 $cash_discount = $summary->discount;
