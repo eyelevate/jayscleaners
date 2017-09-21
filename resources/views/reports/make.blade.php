@@ -147,19 +147,19 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th colspan="2" style="text-align:right">Subtotal</th>
+					<th style="text-align:right">Subtotal</th>
 					<td>{{ $reports['totals']['subtotal'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="2" style="text-align:right">Discount</th>
+					<th style="text-align:right">Discount</th>
 					<td>{{ $reports['totals']['discount'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="2" style="text-align:right">Tax</th>
+					<th style="text-align:right">Tax</th>
 					<td>{{ $reports['totals']['tax'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="2" style="text-align:right">Credit</th>
+					<th style="text-align:right">Credit</th>
 					<td>{{ $reports['totals']['credit'] }}</td>
 				</tr>
 				
