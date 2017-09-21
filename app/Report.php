@@ -343,15 +343,13 @@ class Report extends Model
 
 
         $inv_summary = Invoice::whereIn('id',$completed_invoice_ids)
-            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'))
+            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
             ->get();
 
         if (count($inv_summary) > 0) {
             foreach ($inv_summary as $summary) {
                 $ps_quantity = ($summary->quantity != null) ? $summary->quantity : 0;
                 $ps_subtotal = ($summary->subtotal != null) ? $summary->subtotal : 0;
-                $ps_tax = ($summary->tax != null) ? $summary->tax : 0;
-                $ps_total = $ps_subtotal + $ps_tax;
             }
         } 
         
@@ -360,7 +358,7 @@ class Report extends Model
         // $ps_tax = Invoice::whereIn('id',$completed_invoice_ids)->sum('tax');
         // $ps_total = Invoice::whereIn('id',$completed_invoice_ids)->sum('total');
         $inv_summary = Invoice::whereIn('id',$dropoff_invoice_ids)
-            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'))
+            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
             ->get();
 
         if (count($inv_summary) > 0) {
@@ -420,13 +418,14 @@ class Report extends Model
                 }
                 $inventory = Inventory::find($inventory_id);
                 $inv_summary = Invoice::whereIn('id',$cmplist)
-                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
+                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
                     ->get();
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
                         $qty = ($summary->quantity != null) ? $summary->quantity : 0;
                         $pretax = ($summary->pretax != null) ? $summary->pretax : 0;
-
+                        $tax = ($summary->tax != null) ? $summary->tax : 0;
+                        $total = ($summary->total != null) ? $summary->total: 0;
                     }
                 } 
 
@@ -441,7 +440,8 @@ class Report extends Model
                     'totals' => [
                         'quantity' => $qty, 
                         'subtotal' =>money_format('%n', $pretax), 
-
+                        'tax'=>money_format('%n', $tax),
+                        'total'=>money_format('%n', $total)
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
@@ -453,14 +453,15 @@ class Report extends Model
             foreach ($inventories as $inventory) {
                 $inv_summary = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)
                     ->where('inventory_id',$inventory->id)
-                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
+                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
                     ->get();
 
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
                         $drop_qty = ($summary->quantity != null) ? $summary->quantity : 0;
                         $drop_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
-
+                        $drop_tax = ($summary->tax != null) ? $summary->tax : 0;
+                        $drop_total = ($summary->total != null) ? $summary->total: 0;
                     }
                 } 
                 // $drop_qty = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory->id)->sum('quantity');
@@ -472,7 +473,8 @@ class Report extends Model
                     'totals' => [
                         'quantity' => $drop_qty, 
                         'subtotal' => money_format('%n',$drop_pretax), 
-
+                        'tax'=> money_format('%n',$drop_tax),
+                        'total'=> money_format('%n',$drop_total)
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
