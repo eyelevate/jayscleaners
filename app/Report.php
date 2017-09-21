@@ -344,7 +344,7 @@ class Report extends Model
 
 
         $inv_summary = Invoice::whereIn('id',$completed_invoice_ids)
-            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
+            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as subtotal'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
             ->get();
 
         if (count($inv_summary) > 0) {
@@ -361,7 +361,7 @@ class Report extends Model
         // $ps_tax = Invoice::whereIn('id',$completed_invoice_ids)->sum('tax');
         // $ps_total = Invoice::whereIn('id',$completed_invoice_ids)->sum('total');
         $inv_summary = Invoice::whereIn('id',$dropoff_invoice_ids)
-            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
+            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as subtotal'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
             ->get();
 
         if (count($inv_summary) > 0) {
