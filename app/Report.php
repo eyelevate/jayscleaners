@@ -222,7 +222,7 @@ class Report extends Model
         // $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->pluck\\('id');
 
         $completed_invoice_ids = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->pluck('id')->toArray();
-        dd($completed_invoice_ids);
+
         // if (count($query) > 0) {
         //     $trans_id_list = [];
         //     foreach ($query as $qid) {
@@ -239,7 +239,7 @@ class Report extends Model
 
         // }
 
-        $dropoff_invoice_ids = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->select('id');
+        $dropoff_invoice_ids = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id')->toArray();
 
         // $dropoff_invoice_ids = [];
         // $query = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id');
@@ -356,7 +356,7 @@ class Report extends Model
                 $inv_summary = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)
                     ->where('inventory_id',$inventory->id)
                     ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
-                    ->get();
+                    ->cursor();
 
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
