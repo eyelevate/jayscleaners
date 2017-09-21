@@ -297,9 +297,9 @@ class Report extends Model
 
  
 
-        $y = time() * 1000;
-        $z = $y - $x;
-        dd("start={$x} stop={$y} diff={$z}");
+        // $y = time() * 1000;
+        // $z = $y - $x;
+        // dd("start={$x} stop={$y} diff={$z}");
 
         $report['pickup_summary'] = $pickup_summary;
         $report['pickup_summary_totals'] = $pickup_summary_totals;
