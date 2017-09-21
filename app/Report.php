@@ -274,11 +274,11 @@ class Report extends Model
                     ];
 
                     $pickup_summary_totals['quantity'] += $ss->quantity;
-                    $pickup_summary_totals['subtotal'] += $ss->subtotal;
+                    $pickup_summary_totals['subtotal'] += $ss->pretax;
                     $pickup_summary_totals['tax'] += $ss->tax;
                     $pickup_summary_totals['total'] += $ss->total;
                     $dropoff_summary_totals['quantity'] += $inv_summary->quantity;
-                    $dropoff_summary_totals['subtotal'] += $inv_summary->subtotal;
+                    $dropoff_summary_totals['subtotal'] += $inv_summary->pretax;
                     $dropoff_summary_totals['tax'] += $inv_summary->tax;
                     $dropoff_summary_totals['total'] += $inv_summary->total;
                     
