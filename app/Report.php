@@ -231,7 +231,7 @@ class Report extends Model
         $inv_summary = [];
         $dropoff_summary = [];
         
-        $inventories = Inventory::all();
+        $inventories = Inventory::where('company_id',$company_id)->get();
 
 
         $inv_summary = Invoice::whereIn('transaction_id',$completed_invoice_ids)
@@ -279,9 +279,17 @@ class Report extends Model
         if (count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $inventory_id = $inventory->id;
-                $itemsToInvoice[$inventory_id] = [];
+                $item_get = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)
+                    ->where('inventory_id',$inventory_id)->get();
+                $itemsToInvoice[$inventory_id] = $item_get->invoice()->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
+                    ->get();
             }
         }
+
+        $y = time() * 1000;
+        $z = $y - $x;
+
+        dd("start={$x} stop={$y} diff={$z}");
         
         // Job::dump($completed_invoice_ids);
         if (count($completed_invoice_ids) > 0) {
@@ -306,10 +314,7 @@ class Report extends Model
             // }
 
         }
-        $y = time() * 1000;
-        $z = $y - $x;
-
-        dd("start={$x} stop={$y} diff={$z}");
+        
         
 
         if (count($itemsToInvoice) > 0) {
