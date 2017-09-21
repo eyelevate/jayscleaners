@@ -163,7 +163,7 @@ class Report extends Model
                 $tax = ($summary->tax != null) ? $summary->tax : 0;
                 $discount = ($summary->discount != null) ? $summary->discount : 0;
                 $credit = ($summary->credit != null) ? $summary->credit : 0;
-                $total = ($summary->total != null) ? $summary->total : 0;
+                $total = ($pretax + $tax) - ($credit + $discount);
             }
         }
         // $pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->sum('pretax');
