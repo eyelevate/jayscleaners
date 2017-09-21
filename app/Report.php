@@ -278,7 +278,7 @@ class Report extends Model
                 
                 if($inventory->invoiceItems) {
                     // $sum = $inventory->invoiceItems()->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))->first();
-                    $sum = $inventory->invoiceItems()->whereIn('invoice_id',$completed_invoice_ids)->sum('quantity');
+                    $sum = $inventory->invoiceItems()->whereIn('invoice_id',$completed_invoice_ids)->get();
                     dd($sum);
                 }
                 
