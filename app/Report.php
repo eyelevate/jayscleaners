@@ -281,6 +281,7 @@ class Report extends Model
                 $inventory_id = $inventory->id;
                 $item_get = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)
                     ->where('inventory_id',$inventory_id)->get();
+                dd($item_get);
                 $itemsToInvoice[$inventory_id] = $item_get->invoice()->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
                     ->get();
             }
