@@ -300,7 +300,7 @@ class Report extends Model
                 $dropoff_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
-                        'quantity' => $inv_summary, 
+                        'quantity' => $inv_summary->quantity, 
                         'subtotal' => money_format('%n',($inv_summary->pretax != null) $inv_summary->pretax ? : 0), 
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
