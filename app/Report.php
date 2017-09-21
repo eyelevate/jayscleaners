@@ -222,6 +222,7 @@ class Report extends Model
         // $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->pluck\\('id');
 
         $completed_invoice_ids = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->select('id');
+        dd($completed_invoice_ids);
         // if (count($query) > 0) {
         //     $trans_id_list = [];
         //     foreach ($query as $qid) {
