@@ -35,8 +35,8 @@ class Report extends Model
     			'end' => date('D n/d/Y',strtotime(date('Y-m-t 00:00:00')))
     		],
     		'this_year' => [
-    			'start' => date('D n/d/Y',strtotime('2016-01-01 00:00:00')),
-    			'end' => date('D n/d/Y',strtotime('2016-12-31 23:59:59'))
+    			'start' => date('D n/d/Y',strtotime(date('Y-01-01 00:00:00'))),
+    			'end' => date('D n/d/Y',strtotime(date('Y-12-31 23:59:59')))
     		],
     		'yesterday' => [
     			'start' => date('D n/d/Y',strtotime('-1 days')),
