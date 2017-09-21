@@ -276,11 +276,11 @@ class Report extends Model
                     $pickup_summary_totals['quantity'] += $ss->quantity;
                     $pickup_summary_totals['subtotal'] += $ss->pretax;
                     $pickup_summary_totals['tax'] += $ss->tax;
-                    $pickup_summary_totals['total'] += $ss->total;
+
                     $dropoff_summary_totals['quantity'] += $inv_summary->quantity;
                     $dropoff_summary_totals['subtotal'] += $inv_summary->pretax;
                     $dropoff_summary_totals['tax'] += $inv_summary->tax;
-                    $dropoff_summary_totals['total'] += $inv_summary->total;
+  
                     
                 }
                 
@@ -289,11 +289,11 @@ class Report extends Model
 
         $pickup_summary_totals['subtotal'] = '$'.number_format($pickup_summary_totals['subtotal'],2,'.',',');
         $pickup_summary_totals['tax'] = '$'.number_format($pickup_summary_totals['tax'],2,'.',',');
-        $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['total'],2,'.',',');
+        $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['subtotal'] + $pickup_summary_totals['tax'],2,'.',',');
         
         $dropoff_summary_totals['subtotal'] = '$'.number_format($dropoff_summary_totals['subtotal'],2,'.',',');
         $dropoff_summary_totals['tax'] = '$'.number_format($dropoff_summary_totals['tax'],2,'.',',');
-        $dropoff_summary_totals['total'] = '$'.number_format($dropoff_summary_totals['total'],2,'.',',');
+        $dropoff_summary_totals['total'] = '$'.number_format($dropoff_summary_totals['subtotal']+$dropoff_summary_totals['tax'],2,'.',',');
 
  
 
