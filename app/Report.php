@@ -287,13 +287,13 @@ class Report extends Model
             }
         }
 
-        $pickup_summary_totals['subtotal'] = '$'.number_format($pickup_summary_totals['subtotal'],'.',',');
-        $pickup_summary_totals['tax'] = '$'.number_format($pickup_summary_totals['tax'],'.',',');
-        $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['total'],'.',',');
+        $pickup_summary_totals['subtotal'] = '$'.number_format($pickup_summary_totals['subtotal'],2,'.',',');
+        $pickup_summary_totals['tax'] = '$'.number_format($pickup_summary_totals['tax'],2,'.',',');
+        $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['total'],2,'.',',');
         
-        $dropoff_summary_totals['subtotal'] = '$'.number_format($dropoff_summary_totals['subtotal'],'.',',');
-        $dropoff_summary_totals['tax'] = '$'.number_format($dropoff_summary_totals['tax'],'.',',');
-        $dropoff_summary_totals['total'] = '$'.number_format($dropoff_summary_totals['total'],'.',',');
+        $dropoff_summary_totals['subtotal'] = '$'.number_format($dropoff_summary_totals['subtotal'],2,'.',',');
+        $dropoff_summary_totals['tax'] = '$'.number_format($dropoff_summary_totals['tax'],2,'.',',');
+        $dropoff_summary_totals['total'] = '$'.number_format($dropoff_summary_totals['total'],2,'.',',');
 
  
 
