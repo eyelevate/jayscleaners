@@ -281,20 +281,13 @@ class Report extends Model
                 $inventory_id = ($inventory->id > 5) ? $inventory->id - 5 : $inventory->id;
                 $sqty = 0;
                 $spre = 0;
-                InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->chunk(200,function($chunks) {
-                    foreach ($chunks as $chunk) {
-                        $sum_invs = $chunk->invoice()->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))->first();
-                        dd($sum_invs);
-                        $sqty += $sum_invs->quantity;
-                        $spre += $sum_invs->pretax;
-                    }
-                    
-                });
+                $sum_invs = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->where('inventory_id',$inventory_id)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))->first();
+
                 $pickup_summary[$inventory_id] = [
                     'name' => $inventory->name,
                     'totals' => [
-                        'quantity' => $sqty, 
-                        'subtotal' =>money_format('%n', $spre), 
+                        'quantity' => $sum_invs->quantity, 
+                        'subtotal' =>money_format('%n', $sum_invs->pretax), 
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
