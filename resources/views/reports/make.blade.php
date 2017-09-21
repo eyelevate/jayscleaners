@@ -25,8 +25,6 @@
 					<th>Inventory</th>
 					<th>Quantity</th>
 					<th>Subtotal</th>
-					<th>Tax</th>
-					<th>Total</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -36,8 +34,6 @@
 					<td>{{ $ds['name'] }}</td>
 					<td>{{ $ds['totals']['quantity'] }}</td>
 					<td>{{ $ds['totals']['subtotal'] }}</td>
-					<td>{{ $ds['totals']['tax'] }}</td>
-					<td>{{ $ds['totals']['total'] }}</td>
 				</tr>
 				@endforeach
 			@endif
@@ -75,8 +71,6 @@
 					<th>Inventory</th>
 					<th>Quantity</th>
 					<th>Subtotal</th>
-					<th>Tax</th>
-					<th>Total</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,8 +80,6 @@
 					<td>{{ $ps['name'] }}</td>
 					<td>{{ $ps['totals']['quantity'] }}</td>
 					<td>{{ $ps['totals']['subtotal'] }}</td>
-					<td>{{ $ps['totals']['tax'] }}</td>
-					<td>{{ $ps['totals']['total'] }}</td>
 				</tr>
 				@endforeach
 			@endif
@@ -125,8 +117,7 @@
 					<th>Type</th>
 					<th>Subtotal</th>
 					<th>Discount</th>
-					<th>Tax</th>
-					<th>Total</th>
+
 				</tr>
 			</thead>
 			<tbody>
@@ -134,36 +125,30 @@
 					<td>Cash</td>
 					<td>{{ $reports['total_splits']['cash']['subtotal'] }}</td>
 					<td>({{ $reports['total_splits']['cash']['discount'] }})</td>
-					<td>{{ $reports['total_splits']['cash']['tax'] }}</td>
-					<td>{{ $reports['total_splits']['cash']['total'] }}</td>
 				</tr>
 				<tr>
 					<td>Credit Card</td>
 					<td>{{ $reports['total_splits']['credit']['subtotal'] }}</td>
 					<td>({{ $reports['total_splits']['credit']['discount'] }})</td>
-					<td>{{ $reports['total_splits']['credit']['tax'] }}</td>
-					<td>{{ $reports['total_splits']['credit']['total'] }}</td>
+
 				</tr>
 				<tr>
 					<td>Online</td>
 					<td>{{ $reports['total_splits']['online']['subtotal'] }}</td>
 					<td>({{ $reports['total_splits']['online']['discount'] }})</td>
-					<td>{{ $reports['total_splits']['online']['tax'] }}</td>
-					<td>{{ $reports['total_splits']['online']['total'] }}</td>
+
 				</tr>
 				<tr>
 					<td>Check</td>
 					<td>{{ $reports['total_splits']['check']['subtotal'] }}</td>
 					<td>({{ $reports['total_splits']['check']['discount'] }})</td>
-					<td>{{ $reports['total_splits']['check']['tax'] }}</td>
-					<td>{{ $reports['total_splits']['check']['total'] }}</td>
+
 				</tr>
 				<tr>
 					<td>Account - not included until paid</td>
 					<td>{{ $reports['total_splits']['account']['subtotal'] }}</td>
 					<td>({{ $reports['total_splits']['account']['discount'] }})</td>
-					<td>{{ $reports['total_splits']['account']['tax'] }}</td>
-					<td>{{ $reports['total_splits']['account']['total'] }}</td>
+
 				</tr>
 			</tbody>
 			<tfoot>

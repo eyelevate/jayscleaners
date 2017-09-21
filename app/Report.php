@@ -163,7 +163,7 @@ class Report extends Model
                 $tax = ($summary->tax != null) ? $summary->tax : 0;
                 $discount = ($summary->discount != null) ? $summary->discount : 0;
                 $credit = ($summary->credit != null) ? $summary->credit : 0;
-                $total = ($summary->total != null) ? $summary->total : 0;
+                $total = ($pretax + $tax) - ($discount + $credit);
             }
         }
         // $pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->sum('pretax');
@@ -174,7 +174,7 @@ class Report extends Model
         $summary_totals = Transaction::whereBetween('created_at',[$start_date,$end_date])
             ->where('company_id',$company_id)
             ->where('type',3)
-            ->select(\DB::raw('sum(pretax) as pretax'),\DB::raw('sum(tax) as tax'),\DB::raw('sum(discount) as discount'),\DB::raw('sum(aftertax) as total'))
+            ->select(\DB::raw('sum(pretax) as pretax'),\DB::raw('sum(tax) as tax'))
             ->get();
         
 
@@ -184,7 +184,7 @@ class Report extends Model
                 $cash_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
                 $cash_tax = ($summary->tax != null) ? $summary->tax : 0;
                 $cash_discount = ($summary->discount != null) ? $summary->discount : 0;
-                $cash_total = ($summary->total != null) ? $summary->total : 0;
+                $cash_total = ($cash_pretax + $cash_tax) - $cash_discount;
             }
         }
 
@@ -204,7 +204,7 @@ class Report extends Model
                 $check_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
                 $check_tax = ($summary->tax != null) ? $summary->tax : 0;
                 $check_discount = ($summary->discount != null) ? $summary->discount : 0;
-                $check_total = ($summary->total != null) ? $summary->total : 0;
+                $check_total = ($check_pretax + $check_tax) - $check_discount;
             }
         }
         // $check_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',4)->sum('pretax');
@@ -222,7 +222,7 @@ class Report extends Model
                 $cc_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
                 $cc_tax = ($summary->tax != null) ? $summary->tax : 0;
                 $cc_discount = ($summary->discount != null) ? $summary->discount : 0;
-                $cc_total = ($summary->total != null) ? $summary->total : 0;
+                $cc_total = ($cc_pretax + $cc_tax) - $cc_discount;
             }
         }
         // $cc_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',1)->sum('pretax');
@@ -240,7 +240,7 @@ class Report extends Model
                 $online_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
                 $online_tax = ($summary->tax != null) ? $summary->tax : 0;
                 $online_discount = ($summary->discount != null) ? $summary->discount : 0;
-                $online_total = ($summary->total != null) ? $summary->total : 0;
+                $online_total = ($online_pretax + $online_tax) - $online_discount;
             }
         }
         // $online_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',2)->sum('pretax');
@@ -258,8 +258,7 @@ class Report extends Model
                 $account_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
                 $account_tax = ($summary->tax != null) ? $summary->tax : 0;
                 $account_discount = ($summary->discount != null) ? $summary->discount : 0;
-                $account_total = ($summary->total != null) ? $summary->total : 0;
-            }
+                $account_total = ($account_pretax + $account_tax) - $account_discount;
         }
         // $account_pretax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',5)->sum('pretax');
         // $account_tax = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type',5)->sum('tax');
@@ -344,7 +343,7 @@ class Report extends Model
 
 
         $inv_summary = Invoice::whereIn('id',$completed_invoice_ids)
-            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
+            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'))
             ->get();
 
         if (count($inv_summary) > 0) {
@@ -352,7 +351,7 @@ class Report extends Model
                 $ps_quantity = ($summary->quantity != null) ? $summary->quantity : 0;
                 $ps_subtotal = ($summary->subtotal != null) ? $summary->subtotal : 0;
                 $ps_tax = ($summary->tax != null) ? $summary->tax : 0;
-                $ps_total = ($summary->total != null) ? $summary->total : 0;
+                $ps_total = $ps_subtotal + $ps_tax;
             }
         } 
         
@@ -361,7 +360,7 @@ class Report extends Model
         // $ps_tax = Invoice::whereIn('id',$completed_invoice_ids)->sum('tax');
         // $ps_total = Invoice::whereIn('id',$completed_invoice_ids)->sum('total');
         $inv_summary = Invoice::whereIn('id',$dropoff_invoice_ids)
-            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
+            ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'))
             ->get();
 
         if (count($inv_summary) > 0) {
@@ -369,7 +368,7 @@ class Report extends Model
                 $ds_quantity = ($summary->quantity != null) ? $summary->quantity : 0;
                 $ds_subtotal = ($summary->subtotal != null) ? $summary->subtotal : 0;
                 $ds_tax = ($summary->tax != null) ? $summary->tax : 0;
-                $ds_total = ($summary->total != null) ? $summary->total : 0;
+                $ds_total = $ds_subtotal + $ds_tax;
             }
         } 
         // $ds_quantity = Invoice::whereIn('id',$dropoff_invoice_ids)->sum('quantity');
@@ -421,14 +420,13 @@ class Report extends Model
                 }
                 $inventory = Inventory::find($inventory_id);
                 $inv_summary = Invoice::whereIn('id',$cmplist)
-                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
+                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
                     ->get();
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
                         $qty = ($summary->quantity != null) ? $summary->quantity : 0;
                         $pretax = ($summary->pretax != null) ? $summary->pretax : 0;
-                        $tax = ($summary->tax != null) ? $summary->tax : 0;
-                        $total = ($summary->total != null) ? $summary->total: 0;
+
                     }
                 } 
 
@@ -443,8 +441,7 @@ class Report extends Model
                     'totals' => [
                         'quantity' => $qty, 
                         'subtotal' =>money_format('%n', $pretax), 
-                        'tax'=>money_format('%n', $tax),
-                        'total'=>money_format('%n', $total)
+
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
@@ -456,15 +453,14 @@ class Report extends Model
             foreach ($inventories as $inventory) {
                 $inv_summary = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)
                     ->where('inventory_id',$inventory->id)
-                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
+                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
                     ->get();
 
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
                         $drop_qty = ($summary->quantity != null) ? $summary->quantity : 0;
                         $drop_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
-                        $drop_tax = ($summary->tax != null) ? $summary->tax : 0;
-                        $drop_total = ($summary->total != null) ? $summary->total: 0;
+
                     }
                 } 
                 // $drop_qty = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)->where('inventory_id',$inventory->id)->sum('quantity');
@@ -476,8 +472,7 @@ class Report extends Model
                     'totals' => [
                         'quantity' => $drop_qty, 
                         'subtotal' => money_format('%n',$drop_pretax), 
-                        'tax'=> money_format('%n',$drop_tax),
-                        'total'=> money_format('%n',$drop_total)
+
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
