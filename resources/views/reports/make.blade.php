@@ -32,8 +32,8 @@
 				@foreach($reports['dropoff_summary'] as $ds)
 				<tr>
 					<td>{{ $ds['name'] }}</td>
-					<td width="150">{{ $ds['totals']['quantity'] }}</td>
-					<td width="150">{{ $ds['totals']['subtotal'] }}</td>
+					<td >{{ $ds['totals']['quantity'] }}</td>
+					<td width="100">{{ $ds['totals']['subtotal'] }}</td>
 				</tr>
 				@endforeach
 			@endif
@@ -78,8 +78,8 @@
 				@foreach($reports['pickup_summary'] as $ps)
 				<tr>
 					<td>{{ $ps['name'] }}</td>
-					<td width="150">{{ $ps['totals']['quantity'] }}</td>
-					<td width="150">{{ $ps['totals']['subtotal'] }}</td>
+					<td >{{ $ps['totals']['quantity'] }}</td>
+					<td width="100">{{ $ps['totals']['subtotal'] }}</td>
 				</tr>
 				@endforeach
 			@endif
@@ -115,7 +115,7 @@
 			<thead>
 				<tr>
 					<th>Type</th>
-					<th width="150">Subtotal</th>
+					<th width="100">Subtotal</th>
 
 				</tr>
 			</thead>
@@ -164,7 +164,7 @@
 				</tr>
 				
 				<tr>
-					<th colspan="2" style="text-align:right">Total</th>
+					<th style="text-align:right">Total</th>
 					<td>{{ $reports['totals']['total'] }}</td>
 				</tr>
 			</tfoot>
