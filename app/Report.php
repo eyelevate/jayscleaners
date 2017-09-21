@@ -426,7 +426,7 @@ class Report extends Model
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
                         $qty = ($summary->quantity != null) ? $summary->quantity : 0;
-                        $pretax = ($summary->subtotal != null) ? $summary->subtotal : 0;
+                        $pretax = ($summary->pretax != null) ? $summary->pretax : 0;
                         $tax = ($summary->tax != null) ? $summary->tax : 0;
                         $total = ($summary->total != null) ? $summary->total: 0;
                     }
@@ -462,7 +462,7 @@ class Report extends Model
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
                         $drop_qty = ($summary->quantity != null) ? $summary->quantity : 0;
-                        $drop_pretax = ($summary->subtotal != null) ? $summary->subtotal : 0;
+                        $drop_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
                         $drop_tax = ($summary->tax != null) ? $summary->tax : 0;
                         $drop_total = ($summary->total != null) ? $summary->total: 0;
                     }
