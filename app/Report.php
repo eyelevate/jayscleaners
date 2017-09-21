@@ -285,16 +285,25 @@ class Report extends Model
         
         // Job::dump($completed_invoice_ids);
         if (count($completed_invoice_ids) > 0) {
-            $check_inventory_ids = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->chunk(500);
+            $check_inventory_ids = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->chunk(500,function(
 
-            if (count($check_inventory_ids) > 0) {
-                foreach ($check_inventory_ids as $cii) {
-                    // Job::dump($iidkey.' - '.$cii->inventory_id.' - '.$cii->item_id);
+            ));
+
+            InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->chunk(200, function ($chunks) {
+                foreach ($chunks as $cii) {
                     $iiid = ($cii->inventory_id > 5) ? $cii->inventory_id - 5 : $cii->inventory_id;
                     array_push($itemsToInvoice[$iiid], $cii->invoice_id);
                 }
+            });
+
+            // if (count($check_inventory_ids) > 0) {
+            //     foreach ($check_inventory_ids as $cii) {
+            //         // Job::dump($iidkey.' - '.$cii->inventory_id.' - '.$cii->item_id);
+            //         $iiid = ($cii->inventory_id > 5) ? $cii->inventory_id - 5 : $cii->inventory_id;
+            //         array_push($itemsToInvoice[$iiid], $cii->invoice_id);
+            //     }
                 
-            }
+            // }
 
         }
         $y = time() * 1000;
