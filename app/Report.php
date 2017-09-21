@@ -155,7 +155,7 @@ class Report extends Model
             ->where('company_id',$company_id)
             ->where('type','<',5)
             ->select(\DB::raw('sum(pretax) as pretax'),\DB::raw('sum(tax) as tax'),\DB::raw('sum(discount) as discount'),\DB::raw('sum(credit) as credit'),\DB::raw('sum(total) as total'))
-            ->cursor();
+            ->get();
 
         if (count($summary_totals) > 0) {
             foreach ($summary_totals as $summary) {
@@ -258,7 +258,7 @@ class Report extends Model
 
         $inv_summary = Invoice::whereIn('id',$completed_invoice_ids)
             ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as subtotal'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
-            ->cursor();
+            ->get();
 
         if (count($inv_summary) > 0) {
             foreach ($inv_summary as $summary) {
@@ -271,7 +271,7 @@ class Report extends Model
         
         $inv_summary = Invoice::whereIn('id',$dropoff_invoice_ids)
             ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as subtotal'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
-            ->cursor();
+            ->get();
 
         if (count($inv_summary) > 0) {
             foreach ($inv_summary as $summary) {
@@ -307,7 +307,7 @@ class Report extends Model
         // Job::dump($completed_invoice_ids);
         if (count($completed_invoice_ids) > 0) {
             foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
-                $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->cursor();
+                $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->get();
                 if (count($check_inventory_id) > 0) {
                     foreach ($check_inventory_id as $cii) {
                         // Job::dump($iidkey.' - '.$cii->inventory_id.' - '.$cii->item_id);
@@ -328,7 +328,7 @@ class Report extends Model
                 $inventory = Inventory::find($inventory_id);
                 $inv_summary = Invoice::whereIn('id',$cmplist)
                     ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
-                    ->cursor();
+                    ->get();
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
                         $qty = ($summary->quantity != null) ? $summary->quantity : 0;
@@ -355,7 +355,7 @@ class Report extends Model
                 $inv_summary = InvoiceItem::whereIn('invoice_id',$dropoff_invoice_ids)
                     ->where('inventory_id',$inventory->id)
                     ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
-                    ->cursor();
+                    ->get();
 
                 if (count($inv_summary) > 0) {
                     foreach ($inv_summary as $summary) {
