@@ -219,36 +219,12 @@ class Report extends Model
             ],
 
         ];
-        // $query = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->pluck\\('id');
 
         $completed_invoice_ids = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->pluck('id')->toArray();
 
-        // if (count($query) > 0) {
-        //     $trans_id_list = [];
-        //     foreach ($query as $qid) {
-        //         $transaction_id = $qid;
-        //         array_push($trans_id_list, $transaction_id);
-        //     }
-        //     $invs = Invoice::whereIn('transaction_id',$trans_id_list)->pluck('id');
-        //     if (count($invs) > 0) {
-        //         foreach ($invs as $invid) {
-        //             $invoice_id = $invid;
-        //             array_push($completed_invoice_ids, $invoice_id);
-        //         }
-        //     }
-
-        // }
 
         $dropoff_invoice_ids = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id')->toArray();
 
-        // $dropoff_invoice_ids = [];
-        // $query = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id');
-        
-        // if (count($query) > 0) {
-        //     foreach ($query as $qid) {
-        //         array_push($dropoff_invoice_ids,$qid);
-        //     }
-        // }
 
         // iterate over inventory groups
         $inv_summary = [];
@@ -257,7 +233,7 @@ class Report extends Model
         $inventories = Inventory::all();
 
 
-        $inv_summary = Invoice::whereIn('id',$completed_invoice_ids)
+        $inv_summary = Invoice::whereIn('transaction_id',$completed_invoice_ids)
             ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as subtotal'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
             ->get();
 
