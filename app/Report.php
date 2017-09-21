@@ -136,6 +136,7 @@ class Report extends Model
 
     static public function prepareQueryReport($start, $end, $company_id) {
 
+        $x = time()*1000;
         /** transaction types
         * 1. credit
         * 2. Credit - Online
@@ -156,7 +157,9 @@ class Report extends Model
             ->where('type','<',5)
             ->select(\DB::raw('sum(pretax) as pretax'),\DB::raw('sum(tax) as tax'),\DB::raw('sum(discount) as discount'),\DB::raw('sum(credit) as credit'),\DB::raw('sum(total) as total'))
             ->get();
+        $y = time() * 1000;
 
+        dd($y - $x);
         if (count($summary_totals) > 0) {
             foreach ($summary_totals as $summary) {
                 $pretax = ($summary->pretax != null) ? $summary->pretax : 0;
