@@ -282,25 +282,25 @@ class Report extends Model
                 $itemsToInvoice[$inventory_id] = [];
             }
         }
+        
+        // Job::dump($completed_invoice_ids);
+        if (count($completed_invoice_ids) > 0) {
+            $check_inventory_ids = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->chunk(500);
+
+            if (count($check_inventory_ids) > 0) {
+                foreach ($check_inventory_ids as $cii) {
+                    // Job::dump($iidkey.' - '.$cii->inventory_id.' - '.$cii->item_id);
+                    $iiid = ($cii->inventory_id > 5) ? $cii->inventory_id - 5 : $cii->inventory_id;
+                    array_push($itemsToInvoice[$iiid], $cii->invoice_id);
+                }
+                
+            }
+
+        }
         $y = time() * 1000;
         $z = $y - $x;
 
         dd("start={$x} stop={$y} diff={$z}");
-        // Job::dump($completed_invoice_ids);
-        if (count($completed_invoice_ids) > 0) {
-            foreach ($completed_invoice_ids as $iidkey => $iidvalue) {
-                $check_inventory_id = InvoiceItem::where('invoice_id',$iidvalue)->limit(1)->get();
-                if (count($check_inventory_id) > 0) {
-                    foreach ($check_inventory_id as $cii) {
-                        // Job::dump($iidkey.' - '.$cii->inventory_id.' - '.$cii->item_id);
-                        $iiid = ($cii->inventory_id > 5) ? $cii->inventory_id - 5 : $cii->inventory_id;
-                        array_push($itemsToInvoice[$iiid], $iidvalue);
-                    }
-                    
-                }
-            }
-        }
-
         
 
         if (count($itemsToInvoice) > 0) {

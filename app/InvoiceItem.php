@@ -11,6 +11,32 @@ use App\Inventory;
 class InvoiceItem extends Model
 {
     use SoftDeletes;
+
+    public function inventoryItem()
+    {
+        return $this->belongsTo(InventoryItem::class, 'item_id', 'id');
+    }
+
+    public function inventory()
+    {
+        return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
+    }
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, 'invoice_id', 'id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'customer_id', 'id');
+    }
+
     public static function prepareEdit($data){
     	if(isset($data)){
     		foreach ($data as $key => $value) {
