@@ -273,6 +273,11 @@ class Report extends Model
             'total'=>money_format('%n',$ds_total)
         ];
         $inventories = Inventory::where('company_id',$company_id)->get();
+        if(count($inventories) > 0) {
+            foreach ($inventories as $inventory) {
+                dd($inventory->invoiceItems()->where('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))->first());
+            }
+        }
         dd($inventories);
         // #make a list of inventory item id to inventory id
         $itemsToInventory = Report::itemsToInventory($company_id);
