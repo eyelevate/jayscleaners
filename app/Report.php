@@ -238,7 +238,7 @@ class Report extends Model
         if (count($summary_totals) > 0) {
             foreach ($summary_totals as $summary) {
                 $online_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
-                $online_tax = ($summary->tax != null) ? $summary_tax : 0;
+                $online_tax = ($summary->tax != null) ? $summary->tax : 0;
                 $online_discount = ($summary->discount != null) ? $summary->discount : 0;
                 $online_total = ($summary->total != null) ? $summary->total : 0;
             }
@@ -256,7 +256,7 @@ class Report extends Model
         if (count($summary_totals) > 0) {
             foreach ($summary_totals as $summary) {
                 $account_pretax = ($summary->pretax != null) ? $summary->pretax : 0;
-                $account_tax = ($summary->tax != null) ? $summary_tax : 0;
+                $account_tax = ($summary->tax != null) ? $summary->tax : 0;
                 $account_discount = ($summary->discount != null) ? $summary->discount : 0;
                 $account_total = ($summary->total != null) ? $summary->total : 0;
             }
