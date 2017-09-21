@@ -275,7 +275,6 @@ class Report extends Model
             'total'=>money_format('%n',$ds_total)
         ];
         $inventories = Inventory::where('company_id',$company_id)->get();
-        $test = [];
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
 
@@ -309,9 +308,9 @@ class Report extends Model
 
  
 
-        $y = time() * 1000;
-        $z = $y - $x;
-        dd("start={$x} stop={$y} diff={$z}");
+        // $y = time() * 1000;
+        // $z = $y - $x;
+        // dd("start={$x} stop={$y} diff={$z}");
 
         $report['pickup_summary'] = $pickup_summary;
         $report['pickup_summary_totals'] = $pickup_summary_totals;
