@@ -296,67 +296,11 @@ class Report extends Model
             }
         }
 
-        dd($pickup_summary);
         $y = time() * 1000;
         $z = $y - $x;
 
         dd("start={$x} stop={$y} diff={$z}");
         
-        // Job::dump($completed_invoice_ids);
-        if (count($completed_invoice_ids) > 0) {
-
-
-            $check_inventory_ids = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->chunk(200, function ($chunks) {
-                
-                foreach ($chunks as $cii) {
-                    dd($cii);
-                    $iiid = ($cii->inventory_id > 5) ? $cii->inventory_id - 5 : $cii->inventory_id;
-                    array_push($itemsToInvoice[$iiid], $cii->invoice_id);
-                }
-            });
-
-            // if (count($check_inventory_ids) > 0) {
-            //     foreach ($check_inventory_ids as $cii) {
-            //         // Job::dump($iidkey.' - '.$cii->inventory_id.' - '.$cii->item_id);
-            //         $iiid = ($cii->inventory_id > 5) ? $cii->inventory_id - 5 : $cii->inventory_id;
-            //         array_push($itemsToInvoice[$iiid], $cii->invoice_id);
-            //     }
-                
-            // }
-
-        }
-        
-        
-
-        if (count($itemsToInvoice) > 0) {
-
-            foreach ($itemsToInvoice as $inventory_id => $cmplist) {
-                if ($inventory_id > 5) {
-                    break;
-                }
-                $inventory = Inventory::find($inventory_id);
-                $inv_summary = Invoice::whereIn('id',$cmplist)
-                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'))
-                    ->get();
-                if (count($inv_summary) > 0) {
-                    foreach ($inv_summary as $summary) {
-                        $qty = ($summary->quantity != null) ? $summary->quantity : 0;
-                        $pretax = ($summary->pretax != null) ? $summary->pretax : 0;
-
-                    }
-                } 
-
-
-                $pickup_summary[$inventory_id] = [
-                    'name' => $inventory->name,
-                    'totals' => [
-                        'quantity' => $qty, 
-                        'subtotal' =>money_format('%n', $pretax), 
-                    ],
-                    'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
-                ];
-            }
-        }
 
         $inventories = Inventory::where('company_id',$company_id)->get();
         if (count($inventories) > 0) {
