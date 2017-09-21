@@ -80,7 +80,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			@if (count($reports['pickup_summary'] > 0))
+{{-- 			@if (count($reports['pickup_summary'] > 0))
 				@foreach($reports['pickup_summary'] as $ps)
 				<tr>
 					<td>{{ $ps['name'] }}</td>
@@ -90,7 +90,7 @@
 					<td>{{ $ps['totals']['total'] }}</td>
 				</tr>
 				@endforeach
-			@endif
+			@endif --}}
 			</tbody>
 			<tfoot>
 				<tr>
