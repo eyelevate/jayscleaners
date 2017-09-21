@@ -112,10 +112,10 @@ class Report extends Model
                 $this_year_transactions = Invoice::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->sum('total');
                 $reports[$company_id] = [
                     'name'=>$company->name,
-                    'today'=>money_format('$%i',$today_transactions),
-                    'this_week'=>money_format('$%i',$this_week_transactions),
-                    'this_month'=>money_format('$%i',$this_month_transactions),
-                    'this_year'=>money_format('$%i',$this_year_transactions)
+                    'today'=>'$'.number_format($today_transactions,2,'.',','),
+                    'this_week'=>'$'.number_format($this_week_transactions,2,'.',','),
+                    'this_month'=>'$'.number_format($this_month_transactions,2,'.',','),
+                    'this_year'=>'$'.number_format($this_year_transactions,2,'.',',')
                 ];
             }
         }
