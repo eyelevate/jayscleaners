@@ -40,19 +40,19 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th colspan="4" style="text-align:right">Quantity</th>
+					<th colspan="2" style="text-align:right">Quantity</th>
 					<td>{{ $reports['dropoff_summary_totals']['quantity'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Subtotal</th>
+					<th colspan="2" style="text-align:right">Subtotal</th>
 					<td>{{ $reports['dropoff_summary_totals']['subtotal'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Tax</th>
+					<th colspan="2" style="text-align:right">Tax</th>
 					<td>{{ $reports['dropoff_summary_totals']['tax'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Total</th>
+					<th colspan="2" style="text-align:right">Total</th>
 					<td>{{ $reports['dropoff_summary_totals']['total'] }}</td>
 				</tr>
 			</tfoot>
@@ -86,19 +86,19 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th colspan="4" style="text-align:right">Quantity</th>
+					<th colspan="2" style="text-align:right">Quantity</th>
 					<td>{{ $reports['pickup_summary_totals']['quantity'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Subtotal</th>
+					<th colspan="2" style="text-align:right">Subtotal</th>
 					<td>{{ $reports['pickup_summary_totals']['subtotal'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Tax</th>
+					<th colspan="2" style="text-align:right">Tax</th>
 					<td>{{ $reports['pickup_summary_totals']['tax'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Total</th>
+					<th colspan="2" style="text-align:right">Total</th>
 					<td>{{ $reports['pickup_summary_totals']['total'] }}</td>
 				</tr>
 			</tfoot>
@@ -153,24 +153,24 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th colspan="4" style="text-align:right">Subtotal</th>
+					<th colspan="2" style="text-align:right">Subtotal</th>
 					<td>{{ $reports['totals']['subtotal'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Discount</th>
+					<th colspan="2" style="text-align:right">Discount</th>
 					<td>{{ $reports['totals']['discount'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Tax</th>
+					<th colspan="2" style="text-align:right">Tax</th>
 					<td>{{ $reports['totals']['tax'] }}</td>
 				</tr>
 				<tr>
-					<th colspan="4" style="text-align:right">Credit</th>
+					<th colspan="2" style="text-align:right">Credit</th>
 					<td>{{ $reports['totals']['credit'] }}</td>
 				</tr>
 				
 				<tr>
-					<th colspan="4" style="text-align:right">Total</th>
+					<th colspan="2" style="text-align:right">Total</th>
 					<td>{{ $reports['totals']['total'] }}</td>
 				</tr>
 			</tfoot>
