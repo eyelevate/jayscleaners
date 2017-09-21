@@ -15,6 +15,10 @@ class Inventory extends Model
 	public function inventory_items() {
 		return $this->hasMany('App\InventoryItem')->orderBy('ordered','asc');
 	}
+    public function invoiceItems()
+    {
+        return $this->hasMany(InvoiceItem::class, 'inventory_id', 'id');
+    }
 	public static function prepareTagSelect(){
 		return [
 			0 => 'None',
