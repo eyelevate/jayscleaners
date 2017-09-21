@@ -285,7 +285,7 @@ class Report extends Model
                         'name' => $inventory->name,
                         'totals' => [
                             'quantity' => $ss->quantity, 
-                            'subtotal' =>money_format('%n', ($sum_invs->pretax != null) ? $sum_invs->pretax : 0), 
+                            'subtotal' =>money_format('%n', ($ss->pretax != null) ? $ss->pretax : 0), 
                         ],
                         'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                     ];
