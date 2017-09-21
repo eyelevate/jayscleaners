@@ -288,9 +288,9 @@ class Report extends Model
 
 
             $check_inventory_ids = InvoiceItem::whereIn('invoice_id',$completed_invoice_ids)->chunk(200, function ($chunks) {
-                dd($chunks);
+                
                 foreach ($chunks as $cii) {
-
+                    dd($cii);
                     $iiid = ($cii->inventory_id > 5) ? $cii->inventory_id - 5 : $cii->inventory_id;
                     array_push($itemsToInvoice[$iiid], $cii->invoice_id);
                 }
