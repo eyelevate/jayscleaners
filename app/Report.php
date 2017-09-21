@@ -231,7 +231,7 @@ class Report extends Model
         $inv_summary = [];
         $dropoff_summary = [];
         
-        $inventories = Inventory::where('company_id',$company_id)->get();
+        
 
 
         $inv_summary = Invoice::whereIn('transaction_id',$completed_invoice_ids)
@@ -272,7 +272,8 @@ class Report extends Model
             'tax'=>money_format('%n',$ds_tax),
             'total'=>money_format('%n',$ds_total)
         ];
-
+        $inventories = Inventory::where('company_id',$company_id)->get();
+        dd($inventories);
         // #make a list of inventory item id to inventory id
         $itemsToInventory = Report::itemsToInventory($company_id);
         $itemsToInvoice = [];
