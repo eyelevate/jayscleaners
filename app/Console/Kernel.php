@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
             $trans = Transaction::whereIn('id',$transaction_ids);
             if ($trans->update(['status'=>2])) {
                 // send email
-                $send_to = 'young@jayscleaners.com';
+                $send_to = ['ydc2415@hotmail.com','young@jayscleaners.com','jchoung860@msn.com','wondo@jayscleaners.com'];
                 $from = 'noreply@jayscleaners.com';
                 // Email customer
                 if (Mail::send('emails.account_status', [
