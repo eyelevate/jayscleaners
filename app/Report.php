@@ -249,12 +249,13 @@ class Report extends Model
         $inventories = Inventory::where('company_id',$company_id)->get();
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
-
-                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids);
                 $qty = 0;
-                foreach ($ss->cursor() as $key => $value) {
-                    $qty += $value->quantity;
-                }
+                InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->chunk(100,function($chunks, $qty){
+                    foreach ($chunks as $chunk) {
+                        $qty += $chunk->quantity;
+                    }
+                });
+                
                 $y = time() * 1000;
                 $z = $y - $x;
                 dd("start={$x} stop={$y} diff={$z}");
