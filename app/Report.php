@@ -284,9 +284,9 @@ class Report extends Model
 
             }
         }
-        $y = time() * 1000;
-        $z = $y - $x;
-        dd("start={$x} stop={$y} diff={$z}");
+        // $y = time() * 1000;
+        // $z = $y - $x;
+        // dd("start={$x} stop={$y} diff={$z}");
 
         $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['subtotal'] + $pickup_summary_totals['tax'],2,'.',',');
         $pickup_summary_totals['subtotal'] = '$'.number_format($pickup_summary_totals['subtotal'],2,'.',',');
