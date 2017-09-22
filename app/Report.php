@@ -187,7 +187,9 @@ class Report extends Model
             ->where('company_id',$company_id)
             ->where('type',5)
             ->sum('pretax');
-
+        $y = time() * 1000;
+        $z = $y - $x;
+        dd("start={$x} stop={$y} diff={$z}");
         $report = [
             'totals' => [
                 'subtotal' => money_format('%n',$pretax),
@@ -245,9 +247,7 @@ class Report extends Model
             'tax'=>0,
             'total'=>0
         ];
-        $y = time() * 1000;
-        $z = $y - $x;
-        dd("start={$x} stop={$y} diff={$z}");
+
         $inventories = Inventory::where('company_id',$company_id)->get();
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
