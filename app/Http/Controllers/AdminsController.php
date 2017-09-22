@@ -2126,15 +2126,21 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
     public function postApiCreateInvoice(Request $request) {
+
         $invoice = new Invoice();
         $i = json_decode($request->invoice,true);
         $ii = json_decode($request->items,true);
+        $taxes = Tax::where('company_id',$i['company_id'])->orderBy('id','desc')->first();
+        $tax_rate = $taxes->rate;
+        $subtotal = $i['pretax'];
+        $tax = round($subtotal * $tax_rate,2);
+        $total = $subtotal + $tax;
         $invoice->company_id =$i['company_id'];
         $invoice->customer_id =$i['customer_id'];
         $invoice->quantity = $i['quantity'];
-        $invoice->pretax = $i['pretax'];
-        $invoice->tax = $i['tax'];
-        $invoice->total = $i['total'];
+        $invoice->pretax = $subtotal;
+        $invoice->tax = $tax;
+        $invoice->total = $total;
         $invoice->due_date = $i['due_date'];
         $invoice->memo = ($i['memo'] != '') ? $i['memo'] :  NULL;
         $invoice->status = $i['status'];
@@ -2172,12 +2178,17 @@ class AdminsController extends Controller
         $invoice = Invoice::find($request->invoice_id);
 
         $i = json_decode($request->invoice,true);
+        $taxes = Tax::where('company_id',$i['company_id'])->orderBy('id','desc')->first();
+        $tax_rate = $taxes->rate;
+        $subtotal = $i['pretax'];
+        $tax = round($subtotal * $tax_rate,2);
+        $total = $subtotal + $tax;
         $invoice->company_id =$i['company_id'];
         $invoice->customer_id =$i['customer_id'];
         $invoice->quantity = $i['quantity'];
-        $invoice->pretax = $i['pretax'];
-        $invoice->tax = $i['tax'];
-        $invoice->total = $i['total'];
+        $invoice->pretax = $subtotal;
+        $invoice->tax = $tax;
+        $invoice->total = $total;
         $invoice->due_date = $i['due_date'];
         $invoice->discount_id = ($i['discount_id'] != '') ? $i['discount_id'] : NULL;
 
@@ -2343,6 +2354,11 @@ class AdminsController extends Controller
     }
     public function postApiCreateInvoiceItem(Request $request) {
         $ii = json_decode($request->items,true);
+        $taxes = Tax::where('company_id',$ii['company_id'])->orderBy('id','desc')->first();
+        $tax_rate = $taxes->rate;
+        $subtotal = $ii['pretax'];
+        $tax = round($subtotal * $tax_rate,2);
+        $total = $subtotal + $tax;
         $invoice_item = new InvoiceItem();
         $invoice_item->invoice_id = $ii['invoice_id'];
         $invoice_item->item_id = $ii['item_id'];
@@ -2352,9 +2368,9 @@ class AdminsController extends Controller
         $invoice_item->quantity = $ii['quantity'];
         $invoice_item->color = $ii['color'];
         $invoice_item->memo = $ii['memo'];
-        $invoice_item->pretax = $ii['pretax'];
-        $invoice_item->tax = $ii['tax'];
-        $invoice_item->total = $ii['total'];
+        $invoice_item->pretax = $subtotal;
+        $invoice_item->tax = $tax;
+        $invoice_item->total = $total;
         $invoice_item->status = $ii['status'];
         
         if ($invoice_item->save()) {
