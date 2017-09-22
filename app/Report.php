@@ -254,42 +254,38 @@ class Report extends Model
                 $ss = \DB::select($cmd);
                 
                 dd($ss);
-                $y = time() * 1000;
-                $z = $y - $x;
-                dd("start={$x} stop={$y} diff={$z}");
-
-                
-                // $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))->first();
                 
                 $pickup_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
-                        'quantity' => $ss->quantity, 
-                        'subtotal' =>money_format('%n', ($ss->pretax != null) ? $ss->pretax : 0), 
+                        'quantity' => $ss[0]['quantity'], 
+                        'subtotal' =>money_format('%n', (isset($ss[0]['subtotal'])) ? $ss[0]['subtotal'] : 0), 
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
 
                  // dropoff
-                $inv_summary = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$dropoff_invoice_ids)
-                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
-                    ->first();
+
+                $ids = implode(',',$dropoff_invoice_ids);
+                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
+                $dd = \DB::select($cmd);
+
                 $dropoff_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
-                        'quantity' => $inv_summary->quantity, 
-                        'subtotal' => money_format('%n', ($inv_summary->pretax != null) ? $inv_summary->pretax : 0), 
+                        'quantity' => $dd[0]['quantity'], 
+                        'subtotal' => money_format('%n', (isset($dd[0]['subtotal'])) ? $dd[0]['subtotal'] : 0), 
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
 
-                $pickup_summary_totals['quantity'] += $ss->quantity;
-                $pickup_summary_totals['subtotal'] += $ss->pretax;
-                $pickup_summary_totals['tax'] += $ss->tax;
+                $pickup_summary_totals['quantity'] += $ss[0]['quantity'];
+                $pickup_summary_totals['subtotal'] += $ss[0]['subtotal'];
+                $pickup_summary_totals['tax'] += $ss[0]['tax'];
 
-                $dropoff_summary_totals['quantity'] += $inv_summary->quantity;
-                $dropoff_summary_totals['subtotal'] += $inv_summary->pretax;
-                $dropoff_summary_totals['tax'] += $inv_summary->tax;
+                $dropoff_summary_totals['quantity'] += $dd[0]['quantity'];
+                $dropoff_summary_totals['subtotal'] += $dd[0]['subtotal'];
+                $dropoff_summary_totals['tax'] += $dd[0]['tax'];
   
 
             }
@@ -310,7 +306,9 @@ class Report extends Model
         $report['pickup_summary_totals'] = $pickup_summary_totals;
         $report['dropoff_summary'] = $dropoff_summary;
         $report['dropoff_summary_totals'] = $dropoff_summary_totals;
-
+        $y = time() * 1000;
+        $z = $y - $x;
+        dd("start={$x} stop={$y} diff={$z}");
 
         return $report;
     }
