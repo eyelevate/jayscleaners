@@ -1058,7 +1058,7 @@ class AdminsController extends Controller
         $date_start = date('Y-01-01 00:00:00');
         $date_end = date('Y-m-d H:i:s');
         $month_start = 1;
-        $month_end = date('n');
+        $month_end = 12;
         $labels = [];
         for ($i=$month_start; $i <= $month_end; $i++) { 
             array_push($labels,date('F',strtotime(date('Y-'.$i.'-01'))));
@@ -1104,7 +1104,7 @@ class AdminsController extends Controller
         $date_start = date('Y-01-01 00:00:00');
         $date_end = date('Y-m-d H:i:s');
         $month_start = 1;
-        $month_end = date('n');
+        $month_end = 12;
         $labels = [];
         for ($i=$month_start; $i <= $month_end; $i++) { 
             array_push($labels,date('F',strtotime(date('Y-'.$i.'-01'))));
