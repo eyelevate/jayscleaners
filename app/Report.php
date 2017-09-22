@@ -250,13 +250,16 @@ class Report extends Model
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
 
-                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->sum('quantity');
-                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->sum('pretax');
-                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->sum('tax');
-                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->sum('total');
+                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids);
+                $qty = 0;
+                foreach ($ss->cursor() as $key => $value) {
+                    $qty += $value->quantity;
+                }
                 $y = time() * 1000;
                 $z = $y - $x;
                 dd("start={$x} stop={$y} diff={$z}");
+
+                
                 $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))->first();
                 
                 $pickup_summary[$inventory->id] = [
