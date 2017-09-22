@@ -1137,10 +1137,8 @@ class AdminsController extends Controller
                 array_push($datasets,['label'=>$company_name,
                                       'backgroundColor'=>$fill_color,
                                       'borderColor'=>$stroke_color,
-                                      'point_color'=>$point_color,
-                                      'point_stroke_color'=>$point_stroke_color,
-                                      'point_highlight_fill'=>$point_highlight_fill,
-                                      'point_highlight_stroke'=>$point_highlight_stroke,
+                                      'pointHoverBackgroundColor'=> '#fff',
+                                      'borderWidth'=>2,
                                       'data'=>$month_totals
                                       ]);
 

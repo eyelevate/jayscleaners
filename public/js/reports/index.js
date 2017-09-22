@@ -53,7 +53,7 @@ reports = {
 			//Boolean - Whether grid lines are shown across the chart
 			scaleShowGridLines: false,
 			//String - Colour of the grid lines
-			scaleGridLineColor: "rgba(0,0,0,.05)",
+
 			//Number - Width of the grid lines
 			scaleGridLineWidth: 1,
 			//Boolean - Whether to show horizontal lines (except X axis)
