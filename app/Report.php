@@ -65,8 +65,10 @@ class Report extends Model
 
         $today_start = date('Y-m-d 00:00:00');
         $today_end = date('Y-m-d 23:59:59');
-        $this_week_start = date("Y-m-d H:i:s", strtotime('monday this week', strtotime(date('Y-m-d 00:00:00'))));
-        $this_week_end = date("Y-m-d H:i:s", strtotime('saturday this week', strtotime(date('Y-m-d 23:59:59'))));
+        $date = new DateTime($today_start);
+        $week = $date->format("W");
+        $this_week_start = $date->setISODate(2011, 50);
+        $this_week_end = $date->setISODate(2011, 50, 7);
         $this_month_start = date('Y-m-d H:i:s',strtotime(date('Y-m-01 00:00:00')));
         $this_month_end = date('Y-m-d H:i:s',strtotime(date('Y-m-t 23:59:59')));
         $this_year_start = date('Y-01-01 00:00:00');
@@ -80,10 +82,10 @@ class Report extends Model
                 $this_year_transactions = Transaction::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->where('status',1)->sum('total');
                 $reports[$company_id] = [
                     'name'=>$company->name,
-                    'today'=>money_format('$%i',$today_transactions),
-                    'this_week'=>money_format('$%i',$this_week_transactions),
-                    'this_month'=>money_format('$%i',$this_month_transactions),
-                    'this_year'=>money_format('$%i',$this_year_transactions)
+                    'today'=>money_format('$%!i',$today_transactions),
+                    'this_week'=>money_format('$%!i',$this_week_transactions),
+                    'this_month'=>money_format('$%!i',$this_month_transactions),
+                    'this_year'=>money_format('$%!i',$this_year_transactions)
                 ];
             }
         }
@@ -97,8 +99,10 @@ class Report extends Model
 
         $today_start = date('Y-m-d 00:00:00');
         $today_end = date('Y-m-d 23:59:59');
-        $this_week_start = date("Y-m-d H:i:s", strtotime('monday this week', strtotime(date('Y-m-d 00:00:00'))));
-        $this_week_end = date("Y-m-d H:i:s", strtotime('saturday this week', strtotime(date('Y-m-d 23:59:59'))));
+        $date = new DateTime($today_start);
+        $week = $date->format("W");
+        $this_week_start = $date->setISODate(2011, 50);
+        $this_week_end = $date->setISODate(2011, 50, 7);
         $this_month_start = date('Y-m-d H:i:s',strtotime(date('Y-m-01 00:00:00')));
         $this_month_end = date('Y-m-d H:i:s',strtotime(date('Y-m-t 23:59:59')));
         $this_year_start = date('Y-01-01 00:00:00');
