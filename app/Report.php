@@ -304,9 +304,9 @@ class Report extends Model
         $report['pickup_summary_totals'] = $pickup_summary_totals;
         $report['dropoff_summary'] = $dropoff_summary;
         $report['dropoff_summary_totals'] = $dropoff_summary_totals;
-        $y = time() * 1000;
-        $z = $y - $x;
-        dd("start={$x} stop={$y} diff={$z}");
+        // $y = time() * 1000;
+        // $z = $y - $x;
+        // dd("start={$x} stop={$y} diff={$z}");
 
         return $report;
     }
