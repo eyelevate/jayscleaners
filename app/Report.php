@@ -65,10 +65,8 @@ class Report extends Model
 
         $today_start = date('Y-m-d 00:00:00');
         $today_end = date('Y-m-d 23:59:59');
-        $date = new DateTime($today_start);
-        $week = $date->format("W");
-        $this_week_start = $date->setISODate(2011, 50);
-        $this_week_end = $date->setISODate(2011, 50, 7);
+        $this_week_start = date("Y-m-d H:i:s", strtotime('monday this week', strtotime(date('Y-m-d 00:00:00'))));
+        $this_week_end = date("Y-m-d H:i:s", strtotime('sunday this week', strtotime(date('Y-m-d 23:59:59'))));
         $this_month_start = date('Y-m-d H:i:s',strtotime(date('Y-m-01 00:00:00')));
         $this_month_end = date('Y-m-d H:i:s',strtotime(date('Y-m-t 23:59:59')));
         $this_year_start = date('Y-01-01 00:00:00');
@@ -96,13 +94,11 @@ class Report extends Model
         $reports = [];
 
         $companies = Company::all();
-
+        
         $today_start = date('Y-m-d 00:00:00');
         $today_end = date('Y-m-d 23:59:59');
-        $date = new DateTime($today_start);
-        $week = $date->format("W");
-        $this_week_start = $date->setISODate(2011, 50);
-        $this_week_end = $date->setISODate(2011, 50, 7);
+        $this_week_start = date("Y-m-d 00:00:00", strtotime('monday this week', strtotime(date('Y-m-d 00:00:00'))));
+        $this_week_end = date("Y-m-d 23:59:59", strtotime('sunday this week', strtotime(date('Y-m-d 23:59:59'))));
         $this_month_start = date('Y-m-d H:i:s',strtotime(date('Y-m-01 00:00:00')));
         $this_month_end = date('Y-m-d H:i:s',strtotime(date('Y-m-t 23:59:59')));
         $this_year_start = date('Y-01-01 00:00:00');
