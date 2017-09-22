@@ -249,41 +249,39 @@ class Report extends Model
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
 
-                if($inventory->invoiceItems) {
-                    $ss = $inventory->invoiceItems()->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))->first();
-                    $pickup_summary[$inventory->id] = [
-                        'name' => $inventory->name,
-                        'totals' => [
-                            'quantity' => $ss->quantity, 
-                            'subtotal' =>money_format('%n', ($ss->pretax != null) ? $ss->pretax : 0), 
-                        ],
-                        'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
-                    ];
 
-                     // dropoff
-                    $inv_summary = $inventory->invoiceItems()->whereIn('invoice_id',$dropoff_invoice_ids)
-                        ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
-                        ->first();
-                    $dropoff_summary[$inventory->id] = [
-                        'name' => $inventory->name,
-                        'totals' => [
-                            'quantity' => $inv_summary->quantity, 
-                            'subtotal' => money_format('%n', ($inv_summary->pretax != null) ? $inv_summary->pretax : 0), 
-                        ],
-                        'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
-                    ];
+                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))->first();
+                $pickup_summary[$inventory->id] = [
+                    'name' => $inventory->name,
+                    'totals' => [
+                        'quantity' => $ss->quantity, 
+                        'subtotal' =>money_format('%n', ($ss->pretax != null) ? $ss->pretax : 0), 
+                    ],
+                    'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
+                ];
 
-                    $pickup_summary_totals['quantity'] += $ss->quantity;
-                    $pickup_summary_totals['subtotal'] += $ss->pretax;
-                    $pickup_summary_totals['tax'] += $ss->tax;
+                 // dropoff
+                $inv_summary = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$dropoff_invoice_ids)
+                    ->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))
+                    ->first();
+                $dropoff_summary[$inventory->id] = [
+                    'name' => $inventory->name,
+                    'totals' => [
+                        'quantity' => $inv_summary->quantity, 
+                        'subtotal' => money_format('%n', ($inv_summary->pretax != null) ? $inv_summary->pretax : 0), 
+                    ],
+                    'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
+                ];
 
-                    $dropoff_summary_totals['quantity'] += $inv_summary->quantity;
-                    $dropoff_summary_totals['subtotal'] += $inv_summary->pretax;
-                    $dropoff_summary_totals['tax'] += $inv_summary->tax;
+                $pickup_summary_totals['quantity'] += $ss->quantity;
+                $pickup_summary_totals['subtotal'] += $ss->pretax;
+                $pickup_summary_totals['tax'] += $ss->tax;
+
+                $dropoff_summary_totals['quantity'] += $inv_summary->quantity;
+                $dropoff_summary_totals['subtotal'] += $inv_summary->pretax;
+                $dropoff_summary_totals['tax'] += $inv_summary->tax;
   
-                    
-                }
-                
+
             }
         }
         $y = time() * 1000;
