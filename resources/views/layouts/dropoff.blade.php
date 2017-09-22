@@ -215,8 +215,8 @@
     <script src="/packages/AdminLTE-2.3.0/dist/js/app.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <!-- ChartJS 1.0.1 -->
-    <script src="/packages/AdminLTE-2.3.0/plugins/chartjs/Chart.min.js"></script>
-    
+    {{-- <script src="/packages/AdminLTE-2.3.0/plugins/chartjs/Chart.min.js"></script> --}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
     <script src="/js/layouts/admins.js" type="text/javascript"></script>
     @yield('scripts')
   </body>
