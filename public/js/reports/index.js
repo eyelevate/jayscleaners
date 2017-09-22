@@ -97,7 +97,6 @@ reports = {
 			// Get context with jQuery - using jQuery's .get() method.
 			var ctx = $("#dropoffChart");
 			// This will get the first returned node in the jQuery collection.
-			var salesChart = new Chart(salesChartCanvas);
 
 			var salesChartData = {
 				labels: json.labels,
