@@ -1078,10 +1078,11 @@ class AdminsController extends Controller
                 $month_totals = [];
                 for ($i=$month_start; $i < $month_end; $i++) { 
                     $invoice_start = date('Y-'.$i.'-01 00:00:00');
-                    $invoice_end = date('Y-'.$i.'-31 23:59:59');
+                    $year = date('Y');
+                    $invoice_end = date('Y-'.$i.'-t 23:59:59',strtotime($year.'-'.$i.'-01 00:00:00'));
                     $invoices = Invoice::where('company_id',$company_id)
                         ->whereBetween('created_at',[$invoice_start,$invoice_end])
-                        ->sum('total');
+                        ->sum('pretax');
                     array_push($month_totals,$invoices);
                 }
                 array_push($datasets,['label'=>$company_name,
@@ -1123,11 +1124,12 @@ class AdminsController extends Controller
                 $month_totals = [];
                 for ($i=$month_start; $i < $month_end; $i++) { 
                     $invoice_start = date('Y-'.$i.'-01 00:00:00');
-                    $invoice_end = date('Y-'.$i.'-31 23:59:59');
-                    $invoices = Transaction::where('company_id',$company_id)
-                        ->where('status',1)
+                    $year = date('Y');
+                    $invoice_end = date('Y-'.$i.'-t 23:59:59',strtotime($year.'-'.$i.'-01 00:00:00'));
+                    $invoices = Invoice::where('company_id',$company_id)
+                        ->whereNotNull('transaction_id')
                         ->whereBetween('created_at',[$invoice_start,$invoice_end])
-                        ->sum('total');
+                        ->sum('pretax');
                     array_push($month_totals,$invoices);
                 }
                 array_push($datasets,['label'=>$company_name,
