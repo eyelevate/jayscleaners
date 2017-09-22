@@ -1080,8 +1080,7 @@ class AdminsController extends Controller
                     $invoice_start = date('Y-'.$i.'-01 00:00:00');
                     $invoice_end = date('Y-'.$i.'-31 23:59:59');
                     $invoices = Invoice::where('company_id',$company_id)
-                        ->where('created_at','>=',$invoice_start)
-                        ->where('created_at','<=',$invoice_end)
+                        ->whereBetween('created_at',[$invoice_start,$invoice_end])
                         ->sum('total');
                     array_push($month_totals,$invoices);
                 }
@@ -1127,8 +1126,7 @@ class AdminsController extends Controller
                     $invoice_end = date('Y-'.$i.'-31 23:59:59');
                     $invoices = Transaction::where('company_id',$company_id)
                         ->where('status',1)
-                        ->where('created_at','>=',$invoice_start)
-                        ->where('created_at','<=',$invoice_end)
+                        ->whereBetween('created_at',[$invoice_start,$invoice_end])
                         ->sum('total');
                     array_push($month_totals,$invoices);
                 }
