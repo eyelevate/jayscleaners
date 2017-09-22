@@ -251,7 +251,7 @@ class Report extends Model
             foreach ($inventories as $inventory) {
                 
                 InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->chunk(100,function($chunks){
-                    $qty = 0
+                    $qty = 0;
                     foreach ($chunks as $chunk) {
                         $qty += $chunk->quantity;
                     }
