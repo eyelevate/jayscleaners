@@ -250,7 +250,7 @@ class Report extends Model
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $ids = implode(',',$completed_invoice_ids);
-                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND WHERE invoice_id IN ({$ids})";
+                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
                 $ss = \DB::select($cmd);
                 
                 $y = time() * 1000;
