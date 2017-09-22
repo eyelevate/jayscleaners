@@ -228,8 +228,10 @@ class Report extends Model
 
         $dropoff_invoice_ids = Invoice::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->pluck('id')->toArray();
 
-
-        // iterate over inventory groups
+        $y = time() * 1000;
+        $z = $y - $x;
+        dd("start={$x} stop={$y} diff={$z}");
+        //iterate over inventory groups
         $inv_summary = [];
         $dropoff_summary = [];
 
@@ -296,12 +298,6 @@ class Report extends Model
         $dropoff_summary_totals['subtotal'] = '$'.number_format($dropoff_summary_totals['subtotal'],2,'.',',');
         $dropoff_summary_totals['tax'] = '$'.number_format($dropoff_summary_totals['tax'],2,'.',',');
         
-
- 
-
-        // $y = time() * 1000;
-        // $z = $y - $x;
-        // dd("start={$x} stop={$y} diff={$z}");
 
         $report['pickup_summary'] = $pickup_summary;
         $report['pickup_summary_totals'] = $pickup_summary_totals;
