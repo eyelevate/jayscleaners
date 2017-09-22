@@ -47,32 +47,32 @@ reports = {
 			};
 
 			var options = {
-	    		'maintainAspectRatio'=> false,
-	    		'legend' => {'display'=>false],
-	    		'scales' => {
-	    			'xAxes'=>[
+	    		'maintainAspectRatio': false,
+	    		'legend' : {'display':false},
+	    		'scales' : {
+	    			'xAxes':[
 	    				{
-	    					'gridLines' => {
-	    						'drawOnChartArea'=> false,
+	    					'gridLines' : {
+	    						'drawOnChartArea': false,
 	    					}
 	    					
 	    				}
 	    			],
-	    			'yAxes'=> [
+	    			'yAxes': [
 	    				{
-	    					'ticks'=> {
-	    						'beginAtZero'=> true
+	    					'ticks': {
+	    						'beginAtZero': true
 	    					}
 
 	    				}
 	    			]
 	    		},
-	    		'elements' => {
-	    			'point' => {
-	    				'radius'=> 0,
-	    				'hitRadius'=> 10,
-	    				'hoverRadius'=> 4,
-	    				'hoverBorderWidth'=> 3
+	    		'elements' : {
+	    			'point' : {
+	    				'radius': 0,
+	    				'hitRadius': 10,
+	    				'hoverRadius': 4,
+	    				'hoverBorderWidth': 3
 	    			}
 	    		}
 	    	};
@@ -105,32 +105,32 @@ reports = {
 			};
 
 			var options = {
-	    		'maintainAspectRatio'=> false,
-	    		'legend' => {'display'=>false],
-	    		'scales' => {
-	    			'xAxes'=>[
+	    		'maintainAspectRatio': false,
+	    		'legend' : {'display':false},
+	    		'scales' : {
+	    			'xAxes':[
 	    				{
-	    					'gridLines' => {
-	    						'drawOnChartArea'=> false,
+	    					'gridLines' : {
+	    						'drawOnChartArea': false,
 	    					}
 	    					
 	    				}
 	    			],
-	    			'yAxes'=> [
+	    			'yAxes': [
 	    				{
-	    					'ticks'=> {
-	    						'beginAtZero'=> true
+	    					'ticks': {
+	    						'beginAtZero': true
 	    					}
 
 	    				}
 	    			]
 	    		},
-	    		'elements' => {
-	    			'point' => {
-	    				'radius'=> 0,
-	    				'hitRadius'=> 10,
-	    				'hoverRadius'=> 4,
-	    				'hoverBorderWidth'=> 3
+	    		'elements' : {
+	    			'point' : {
+	    				'radius': 0,
+	    				'hitRadius': 10,
+	    				'hoverRadius': 4,
+	    				'hoverBorderWidth': 3
 	    			}
 	    		}
 	    	};
