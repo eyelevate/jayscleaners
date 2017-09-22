@@ -253,12 +253,13 @@ class Report extends Model
                 $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
                 $ss = \DB::select($cmd);
                 
+                dd($ss);
                 $y = time() * 1000;
                 $z = $y - $x;
                 dd("start={$x} stop={$y} diff={$z}");
 
                 
-                $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))->first();
+                // $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))->first();
                 
                 $pickup_summary[$inventory->id] = [
                     'name' => $inventory->name,
