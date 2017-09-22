@@ -252,17 +252,12 @@ class Report extends Model
                 $ids = implode(',',$completed_invoice_ids);
                 $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
                 $ss = (array) \DB::select($cmd);
-                if (count($ss) > 0) {
-                    foreach ($ss as $key => $value) {
-                        dd($value->quantity);
-                    }
-                }
-                dd('test');
+
                 $pickup_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
-                        'quantity' => $ss[0]['quantity'], 
-                        'subtotal' =>money_format('%n', (isset($ss[0]['subtotal'])) ? $ss[0]['subtotal'] : 0), 
+                        'quantity' => $ss[0]->quantity, 
+                        'subtotal' =>money_format('%n', ($ss[0]->subtotal != null) ? $ss[0]->subtotal : 0), 
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
@@ -276,19 +271,19 @@ class Report extends Model
                 $dropoff_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
-                        'quantity' => $dd[0]['quantity'], 
-                        'subtotal' => money_format('%n', (isset($dd[0]['subtotal'])) ? $dd[0]['subtotal'] : 0), 
+                        'quantity' => $dd[0]->quantity, 
+                        'subtotal' => money_format('%n', ($dd[0]->subtotal != null) ? $dd[0]->subtotal : 0), 
                     ],
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
 
-                $pickup_summary_totals['quantity'] += $ss[0]['quantity'];
-                $pickup_summary_totals['subtotal'] += $ss[0]['subtotal'];
-                $pickup_summary_totals['tax'] += $ss[0]['tax'];
+                $pickup_summary_totals['quantity'] += $ss[0]->quantity;
+                $pickup_summary_totals['subtotal'] += $ss[0]->subtotal;
+                $pickup_summary_totals['tax'] += $ss[0]->tax;
 
-                $dropoff_summary_totals['quantity'] += $dd[0]['quantity'];
-                $dropoff_summary_totals['subtotal'] += $dd[0]['subtotal'];
-                $dropoff_summary_totals['tax'] += $dd[0]['tax'];
+                $dropoff_summary_totals['quantity'] += $dd[0]->quantity;
+                $dropoff_summary_totals['subtotal'] += $dd[0]->subtotal;
+                $dropoff_summary_totals['tax'] += $dd[0]->tax;
   
 
             }
