@@ -187,9 +187,7 @@ class Report extends Model
             ->where('company_id',$company_id)
             ->where('type',5)
             ->sum('pretax');
-        $y = time() * 1000;
-        $z = $y - $x;
-        dd("start={$x} stop={$y} diff={$z}");
+
         $report = [
             'totals' => [
                 'subtotal' => money_format('%n',$pretax),
@@ -224,6 +222,10 @@ class Report extends Model
         ];
 
         $completed_transaction_ids = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->pluck('id')->toArray();
+
+        $y = time() * 1000;
+        $z = $y - $x;
+        dd("start={$x} stop={$y} diff={$z}");
 
         $completed_invoice_ids = Invoice::whereIn('transaction_id',$completed_transaction_ids)->pluck('id')->toArray();
 
