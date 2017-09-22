@@ -254,7 +254,7 @@ class Report extends Model
                 $ss = (array) \DB::select($cmd);
                 if (count($ss) > 0) {
                     foreach ($ss as $key => $value) {
-                        dd($value);
+                        dd($value['quantity']);
                     }
                 }
                 dd('test');
