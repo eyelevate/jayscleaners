@@ -251,8 +251,8 @@ class Report extends Model
             foreach ($inventories as $inventory) {
                 $ids = implode(',',$completed_invoice_ids);
                 $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
-                $ss = \DB::select($cmd)->first();
-                dd($ss);
+                $ss = \DB::select($cmd);
+                dd('test');
                 $pickup_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
