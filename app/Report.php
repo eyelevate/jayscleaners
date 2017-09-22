@@ -250,7 +250,7 @@ class Report extends Model
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $qty = 0;
-                InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->chunk(100,function($chunks, $qty){
+                InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->chunk(100,function($chunks){
                     foreach ($chunks as $chunk) {
                         $qty += $chunk->quantity;
                     }
