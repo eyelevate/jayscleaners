@@ -249,7 +249,7 @@ class Report extends Model
         $inventories = Inventory::where('company_id',$company_id)->get();
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
-                $ss = \DB::select("SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = ? AND WHERE invoice_id IN ('?')", [$inventory->id,implode(',',$completed_invoice_ids)]);
+                $ss = \DB::select('SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = ? AND WHERE invoice_id IN ("?")', [$inventory->id,implode(',',$completed_invoice_ids)]);
                 
                 $y = time() * 1000;
                 $z = $y - $x;
