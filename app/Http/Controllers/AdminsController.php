@@ -2147,7 +2147,7 @@ class AdminsController extends Controller
                     $invoice_item = new InvoiceItem();
                     $invoice_item->invoice_id = $invoice_id;
                     $invoice_item->item_id = $iitem['item_id'];
-                    $invoice_item->inventory_id = (array_key_exists('inventory_id', $iitem) ? $iitem['inventory_id'] :  null;
+                    $invoice_item->inventory_id = $iitem['inventory_id'];
                     $invoice_item->company_id = $iitem['company_id'];
                     $invoice_item->customer_id = $iitem['customer_id'];
                     $invoice_item->quantity = $iitem['quantity'];
