@@ -245,6 +245,9 @@ class Report extends Model
             'tax'=>0,
             'total'=>0
         ];
+        $y = time() * 1000;
+        $z = $y - $x;
+        dd("start={$x} stop={$y} diff={$z}");
         $inventories = Inventory::where('company_id',$company_id)->get();
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
@@ -284,9 +287,7 @@ class Report extends Model
 
             }
         }
-        // $y = time() * 1000;
-        // $z = $y - $x;
-        // dd("start={$x} stop={$y} diff={$z}");
+        
 
         $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['subtotal'] + $pickup_summary_totals['tax'],2,'.',',');
         $pickup_summary_totals['subtotal'] = '$'.number_format($pickup_summary_totals['subtotal'],2,'.',',');
