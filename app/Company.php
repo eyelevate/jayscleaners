@@ -174,11 +174,11 @@ class Company extends Model
     public static function getFillColor($company_id){
         switch ($company_id) {
             case 1:
-                $fill_color = "rgb(210, 214, 222)";
+                $fill_color = "rgba(210, 214, 222,0.4)";
                 break;
             
             default:
-                $fill_color = "rgba(60,141,188,0.9)";
+                $fill_color = "rgba(60,141,188,0.4)";
                 break;
         }
 
@@ -192,7 +192,7 @@ class Company extends Model
                 break;
             
             default:
-                $stroke_color = "rgba(60,141,188,0.8)";
+                $stroke_color = "rgb(60,141,188)";
                 break;
         }
 

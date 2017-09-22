@@ -1086,12 +1086,10 @@ class AdminsController extends Controller
                     array_push($month_totals,$invoices);
                 }
                 array_push($datasets,['label'=>$company_name,
-                                      'fill_color'=>$fill_color,
-                                      'stroke_color'=>$stroke_color,
-                                      'point_color'=>$point_color,
-                                      'point_stroke_color'=>$point_stroke_color,
-                                      'point_highlight_fill'=>$point_highlight_fill,
-                                      'point_highlight_stroke'=>$point_highlight_stroke,
+                                      'backgroundColor'=>$fill_color,
+                                      'borderColor'=>$stroke_color,
+                                      'pointHoverBackgroundColor'=> '#fff',
+                                      'borderWidth'=>2,
                                       'data'=>$month_totals
                                       ]);
 
