@@ -105,7 +105,6 @@ class Report extends Model
 
         $this_week_start = date("Y-m-d 00:00:00", strtotime("{$year}-W{$week}-1"));
         $this_week_end = date("Y-m-d 23:59:59", strtotime("{$year}-W{$week}-7"));
-        dd($this_week_start.'-'.$this_week_end);
         $this_month_start = date('Y-m-d H:i:s',strtotime(date('Y-m-01 00:00:00')));
         $this_month_end = date('Y-m-d H:i:s',strtotime(date('Y-m-t 23:59:59')));
         $this_year_start = date('Y-01-01 00:00:00');
