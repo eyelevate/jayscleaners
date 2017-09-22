@@ -253,8 +253,6 @@ class Report extends Model
                 $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
                 $ss = \DB::select($cmd);
                 
-                dd($ss);
-                
                 $pickup_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
