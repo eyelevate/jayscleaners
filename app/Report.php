@@ -223,10 +223,6 @@ class Report extends Model
 
         $completed_transaction_ids = Transaction::whereBetween('created_at',[$start_date,$end_date])->where('company_id',$company_id)->where('type','<',5)->pluck('id')->toArray();
 
-        $y = time() * 1000;
-        $z = $y - $x;
-        dd("start={$x} stop={$y} diff={$z}");
-
         $completed_invoice_ids = Invoice::whereIn('transaction_id',$completed_transaction_ids)->pluck('id')->toArray();
 
 
@@ -256,6 +252,9 @@ class Report extends Model
 
 
                 $ss = InvoiceItem::where('inventory_id',$inventory->id)->whereIn('invoice_id',$completed_invoice_ids)->select(\DB::raw('SUM(quantity) as quantity'),\DB::raw('SUM(pretax) as pretax'),\DB::raw('SUM(tax) as tax'),\DB::raw('SUM(total) as total'))->first();
+                $y = time() * 1000;
+                $z = $y - $x;
+                dd("start={$x} stop={$y} diff={$z}");
                 $pickup_summary[$inventory->id] = [
                     'name' => $inventory->name,
                     'totals' => [
