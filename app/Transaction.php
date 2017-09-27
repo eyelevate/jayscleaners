@@ -12,7 +12,7 @@ class Transaction extends Model
 
     public function makePayment($ids, $tendered, $customer_id)
     {
-        $sum = $this->whereIn($ids)->sum('total');
+        $sum = $this->whereIn('id',$ids)->sum('total');
         $transactions = $this->whereIn($ids)->get();
         $t_count = count($transactions);
         $difference = $tendered - $sum;
@@ -41,6 +41,7 @@ class Transaction extends Model
                 }
             });
         } else {
+            dd('you are here');
             $transactions->each(function($value, $key) use(&$t_count, $tendered){
                 $tendered = $tendered - $value->total;
                 $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
