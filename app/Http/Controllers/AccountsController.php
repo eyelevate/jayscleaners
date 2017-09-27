@@ -92,10 +92,11 @@ class AccountsController extends Controller
         dump($difference);
         $transactions = $transaction->whereIn('id',[49097,45915])->orderBy('id','desc')->get();
         $t_count = count($transactions);
+        $last_row = $t_count;
         dump($t_count);
-        $transactions->each(function($value,$key) use (&$t_count, &$tendered){
+        $transactions->each(function($value,$key) use ($last_row,&$t_count, &$tendered){
             $tendered -= $value->total;
-            $account_tendered = ($t_count == 1) ? $tendered : $value->total;
+            $account_tendered = ($key == $last_row) ? $tendered : $value->total;
             dump($value->id.' - '.$t_count.' - '.$account_tendered.' - '.$tendered.' - '.$value->total);
             $t_count--;
             
