@@ -87,6 +87,7 @@ class AccountsController extends Controller
 
 
         $t_count = count($transactions);
+        dd($t_count);
         $transactions->each(function($value,$key){
             $t_count--;
         });
