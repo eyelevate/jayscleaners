@@ -29,7 +29,7 @@ class Transaction extends Model
             });
         } elseif($difference > 0) {
             $status = 2;
-            $transactions->each(function($value, $key) use(&$t_count, &$difference){
+            $transactions->each(function($value, $key) use(&$t_count, $difference){
                 $account_tendered = ($t_count == 1) ? $difference : $value->total;
                 $t = $this->find($value->id);
                 $t->status = $status;
