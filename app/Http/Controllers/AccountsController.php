@@ -90,7 +90,7 @@ class AccountsController extends Controller
         $tendered = 441;
         $difference = $tendered - $sum;
         dump($difference);
-        $transactions = $transaction->whereIn('id',[49097,45915])->orderBy('id','asc')->get();
+        $transactions = $transaction->whereIn('id',[49097,45915])->orderBy('id','desc')->get();
         $t_count = count($transactions);
         dump($t_count);
         $transactions->each(function($value,$key) use (&$t_count, &$tendered){
