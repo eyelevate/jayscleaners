@@ -13,7 +13,7 @@ class Transaction extends Model
     public function makePayment($ids, $tendered, $customer_id)
     {
         $sum = $this->whereIn('id',$ids)->sum('total');
-        $transactions = $this->whereIn($ids)->get();
+        $transactions = $this->whereIn('id',$ids)->get();
         $t_count = count($transactions);
         $difference = $tendered - $sum;
         $status = 1;
