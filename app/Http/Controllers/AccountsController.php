@@ -85,23 +85,23 @@ class AccountsController extends Controller
         $customers->phone = Job::formatPhoneString($customers->phone);
         $transactions = Account::prepareAccountTransactionPay($id);
 
-        // $sum = $transaction->whereIn('id',[49097,45915])->sum('total');
-        // dump('sum - '.$sum);
-        // $tendered = 441;
-        // $difference = $tendered - $sum;
-        // dump($difference);
-        // $transactions = $transaction->where('customer_id',8259)->orderBy('id','asc')->limit(5)->get();
-        // $t_count = count($transactions);
-        // dump($t_count);
-        // $transactions->each(function($value,$key) use (&$t_count, &$tendered){
-        //     $tendered -= $value->total;
-        //     $account_tendered = ($t_count == 1) ? $tendered : $value->total;
-        //     dump($value->id.' - '.$t_count.' - '.$account_tendered.' - '.$tendered.' - '.$value->total);
-        //     $t_count--;
+        $sum = $transaction->whereIn('id',[49097,45915])->sum('total');
+        dump('sum - '.$sum);
+        $tendered = 441;
+        $difference = $tendered - $sum;
+        dump($difference);
+        $transactions = $transaction->whereIn('id',[49097,45915])->orderBy('id','asc')->get();
+        $t_count = count($transactions);
+        dump($t_count);
+        $transactions->each(function($value,$key) use (&$t_count, &$tendered){
+            $tendered -= $value->total;
+            $account_tendered = ($t_count == 1) ? $tendered : $value->total;
+            dump($value->id.' - '.$t_count.' - '.$account_tendered.' - '.$tendered.' - '.$value->total);
+            $t_count--;
             
-        // });
+        });
 
-        // dump($t_count);
+        dump($t_count);
 
         return view('accounts.pay')
         ->with('layout',$this->layout)
