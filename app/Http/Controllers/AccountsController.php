@@ -112,6 +112,7 @@ class AccountsController extends Controller
     public function postPay(Request $request, Transaction $transaction) {
 
         if ($request->session()->has('transaction_ids') && count($request->session()->get('transaction_ids')) > 0){
+            dd($request->all());
             $transaction_ids = $request->session()->get('transaction_ids');
             // $transactions = $transaction->whereIn('id',$transaction_ids);
 
