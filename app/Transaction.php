@@ -12,6 +12,7 @@ class Transaction extends Model
 
     public function makePayment($ids, $tendered, $customer_id)
     {
+        $last_tendered = $tendered;
         $sum = $this->whereIn('id',$ids)->sum('total');
         $transactions = $this->whereIn('id',$ids)->get();
         $t_count = count($transactions);
@@ -30,7 +31,7 @@ class Transaction extends Model
         } elseif($difference > 0) {
             $status = 2;
             $transactions->each(function($value, $key) use(&$t_count, &$tendered, $status){
-                $tendered = $tendered - $value->total;
+                $tendered -= $value->total;
                 $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
                 $t = $this->find($value->id);
                 $t->status = $status;
@@ -43,7 +44,7 @@ class Transaction extends Model
         } else {
 
             $transactions->each(function($value, $key) use(&$t_count, &$tendered, $status){
-                $tendered = $tendered - $value->total;
+                $tendered -= $value->total;
                 $account_tendered = ($t_count == 1) ? $tendered : $value->total;
                 $t = $this->find($value->id);
                 $t->status = $status;
@@ -56,7 +57,7 @@ class Transaction extends Model
         }
 
         $customers = User::find($customer_id);
-        $new_balance = $customers->account_total - $tendered;
+        $new_balance = $customers->account_total - $last_tendered;
         $customers->account_total = $new_balance;
         if ($customers->save()) {
             return ($t_count == 0) ? true : false;    
