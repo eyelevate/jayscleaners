@@ -83,25 +83,25 @@ class AccountsController extends Controller
     public function getPay($id = null, Transaction $transaction) {
         $customers = User::find($id);
         $customers->phone = Job::formatPhoneString($customers->phone);
-        // $transactions = Account::prepareAccountTransactionPay($id);
+        $transactions = Account::prepareAccountTransactionPay($id);
 
-        $sum = $transaction->whereIn('id',[49097,45915,45806,43418,41000])->sum('total');
-        dump('sum - '.$sum);
-        $tendered = 1500;
-        $difference = $tendered - $sum;
-        dump($difference);
-        $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
-        $t_count = count($transactions);
-        dump($t_count);
-        $transactions->each(function($value,$key) use (&$t_count, &$tendered){
-            $tendered = $tendered - $value->total;
-            $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
-            dump($value->id.' - '.$t_count.' - '.$account_tendered.' - '.$tendered.' - '.$value->total);
-            $t_count--;
+        // $sum = $transaction->whereIn('id',[49097,45915,45806,43418,41000])->sum('total');
+        // dump('sum - '.$sum);
+        // $tendered = 1500;
+        // $difference = $tendered - $sum;
+        // dump($difference);
+        // $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
+        // $t_count = count($transactions);
+        // dump($t_count);
+        // $transactions->each(function($value,$key) use (&$t_count, &$tendered){
+        //     $tendered = $tendered - $value->total;
+        //     $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
+        //     dump($value->id.' - '.$t_count.' - '.$account_tendered.' - '.$tendered.' - '.$value->total);
+        //     $t_count--;
             
-        });
+        // });
 
-        dump($t_count);
+        // dump($t_count);
 
         return view('accounts.pay')
         ->with('layout',$this->layout)
@@ -116,23 +116,10 @@ class AccountsController extends Controller
             // $transactions = $transaction->whereIn('id',$transaction_ids);
 
             // check totals and make payment
-            $check = $transaction->makePayment($transaction_ids, $request->tendered);
-            if ($transactions->update(
-                [
-                    'status'=>1,
-                    'type'=>$request->type,
-                    'account_paid'=>$request->tendered,
-                    'account_paid_on'=>date('Y-m-d H:i:s')
-                ]
-            )) { // now update the user total
-                $customers = User::find($request->customer_id);
-                $total_balance = ($customers->account_total >= 0) ? $customers->account_total : 0;
-                $new_balance = $total_balance - $request->tendered;
-                $customers->account_total = $new_balance;
-                if ($customers->save()) {
-                    Flash::success('Successfully paid account invoices.');
-                    return Redirect::route('accounts_index');
-                }
+            $check = $transaction->makePayment($transaction_ids, $request->tendered, $request->customer_id);
+            if ($check) { // now update the user total
+                Flash::success('Successfully paid account invoices.');
+                return Redirect::route('accounts_index');
             }
 
             

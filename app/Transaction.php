@@ -10,12 +10,12 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
-    public function makePayment($ids, $tendered)
+    public function makePayment($ids, $tendered, $customer_id)
     {
         $sum = $this->whereIn($ids)->sum('total');
         $transactions = $this->whereIn($ids)->get();
         $t_count = count($transactions);
-        $difference = $sum - $tendered;
+        $difference = $tendered - $sum;
         $status = 1;
         if ($difference = 0) {
             $transactions->each(function($value, $key) use(&$t_count){
@@ -29,9 +29,9 @@ class Transaction extends Model
             });
         } elseif($difference > 0) {
             $status = 2;
-            $transactions->each(function($value, $key) use(&$t_count, $sum){
-                $sum = $sum - $value->total;
-                $account_tendered = ($t_count == 1) ? $sum : $value->total;
+            $transactions->each(function($value, $key) use(&$t_count, $tendered){
+                $tendered = $tendered - $value->total;
+                $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
                 $t = $this->find($value->id);
                 $t->status = $status;
                 $t->account_paid = $account_tendered;
@@ -41,11 +41,28 @@ class Transaction extends Model
                 }
             });
         } else {
-            
+            $transactions->each(function($value, $key) use(&$t_count, $tendered){
+                $tendered = $tendered - $value->total;
+                $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
+                $t = $this->find($value->id);
+                $t->status = $status;
+                $t->account_paid = $account_tendered;
+                $t->account_paid_on = date('Y-m-d H:i:s');
+                if ($t->save()) {
+                    $t_count--;
+                }
+            });
         }
 
+        $customers = User::find($customer_id);
+        $new_balance = $customers->account_total - $tendered;
+        $customers->account_total = $new_balance;
+        if ($customers->save()) {
+            return ($t_count == 0) ? true : false;    
+        }
 
         return false;
+        
     }
 
     public static function prepareTransaction($data) {
