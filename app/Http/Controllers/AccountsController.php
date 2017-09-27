@@ -81,7 +81,7 @@ class AccountsController extends Controller
     }
 
     public function getPay($id = null) {
-        $customers = collect(User::find($id));
+        $customers = User::find($id);
         $customers->phone = Job::formatPhoneString($customers->phone);
         $transactions = Account::prepareAccountTransactionPay($id);
 
