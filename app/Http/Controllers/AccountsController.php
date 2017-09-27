@@ -86,7 +86,7 @@ class AccountsController extends Controller
         $transactions = Account::prepareAccountTransactionPay($id);
 
 
-        $t_count = $count($transactions);
+        $t_count = count($transactions);
         $transactions->each(function($value,$key){
             $t_count--;
         });
