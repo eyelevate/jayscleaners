@@ -87,7 +87,7 @@ class AccountsController extends Controller
 
         $sum = $transaction->whereIn('id',[49097,45915,45806,43418,41000])->sum('total');
         dump('sum - '.$sum);
-        $tendered = 1500;
+        $tendered = 1400;
         $difference = $sum - $tendered;
         dump($difference);
         $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
