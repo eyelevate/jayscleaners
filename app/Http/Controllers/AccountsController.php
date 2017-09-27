@@ -99,7 +99,7 @@ class AccountsController extends Controller
             $transactions = Transaction::whereIn('id',$transaction_ids);
 
             // check totals and make payment
-            $transaction_pay = 
+
             if ($transactions->update(
                 [
                     'status'=>1,
