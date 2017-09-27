@@ -81,10 +81,17 @@ class AccountsController extends Controller
     }
 
     public function getPay($id = null, Transaction $transaction) {
-        dump($transaction->where('customer_id',8259)->orderBy('id','desc')->first());
         $customers = User::find($id);
         $customers->phone = Job::formatPhoneString($customers->phone);
         $transactions = Account::prepareAccountTransactionPay($id);
+
+
+        $t_count = $count($transactions);
+        $transactions->each(function($value,$key){
+            $t_count--;
+        });
+
+        dump($t_count);
 
         return view('accounts.pay')
         ->with('layout',$this->layout)
@@ -96,10 +103,10 @@ class AccountsController extends Controller
 
         if ($request->session()->has('transaction_ids') && count($request->session()->get('transaction_ids')) > 0){
             $transaction_ids = $request->session()->get('transaction_ids');
-            $transactions = Transaction::whereIn('id',$transaction_ids);
+            // $transactions = $transaction->whereIn('id',$transaction_ids);
 
             // check totals and make payment
-
+            $check = $transaction->makePayment($transaction_ids, $request->tendered);
             if ($transactions->update(
                 [
                     'status'=>1,

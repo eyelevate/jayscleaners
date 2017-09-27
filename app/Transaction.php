@@ -10,6 +10,33 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
+    public function makePayment($ids, $tendered)
+    {
+        $sum = $this->whereIn($ids)->sum('total');
+        $transactions = $this->whereIn($ids)->get();
+        $t_count = count($transactions);
+        $difference = $sum - $tendered;
+        $status = 1;
+        if ($difference = 0) {
+            $transactions->each(function($value, $key){
+                $t = $this->find($value->id);
+                $t->status = $status;
+                $t->account_paid = $value->total;
+                $t->account_paid_on = date('Y-m-d H:i:s');
+                if ($t->save()) {
+                    $t_count--;
+                }
+            });
+        } elseif($difference > 0) {
+            $status = 2;
+        } else {
+            
+        }
+
+
+        return false;
+    }
+
     public static function prepareTransaction($data) {
     	if (count($data) > 0) {
     		foreach ($data as $key => $value) {
