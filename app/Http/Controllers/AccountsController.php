@@ -81,7 +81,7 @@ class AccountsController extends Controller
     }
 
     public function getPay($id = null) {
-        $customers = User::find($id);
+        $customers = collect(User::find($id));
         $customers->transform(function($item, $key) {
             dump($item);
         });
