@@ -80,7 +80,7 @@ class AccountsController extends Controller
         ->with('customers',$users);
     }
 
-    public function getPay($id = null, Transction $transaction) {
+    public function getPay($id = null, Transaction $transaction) {
         dump($transaction->where('customer_id',8259)->orderBy('id','desc')->first());
         $customers = User::find($id);
         $customers->phone = Job::formatPhoneString($customers->phone);
