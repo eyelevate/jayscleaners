@@ -2421,7 +2421,6 @@ class AdminsController extends Controller
     }
     public function postApiTransactionQuery(Request $request) {
         $transactions = Transaction::where('customer_id',$request->customer_id)
-        ->where('status','>',1)
         ->orderBy('id','desc')
         ->get();
         if (count($transactions)>0) {
