@@ -14,7 +14,7 @@ class Transaction extends Model
     {
         $last_tendered = $tendered;
         $sum = $this->whereIn('id',$ids)->sum('total');
-        $transactions = $this->whereIn('id',$ids)->get();
+        $transactions = $this->whereIn('id',$ids)->orderBy('id','desc')->get();
         $t_count = count($transactions);
         $difference = $tendered - $sum;
         $status = 1;
@@ -44,8 +44,8 @@ class Transaction extends Model
         } else {
 
             $transactions->each(function($value, $key) use(&$t_count, &$tendered, $status){
-                $tendered -= $value->total;
-                $account_tendered = ($t_count == 1) ? $tendered : $value->total;
+                $tendered -= ($t_count == 1)  ? 0 : $value->total;
+                $account_tendered = ($t_count == 1) ? $tendered  : $value->total;
                 $t = $this->find($value->id);
                 $t->status = $status;
                 $t->account_paid = $account_tendered;
