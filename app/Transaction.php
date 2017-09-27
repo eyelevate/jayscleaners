@@ -29,7 +29,7 @@ class Transaction extends Model
             });
         } elseif($difference > 0) {
             $status = 2;
-            $transactions->each(function($value, $key) use(&$t_count, $tendered){
+            $transactions->each(function($value, $key) use(&$t_count, &$tendered){
                 $tendered = $tendered - $value->total;
                 $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
                 $t = $this->find($value->id);
@@ -41,10 +41,10 @@ class Transaction extends Model
                 }
             });
         } else {
-            dd('you are here');
-            $transactions->each(function($value, $key) use(&$t_count, $tendered){
+
+            $transactions->each(function($value, $key) use(&$t_count, &$tendered){
                 $tendered = $tendered - $value->total;
-                $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
+                $account_tendered = ($t_count == 1) ? $tendered : $value->total;
                 $t = $this->find($value->id);
                 $t->status = $status;
                 $t->account_paid = $account_tendered;
