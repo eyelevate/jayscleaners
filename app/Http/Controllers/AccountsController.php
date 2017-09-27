@@ -85,7 +85,7 @@ class AccountsController extends Controller
         $customers->phone = Job::formatPhoneString($customers->phone);
         // $transactions = Account::prepareAccountTransactionPay($id);
 
-        $sum = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->sum('total');
+        $sum = $transaction->whereIn('id',[49097,45915,45806,43418,41000])->sum('total');
         dump('sum - '.$sum);
         $tendered = 1500;
         $difference = $sum - $tendered;
