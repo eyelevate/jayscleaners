@@ -93,7 +93,7 @@ class AccountsController extends Controller
         $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
         $t_count = count($transactions);
         dump($t_count);
-        $transactions->each(function($value,$key) use (&$t_count, $tendered){
+        $transactions->each(function($value,$key) use (&$t_count, &$tendered){
             $tendered = $tendered - $value->total;
             $account_tendered = ($t_count == 1) ? $tendered : $value->total;
             dump($t_count.' - '.$account_tendered.' - '.$tendered);
