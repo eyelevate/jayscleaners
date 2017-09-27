@@ -86,8 +86,10 @@ class AccountsController extends Controller
         // $transactions = Account::prepareAccountTransactionPay($id);
 
         $sum = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->sum('total');
+        dump('sum - '.$sum);
         $tendered = 1500;
         $difference = $sum - $tendered;
+        dump($difference);
         $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
         $t_count = count($transactions);
         dump($t_count);
