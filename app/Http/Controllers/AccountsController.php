@@ -80,7 +80,8 @@ class AccountsController extends Controller
         ->with('customers',$users);
     }
 
-    public function getPay($id = null) {
+    public function getPay($id = null, Transction $transaction) {
+        dump($transaction->where('customer_id',8259)->orderBy('id','desc')->first());
         $customers = User::find($id);
         $customers->phone = Job::formatPhoneString($customers->phone);
         $transactions = Account::prepareAccountTransactionPay($id);
@@ -91,11 +92,14 @@ class AccountsController extends Controller
         ->with('transactions',$transactions);
     }
 
-    public function postPay(Request $request) {
+    public function postPay(Request $request, Transaction $transaction) {
+
         if ($request->session()->has('transaction_ids') && count($request->session()->get('transaction_ids')) > 0){
             $transaction_ids = $request->session()->get('transaction_ids');
             $transactions = Transaction::whereIn('id',$transaction_ids);
 
+            // check totals and make payment
+            $transaction_pay = 
             if ($transactions->update(
                 [
                     'status'=>1,
