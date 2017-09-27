@@ -85,11 +85,16 @@ class AccountsController extends Controller
         $customers->phone = Job::formatPhoneString($customers->phone);
         // $transactions = Account::prepareAccountTransactionPay($id);
 
+        $sum = $transactions->where('customer_id',8259)->orderBy('id','desc')->limit(5)->sum('total');
+        $difference = 50;
         $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
         $t_count = count($transactions);
         dump($t_count);
-        $transactions->each(function($value,$key) use (&$t_count){
+        $transactions->each(function($value,$key) use (&$t_count, $difference){
+            $account_tendered = ($t_count == 1) ? $difference : $value->total;
+            dump($t_count.' - '.$account_tendered);
             $t_count--;
+            
         });
 
         dump($t_count);
