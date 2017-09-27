@@ -83,11 +83,11 @@ class AccountsController extends Controller
     public function getPay($id = null, Transaction $transaction) {
         $customers = User::find($id);
         $customers->phone = Job::formatPhoneString($customers->phone);
-        $transactions = Account::prepareAccountTransactionPay($id);
+        // $transactions = Account::prepareAccountTransactionPay($id);
 
-
+        $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
         $t_count = count($transactions);
-        dd($t_count);
+        dump($t_count);
         $transactions->each(function($value,$key){
             $t_count--;
         });
