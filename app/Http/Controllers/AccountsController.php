@@ -101,7 +101,7 @@ class AccountsController extends Controller
             
         // });
 
-        dump($t_count);
+        // dump($t_count);
 
         return view('accounts.pay')
         ->with('layout',$this->layout)
