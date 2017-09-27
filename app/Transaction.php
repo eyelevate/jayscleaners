@@ -18,7 +18,7 @@ class Transaction extends Model
         $difference = $tendered - $sum;
         $status = 1;
         if ($difference = 0) {
-            $transactions->each(function($value, $key) use(&$t_count){
+            $transactions->each(function($value, $key) use(&$t_count, $status){
                 $t = $this->find($value->id);
                 $t->status = $status;
                 $t->account_paid = $tendered;
@@ -29,7 +29,7 @@ class Transaction extends Model
             });
         } elseif($difference > 0) {
             $status = 2;
-            $transactions->each(function($value, $key) use(&$t_count, &$tendered){
+            $transactions->each(function($value, $key) use(&$t_count, &$tendered, $status){
                 $tendered = $tendered - $value->total;
                 $account_tendered = ($t_count == 1) ? $value->total - $tendered : $value->total;
                 $t = $this->find($value->id);
@@ -42,7 +42,7 @@ class Transaction extends Model
             });
         } else {
 
-            $transactions->each(function($value, $key) use(&$t_count, &$tendered){
+            $transactions->each(function($value, $key) use(&$t_count, &$tendered, $status){
                 $tendered = $tendered - $value->total;
                 $account_tendered = ($t_count == 1) ? $tendered : $value->total;
                 $t = $this->find($value->id);
