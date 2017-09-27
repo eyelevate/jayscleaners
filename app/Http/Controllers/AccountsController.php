@@ -96,7 +96,7 @@ class AccountsController extends Controller
         $transactions->each(function($value,$key) use (&$t_count, $tendered){
             $tendered = $tendered - $value->total;
             $account_tendered = ($t_count == 1) ? $sum : $value->total;
-            dump($t_count.' - '.$account_tendered);
+            dump($t_count.' - '.$account_tendered.' - '.$tendered);
             $t_count--;
             
         });
