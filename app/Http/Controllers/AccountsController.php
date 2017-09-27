@@ -87,14 +87,14 @@ class AccountsController extends Controller
 
         $sum = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->sum('total');
         dump('sum - '.$sum);
-        $tendered = 1500;
+        $tendered = 3000;
         $difference = $sum - $tendered;
         dump($difference);
         $transactions = $transaction->where('customer_id',8259)->orderBy('id','desc')->limit(5)->get();
         $t_count = count($transactions);
         dump($t_count);
-        $transactions->each(function($value,$key) use (&$t_count, $sum){
-            $sum = $sum - $value->total;
+        $transactions->each(function($value,$key) use (&$t_count, $tendered){
+            $tendered = $tendered - $value->total;
             $account_tendered = ($t_count == 1) ? $sum : $value->total;
             dump($t_count.' - '.$account_tendered);
             $t_count--;
