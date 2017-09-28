@@ -125,6 +125,7 @@ Route::group(['middleware' => ['web']], function () {
     #Api-Transaction
     Route::post('/admins/api/transaction-grab',['uses'=>'AdminsController@postApiTransactionGrab']);
     Route::post('/admins/api/transaction-query',['uses'=>'AdminsController@postApiTransactionQuery']);
+    Route::post('/admins/api/transaction-payment-query',['uses'=>'AdminsController@postApiTransactionPaymentQuery']);
     Route::post('/admins/api/create-transaction',['uses'=>'AdminsController@postApiCreateTransaction']);
     Route::post('/admins/api/pay-account',['uses'=>'AdminsController@postApiPayAccount']);
     Route::post('/admins/api/pay-account-customer',['uses'=>'AdminsController@postApiPayAccountCustomer']);

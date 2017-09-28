@@ -2428,6 +2428,16 @@ class AdminsController extends Controller
         }
         return response()->json(['status'=>false]);
     }
+    public function postApiTransactionPaymentQuery(Request $request) {
+        $transactions = Transaction::where('customer_id',$request->customer_id)
+        ->where('status',2)
+        ->orderBy('id','desc')
+        ->get();
+        if (count($transactions)>0) {
+            return response()->json(['status'=>true,'data'=>$transactions]);
+        }
+        return response()->json(['status'=>false]);
+    }
     public function postApiUpdateTransaction(Request $request) {
         $transactions = Transaction::where('status',3)
         ->where('customer_id',$request->customer_id)
