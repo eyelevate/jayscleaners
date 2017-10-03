@@ -78,7 +78,6 @@ class Report extends Model
             foreach ($companies as $company) {
                 $company_id = $company->id;
                 $today_transactions = Transaction::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->where('status',1)->sum('total');
-
                 $this_week_transactions = Transaction::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->where('status',1)->sum('total');
                 $this_month_transactions = Transaction::whereBetween('created_at',[$this_month_start,$this_month_end])->where('company_id',$company_id)->where('status',1)->sum('total');
                 $this_year_transactions = Transaction::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->where('status',1)->sum('total');
@@ -103,8 +102,6 @@ class Report extends Model
         $today_end = date('Y-m-d 23:59:59');
         $year = date('Y');
         $week = date("W",strtotime($today_start));
-        $invoices = new Invoice();
-        $invoiceItems = new InvoiceItem();
 
         $this_week_start = date("Y-m-d 00:00:00", strtotime("{$year}-W{$week}-1"));
         $this_week_end = date("Y-m-d 23:59:59", strtotime("{$year}-W{$week}-7"));
@@ -115,14 +112,7 @@ class Report extends Model
         if (count($companies) > 0) {
             foreach ($companies as $company) {
                 $company_id = $company->id;
-                
-                $today_ids = $invoices->whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->whereNull('transaction_id')->pluck('id');
-
-                $today_pretax =$invoiceItems->whereIn('invoice_id',$today_ids)->sum('pretax');
-                $today_tax =$invoiceItems->whereIn('invoice_id',$today_ids)->sum('tax'); 
-                $today_total = $invoiceItems->whereIn('invoice_id',$today_ids)->sum('total');
-                dump($today_pretax.' - '.$today_tax.' - '.$today_total);
-
+                $today_transactions = Invoice::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->sum('total');
                 $this_week_transactions = Invoice::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->sum('total');
                 $this_month_transactions = Invoice::whereBetween('created_at',[$this_month_start,$this_month_end])->where('company_id',$company_id)->sum('total');
                 $this_year_transactions = Invoice::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->sum('total');
