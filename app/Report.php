@@ -118,7 +118,7 @@ class Report extends Model
                 $today_ids = $today_trans->map(function($value,$key){
                     return $value->id;
                 });
-                $today_transactions = InvoiceItem::whereIn('invoice_id',[$today_ids])->sum('total');
+                $today_transactions = InvoiceItem::whereIn('invoice_id',$today_ids)->sum('total');
                 dump($today_transactions);
                 $this_week_transactions = Invoice::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->sum('total');
                 $this_month_transactions = Invoice::whereBetween('created_at',[$this_month_start,$this_month_end])->where('company_id',$company_id)->sum('total');
