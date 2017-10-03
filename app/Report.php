@@ -256,7 +256,7 @@ class Report extends Model
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $ids = implode(',',$completed_invoice_ids);
-                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
+                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
                 $ss = \DB::select($cmd);
 
                 $pickup_summary[$inventory->id] = [
@@ -271,7 +271,7 @@ class Report extends Model
                  // dropoff
 
                 $ids = implode(',',$dropoff_invoice_ids);
-                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) AS tax, SUM(total) AS total FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
+                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
                 $dd = \DB::select($cmd);
 
                 $dropoff_summary[$inventory->id] = [
@@ -283,20 +283,27 @@ class Report extends Model
                     'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
                 ];
 
-                $pickup_summary_totals['quantity'] += $ss[0]->quantity;
-                $pickup_summary_totals['subtotal'] += $ss[0]->subtotal;
-                $pickup_summary_totals['tax'] += $ss[0]->tax;
-                $pickup_summary_totals['total'] += $ss[0]->total;
-
-                $dropoff_summary_totals['quantity'] += $dd[0]->quantity;
-                $dropoff_summary_totals['subtotal'] += $dd[0]->subtotal;
-                $dropoff_summary_totals['tax'] += $dd[0]->tax;
-                $dropoff_summary_totals['total'] += $dd[0]->total;
+                
   
 
             }
         }
-        
+
+        $ids = implode(',',$completed_invoice_ids);
+        $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) as tax, SUM(total) as total FROM invoices WHERE id IN ({$ids})";
+        $ss = \DB::select($cmd);
+
+        $pickup_summary_totals['quantity'] = $ss[0]->quantity;
+        $pickup_summary_totals['subtotal'] = $ss[0]->subtotal;
+        $pickup_summary_totals['tax'] = $ss[0]->tax;
+        $pickup_summary_totals['total'] = $ss[0]->total;
+        $ids = implode(',',$dropoff_invoice_ids);
+        $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) as tax, SUM(total) as total FROM invoices WHERE id IN ({$ids})";
+        $dd = \DB::select($cmd);
+        $dropoff_summary_totals['quantity'] = $dd[0]->quantity;
+        $dropoff_summary_totals['subtotal'] = $dd[0]->subtotal;
+        $dropoff_summary_totals['tax'] = $dd[0]->tax;
+        $dropoff_summary_totals['total'] = $dd[0]->total;
 
         $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['total'],2,'.',',');
         $pickup_summary_totals['subtotal'] = '$'.number_format($pickup_summary_totals['subtotal'],2,'.',',');
