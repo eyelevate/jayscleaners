@@ -100,6 +100,7 @@ class Report extends Model
 
         $today_start = date('Y-m-d 00:00:00');
         $today_end = date('Y-m-d 23:59:59');
+        dump($today_start.' - '.$today_end);
         $year = date('Y');
         $week = date("W",strtotime($today_start));
 

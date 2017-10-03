@@ -2473,17 +2473,13 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
-    public function postApiPayAccount(Request $request) {
-        $trans = Transaction::find($request->transaction_id);
-        $t = json_decode($request->trans);
-        $trans->tendered = $t->tendered;
-        $trans->account_paid = $t->account_paid;
-        $trans->account_paid_on = $t->account_paid_on;
-        $trans->status = $t->status;
-        $trans->type = $t->type;
-        if ($trans->save()) {
-            return response()->json(['status'=>true,'data'=>$trans]);
+    public function postApiPayAccount(Request $request, Transaction $transaction) {
+        $transaction_ids = json_decode($request->transaction_ids);
+        $check = $transaction->makePayment($transaction_ids, $request->tendered, $request->customer_id);
+        if ($check) { // now update the user total
+            return response()->json(['status'=>true,'data'=>$check]);
         }
+
         return response()->json(['status'=>false]);
     }
 
