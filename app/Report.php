@@ -256,7 +256,7 @@ class Report extends Model
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $ids = implode(',',$completed_invoice_ids);
-                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
+                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND deleted_at IS NULL AND invoice_id IN ({$ids})";
                 $ss = \DB::select($cmd);
 
                 $pickup_summary[$inventory->id] = [
@@ -271,7 +271,7 @@ class Report extends Model
                  // dropoff
 
                 $ids = implode(',',$dropoff_invoice_ids);
-                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND invoice_id IN ({$ids})";
+                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND deleted_at IS NULL AND invoice_id IN ({$ids})";
                 $dd = \DB::select($cmd);
 
                 $dropoff_summary[$inventory->id] = [
