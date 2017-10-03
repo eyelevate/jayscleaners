@@ -290,6 +290,7 @@ class Report extends Model
                 $dropoff_summary_totals['quantity'] += $dd[0]->quantity;
                 $dropoff_summary_totals['subtotal'] += $dd[0]->subtotal;
                 $dropoff_summary_totals['tax'] += $dd[0]->tax;
+                $dropoff_summary_totals['total'] += $dd[0]->total;
   
 
             }
@@ -301,7 +302,7 @@ class Report extends Model
         $pickup_summary_totals['tax'] = '$'.number_format($pickup_summary_totals['tax'],2,'.',',');
         
         
-        $dropoff_summary_totals['total'] = '$'.number_format($dropoff_summary_totals['subtotal']+$dropoff_summary_totals['tax'],2,'.',',');
+        $dropoff_summary_totals['total'] = '$'.number_format($dropoff_summary_totals['total'],2,'.',',');
         $dropoff_summary_totals['subtotal'] = '$'.number_format($dropoff_summary_totals['subtotal'],2,'.',',');
         $dropoff_summary_totals['tax'] = '$'.number_format($dropoff_summary_totals['tax'],2,'.',',');
         
