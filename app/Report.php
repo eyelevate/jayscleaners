@@ -118,9 +118,9 @@ class Report extends Model
                 
                 $today_ids = $invoices->whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->whereNull('transaction_id')->pluck('id');
 
-                $today_pretax =$invoiceItem->whereIn('invoice_id',$today_ids)->sum('pretax');
-                $today_tax =$invoiceItem->whereIn('invoice_id',$today_ids)->sum('tax'); 
-                $today_total = $invoiceItem->whereIn('invoice_id',$today_ids)->sum('total');
+                $today_pretax =$invoiceItems->whereIn('invoice_id',$today_ids)->sum('pretax');
+                $today_tax =$invoiceItems->whereIn('invoice_id',$today_ids)->sum('tax'); 
+                $today_total = $invoiceItems->whereIn('invoice_id',$today_ids)->sum('total');
                 dump($today_pretax.' - '.$today_tax.' - '.$today_total);
 
                 $this_week_transactions = Invoice::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->sum('total');
