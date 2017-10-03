@@ -114,7 +114,11 @@ class Report extends Model
             foreach ($companies as $company) {
                 $company_id = $company->id;
                 $today_transactions = Invoice::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->sum('total');
-                dump($today_transactions);
+                $today_transactions = Invoice::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->get();
+                $today_ids = $today_transactions->map(function($value,$key){
+                    return $value->id;
+                });
+                dump($today_ids);
                 $this_week_transactions = Invoice::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->sum('total');
                 $this_month_transactions = Invoice::whereBetween('created_at',[$this_month_start,$this_month_end])->where('company_id',$company_id)->sum('total');
                 $this_year_transactions = Invoice::whereBetween('created_at',[$this_year_start,$this_year_end])->where('company_id',$company_id)->sum('total');
