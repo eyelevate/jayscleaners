@@ -103,6 +103,7 @@ class Report extends Model
         $today_end = date('Y-m-d 23:59:59');
         $year = date('Y');
         $week = date("W",strtotime($today_start));
+        $invoices = new Invoice();
 
         $this_week_start = date("Y-m-d 00:00:00", strtotime("{$year}-W{$week}-1"));
         $this_week_end = date("Y-m-d 23:59:59", strtotime("{$year}-W{$week}-7"));
@@ -114,7 +115,7 @@ class Report extends Model
             foreach ($companies as $company) {
                 $company_id = $company->id;
                 
-                $today_invs = Invoice::whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->get();
+                $today_invs = $invoices->whereBetween('created_at',[$today_start,$today_end])->where('company_id',$company_id)->get();
                 $today_transactions = $today_invs->invoice_items()->sum('total');
                 dump($today_transactions);
                 $this_week_transactions = Invoice::whereBetween('created_at',[$this_week_start,$this_week_end])->where('company_id',$company_id)->sum('total');
