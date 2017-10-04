@@ -319,7 +319,7 @@ class Report extends Model
         $pickup_summary_totals['total'] = (count($ss) > 0) ? $ss[0]->total : 0;
         $ids = implode(',',$dropoff_invoice_ids);
         $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) as tax, SUM(total) as total FROM invoices WHERE id IN ({$ids})";
-        $try {
+        try {
             $dd = \DB::select($cmd);    
         } catch (\Illuminate\Database\QueryException $e) {
             $dd = [];
