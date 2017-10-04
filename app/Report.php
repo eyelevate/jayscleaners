@@ -256,32 +256,48 @@ class Report extends Model
         if(count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $ids = implode(',',$completed_invoice_ids);
-                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND deleted_at IS NULL AND invoice_id IN ({$ids})";
-                $ss = \DB::select($cmd);
 
-                $pickup_summary[$inventory->id] = [
-                    'name' => $inventory->name,
-                    'totals' => [
-                        'quantity' => $ss[0]->quantity, 
-                        'subtotal' =>money_format('%n', ($ss[0]->subtotal != null) ? $ss[0]->subtotal : 0), 
-                    ],
-                    'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
-                ];
+                $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND deleted_at IS NULL AND invoice_id IN ({$ids})";
+                try {
+                    $ss = \DB::select($cmd);    
+                } catch (\Illuminate\Database\QueryException $e) {
+                    $ss = [];
+                }
+                
+                if (count($ss) > 0) {
+                    $pickup_summary[$inventory->id] = [
+                        'name' => $inventory->name,
+                        'totals' => [
+                            'quantity' => $ss[0]->quantity, 
+                            'subtotal' =>money_format('%n', ($ss[0]->subtotal != null) ? $ss[0]->subtotal : 0), 
+                        ],
+                        'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
+                    ];
+                }
+                
 
                  // dropoff
 
                 $ids = implode(',',$dropoff_invoice_ids);
                 $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal FROM invoice_items WHERE inventory_id = {$inventory->id} AND deleted_at IS NULL AND invoice_id IN ({$ids})";
-                $dd = \DB::select($cmd);
+                try {
+                    $dd = \DB::select($cmd);    
+                } catch (\Illuminate\Database\QueryException $e) {
+                    $dd = [];
+                }
 
-                $dropoff_summary[$inventory->id] = [
-                    'name' => $inventory->name,
-                    'totals' => [
-                        'quantity' => $dd[0]->quantity, 
-                        'subtotal' => money_format('%n', ($dd[0]->subtotal != null) ? $dd[0]->subtotal : 0), 
-                    ],
-                    'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
-                ];
+                
+                if (count($dd) > 0) {
+                    $dropoff_summary[$inventory->id] = [
+                        'name' => $inventory->name,
+                        'totals' => [
+                            'quantity' => $dd[0]->quantity, 
+                            'subtotal' => money_format('%n', ($dd[0]->subtotal != null) ? $dd[0]->subtotal : 0), 
+                        ],
+                        'summary' => ['quantity' => 0, 'subtotal' =>'$0.00', 'tax'=>'$0.00','total'=>'$0.00']
+                    ];
+                }
+                
 
                 
   
