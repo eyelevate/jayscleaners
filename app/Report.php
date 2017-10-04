@@ -238,6 +238,8 @@ class Report extends Model
         //iterate over inventory groups
         $inv_summary = [];
         $dropoff_summary = [];
+        $pickup_summary = [];
+        $dropoff_summary = [];
 
         $pickup_summary_totals = [
             'quantity' => 0, 
