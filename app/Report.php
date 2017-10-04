@@ -307,19 +307,27 @@ class Report extends Model
 
         $ids = implode(',',$completed_invoice_ids);
         $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) as tax, SUM(total) as total FROM invoices WHERE id IN ({$ids})";
-        $ss = \DB::select($cmd);
+        try {
+            $ss = \DB::select($cmd);    
+        } catch (\Illuminate\Database\QueryException $e) {
+            $ss = [];
+        }
 
-        $pickup_summary_totals['quantity'] = $ss[0]->quantity;
-        $pickup_summary_totals['subtotal'] = $ss[0]->subtotal;
-        $pickup_summary_totals['tax'] = $ss[0]->tax;
-        $pickup_summary_totals['total'] = $ss[0]->total;
+        $pickup_summary_totals['quantity'] = (count($ss) > 0) ? $ss[0]->quantity : 0;
+        $pickup_summary_totals['subtotal'] = (count($ss) > 0) ? $ss[0]->subtotal : 0;
+        $pickup_summary_totals['tax'] = (count($ss) > 0) ? $ss[0]->tax : 0;
+        $pickup_summary_totals['total'] = (count($ss) > 0) ? $ss[0]->total : 0;
         $ids = implode(',',$dropoff_invoice_ids);
         $cmd = "SELECT SUM(quantity) AS quantity, SUM(pretax) AS subtotal, SUM(tax) as tax, SUM(total) as total FROM invoices WHERE id IN ({$ids})";
-        $dd = \DB::select($cmd);
-        $dropoff_summary_totals['quantity'] = $dd[0]->quantity;
-        $dropoff_summary_totals['subtotal'] = $dd[0]->subtotal;
-        $dropoff_summary_totals['tax'] = $dd[0]->tax;
-        $dropoff_summary_totals['total'] = $dd[0]->total;
+        $try {
+            $dd = \DB::select($cmd);    
+        } catch (\Illuminate\Database\QueryException $e) {
+            $dd = [];
+        }
+        $dropoff_summary_totals['quantity'] = (count($dd) > 0) ? $dd[0]->quantity : 0;
+        $dropoff_summary_totals['subtotal'] = (count($dd) > 0) ? $dd[0]->subtotal :0;
+        $dropoff_summary_totals['tax'] = (count($dd) > 0) ? $dd[0]->tax : 0;
+        $dropoff_summary_totals['total'] = (count($dd) > 0) ? $dd[0]->total : 0;
 
         $pickup_summary_totals['total'] = '$'.number_format($pickup_summary_totals['total'],2,'.',',');
         $pickup_summary_totals['subtotal'] = '$'.number_format($pickup_summary_totals['subtotal'],2,'.',',');
