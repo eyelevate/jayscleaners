@@ -58,7 +58,9 @@
 			</tfoot>
 		</table>
 	</div>
-	<div class="panel-footer"></div>
+	<div class="panel-footer">
+		<a class="btn btn-info" href="{{ route('reports_view',[$start_date,$end_date,$company_id]) }}">Show Invoices</a>
+	</div>
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -104,7 +106,9 @@
 			</tfoot>
 		</table>
 	</div>
-	<div class="panel-footer"></div>
+	<div class="panel-footer">
+		<a class="btn btn-info" href="{{ route('reports_view',[$start_date,$end_date,$company_id]) }}">Show Invoices</a>
+	</div>
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">
