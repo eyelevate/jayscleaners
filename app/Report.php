@@ -365,7 +365,7 @@ class Report extends Model
     }
 
     public static function prepareInvoiceReport($start, $end, $company_id) {
-        $invoices = new App\Invoice;
+        $invoices = new Invoice();
         $dropoff = $invoices->whereBetween('created_at',[$start,$end])->where('company_id',$company_id)->orderBy('created_at','asc')->get();
 
         $transaction_ids = Transaction::whereBetween('created_at',[$start,$end])->where('company_id',$company_id)->pluck('id')->toArray();
