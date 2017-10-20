@@ -71,7 +71,7 @@
 					<th>Subtotal</th>
 					<th>Due</th>
 					<th>Rack</th>
-					<th>created</th>
+					<th>Finished</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -86,7 +86,7 @@
 					<td>${{ $po->pretax }}</td>
 					<td>{{ date('n/d/y',strtotime($po->due_date)) }}</td>
 					<td>{{ $po->rack }}</td>
-					<td>{{ date('n/d/y g:ia',strtotime($po->created_at)) }}</td>
+					<td>{{ date('n/d/y g:ia',strtotime($po->updated_at)) }}</td>
 					<td><a href="#">view customer</a></td>
 					
 				</tr>
