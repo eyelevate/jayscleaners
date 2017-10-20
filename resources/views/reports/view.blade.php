@@ -5,14 +5,7 @@
 @section('scripts')
 
 @stop
-@section('notifications')
-  {!! View::make('partials.layouts.nav-bar')->render() !!}
-@stop
-@section('content')
-<br/>
-<div class="well">
-	<h3>Report date(s): <strong>{{ $start_date }}</strong> - <strong>{{ $end_date }}</strong></h3>
-</div>
+
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -25,9 +18,9 @@
 					<th>#</th>
 					<th>Customer</th>
 					<th>Name</th>
-{{-- 					<th>Quantity</th>
+					<th>Quantity</th>
 					<th>Subtotal</th>
-					<th>Action</th> --}}
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,9 +30,9 @@
 					<td>{{ $do->id }}</td>
 					<td>{{ $do->users->id }}</td>
 					<td>{{ ucFirst($do->users->last_name) }}, {{ ucFirst($do->users->first_name) }}</td>
-{{-- 					<td>{{ $do->quantity }}</td>
+					<td>{{ $do->quantity }}</td>
 					<td>{{ $do->subtotal }}</td>
-					<td><a href="#">view customer</a></td> --}}
+					<td><a href="#">view customer</a></td>
 					
 				</tr>
 				@endforeach
