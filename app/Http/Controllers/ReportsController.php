@@ -97,7 +97,7 @@ class ReportsController extends Controller
 
         $reports = Report::prepareInvoiceReport($start_date, $end_date, $company_id);
         // dd($reports);
-        return view('reports.make')
+        return view('reports.view')
         ->with('layout',$this->layout)
         ->with('reports',$reports)
         ->with('start_date',$start_date)
