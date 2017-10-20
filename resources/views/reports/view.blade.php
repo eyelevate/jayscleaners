@@ -41,8 +41,8 @@
 					<td>{{ $do->users->id }}</td>
 					<td>{{ ucFirst($do->users->last_name) }}, {{ ucFirst($do->users->first_name) }}</td>
 					<td>{{ $do->quantity }}</td>
-					<td>{{ $do->pretax }}</td>
-					<td>{{  date('n/d/y',strtotime($do->due)) }}</td>
+					<td>${{ $do->pretax }}</td>
+					<td>{{  date('n/d/y',strtotime($do->due_date)) }}</td>
 					<td>{{ $do->rack }}</td>
 					<td>{{ date('n/d/y g:ia',strtotime($do->created_at)) }}</td>
 					<td><a href="#">view customer</a></td>
@@ -83,8 +83,8 @@
 					<td>{{ $po->users->id }}</td>
 					<td>{{ ucFirst($po->users->last_name) }}, {{ ucFirst($po->users->first_name) }}</td>
 					<td>{{ $po->quantity }}</td>
-					<td>{{ $po->pretax }}</td>
-					<td>{{ date('n/d/y',strtotime($po->due)) }}</td>
+					<td>${{ $po->pretax }}</td>
+					<td>{{ date('n/d/y',strtotime($po->due_date)) }}</td>
 					<td>{{ $po->rack }}</td>
 					<td>{{ date('n/d/y g:ia',strtotime($po->created_at)) }}</td>
 					<td><a href="#">view customer</a></td>
