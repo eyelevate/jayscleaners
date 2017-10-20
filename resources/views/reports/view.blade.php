@@ -24,11 +24,10 @@
 				<tr>
 					<th>#</th>
 					<th>Customer</th>
-					<th>Quantity</th>
+					<th>Name</th>
+{{-- 					<th>Quantity</th>
 					<th>Subtotal</th>
-					<th>Tax</th>
-					<th>Total</th>
-					<th>Action</th>
+					<th>Action</th> --}}
 				</tr>
 			</thead>
 			<tbody>
@@ -38,9 +37,9 @@
 					<td>{{ $do->id }}</td>
 					<td>{{ $do->users->id }}</td>
 					<td>{{ ucFirst($do->users->last_name) }}, {{ ucFirst($do->users->first_name) }}</td>
-					<td>{{ $do->quantity }}</td>
+{{-- 					<td>{{ $do->quantity }}</td>
 					<td>{{ $do->subtotal }}</td>
-					<td><a href="#">view customer</a></td>
+					<td><a href="#">view customer</a></td> --}}
 					
 				</tr>
 				@endforeach
