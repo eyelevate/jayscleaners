@@ -5,7 +5,14 @@
 @section('scripts')
 
 @stop
-
+@section('notifications')
+  {!! View::make('partials.layouts.nav-bar')->render() !!}
+@stop
+@section('content')
+<br/>
+<div class="well">
+	<h3>Report date(s): <strong>{{ $start_date }}</strong> - <strong>{{ $end_date }}</strong></h3>
+</div>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -24,7 +31,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			@if (count($reports['dropoff'] > 0))
+			@if (isset($reports['dropoff']))
 				@foreach($reports['dropoff'] as $do)
 				<tr>
 					<td>{{ $do->id }}</td>
