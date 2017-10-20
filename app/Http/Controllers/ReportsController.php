@@ -97,7 +97,7 @@ class ReportsController extends Controller
 
         $reports = Report::prepareInvoiceReport($start_date, $end_date, $company_id);
         foreach ($reports['pickup'] as $po) {
-            dd($po->invoices);
+            dd($po->users);
         }
         dd($reports);
         return view('reports.view')
