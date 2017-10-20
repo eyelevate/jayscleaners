@@ -11,7 +11,7 @@
 @section('content')
 <br/>
 <div class="well">
-	<h3>Report date(s): <strong>{{ $start_date }}</strong> - <strong>{{ $end_date }}</strong></h3>
+	<h3>Report date(s): <strong>{{ date('n/d/Y g:ia',strtotime($start_date)) }}</strong> - <strong>{{ date('n/d/Y g:ia',strtotime($end_date)) }}</strong></h3>
 </div>
 
 <div class="panel panel-default">
@@ -27,6 +27,9 @@
 					<th>Name</th>
 					<th>Quantity</th>
 					<th>Subtotal</th>
+					<th>Due</th>
+					<th>Rack</th>
+					<th>created</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -38,7 +41,10 @@
 					<td>{{ $do->users->id }}</td>
 					<td>{{ ucFirst($do->users->last_name) }}, {{ ucFirst($do->users->first_name) }}</td>
 					<td>{{ $do->quantity }}</td>
-					<td>{{ $do->subtotal }}</td>
+					<td>{{ $do->pretax }}</td>
+					<td>{{ $do->due }}</td>
+					<td>{{ $do->rack }}</td>
+					<td>{{ date('n/d/y g:ia',$do->created_at) }}</td>
 					<td><a href="#">view customer</a></td>
 					
 				</tr>
@@ -63,23 +69,29 @@
 					<th>Name</th>
 					<th>Quantity</th>
 					<th>Subtotal</th>
+					<th>Due</th>
+					<th>Rack</th>
+					<th>created</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
-{{-- 			@if (count($reports['dropoff'] > 0))
-				@foreach($reports['dropoff'] as $do)
+			@if (isset($reports['pickup']))
+				@foreach($reports['pickup'] as $po)
 				<tr>
-					<td>{{ $do->id }}</td>
-					<td>{{ $do->users->id }}</td>
-					<td>{{ ucFirst($do->users->last_name) }}, {{ ucFirst($do->users->first_name) }}</td>
-					<td>{{ $do->quantity }}</td>
-					<td>{{ $do->subtotal }}</td>
+					<td>{{ $po->id }}</td>
+					<td>{{ $po->users->id }}</td>
+					<td>{{ ucFirst($po->users->last_name) }}, {{ ucFirst($po->users->first_name) }}</td>
+					<td>{{ $po->quantity }}</td>
+					<td>{{ $po->pretax }}</td>
+					<td>{{ $do->due }}</td>
+					<td>{{ $po->rack }}</td>
+					<td>{{ date('n/d/y g:ia',$po->created_at) }}</td>
 					<td><a href="#">view customer</a></td>
 					
 				</tr>
 				@endforeach
-			@endif --}}
+			@endif
 			</tbody>
 
 		</table>
