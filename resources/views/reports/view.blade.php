@@ -67,7 +67,7 @@
 					<th>trans#</th>
 					<th>Customer</th>
 					<th>Name</th>
-					<th>Quantity</th>
+
 					<th>Subtotal</th>
 					<th>Finished</th>
 {{-- 					<th>Action</th> --}}
@@ -80,7 +80,7 @@
 					<td>{{ $po->id }}</td>
 					<td>{{ $po->users->id }}</td>
 					<td>{{ ucFirst($po->users->last_name) }}, {{ ucFirst($po->users->first_name) }}</td>
-					<td>{{ $po->quantity }}</td>
+	
 					<td>${{ $po->pretax }}</td>
 					<td>{{ date('n/d/y g:ia',strtotime($po->created_at)) }}</td>
 					{{-- <td><a href="#">view customer</a></td> --}}
