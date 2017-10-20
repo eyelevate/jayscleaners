@@ -368,7 +368,7 @@ class Report extends Model
         $invoices = new Invoice();
         $dropoff = $invoices->whereBetween('created_at',[$start,$end])->where('company_id',$company_id)->orderBy('created_at','asc')->get();
 
-        $transactionss = Transaction::whereBetween('created_at',[$start,$end])->where('company_id',$company_id)->orderBy('created_at','asc')->get();
+        $transactions = Transaction::whereBetween('created_at',[$start,$end])->where('company_id',$company_id)->orderBy('created_at','asc')->get();
         // $pickup = $invoices->whereIn('transaction_id',$transaction_ids)->get();
 
         return ['dropoff'=>$dropoff,'pickup'=>$transactions];
