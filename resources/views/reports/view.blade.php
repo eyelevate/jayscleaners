@@ -86,7 +86,7 @@
 					<td>${{ $po->pretax }}</td>
 					<td>{{ date('n/d/y',strtotime($po->due_date)) }}</td>
 					<td>{{ $po->rack }}</td>
-					<td>{{ date('n/d/y g:ia',strtotime($po->updated_at)) }}</td>
+					<td>{{ date('n/d/y g:ia',strtotime($po->transactions->created_at)) }}</td>
 					<td><a href="#">view customer</a></td>
 					
 				</tr>

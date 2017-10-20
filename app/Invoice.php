@@ -20,6 +20,9 @@ class Invoice extends Model
     public function users() {
         return $this->belongsTo('App\User','customer_id','id');
     }
+    public function transactions() {
+        return $this->belongsTo('App\Transaction','transaction_id','id');
+    }
 
     /**
     * Statuses
