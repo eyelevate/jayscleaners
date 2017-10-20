@@ -30,7 +30,7 @@
 					<th>Due</th>
 					<th>Rack</th>
 					<th>created</th>
-					<th>Action</th>
+					{{-- <th>Action</th> --}}
 				</tr>
 			</thead>
 			<tbody>
@@ -45,7 +45,7 @@
 					<td>{{  date('n/d/y',strtotime($do->due_date)) }}</td>
 					<td>{{ $do->rack }}</td>
 					<td>{{ date('n/d/y g:ia',strtotime($do->created_at)) }}</td>
-					<td><a href="#">view customer</a></td>
+					{{-- <td><a href="#">view customer</a></td> --}}
 					
 				</tr>
 				@endforeach
@@ -72,22 +72,22 @@
 					<th>Due</th>
 					<th>Rack</th>
 					<th>Finished</th>
-					<th>Action</th>
+{{-- 					<th>Action</th> --}}
 				</tr>
 			</thead>
 			<tbody>
 			@if (isset($reports['pickup']))
 				@foreach($reports['pickup'] as $po)
 				<tr>
-					<td>{{ $po->id }}</td>
+					<td>{{ $po->invoices->id }}</td>
 					<td>{{ $po->users->id }}</td>
 					<td>{{ ucFirst($po->users->last_name) }}, {{ ucFirst($po->users->first_name) }}</td>
-					<td>{{ $po->quantity }}</td>
+					<td>{{ $po->invoices->quantity }}</td>
 					<td>${{ $po->pretax }}</td>
-					<td>{{ date('n/d/y',strtotime($po->due_date)) }}</td>
-					<td>{{ $po->rack }}</td>
-					<td>{{ date('n/d/y g:ia',strtotime($po->transactions->created_at)) }}</td>
-					<td><a href="#">view customer</a></td>
+					<td>{{ date('n/d/y',strtotime($po->invoices->due_date)) }}</td>
+					<td>{{ $po->invoices->rack }}</td>
+					<td>{{ date('n/d/y g:ia',strtotime($po->created_at)) }}</td>
+					{{-- <td><a href="#">view customer</a></td> --}}
 					
 				</tr>
 				@endforeach

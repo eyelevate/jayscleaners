@@ -10,6 +10,14 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
+
+    public function invoices() {
+        return $this->hasMany('App\Invoice','transaction_id','id');
+    }
+    public function users() {
+        return $this->belongsTo('App\User','customer_id','id');
+    }
+
     public function makePayment($ids, $tendered, $customer_id)
     {
         $last_tendered = $tendered;
