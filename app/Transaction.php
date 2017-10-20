@@ -12,7 +12,7 @@ class Transaction extends Model
 
 
     public function invoices() {
-        return $this->hasMany('App\Invoice','transaction_id','id');
+        return $this->hasMany('App\Invoice');
     }
     public function users() {
         return $this->belongsTo('App\User','customer_id','id');
