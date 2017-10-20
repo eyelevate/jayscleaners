@@ -96,6 +96,7 @@ class ReportsController extends Controller
         $end_date = date('Y-m-d 23:59:59',$end);
 
         $reports = Report::prepareInvoiceReport($start_date, $end_date, $company_id);
+        dd($reports['dropoff']);
         // dd($reports);
         return view('reports.view')
         ->with('layout',$this->layout)
