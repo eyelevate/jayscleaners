@@ -32,17 +32,19 @@
 				</tr>
 			</thead>
 			<tbody>
-{{-- 			@if (count($reports['dropoff_summary'] > 0))
-				@foreach($reports['dropoff_summary'] as $ds)
+			@if (count($reports['dropoff'] > 0))
+				@foreach($reports['dropoff'] as $do)
 				<tr>
-					<td>{{ $ds['name'] }}</td>
-					<td>{{ $ds['totals']['quantity'] }}</td>
-					<td>{{ $ds['totals']['subtotal'] }}</td>
-					<td>{{ $ds['totals']['tax'] }}</td>
-					<td>{{ $ds['totals']['total'] }}</td>
+					<td>{{ $do->id }}</td>
+					<td>{{ $do->users->id }}</td>
+					<td>{{ ucFirst($do->users->last_name) }}, {{ ucFirst($do->users->first_name) }}</td>
+					<td>{{ $do->quantity }}</td>
+					<td>{{ $do->subtotal }}</td>
+					<td><a href="#">view customer</a></td>
+					
 				</tr>
 				@endforeach
-			@endif --}}
+			@endif
 			</tbody>
 
 		</table>
@@ -59,22 +61,23 @@
 				<tr>
 					<th>#</th>
 					<th>Customer</th>
+					<th>Name</th>
 					<th>Quantity</th>
 					<th>Subtotal</th>
-					<th>Tax</th>
-					<th>Total</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
-{{-- 			@if (count($reports['pickup_summary'] > 0))
-				@foreach($reports['pickup_summary'] as $ps)
+{{-- 			@if (count($reports['dropoff'] > 0))
+				@foreach($reports['dropoff'] as $do)
 				<tr>
-					<td>{{ $ps['name'] }}</td>
-					<td>{{ $ps['totals']['quantity'] }}</td>
-					<td>{{ $ps['totals']['subtotal'] }}</td>
-					<td>{{ $ps['totals']['tax'] }}</td>
-					<td>{{ $ps['totals']['total'] }}</td>
+					<td>{{ $do->id }}</td>
+					<td>{{ $do->users->id }}</td>
+					<td>{{ ucFirst($do->users->last_name) }}, {{ ucFirst($do->users->first_name) }}</td>
+					<td>{{ $do->quantity }}</td>
+					<td>{{ $do->subtotal }}</td>
+					<td><a href="#">view customer</a></td>
+					
 				</tr>
 				@endforeach
 			@endif --}}
