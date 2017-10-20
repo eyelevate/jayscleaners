@@ -59,7 +59,7 @@
 		</table>
 	</div>
 	<div class="panel-footer">
-		<a class="btn btn-info" href="{{ route('reports_view',[$start_date,$end_date,$company_id]) }}">Show Invoices</a>
+		<a class="btn btn-info" href="{{ route('reports_view',[strtotime($start_date),strtotime($end_date),$company_id]) }}">Show Invoices</a>
 	</div>
 </div>
 <div class="panel panel-default">
@@ -107,7 +107,7 @@
 		</table>
 	</div>
 	<div class="panel-footer">
-		<a class="btn btn-info" href="{{ route('reports_view',[$start_date,$end_date,$company_id]) }}">Show Invoices</a>
+		<a class="btn btn-info" href="{{ route('reports_view',[strtotime($start_date),strtotime($end_date),$company_id]) }}">Show Invoices</a>
 	</div>
 </div>
 <div class="panel panel-default">
