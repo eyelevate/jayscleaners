@@ -137,11 +137,14 @@ class Account extends Model
     }
 
     public static function getMonth(){
+    	$today = data('Y-m-d H:i:s');
+    	$last_month = date('n',strtotime('first day of previous month'));
     	$this_month = date('n');
     	$months = [];
     	$year = date('Y');
-    	for ($i=1; $i <= $this_month; $i++) { 
-    		$check = date('F Y',strtotime($i.'/01/'.$year));
+    	$last_year = ($last_month == 1) ? $year - 1 : $year;
+    	for ($i=1; $i <= $last_month; $i++) { 
+    		$check = date('F Y',strtotime($i.'/01/'.$last_year));
     		$months[$i] = $check;
     	}
     	return $months;
