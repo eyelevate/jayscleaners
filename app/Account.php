@@ -144,7 +144,7 @@ class Account extends Model
     	$year = date('Y');
     	$last_year = ($last_month == 1) ? $year - 1 : $year;
     	for ($i=1; $i <= $last_month; $i++) { 
-    		$check = date('F Y',strtotime($i.'/01/'.$last_year));
+    		$check = date('F',strtotime($i.'/01/'.$last_year));
     		$months[$i] = $check;
     	}
     	return $months;
