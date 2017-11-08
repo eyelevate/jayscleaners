@@ -83,7 +83,7 @@
 						<th>Period</th>
 						<th>Due Date</th>
 						<th>Bill Total</th>
-						<th>Total Due</th>
+						<th>Balance</th>
 						<th><input type="checkbox" id="checkAll"/></th>
 					</tr>
 				</thead>
