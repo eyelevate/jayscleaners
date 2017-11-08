@@ -404,7 +404,7 @@ class Account extends Model
 				    	$html .= '<th>Subtotal</th>'; 
 				    	$html .= '<td>'.money_format('$%i',$transaction->pretax).'</td>';
 				    	$html .= '</tr>';
-				    	$html .= '<tr>';
+				    	// $html .= '<tr>';
 				    	// $html .= '<th colspan="3"></th>';
 				    	// $html .= '<th>Discount</th>'; 
 				    	// $html .= '<td color="#ff0000">'.money_format('($%i)',$transaction->discount).'</td>';
