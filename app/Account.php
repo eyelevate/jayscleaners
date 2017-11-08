@@ -268,7 +268,7 @@ class Account extends Model
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
 			    	$html .= '<th style="background-color:#e5e5e5">Due Amount</th>';
-			    	$html .= '<td style="text-align:center;">'.money_format('$%i',$users->account_total).'</td>';
+			    	$html .= '<td style="text-align:center;">'.money_format('$%i',$transaction->total).'</td>';
 			    	$html .= '</tr>';
 			    	$html .= '<tr>';
 			    	$html .= '<th style="background-color:#e5e5e5">Customer #</th>';
@@ -542,14 +542,6 @@ class Account extends Model
 		    	$html .= '<th style="background-color:#e5e5e5">Due Date</th>';
 		    	$due_on = date('F 15, Y',strtotime($transactions->created_at.' +1 month'));
 		    	$html .= '<td style="text-align:center;">'.$due_on.'</td>';
-		    	$html .= '</tr>';
-		    	$html .= '<tr>';
-		    	$html .= '<th style="background-color:#e5e5e5">Past Due</th>';
-		    	$html .= '<td style="text-align:center;">'.money_format('$%i',0).'</td>';
-		    	$html .= '</tr>';
-		    	$html .= '<tr>';
-		    	$html .= '<th style="background-color:#e5e5e5">Invoice Due</th>';
-		    	$html .= '<td style="text-align:center;">'.money_format('$%i',$transactions->total).'</td>';
 		    	$html .= '</tr>';
 		    	$html .= '<tr>';
 		    	$html .= '<th style="background-color:#e5e5e5">Due Amount</th>';
