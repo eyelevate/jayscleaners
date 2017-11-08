@@ -206,6 +206,7 @@ class Account extends Model
 			    		->where('customer_id',$transaction->customer_id)
 			    		->orderBy('id','desc')
 			    		->whereNotNull('account_paid_on')
+			    		->where('account_paid_on','<',$transaction->created_at)
 			    		->limit(1)
 			    		->first();
 			    	if ($last_trans) {
