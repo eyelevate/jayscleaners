@@ -51,9 +51,6 @@ class AccountsController extends Controller
     }
 
     public function postIndex(Request $request) {
-        $this->validate($request, [
-            'search' => 'required',
-        ]);
 
         $search = $request->search;
         // check number or else
