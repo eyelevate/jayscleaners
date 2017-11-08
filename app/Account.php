@@ -208,8 +208,14 @@ class Account extends Model
 			    		->whereNotNull('account_paid_on')
 			    		->limit(1)
 			    		->first();
-			    	$last_paid_date = ($last_trans->account_paid_on != null) ? date('F d, Y',strtotime($last_trans->account_paid_on)) : 'N/A';
-			    	$last_paid_amount = ($last_trans->account_paid != null) ? money_format('$%i',$last_trans->account_paid) : 'N/A';
+			    	if ($last_trans) {
+			    		$last_paid_date = ($last_trans->account_paid_on != null) ? date('F d, Y',strtotime($last_trans->account_paid_on)) : 'N/A';
+			    		$last_paid_amount = ($last_trans->account_paid != null) ? money_format('$%i',$last_trans->account_paid) : 'N/A';
+			    	} else {
+			    		$last_paid_date = 'Not Paid';
+			    		$last_paid_amount = 'Not Paid';
+			    	}
+			    	
 
 
 			    	$html .= '<tr>';
