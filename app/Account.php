@@ -487,14 +487,15 @@ class Account extends Model
 		    	$html .= '</tr>';
 		    	// get last paid
 		    	$last_trans = Transaction::where('status',1)
+		    		->where('customer_id',$transaction->customer_id)
 		    		->orderBy('id','desc')
+		    		->whereNotNull('account_paid_on')
+		    		->where('account_paid_on','<',date('Y-m-t 23:59:59',strtotime($transaction->created_at)))
 		    		->limit(1)
-		    		->get();
-		    	if (count($last_trans) > 0) {
-		    		foreach ($last_trans as $last) {
-		    			$last_paid_date = date('F d, Y',strtotime($last->account_paid_on));
-		    			$last_paid_amount = money_format('$%i',$last->account_paid);
-		    		}
+		    		->first();
+		    	if ($last_trans) {
+		    		$last_paid_date = ($last_trans->account_paid_on != null) ? date('F d, Y',strtotime($last_trans->account_paid_on)) : 'N/A';
+		    		$last_paid_amount = ($last_trans->account_paid != null) ? money_format('$%i',$last_trans->account_paid) : 'N/A';
 		    	} else {
 		    		$last_paid_date = 'Not Paid';
 		    		$last_paid_amount = 'Not Paid';
@@ -686,16 +687,16 @@ class Account extends Model
 			    	$html .= '<th>Subtotal</th>'; 
 			    	$html .= '<td>'.money_format('$%i',$transactions->pretax).'</td>';
 			    	$html .= '</tr>';
-			    	$html .= '<tr>';
-			    	$html .= '<th colspan="3"></th>';
-			    	$html .= '<th>Tax</th>'; 
-			    	$html .= '<td>'.money_format('$%i',$transactions->tax).'</td>';
-			    	$html .= '</tr>';
-			    	$html .= '<tr>';
-			    	$html .= '<th colspan="3"></th>';
-			    	$html .= '<th>After Tax</th>'; 
-			    	$html .= '<td>'.money_format('$%i',$transactions->aftertax).'</td>';
-			    	$html .= '</tr>';
+			    	// $html .= '<tr>';
+			    	// $html .= '<th colspan="3"></th>';
+			    	// $html .= '<th>Tax</th>'; 
+			    	// $html .= '<td>'.money_format('$%i',$transactions->tax).'</td>';
+			    	// $html .= '</tr>';
+			    	// $html .= '<tr>';
+			    	// $html .= '<th colspan="3"></th>';
+			    	// $html .= '<th>After Tax</th>'; 
+			    	// $html .= '<td>'.money_format('$%i',$transactions->aftertax).'</td>';
+			    	// $html .= '</tr>';
 		    		$html .= '<tfoot>';
 		    		$html .= '</table>';
 		    	}	
