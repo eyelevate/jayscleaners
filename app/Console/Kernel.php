@@ -30,26 +30,26 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             // convert all transactions that have status 3 to status 2. and send an email with an attached pdf
-            $transactions = Transaction::where('status',3)->get();
-            $transaction_ids = [];
-            if (count($transactions) > 0) {
-                foreach ($transactions as $transaction) {
-                    array_push($transaction_ids,$transaction->id);
-                }
-            }
+            $transaction_ids = Transaction::where('status',3)->pluck('id')->toArray();
+            // $transaction_ids = [];
+            // if (count($transactions) > 0) {
+            //     foreach ($transactions as $transaction) {
+            //         array_push($transaction_ids,$transaction->id);
+            //     }
+            // }
             $trans = Transaction::whereIn('id',$transaction_ids);
             if ($trans->update(['status'=>2])) {
-                // send email
-                $send_to = ['ydc2415@hotmail.com','young@jayscleaners.com','jchoung860@msn.com','wondo@jayscleaners.com'];
-                $from = 'noreply@jayscleaners.com';
-                // Email customer
-                if (Mail::send('emails.account_status', [
-                    'transactions' => $transactions
-                ], function($message) use ($send_to)
-                {
-                    $message->to($send_to);
-                    $message->subject('Account Status Update For Month '.date('F Y',strtotime(date('Y-m-d H:i:s').' -1 month')).' - created on: '.date('D m/d/Y g:i a'));
-                }));
+                // // send email
+                // $send_to = ['ydc2415@hotmail.com','young@jayscleaners.com','jchoung860@msn.com','wondo@jayscleaners.com'];
+                // $from = 'noreply@jayscleaners.com';
+                // // Email customer
+                // if (Mail::send('emails.account_status', [
+                //     'transactions' => $transactions
+                // ], function($message) use ($send_to)
+                // {
+                //     $message->to($send_to);
+                //     $message->subject('Account Status Update For Month '.date('F Y',strtotime(date('Y-m-d H:i:s').' -1 month')).' - created on: '.date('D m/d/Y g:i a'));
+                // }));
 
             }
         })->monthlyOn(1, '01:00');

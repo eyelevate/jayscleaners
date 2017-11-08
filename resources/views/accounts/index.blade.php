@@ -44,7 +44,7 @@
 						<th>Last</th>
 						<th>First</th>
 						<th>Phone</th>
-						<th>Due</th>
+						<th>Balance</th>
 						<th>Action</th>
 					</tr>
 				</thead>
