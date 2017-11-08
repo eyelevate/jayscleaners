@@ -277,8 +277,10 @@ class AccountsController extends Controller
     public function getSend() {
         $month = Account::getMonth();
         $year = Account::getYear();
+        $selected_month = date('n',strtotime('first day of previous month'));
         return view('accounts.send')
         ->with('month',$month)
+        ->with('selected_month',$selected_month)
         ->with('year',$year)
         ->with('transactions',[])
         ->with('layout',$this->layout);
@@ -336,12 +338,15 @@ class AccountsController extends Controller
                     ->get();
             }            
         }
+        $selected_month = $month;
         $month = Account::getMonth();
+
         $year = Account::getYear();
         $transactions = Transaction::prepareTransaction($transactions);
         // Job::dump($transactions);
         return view('accounts.send')
         ->with('month',$month)
+        ->with('selected_month',$selected_month)
         ->with('year',$year)
         ->with('transactions',$transactions)
         ->with('layout',$this->layout); 

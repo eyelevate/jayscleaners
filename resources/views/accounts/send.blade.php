@@ -46,7 +46,7 @@
 			<div class="form-group{{ $errors->has('billing_month') ? ' has-error' : '' }}">
                 <label class="control-label">Select Month</label>
 
-            	{!! Form::select('billing_month', $month ,date('n',strtotime('first day of previous month')), ['id'=>'billing_month','class'=>'form-control', 'placeholder'=>'']) !!}
+            	{!! Form::select('billing_month', $month ,$seleted_month, ['id'=>'billing_month','class'=>'form-control', 'placeholder'=>'']) !!}
                 @if ($errors->has('billing_month'))
                     <span class="help-block">
                         <strong>{{ $errors->first('billing_month') }}</strong>
