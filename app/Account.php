@@ -203,6 +203,7 @@ class Account extends Model
 			    	$html .= '</tr>';
 			    	// get last paid
 			    	$last_trans = Transaction::where('status',1)
+			    		->where('customer_id',$transaction->customer_id)
 			    		->orderBy('id','desc')
 			    		->whereNotNull('account_paid_on')
 			    		->limit(1)
