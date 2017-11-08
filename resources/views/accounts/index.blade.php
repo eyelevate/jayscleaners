@@ -52,7 +52,7 @@
 				@if (isset($customers))
 					@foreach($customers as $customer)
 					<tr class="{{ ($customer->status == 3) ? 'active' : ($customer->status== 2) ? 'info' : 'active' }}">
-						<td>{{ $customer->account_transaction_id }}</td>
+						<td>{{ $customer->id }}</td>
 						<td>{{ $customer->username }}</td>
 						<td>{{ $customer->last_name }}</td>
 						<td>{{ $customer->first_name }}</td>
