@@ -59,13 +59,8 @@
 						<td>{{ $customer->phone }}</td>
 						<td>{{ $customer->account_total }}</td>
 						<td>
-						@if ($customer->account_total > 0)
 							<a href="{{ route('accounts_pay',$customer->id) }}" class="btn btn-info">Pay</a>
 							<a href="{{ route('accounts_history',$customer->id) }}" class="btn btn-info">Payment History</a>
-						@else
-							<button type="button" class="btn btn-default" disabled="true">Pay</button>
-							<a href="{{ route('accounts_history',$customer->id) }}" class="btn btn-info">Payment History</a>
-						@endif
 						</td>
 					</tr>
 					@endforeach
