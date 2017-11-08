@@ -544,6 +544,14 @@ class Account extends Model
 		    	$html .= '<td style="text-align:center;">'.$due_on.'</td>';
 		    	$html .= '</tr>';
 		    	$html .= '<tr>';
+		    	$html .= '<th style="background-color:#e5e5e5">Past Due</th>';
+		    	$html .= '<td style="text-align:center;">'.money_format('$%i',0).'</td>';
+		    	$html .= '</tr>';
+		    	$html .= '<tr>';
+		    	$html .= '<th style="background-color:#e5e5e5">Invoice Due</th>';
+		    	$html .= '<td style="text-align:center;">'.money_format('$%i',$transactions->total).'</td>';
+		    	$html .= '</tr>';
+		    	$html .= '<tr>';
 		    	$html .= '<th style="background-color:#e5e5e5">Due Amount</th>';
 		    	$html .= '<td style="text-align:center;">'.money_format('$%i',$users->account_total).'</td>';
 		    	$html .= '</tr>';
