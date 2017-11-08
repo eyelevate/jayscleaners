@@ -204,26 +204,13 @@ class Account extends Model
 			    	// get last paid
 			    	$last_trans = Transaction::where('status',1)
 			    		->orderBy('id','desc')
+			    		->whereNotNull('account_paid_on')
 			    		->limit(1)
-			    		->get();
-			    	if (count($last_trans) > 0) {
-			    		foreach ($last_trans as $last) {
-			    			if (isset($last->account_paid_on)) {
-			    				$last_paid_date = date('F d, Y',strtotime($last->account_paid_on));
-			    			} else {
-			    				$last_paid_date = 'N/A';
-			    			}
-			    			if (isset($last_paid_amount)) {
-			    				$last_paid_amount = money_format('$%i',$last->account_paid);
-			    			} else {
-			    				$last_paid_amount = 'N/A';
-			    			}
-			    			
-			    		}
-			    	} else {
-			    		$last_paid_date = 'Not Paid';
-			    		$last_paid_amount = 'Not Paid';
-			    	}
+			    		->first();
+			    	$last_paid_date = ($last_trans->account_paid_on != null) ? date('F d, Y',strtotime($last_trans->account_paid_on)) : 'N/A';
+			    	$last_paid_amount = ($last_trans->account_paid != null) ? money_format('$%i',$last_trans->account_paid) : 'N/A';
+
+
 			    	$html .= '<tr>';
 			    	$html .= '<th style="background-color:#e5e5e5">Last Pay Date</th>';
 			    	$html .= '<td style="text-align:center;">'.$last_paid_date.'</td>';
