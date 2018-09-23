@@ -2809,6 +2809,41 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+
+    public function postApiCustResults(Request $request) {
+        $query = json_decode($request->list,true);
+        $query_word_count = count(json_decode($request->list,true));
+        $start = $request->start;
+        $customers = [];
+        if (isset($query[1])) {
+            //check if string
+                
+            $last_name = $query[0];
+            $first_name = $query[1];
+            // look by last_name and first name
+            $customers = User::where('last_name','like',$last_name.'%')
+            ->where('first_name','like',$first_name.'%')
+            ->orderBy('last_name','asc')
+            ->orderBy('first_name','asc')
+            ->get();
+        } else {
+            $last_name = $query[0];
+            //check if string
+            $customers = User::where('last_name','like',$last_name.'%')
+                ->orderBy('last_name','asc')
+                ->orderBy('first_name','asc')
+                ->get();
+        } 
+
+        if (count($customers) >0){
+            foreach ($customers as $key => $value) {
+                $customers[$key]['custids'] = $value->custids;
+            }
+            return response()->json(['status'=>true,'data'=>$customers]);
+        } 
+        return response()->json(['status'=>false]);
+    }
+
     public function postApiCustomersRowCap(Request $request) {
         $query = json_decode($request->list,true);
         $query_word_count = count(json_decode($request->list));
