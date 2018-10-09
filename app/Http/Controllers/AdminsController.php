@@ -2302,14 +2302,13 @@ class AdminsController extends Controller
         $customer_id = $request->customer_id;
         $start = $request->start;
         $end = $request->end;
-        if ($end == "*") {
+        if ($end == "END") {
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc')
                 ->get();
             if(count($invoices) > 0) {
                 foreach ($invoices as $key => $value) {
                     $invoice_items = $value->invoice_items;
-                    $invoices[$key]['test'] = 'here';
                     $invoices[$key]['invoice_items'] = $invoice_items;
                 }
             }
