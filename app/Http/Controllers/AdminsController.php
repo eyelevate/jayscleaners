@@ -2302,12 +2302,19 @@ class AdminsController extends Controller
         $customer_id = $request->customer_id;
         $start = $request->start;
         $end = $request->end;
-
-        $invoices = Invoice::where('customer_id',$customer_id)
-        ->orderBy('id','desc')
-        ->skip($start)
-        ->take(10)
-        ->get();
+        if ($end == '*') {
+            $invoices = Invoice::where('customer_id',$customer_id)
+                ->orderBy('id','desc')
+                ->skip($start)
+                ->get();
+        } else {
+            $invoices = Invoice::where('customer_id',$customer_id)
+                ->orderBy('id','desc')
+                ->skip($start)
+                ->take(10)
+                ->get(); 
+        }
+        
         if (count($invoices) >0){
             return response()->json(['status'=>true,'data'=>$invoices]);
         } 
