@@ -2307,9 +2307,9 @@ class AdminsController extends Controller
                 ->orderBy('id','desc')
                 ->get();
             if(count($invoices) > 0) {
-                foreach ($invoices as $invoice) {
-                    $invoice_items = $invoice->invoice_items();
-                    $invoice['invoice_items'] = $invoice_items;
+                foreach ($invoices as $key => $value) {
+                    $invoice_items = $value->invoice_items;
+                    $invoices[$key]['invoice_items'] = $invoice_items;
                 }
             }
         } else {
