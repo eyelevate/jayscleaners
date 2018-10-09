@@ -2302,10 +2302,9 @@ class AdminsController extends Controller
         $customer_id = $request->customer_id;
         $start = $request->start;
         $end = $request->end;
-        if ($end == '*') {
+        if ($end == "*") {
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc')
-                ->skip($start)
                 ->get();
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
