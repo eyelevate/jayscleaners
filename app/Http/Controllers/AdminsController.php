@@ -2309,6 +2309,7 @@ class AdminsController extends Controller
             if(count($invoices) > 0) {
                 foreach ($invoices as $key => $value) {
                     $invoice_items = $value->invoice_items;
+                    $invoices[$key]['test'] = 'here';
                     $invoices[$key]['invoice_items'] = $invoice_items;
                 }
             }
