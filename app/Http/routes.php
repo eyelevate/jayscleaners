@@ -149,6 +149,9 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/cust-search-results',['uses'=>'AdminsController@postApiCustResults']); #for upgrade only
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
+    // test only
+    Route::get('/admins/api/test/wondo',['uses'=>'AdminsController@getApiTestWondo']);
+
     #Api-zipcode
     Route::post('/admins/api/zipcode-query',['uses'=>'AdminsController@postApiZipcodeQuery']);
 

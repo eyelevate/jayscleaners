@@ -18,7 +18,7 @@ class Invoice extends Model
         return $this->hasMany('App\InvoiceItem');
     }
     public function invoice_items_trashed() {
-        return $this->hasMany('App\InvoiceItem')->withTrashed()->get();
+        return $this->hasMany('App\InvoiceItem')->withTrashed();
     }
     public function users() {
         return $this->belongsTo('App\User','customer_id','id');
