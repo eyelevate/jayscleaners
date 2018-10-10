@@ -18,7 +18,7 @@ class InvoiceItem extends Model
     }
 
     public function inventoryItem_trashed() {
-        return $this->hasMany('App\InventoryItem')->withTrashed();
+        return $this->hasMany('App\InventoryItem')->withTrashed()->get();
     }
 
     public function inventory()
@@ -27,7 +27,7 @@ class InvoiceItem extends Model
     }
 
     public function inventory_trashed() {
-        return $this->hasMany('App\Inventory')->withTrashed();
+        return $this->hasMany('App\Inventory')->withTrashed()->get();
     }
 
     public function invoice()
