@@ -2303,7 +2303,7 @@ class AdminsController extends Controller
         $start = $request->start;
         $end = $request->end;
         if ($end == "END") {
-            $invoices = Invoice::where('customer_id',$customer_id)
+            $invoices = Invoice::withTrashed()->where('customer_id',$customer_id)
                 ->orderBy('id','desc')
                 ->get();
             if(count($invoices) > 0) {
@@ -2313,7 +2313,7 @@ class AdminsController extends Controller
                     if (count($invoice_items) > 0) {
                         foreach ($invoice_items as $ikey => $ivalue) {
                             $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory;
-                            $invoices[$key]['invoice_items'][$ikey]['inventory_item'] = $ivalue->inventoryItem;
+                            $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem;
 
                         }
                     }
