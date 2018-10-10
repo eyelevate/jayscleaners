@@ -4,12 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\SoftDeletingTrait;
-
 class InventoryItem extends Model
 {
 	use SoftDeletes;
-	use SoftDeletingTrait;
 	public static function prepareItems($inventories){
 		$items = [];
 		if(count($inventories) > 0) {
