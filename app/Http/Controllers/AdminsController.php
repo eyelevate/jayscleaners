@@ -2908,7 +2908,7 @@ class AdminsController extends Controller
                 if (count($invoice_items) > 0) {
                     foreach ($invoice_items as $ikey => $ivalue) {
                         // $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory_trashed;
-                        $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem_trashed;
+                        // $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem_trashed;
 
                     }
                 }
