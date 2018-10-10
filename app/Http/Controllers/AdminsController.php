@@ -2308,12 +2308,12 @@ class AdminsController extends Controller
                 ->get();
             if(count($invoices) > 0) {
                 foreach ($invoices as $key => $value) {
-                    $invoice_items = $value->invoice_items_trashed;
+                    $invoice_items = $value->invoice_items;
                     $invoices[$key]['invoice_items'] = $invoice_items;
                     if (count($invoice_items) > 0) {
                         foreach ($invoice_items as $ikey => $ivalue) {
-                            $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory_trashed;
-                            $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem_trashed;
+                            $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory;
+                            $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem;
 
                         }
                     }
