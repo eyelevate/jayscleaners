@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 use App\InvoiceItem;
 use App\Invoice;
 use App\InventoryItem;
@@ -11,6 +12,7 @@ use App\Inventory;
 class InvoiceItem extends Model
 {
     use SoftDeletes;
+    use SoftDeletingTrait;
 
     public function inventoryItem()
     {
@@ -27,7 +29,7 @@ class InvoiceItem extends Model
     }
 
     public function inventory_trashed() {
-        return $this->hasMany('App\InventoryItem')->withTrashed();
+        return $this->hasMany('App\Inventory')->withTrashed();
     }
 
     public function invoice()

@@ -7,10 +7,12 @@ use App\Customer;
 use App\Custid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Inventory extends Model
 {
 	use SoftDeletes;
+	use SoftDeletingTrait;
 
 	public function inventory_items() {
 		return $this->hasMany('App\InventoryItem')->orderBy('ordered','asc');

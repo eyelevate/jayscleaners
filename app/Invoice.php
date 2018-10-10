@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 use App\Job;
 use App\InvoiceItem;
 use App\Color;
@@ -12,7 +13,7 @@ use App\Tax;
 class Invoice extends Model
 {
     use SoftDeletes;
-
+    use SoftDeletingTrait;
 
     public function invoice_items() {
         return $this->hasMany('App\InvoiceItem');
