@@ -2303,7 +2303,7 @@ class AdminsController extends Controller
         $start = $request->start;
         $end = $request->end;
         if ($end == "END") {
-            $invoices = Invoice::withTrashed()->where('customer_id',$customer_id)
+            $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc')
                 ->get();
             if(count($invoices) > 0) {
