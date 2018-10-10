@@ -17,9 +17,17 @@ class InvoiceItem extends Model
         return $this->belongsTo(InventoryItem::class, 'item_id', 'id');
     }
 
+    public function inventoryItem_trashed() {
+        return $this->hasMany('App\InventoryItem')->withTrashed();
+    }
+
     public function inventory()
     {
         return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
+    }
+
+    public function inventory_trashed() {
+        return $this->hasMany('App\InventoryItem')->withTrashed();
     }
 
     public function invoice()
