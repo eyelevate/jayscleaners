@@ -2901,20 +2901,20 @@ class AdminsController extends Controller
         $invoices = Invoice::withTrashed()->where('customer_id',1)
             ->orderBy('id','desc')
             ->get();
-        // if(count($invoices) > 0) {
-        //     foreach ($invoices as $key => $value) {
-        //         $invoice_items = $value->invoice_items_trashed;
-        //         $invoices[$key]['invoice_items'] = $invoice_items;
-        //         // if (count($invoice_items) > 0) {
-        //         //     foreach ($invoice_items as $ikey => $ivalue) {
-        //         //         $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory_trashed;
-        //         //         $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem_trashed;
+        if(count($invoices) > 0) {
+            foreach ($invoices as $key => $value) {
+                $invoice_items = $value->invoice_items()->withTrashed()->all();
+                $invoices[$key]['invoice_items'] = $invoice_items;
+                // if (count($invoice_items) > 0) {
+                //     foreach ($invoice_items as $ikey => $ivalue) {
+                //         $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory_trashed;
+                //         $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem_trashed;
 
-        //         //     }
-        //         // }
+                //     }
+                // }
                 
-        //     }
-        // }
+            }
+        }
         return response()->json(['data'=>$invoices]);
     }
 
