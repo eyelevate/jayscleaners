@@ -2303,21 +2303,10 @@ class AdminsController extends Controller
         $start = $request->start;
         $end = $request->end;
         if ($end == "END") {
-            $invoices = [];
-            $invs = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc');
-
-            $invs->chunk(1000,function($inv) use (&$invoices){
-                $inv->map(function($v) use (&$invoices){
-                    $v->invoice_items->map(function($iv){
-                        $iv['inventory'] = $iv->inventory;
-                        $iv['inventory_items'] = $iv->inventoryItem;
-                        return $iv;
-                    });
-                    $v['invoice_items'] = $v->invoice_items;
-                    array_push($invoices, $v);
-                });
-            });
+            $invoices = Invoice::with(['invoice_items','invoice_items.inventory','invoice_items.inventoryItem'])
+                ->where('customer_id',$customer_id)
+                ->orderBy('id','desc')
+                ->get();
 
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
@@ -2906,21 +2895,6 @@ class AdminsController extends Controller
                 ->where('customer_id',$customer_id)
                 ->orderBy('id','desc')
                 ->get();
-
-            // $invoices->invoice_items->load('inventories','inventory_items');
-
-
-            // $invs->chunk(1000,function($inv) use (&$invoices){
-            //     $inv->map(function($v) use (&$invoices){
-            //         $v->invoice_items->map(function($iv){
-            //             $iv['inventory'] = $iv->inventory;
-            //             $iv['inventory_items'] = $iv->inventoryItem;
-            //             return $iv;
-            //         });
-            //         $v['invoice_items'] = $v->invoice_items;
-            //         array_push($invoices, $v);
-            //     });
-            // });
             
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
