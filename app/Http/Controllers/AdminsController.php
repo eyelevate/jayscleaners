@@ -2936,7 +2936,7 @@ class AdminsController extends Controller
 
     #test
     public function getApiTestWondo() {
-        $customer_id = 1;
+        $customer_id = 9933;
         $start = 'START';
         $end = 'END';
         if ($end == "END") {
