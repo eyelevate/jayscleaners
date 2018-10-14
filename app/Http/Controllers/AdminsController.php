@@ -2941,21 +2941,23 @@ class AdminsController extends Controller
         $end = 'END';
         if ($end == "END") {
             $invoices = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc')
-                ->chunk(100, function($invs){
-                    foreach ($invs as $key => $value) {
-                        $invoice_items = $value->invoice_items;
-                        $invs[$key]['invoice_items'] = $invoice_items;
-                        if (count($invoice_items) > 0) {
-                            foreach ($invoice_items as $ikey => $ivalue) {
-                                $invs[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory;
-                                $invs[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem;
+                ->orderBy('id','desc');
 
-                            }
+            $invoices->chunk(100, function($invs){
+                foreach ($invs as $key => $value) {
+                    $invoice_items = $value->invoice_items;
+                    $invs[$key]['invoice_items'] = $invoice_items;
+                    if (count($invoice_items) > 0) {
+                        foreach ($invoice_items as $ikey => $ivalue) {
+                            $invs[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory;
+                            $invs[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem;
+
                         }
                     }
-                    return $invs;
-                });
+                }
+            });
+
+            $invoices->get();
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
             //         $invoice_items = $value->invoice_items;
