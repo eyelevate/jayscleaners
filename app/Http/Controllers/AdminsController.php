@@ -2946,6 +2946,7 @@ class AdminsController extends Controller
             } catch (\Illuminate\Database\QueryException $e) {
                 $invoices = [];
             }
+            var_dump($invoices);
 
             if (count($invoices) > 0) {
                 foreach ($invoices as $key => $value) {
