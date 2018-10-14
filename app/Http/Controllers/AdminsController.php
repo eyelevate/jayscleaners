@@ -2308,7 +2308,7 @@ class AdminsController extends Controller
                 ->orderBy('id','desc');
 
             $invs->chunk(100,function($inv) use (&$invoices){
-                $invoices = $inv->map(function($v) use ($invoices){
+                array_push($invoices, $inv->map(function($v) use ($invoices){
                     $v->invoice_items->map(function($iv){
                         $iv['inventory'] = $iv->inventory;
                         $iv['invnetory_items'] = $iv->inventoryItem;
@@ -2317,8 +2317,7 @@ class AdminsController extends Controller
                     $v['invoice_items'] = $v->invoice_items;
 
                     return $v;
-                });
-            
+                }));
             });
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
