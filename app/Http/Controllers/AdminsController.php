@@ -2946,26 +2946,17 @@ class AdminsController extends Controller
 
             $invoices->chunk(100,function($inv) use (&$out){
                 $out = $inv->map(function($v) use ($out){
+                    $v->invoice_items->map(function($iv){
+                        $iv['inventory'] = $iv->inventory;
+                        $iv['invnetory_items'] = $iv->inventoryItem;
+                        return $iv;
+                    });
                     $v['invoice_items'] = $v->invoice_items;
+
                     return $v;
                 });
             
             });
-            dd($out);
-            // if(count($invoices) > 0) {
-            //     foreach ($invoices as $key => $value) {
-            //         $invoice_items = $value->invoice_items;
-            //         $invoices[$key]['invoice_items'] = $invoice_items;
-            //         if (count($invoice_items) > 0) {
-            //             foreach ($invoice_items as $ikey => $ivalue) {
-            //                 $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory;
-            //                 $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem;
-
-            //             }
-            //         }
-                    
-            //     }
-            // }
             
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
