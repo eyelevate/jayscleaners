@@ -2907,7 +2907,7 @@ class AdminsController extends Controller
                 ->orderBy('id','desc')
                 ->get();
 
-            $invoices->invoice_items->load('invoice_items.inventory','invoice_items.inventoryItem');
+            $invoices->invoice_items->load('inventories','inventory_items');
 
 
             // $invs->chunk(1000,function($inv) use (&$invoices){
