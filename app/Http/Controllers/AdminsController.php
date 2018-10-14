@@ -2944,9 +2944,9 @@ class AdminsController extends Controller
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc');
 
-            $invoices->chunk(100,function($inv) use ($invoices) {
+            $invoices->chunk(100,function($inv){
          
-                $inv->each(function($v, $k){
+                $inv->map(function($v){
                     $v['invoice_items'] = $v->invoice_items;
                     if (count($v->invoice_items) > 0) {
                         $v->invoice_items->each(function($iv, $ik) {
@@ -2954,6 +2954,8 @@ class AdminsController extends Controller
                             $iv['inventory_items'] = $iv->inventoryItem;
                         });
                     }
+
+                    return $v;
                 });
                     
                 dd($inv);
