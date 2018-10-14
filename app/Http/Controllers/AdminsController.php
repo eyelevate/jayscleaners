@@ -2942,11 +2942,7 @@ class AdminsController extends Controller
         if ($end == "END") {
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc');
-            $invoices->chunk(200, function($invoices) {
-                $invoices->each(function($value, $key) {
-
-                });
-            });
+  
 
             $invoices->get();
             // if(count($invoices) > 0) {
