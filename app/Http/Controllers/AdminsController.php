@@ -2947,35 +2947,7 @@ class AdminsController extends Controller
             $idx = -1;
             $invoices->chunk(100,function($invoices) use ($out, $idx){
          
-                $invoices->map(function($v, $K) use ($out, $idx){
-                    $idx++;
-                    $out = $v;
-
-                    return $out;
-                    // $out[$idx]['invoice_items'] = $v->invoice_items;
-                    // if (count($v->invoice_items) > 0) {
-                    //     $v->invoice_items->map(function($iv, $ik) use ($out) {
-                    //         $out[$idx]['invoice_items'][$ik]['inventory'] = $iv->inventory;
-                    //         $out[$idx]['invoice_items'][$ik]['inventory_items'] = $iv->inventoryItem;
-                    //     });
-                    // }
-                });
-                    
-                
-
-                
-                // foreach ($invoices as $key => $value) {
-                //     $invoice_items = $value->invoice_items;
-                //     $invoices[$key]['invoice_items'] = $invoice_items;
-                //     if (count($invoice_items) > 0) {
-                //         foreach ($invoice_items as $ikey => $ivalue) {
-                //             $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory;
-                //             $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem;
-
-                //         }
-                //     }
-                    
-                // }                
+                dd($invoices[99]);              
             });
             dd($out);
             // if(count($invoices) > 0) {
