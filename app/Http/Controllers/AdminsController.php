@@ -2943,6 +2943,7 @@ class AdminsController extends Controller
             $out = [];
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc')->chunk(100,function($inv) use ($out) {
+                dd($inv);
                 $out = $inv;
                 $out['invoice_items'] = $inv->invoice_items;
                     
