@@ -2950,13 +2950,13 @@ class AdminsController extends Controller
                 $invoices->map(function($v, $K) use ($out, $idx){
                     $idx++;
                     $out = $v;
-                    $out[$idx]['invoice_items'] = $v->invoice_items;
-                    if (count($v->invoice_items) > 0) {
-                        $v->invoice_items->map(function($iv, $ik) use ($out) {
-                            $out[$idx]['invoice_items'][$ik]['inventory'] = $iv->inventory;
-                            $out[$idx]['invoice_items'][$ik]['inventory_items'] = $iv->inventoryItem;
-                        });
-                    }
+                    // $out[$idx]['invoice_items'] = $v->invoice_items;
+                    // if (count($v->invoice_items) > 0) {
+                    //     $v->invoice_items->map(function($iv, $ik) use ($out) {
+                    //         $out[$idx]['invoice_items'][$ik]['inventory'] = $iv->inventory;
+                    //         $out[$idx]['invoice_items'][$ik]['inventory_items'] = $iv->inventoryItem;
+                    //     });
+                    // }
                 });
                     
                 
