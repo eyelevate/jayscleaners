@@ -2945,9 +2945,9 @@ class AdminsController extends Controller
                 ->orderBy('id','desc');
 
             $idx = -1;
-            $invoices->chunk(100,function($invoices) use ($out, $idx){
-         
-                dd($invoices[99]);              
+            $invoices->chunk(100,function($inv) use ($out, $idx){
+                array_push($out, $inv);
+              
             });
             dd($out);
             // if(count($invoices) > 0) {
