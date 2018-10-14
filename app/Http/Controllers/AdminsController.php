@@ -2941,11 +2941,9 @@ class AdminsController extends Controller
         $end = 'END';
         if ($end == "END") {
             $invoices = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc');
-
-            $invoices->chunk(100,function($inv) use ($invoices) {
+                ->orderBy('id','desc')->chunk(100,function($inv) {
                 
-                return response()->json($inv);
+                    return response()->json($inv);
 
                 
                 // foreach ($invoices as $key => $value) {
