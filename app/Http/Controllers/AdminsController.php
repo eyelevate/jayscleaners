@@ -2950,7 +2950,7 @@ class AdminsController extends Controller
 
             if (count($invoices) > 0) {
                 foreach ($invoices as $key => $value) {
-         
+                    var_dump($value);
                     $invoice_item_id = $value->item_id;
                     $cmd = "SELECT * FROM invoice_items WHERE id = {$invoice_item_id} AND deleted_at IS NULL";
                     try {
