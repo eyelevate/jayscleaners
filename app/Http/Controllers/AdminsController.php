@@ -2901,21 +2901,23 @@ class AdminsController extends Controller
         $start = 'START';
         $end = 'END';
         if ($end == "END") {
-            $invoices = [];
-            $invs = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc');
+            // $invoices = [];
+            $invoices = Invoice::with('invoice_items','invoice_items.inventories','invoice_items.inventory_items')
+                ->where('customer_id',$customer_id)
+                ->orderBy('id','desc')->get();
 
-            $invs->chunk(1000,function($inv) use (&$invoices){
-                $inv->map(function($v) use (&$invoices){
-                    $v->invoice_items->map(function($iv){
-                        $iv['inventory'] = $iv->inventory;
-                        $iv['inventory_items'] = $iv->inventoryItem;
-                        return $iv;
-                    });
-                    $v['invoice_items'] = $v->invoice_items;
-                    array_push($invoices, $v);
-                });
-            });
+
+            // $invs->chunk(1000,function($inv) use (&$invoices){
+            //     $inv->map(function($v) use (&$invoices){
+            //         $v->invoice_items->map(function($iv){
+            //             $iv['inventory'] = $iv->inventory;
+            //             $iv['inventory_items'] = $iv->inventoryItem;
+            //             return $iv;
+            //         });
+            //         $v['invoice_items'] = $v->invoice_items;
+            //         array_push($invoices, $v);
+            //     });
+            // });
             
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
