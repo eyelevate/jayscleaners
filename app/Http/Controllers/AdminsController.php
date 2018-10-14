@@ -2955,6 +2955,7 @@ class AdminsController extends Controller
                          'invoices.status')
                 ->where('customer_id',$customer_id)
                 ->get();
+                var_dump($invoices);
                 // $invoices = \DB::select($cmd)->join('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id');    
             } catch (\Illuminate\Database\QueryException $e) {
                 $invoices = [];
