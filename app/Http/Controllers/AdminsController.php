@@ -2944,11 +2944,12 @@ class AdminsController extends Controller
                 ->orderBy('id','desc')->get();
 
             $invoices->chunk(100,function($inv) {
-                $inv->each(function($v, $k) {
-                    $inv_items = $v->invoice_items;
-                    $v['invoice_items'] = $inv_items;
+                var_dump($inv);
+                // $inv->each(function($v, $k) {
+                //     $inv_items = $v->invoice_items;
+                //     $v['invoice_items'] = $inv_items;
 
-                });
+                // });
                 // foreach ($invoices as $key => $value) {
                 //     $invoice_items = $value->invoice_items;
                 //     $invoices[$key]['invoice_items'] = $invoice_items;
