@@ -2943,7 +2943,7 @@ class AdminsController extends Controller
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc')->chunk(100,function($inv) {
                 
-                    return response()->json($inv);
+                    
 
                 
                 // foreach ($invoices as $key => $value) {
@@ -2973,7 +2973,7 @@ class AdminsController extends Controller
                     
             //     }
             // }
-   
+            
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc')
@@ -2981,6 +2981,8 @@ class AdminsController extends Controller
                 ->take(10)
                 ->get(); 
         }
+
+        return response()->json($invoices);
         
         if (count($invoices) >0){
             return response()->json(['status'=>true,'data'=>$invoices]);
