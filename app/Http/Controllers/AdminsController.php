@@ -2944,10 +2944,12 @@ class AdminsController extends Controller
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc');
 
-            $idx = -1;
-            $invoices->chunk(100,function($inv) use ($out, $idx){
-                array_push($out, $inv);
-              
+            $invoices->chunk(100,function($inv) use (&$out){
+                $out = $inv->map(function($v) use ($out){
+                    $v['invoice_items'] = $v->invoice_items;
+                    return $v;
+                });
+            
             });
             dd($out);
             // if(count($invoices) > 0) {
