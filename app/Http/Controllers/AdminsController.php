@@ -2940,59 +2940,25 @@ class AdminsController extends Controller
         $start = 'START';
         $end = 'END';
         if ($end == "END") {
-            // $cmd = "SELECT id, company_id, customer_id, quantity, pretax, discount_id, rack, due_date, memo, status FROM invoices WHERE customer_id = {$customer_id} AND deleted_at IS NULL ORDER BY id desc";
-            try {
-                $invoices = \DB::table('invoices')
-                ->select('invoices.id',
-                         'invoices.company_id',
-                         'invoices.customer_id',
-                         'invoices.quantity',
-                         'invoices.pretax',
-                         'invocies.discount_id',
-                         'invoices.rack',
-                         'invoices.due_date',
-                         'invoices.memo',
-                         'invoices.status')
-                ->where('customer_id',$customer_id)
+            $invoices = Invoice::where('customer_id',$customer_id)
+                ->orderBy('id','desc')
+                ->chunk(100)
                 ->get();
-                var_dump($invoices);
-                // $invoices = \DB::select($cmd)->join('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id');    
-            } catch (\Illuminate\Database\QueryException $e) {
-                $invoices = [];
-            }
+            // if(count($invoices) > 0) {
+            //     foreach ($invoices as $key => $value) {
+            //         $invoice_items = $value->invoice_items;
+            //         $invoices[$key]['invoice_items'] = $invoice_items;
+            //         if (count($invoice_items) > 0) {
+            //             foreach ($invoice_items as $ikey => $ivalue) {
+            //                 $invoices[$key]['invoice_items'][$ikey]['inventory'] = $ivalue->inventory;
+            //                 $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = $ivalue->inventoryItem;
 
-
-            if (count($invoices) > 0) {
-                // foreach ($invoices as $key => $value) {
-                //     $invoice_id = $value->id;
-                //     $cmd = "SELECT * FROM invoice_items WHERE invoice_id = {$invoice_id} AND deleted_at IS NULL";
-                //     try {
-                //         $invoice_items = \DB::select($cmd);
-                //     } catch (\Illuminate\Database\QueryException $e) {
-                //         $invoice_items = [];
-                //     }
-                //     $invoices[$key]->invoice_items = $invoice_items;
-
-                //     // if (count($invoice_items)) {
-                //     //     foreach($invoice_items as $ikey => $ivalue) {
-                //     //         $inventory_id = $ivalue['inventory_id'];
-                //     //         $cmd = "SELECT * FROM inventories WHERE id = {$inventory_id} AND deleted_at is NULL";
-                //     //         try {
-                //     //             $invoice_items[$key]['invoice_items'][$ikey]['inventory'] = \DB::select($cmd);
-                //     //         } catch (\Illuminate\Database\QueryException $e) {
-                //     //             $invoice_items[$key]['invoice_items'][$ikey]['inventory'] = [];
-                //     //         }
-                //     //         $item_id = $ivalue['item_id'];
-                //     //         $cmd = "SELECT * FROM inventory_items WHERE id = {$item_id} AND deleted_at is NULL";
-                //     //         try {
-                //     //             $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = \DB::select($cmd);
-                //     //         } catch (\Illuminate\Database\QueryException $e) {
-                //     //             $invoices[$key]['invoice_items'][$ikey]['inventory_items'] = [];
-                //     //         }
-                //     //     }
-                //     // }
-                // }
-            }
+            //             }
+            //         }
+                    
+            //     }
+            // }
+   
         } else {
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc')
