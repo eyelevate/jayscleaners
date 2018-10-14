@@ -2954,6 +2954,7 @@ class AdminsController extends Controller
                             }
                         }
                     }
+                    return $invs;
                 });
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
