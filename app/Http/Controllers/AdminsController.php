@@ -2941,10 +2941,7 @@ class AdminsController extends Controller
         $end = 'END';
         if ($end == "END") {
             $invoices = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc');
-  
-
-            $invoices->get();
+                ->orderBy('id','desc')->get();
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
             //         $invoice_items = $value->invoice_items;
