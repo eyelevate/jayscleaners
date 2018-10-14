@@ -2904,8 +2904,9 @@ class AdminsController extends Controller
             // $invoices = [];
             $invoices = Invoice::with('invoice_items','inventory','inventoryItem')
                 ->where('customer_id',$customer_id)
-                ->orderBy('id','desc')->load('invoice_items.inventory','invoice_items.inventoryItem')
-                ->get();
+                ->orderBy('id','desc')
+                ->get()
+                ->load('invoice_items.inventory','invoice_items.inventoryItem');
             // $invoices->invoice_items->load('inventory','inventoryItem');
 
 
