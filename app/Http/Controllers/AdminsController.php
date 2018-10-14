@@ -2902,7 +2902,7 @@ class AdminsController extends Controller
         $end = 'END';
         if ($end == "END") {
             // $invoices = [];
-            $invoices = Invoice::with('invoice_items','invoice_items.inventories','invoice_items.inventory_items')
+            $invoices = Invoice::with('invoice_items')
                 ->where('customer_id',$customer_id)
                 ->orderBy('id','desc')->get();
 
