@@ -2956,7 +2956,7 @@ class AdminsController extends Controller
                     } catch (\Illuminate\Database\QueryException $e) {
                         $invoice_items = [];
                     }
-                    $invoices[$key]['invoice_items'] = $invoice_items;
+                    // $invoices[$key]['invoice_items'] = $invoice_items;
 
                     // if (count($invoice_items)) {
                     //     foreach($invoice_items as $ikey => $ivalue) {
