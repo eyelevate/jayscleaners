@@ -2945,13 +2945,9 @@ class AdminsController extends Controller
 
             $invoices->chunk(100,function($invoices) {
                 
-                $invoices->each(function($v, $k) {
-                    $inv_items = $v->invoice_items;
-                    $v['invoice_items'] = $inv_items;
 
-                });
 
-                return response()->json(['status'=>true,'data'=>$invoices]);
+                
                 // foreach ($invoices as $key => $value) {
                 //     $invoice_items = $value->invoice_items;
                 //     $invoices[$key]['invoice_items'] = $invoice_items;
@@ -2965,6 +2961,7 @@ class AdminsController extends Controller
                     
                 // }                
             });
+            return response()->json(['status'=>true,'data'=>$invoices]);
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
             //         $invoice_items = $value->invoice_items;
