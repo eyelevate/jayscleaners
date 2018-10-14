@@ -2941,7 +2941,7 @@ class AdminsController extends Controller
         $end = 'END';
         if ($end == "END") {
             $invoices = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc')->get();
+                ->orderBy('id','desc');
 
             $invoices->chunk(100,function($inv) {
                 var_dump($inv);
