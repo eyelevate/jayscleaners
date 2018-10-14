@@ -2902,12 +2902,12 @@ class AdminsController extends Controller
         $end = 'END';
         if ($end == "END") {
             // $invoices = [];
-            $invoices = Invoice::with('invoice_items','inventory','inventoryItem')
+            $invoices = Invoice::with(['invoice_items','invoice_items.inventory','invoice_items.inventoryItem'])
                 ->where('customer_id',$customer_id)
                 ->orderBy('id','desc')
                 ->get();
 
-            $invoices->invoice_items->load('inventories','inventory_items');
+            // $invoices->invoice_items->load('inventories','inventory_items');
 
 
             // $invs->chunk(1000,function($inv) use (&$invoices){
