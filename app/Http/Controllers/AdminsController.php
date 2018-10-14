@@ -2940,13 +2940,13 @@ class AdminsController extends Controller
         $start = 'START';
         $end = 'END';
         if ($end == "END") {
-            $cmd = "SELECT * FROM invoices inv RIGHT JOIN invoice_items inv_items ON inv.id = inv_items.invoice_id WHERE customer_id = {$customer_id} AND deleted_at IS NULL ORDER BY id desc";
+            $cmd = "SELECT * FROM invoices RIGHT JOIN invoice_items ON invoices.id = invoice_items.invoice_id WHERE customer_id = {$customer_id} AND deleted_at IS NULL ORDER BY id desc";
             try {
                 $invoices = \DB::select($cmd);    
             } catch (\Illuminate\Database\QueryException $e) {
                 $invoices = [];
             }
-            
+
 
             if (count($invoices) > 0) {
                 // foreach ($invoices as $key => $value) {
