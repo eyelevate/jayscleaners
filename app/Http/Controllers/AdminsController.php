@@ -2946,7 +2946,7 @@ class AdminsController extends Controller
             $invoices->chunk(100,function($inv) {
                 $inv->each(function($v, $k) {
                     $inv_items = $v->invoice_items;
-                    $v->invoice_items = $inv_items;
+                    $v['invoice_items'] = $inv_items;
 
                 });
                 // foreach ($invoices as $key => $value) {
