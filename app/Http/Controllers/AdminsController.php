@@ -2940,9 +2940,11 @@ class AdminsController extends Controller
         $start = 'START';
         $end = 'END';
         if ($end == "END") {
+            $out = [];
             $invoices = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc')->chunk(100,function($inv) {
-                
+                ->orderBy('id','desc')->chunk(100,function($inv) use ($out) {
+                $out = $inv;
+                $out['invoice_items'] = $inv->invoice_items;
                     
 
                 
@@ -2982,7 +2984,7 @@ class AdminsController extends Controller
                 ->get(); 
         }
 
-        return response()->json($invoices);
+        return response()->json($out);
         
         if (count($invoices) >0){
             return response()->json(['status'=>true,'data'=>$invoices]);
