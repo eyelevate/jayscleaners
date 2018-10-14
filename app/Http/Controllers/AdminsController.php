@@ -2307,7 +2307,7 @@ class AdminsController extends Controller
             $invs = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc');
 
-            $invs->chunk(500,function($inv) use (&$invoices){
+            $invs->chunk(1000,function($inv) use (&$invoices){
                 $inv->map(function($v) use (&$invoices){
                     $v->invoice_items->map(function($iv){
                         $iv['inventory'] = $iv->inventory;
