@@ -2933,7 +2933,7 @@ class AdminsController extends Controller
             $invoices = [];
             collect($new)->map(function($v) use (&$invoices){
                 $v->each(function($iv) use (&$invoices) {
-                    array_push($invoices, $v);
+                    array_push($invoices, $iv);
                     return $iv;
                 });
                 return $v;
