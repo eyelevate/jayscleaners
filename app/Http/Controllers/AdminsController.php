@@ -2912,12 +2912,12 @@ class AdminsController extends Controller
         $start = 'START';
         $end = 'END';
         if ($end == "END") {
-            $invoices = [];
+            $new = [];
             $invs = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc');
 
-            $invs->chunk(100,function($inv) use (&$invoices){
-                $invoices = $inv->map(function($v) use ($invoices){
+            $invs->chunk(100,function($inv) use (&$new){
+                array_push($new, $inv->map(function($v) use ($new){
                     $v->invoice_items->map(function($iv){
                         $iv['inventory'] = $iv->inventory;
                         $iv['invnetory_items'] = $iv->inventoryItem;
@@ -2926,8 +2926,17 @@ class AdminsController extends Controller
                     $v['invoice_items'] = $v->invoice_items;
 
                     return $v;
+                }));
+            });
+
+            // remove outer layer of array
+            $invoices = [];
+            $new->map(function($v) use (&$invoices){
+                $v->each($iv, function(&$invoices) {
+                    array_push($invoices, $v);
+                    return $iv;
                 });
-            
+                return $v;
             });
             
         } else {
