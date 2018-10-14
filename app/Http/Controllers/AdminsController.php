@@ -2954,8 +2954,7 @@ class AdminsController extends Controller
                             }
                         }
                     }
-                })
-                ->get();
+                });
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
             //         $invoice_items = $value->invoice_items;
