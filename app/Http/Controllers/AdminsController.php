@@ -2951,14 +2951,14 @@ class AdminsController extends Controller
             if (count($invoices) > 0) {
                 foreach ($invoices as $key => $value) {
          
-                    $invoice_item_id = $invoices[$key]->invoice_item_id;
+                    $invoice_item_id = $value->item_id;
                     $cmd = "SELECT * FROM invoice_items WHERE id = {$invoice_item_id} AND deleted_at IS NULL";
                     try {
                         $invoice_items = \DB::select($cmd);
                     } catch (\Illuminate\Database\QueryException $e) {
                         $invoice_items = [];
                     }
-                    // $invoices[$key]['invoice_items'] = $invoice_items;
+                    $invoices[$key]->invoice_items = $invoice_items;
 
                     // if (count($invoice_items)) {
                     //     foreach($invoice_items as $ikey => $ivalue) {
