@@ -2943,9 +2943,8 @@ class AdminsController extends Controller
             $cmd = "SELECT id, company_id, customer_id, quantity, pretax, discount_id, rack, due_date, memo, status FROM invoices WHERE customer_id = {$customer_id} AND deleted_at IS NULL ORDER BY id desc";
             try {
                 $invoices = \DB::table('invoices')
-                ->rightJoin('invoice_items', 'invoices.id','=','invoice_items.invoice_id')
-                ->rightJoin('inventories','invoice_items.inventory_id','=','inventories.id')
-                ->rightJoin('invoentory_items','invoice_items.item_id','=','inventory_items.id')
+                ->join('invoice_items', 'invoices.id','=','invoice_items.invoice_id')
+
                 ->select('invoices.id',
                          'invoices.company_id',
                          'invoices.customer_id',
@@ -2956,9 +2955,7 @@ class AdminsController extends Controller
                          'invoices.due_date',
                          'invoices.memo',
                          'invoices.status',
-                         'invoice_items.*',
-                         'inventories.*',
-                         'inventory_items.*')
+                         'invoice_items.*')
                 ->get();
                 // $invoices = \DB::select($cmd)->join('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id');    
             } catch (\Illuminate\Database\QueryException $e) {
