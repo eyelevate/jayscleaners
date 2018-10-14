@@ -2931,7 +2931,7 @@ class AdminsController extends Controller
 
             // remove outer layer of array
             $invoices = [];
-            $new->map(function($v) use (&$invoices){
+            collect($new)->map(function($v) use (&$invoices){
                 $v->each($iv, function(&$invoices) {
                     array_push($invoices, $v);
                     return $iv;
