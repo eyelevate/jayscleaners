@@ -2905,9 +2905,9 @@ class AdminsController extends Controller
             $invoices = Invoice::with('invoice_items','inventory','inventoryItem')
                 ->where('customer_id',$customer_id)
                 ->orderBy('id','desc')
-                ->get()
-                ->load('invoice_items.inventory','invoice_items.inventoryItem');
-            // $invoices->invoice_items->load('inventory','inventoryItem');
+                ->get();
+
+            $invoices->invoice_items->load('invoice_items.inventory','invoice_items.inventoryItem');
 
 
             // $invs->chunk(1000,function($inv) use (&$invoices){
