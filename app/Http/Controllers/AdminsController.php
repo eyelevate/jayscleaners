@@ -2940,9 +2940,27 @@ class AdminsController extends Controller
         $start = 'START';
         $end = 'END';
         if ($end == "END") {
-            $cmd = "SELECT id, company_id, customer_id, quantity, pretax, discount_id, rack, due_date, memo, status, deleted_at FROM invoices WHERE customer_id = {$customer_id} AND deleted_at IS NULL ORDER BY id desc";
+            $cmd = "SELECT id, company_id, customer_id, quantity, pretax, discount_id, rack, due_date, memo, status FROM invoices WHERE customer_id = {$customer_id} AND deleted_at IS NULL ORDER BY id desc";
             try {
-                $invoices = \DB::select($cmd)->join('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id');    
+                $invoices = \DB::table('invoices')
+                ->rightJoin('invoice_items', 'invoices.id','=','invoice_items.invoice_id')
+                ->rightJoin('inventories','invoice_items.inventory_id','=','inventories.id')
+                ->rightJoin('invoentory_items','invoice_items.item_id','=','inventory_items.id')
+                ->select('invoices.id',
+                         'invoices.company_id',
+                         'invoices.customer_id',
+                         'invoices.quantity',
+                         'invoices.pretax',
+                         'invocies.discount_id',
+                         'invoices.rack',
+                         'invoices.due_date',
+                         'invoices.memo',
+                         'invoices.status',
+                         'invoice_items.*',
+                         'inventories.*',
+                         'inventory_items.*')
+                ->get();
+                // $invoices = \DB::select($cmd)->join('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id');    
             } catch (\Illuminate\Database\QueryException $e) {
                 $invoices = [];
             }
