@@ -2961,7 +2961,7 @@ class AdminsController extends Controller
                     
                 // }                
             });
-            return response()->json(['status'=>true,'data'=>$invoices]);
+            return response()->json(['status'=>true,'data'=>$invoices->get()]);
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
             //         $invoice_items = $value->invoice_items;
