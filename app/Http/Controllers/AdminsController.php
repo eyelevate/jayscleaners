@@ -2943,9 +2943,9 @@ class AdminsController extends Controller
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc');
 
-            $invoices->chunk(100,function($invoices) {
+            $invoices->chunk(100,function($inv) use ($invoices) {
                 
-
+                return response()->json($inv);
 
                 
                 // foreach ($invoices as $key => $value) {
@@ -2961,7 +2961,6 @@ class AdminsController extends Controller
                     
                 // }                
             });
-            return response()->json(['status'=>true,'data'=>$invoices->get()]);
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
             //         $invoice_items = $value->invoice_items;
