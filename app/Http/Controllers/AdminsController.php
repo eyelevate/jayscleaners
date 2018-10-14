@@ -2943,13 +2943,15 @@ class AdminsController extends Controller
             $invoices = Invoice::where('customer_id',$customer_id)
                 ->orderBy('id','desc');
 
-            $invoices->chunk(100,function($inv) {
+            $invoices->chunk(100,function($invoices) {
                 
-                $inv->each(function($v, $k) {
+                $invoices->each(function($v, $k) {
                     $inv_items = $v->invoice_items;
                     $v['invoice_items'] = $inv_items;
 
                 });
+
+                return response()->json(['status'=>true,'data'=>$invoices]);
                 // foreach ($invoices as $key => $value) {
                 //     $invoice_items = $value->invoice_items;
                 //     $invoices[$key]['invoice_items'] = $invoice_items;
@@ -2963,7 +2965,6 @@ class AdminsController extends Controller
                     
                 // }                
             });
-            $invoices->toArray();
             // if(count($invoices) > 0) {
             //     foreach ($invoices as $key => $value) {
             //         $invoice_items = $value->invoice_items;
