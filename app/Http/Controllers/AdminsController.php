@@ -1591,6 +1591,16 @@ class AdminsController extends Controller
         return response()->json("false");
     }
 
+    public function postApiRemoveRacksFromList(Request $request) {
+        $racks = $request->racks;
+        if (count($racks) > 0) {
+            if(Invoice::whereIn('id',$racks)->update(['racks'=>NULL,'rack_date'=>NULL])) {
+                return response()->json("true");
+            }
+        }
+        return response()->json("false");
+    }
+
 
     // public function getSingleUserData(Request $request, $search = null) {
         
@@ -2886,28 +2896,13 @@ class AdminsController extends Controller
 
     #test
     public function getApiTestWondo() {
-        $customer_id = 9933;
-        $start = 'START';
-        $end = 'END';
-        if ($end == "END") {
-            // $invoices = [];
-            $invoices = Invoice::with(['invoice_items','invoice_items.inventory','invoice_items.inventoryItem'])
-                ->where('customer_id',$customer_id)
-                ->orderBy('id','desc')
-                ->get();
-            
-        } else {
-            $invoices = Invoice::where('customer_id',$customer_id)
-                ->orderBy('id','desc')
-                ->skip($start)
-                ->take(10)
-                ->get(); 
+        $racks = [119246];
+        if (count($racks) > 0) {
+            if(Invoice::whereIn('id',$racks)->update(['racks'=>NULL,'rack_date'=>NULL])) {
+                return response()->json("true");
+            }
         }
-        
-        if (count($invoices) >0){
-            return response()->json(['status'=>true,'data'=>$invoices]);
-        } 
-        return response()->json(['status'=>false]);
+        return response()->json("false");
     }
 
 

@@ -116,6 +116,8 @@ Route::group(['middleware' => ['web']], function () {
     #Api-Profile
     Route::post('/admins/api/profiles-query',['uses'=>'AdminsController@postApiProfilesQuery']);
     Route::post('/admins/api/create-profile',['uses'=>'AdminsController@postApiCreateProfile']);
+    #Api-Racks
+    Route::post('/admins/api/remove-racks-from-list',['uses'=>'AdminsController@postApiRemoveRacksFromlist']);
     #Api-Schedule
     Route::post('/admins/api/create-schedule',['uses'=>'AdminsController@postApiCreateSchedule']);
     Route::post('/admins/api/schedule-query',['uses'=>'AdminsController@postApiScheduleQuery']);
