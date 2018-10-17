@@ -2898,7 +2898,7 @@ class AdminsController extends Controller
     public function getApiTestWondo() {
         $racks = [119246];
         if (count($racks) > 0) {
-            if(Invoice::whereIn('id',$racks)->update(['racks'=>NULL,'rack_date'=>NULL])) {
+            if(Invoice::whereIn('id',$racks)->update(['rack'=>NULL,'rack_date'=>NULL])) {
                 return response()->json("true");
             }
         }
