@@ -1592,9 +1592,9 @@ class AdminsController extends Controller
     }
 
     public function postApiRemoveRacksFromList(Request $request) {
-        $racks = $request->racks;
+        $racks =json_decode($request->racks,true);
         if (count($racks) > 0) {
-            if(Invoice::whereIn('id',$racks)->update(['racks'=>NULL,'rack_date'=>NULL])) {
+            if(Invoice::whereIn('id',$racks)->update(['rack'=>NULL,'rack_date'=>NULL,'status'=>1])) {
                 return response()->json("true");
             }
         }
