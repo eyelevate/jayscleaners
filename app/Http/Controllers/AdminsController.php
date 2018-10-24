@@ -2908,7 +2908,7 @@ class AdminsController extends Controller
         $idsStr = implode(', ', $ids);
         $customers = User::with('custids')
         ->whereIn('id',$ids)
-        ->orderBy(User::raw("FIELD(id, $idsStr)"))
+        ->orderBy(User::raw("FIELD(id, {$idsStr})"))
         ->get();
 
         if (count($customers) >0){
