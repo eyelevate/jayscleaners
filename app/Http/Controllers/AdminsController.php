@@ -2906,6 +2906,7 @@ class AdminsController extends Controller
     public function getApiTestWondo() {
         $ids = [1, 1188, 9000, 8787];
         $idsStr = implode(', ', $ids);
+        dd($idsStr);
         $customers = User::with('custids')
         ->whereIn('id',$ids)
         ->orderBy(User::raw("FIELD(id, {$idsStr})"))
