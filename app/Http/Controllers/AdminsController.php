@@ -2906,7 +2906,10 @@ class AdminsController extends Controller
     public function getApiTestWondo() {
         $ids = [1, 1188, 9000, 8787];
         
-        $customers = User::with('custids')->whereIn('id',$ids)->get();
+        $customers = User::with('custids')
+        ->whereIn('id',$ids)
+        ->orderByRaw(DB::raw("FIELD(id, $ids)"))
+        ->get();
 
         if (count($customers) >0){
             return response()->json(['status'=>true,'data'=>$customers]);
