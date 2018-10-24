@@ -2907,10 +2907,10 @@ class AdminsController extends Controller
         $ids = [1, 1188, 9000, 8787];
         $idsStr = implode(', ', $ids);
         $rawString = "FIELD(id, ".$idsStr.")";
-        
+        dd($rawString);
         $customers = User::with('custids')
         ->whereIn('id',$ids)
-        ->orderBy(User::raw($rawString))
+        ->orderBy(\DB::raw($rawString))
         ->get();
 
         if (count($customers) >0){
