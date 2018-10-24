@@ -2826,8 +2826,12 @@ class AdminsController extends Controller
 
     public function postApiCustomersIn(Request $request) {
         $ids = json_decode($request->ids,true);
-        
-        $customers = User::with('custids')->whereIn('id',$ids)->get();
+        $idsStr = implode(',', $ids);
+        $rawString = "FIELD(id, ".$idsStr.")";
+        $customers = User::with('custids')
+        ->whereIn('id',$ids)
+        ->orderBy(\DB::raw($rawString))
+        ->get();
 
         if (count($customers) >0){
             return response()->json(['status'=>true,'data'=>$customers]);
