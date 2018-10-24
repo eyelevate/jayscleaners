@@ -2824,6 +2824,17 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
 
+    public function postApiCustomersIn(Request $request) {
+        $ids = json_decode($request->ids,true);
+        
+        $customers = User::with('custids')->whereIn('id',$ids)->get();
+
+        if (count($customers) >0){
+            return response()->json(['status'=>true,'data'=>$customers]);
+        } 
+        return response()->json(['status'=>false]);
+    }
+
 
     public function postApiCustResults(Request $request) {
         $query = json_decode($request->list,true);
@@ -2893,13 +2904,14 @@ class AdminsController extends Controller
 
     #test
     public function getApiTestWondo() {
-        $racks = [119246];
-        if (count($racks) > 0) {
-            if(Invoice::whereIn('id',$racks)->update(['rack'=>NULL,'rack_date'=>NULL,'status'=>1])) {
-                return response()->json("true");
-            }
-        }
-        return response()->json("false");
+        $ids = [1, 4, 19];
+        
+        $customers = User::with('custids')->whereIn('id',$ids)->get();
+
+        if (count($customers) >0){
+            return response()->json(['status'=>true,'data'=>$customers]);
+        } 
+        return response()->json(['status'=>false]);
     }
 
 
