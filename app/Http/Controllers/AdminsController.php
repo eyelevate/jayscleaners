@@ -2904,7 +2904,7 @@ class AdminsController extends Controller
 
     #test
     public function getApiTestWondo() {
-        $ids = [1, 4, 19];
+        $ids = [1, 1188, 9000, 8787];
         
         $customers = User::with('custids')->whereIn('id',$ids)->get();
 
