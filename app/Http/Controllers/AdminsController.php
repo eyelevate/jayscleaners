@@ -2122,9 +2122,10 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
     public function postApiInvoiceGrab(Request $request) {
-        $invoices = Invoice::find($request->invoice_id);
+        $invoices = Invoice::with(['invoice_items','invoice_items.inventory','invoice_items.inventoryItem'])
+        ->find($request->invoice_id);
         if (!is_null($invoices)) {
-            $invoices['invoice_items'] = $invoices->invoice_items;
+
             return response()->json(['status'=>true,'data'=>$invoices]);
         }
         return response()->json(['status'=>false]);
@@ -2908,17 +2909,13 @@ class AdminsController extends Controller
 
     #test
     public function getApiTestWondo() {
-        $ids = [1, 1188, 9000, 8787];
-        $idsStr = implode(',', $ids);
-        $rawString = "FIELD(id, ".$idsStr.")";
-        $customers = User::with('custids')
-        ->whereIn('id',$ids)
-        ->orderBy(\DB::raw($rawString))
-        ->get();
 
-        if (count($customers) >0){
-            return response()->json(['status'=>true,'data'=>$customers]);
-        } 
+        $invoices = Invoice::with(['invoice_items','invoice_items.inventory','invoice_items.inventoryItem'])
+        ->find(100000);
+        if (!is_null($invoices)) {
+
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        }
         return response()->json(['status'=>false]);
     }
 
