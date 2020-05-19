@@ -2184,7 +2184,6 @@ class AdminsController extends Controller
 
     public function postApiEditInvoice(Request $request) {
         $invoice = Invoice::find($request->invoice_id);
-
         $i = json_decode($request->invoice,true);
         $taxes = Tax::where('company_id',$i['company_id'])->orderBy('id','desc')->first();
         $tax_rate = $taxes->rate;
@@ -2193,8 +2192,6 @@ class AdminsController extends Controller
         $discounted_subtotal = $subtotal - $discount_amount;
         $tax = round($discounted_subtotal * $tax_rate,2);
         $total = $discounted_subtotal + $tax;
-        $tax = round($subtotal * $tax_rate,2);
-        $total = $subtotal + $tax;
         $invoice->company_id =$i['company_id'];
         $invoice->customer_id =$i['customer_id'];
         $invoice->quantity = $i['quantity'];
