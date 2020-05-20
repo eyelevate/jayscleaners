@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Invoice;
 use App\User;
+/**
+ * Status
+ * 1 invoice paid in full
+ * 2 invoice partially paid (accounts)
+ * 3 new invoice started for accounts
+ */
 class Transaction extends Model
 {
     use SoftDeletes;
