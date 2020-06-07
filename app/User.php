@@ -34,6 +34,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Custid','customer_id');
     }
 
+    public function companies() {
+        return $this->belongsTo('App\Company','company_id','id');
+    }
+
 
     static public function role($role_id) {
         switch ($role_id) {

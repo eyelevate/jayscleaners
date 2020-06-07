@@ -86,11 +86,11 @@ class Customer extends Model
     public static function prepareView($data){
         if(isset($data['company_id'])){
             switch($data['company_id']) {
-                case 1: //Montlake
+                case 2: //Montlake
                     $data['company_name'] = 'Montlake';
                 break;
 
-                case 2: //Roosevelt
+                case 1: //Roosevelt
                     $data['company_name'] = 'Roosevelt';
                 break;
 

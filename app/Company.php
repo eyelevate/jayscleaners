@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
     use SoftDeletes;
+    
+    public function users()
+    {
+        return $this->hasMany('App\User','company_id');
+    }
     public static function prepareCompany($data){
         if(isset($data['store_hours'])){
             $data['store_hours'] = json_decode($data['store_hours'],true);
