@@ -12,6 +12,7 @@ class CreateZipcodeRequestsTable extends Migration
      */
     public function up()
     {
+        Schema::drop('zipcode_requests');
         Schema::create('zipcode_requests', function (Blueprint $table) {
             $table->increments('id');
             $table->string('zipcode',10)->nullable();

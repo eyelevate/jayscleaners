@@ -12,6 +12,7 @@ class CreateDroutesTable extends Migration
      */
     public function up()
     {
+        Schema::drop('droutes');
         Schema::create('droutes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('company_id', false, true)->length(11)->nullable();

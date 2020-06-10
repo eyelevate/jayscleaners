@@ -12,6 +12,7 @@ class CreateCreditsTable extends Migration
      */
     public function up()
     {
+        Schema::drop('credits');
         Schema::create('credits', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id', false, true)->length(11)->nullable();
