@@ -12,6 +12,7 @@ class CreateZipcodesTable extends Migration
      */
     public function up()
     {
+        Schema::drop('zipcodes');
         Schema::create('zipcodes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('delivery_id', false, true)->length(11)->nullable();

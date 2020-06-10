@@ -12,6 +12,7 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
+        Schema::drop('profiles');
         Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('company_id', false, true)->length(11)->nullable();

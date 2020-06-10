@@ -12,6 +12,7 @@ class CreateAddressesTable extends Migration
      */
     public function up()
     {
+        Schema::drop('addresses');
         Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id', false, true)->length(11)->nullable();

@@ -12,6 +12,7 @@ class CreateCardsTable extends Migration
      */
     public function up()
     {
+        Schema::drop('cards');
         Schema::create('cards', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('company_id', false, true)->length(11)->nullable();
