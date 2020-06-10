@@ -1450,18 +1450,19 @@ class AdminsController extends Controller
     }
 
     public function postApiCreateInvite(Request $request) {
-        $company_id = $request->company_id;
-        $customer_id = $request->customer_id;
-        $mobile_number = $request->mobile_number;
+        // $company_id = $request->company_id;
+        // $customer_id = $request->customer_id;
+        // $mobile_number = $request->mobile_number;
 
-        $invite = new Invite;
-        $invite->company_id = $company_id;
-        $invite->user_id = $customer_id;
-        $invite->mobile_number = $mobile_number;
-        if($invite->save()) {
-            return response()->json(['status'=>true]);
-        }
-        return response()->json(['status'=>false]);
+        // $invite = new Invite;
+        // $invite->company_id = $company_id;
+        // $invite->user_id = $customer_id;
+        // $invite->mobile_number = $mobile_number;
+        // if($invite->save()) {
+        //     return response()->json(['status'=>true]);
+        // }
+        // return response()->json(['status'=>false]);
+        return response()->json(['status'=>true]);
     }
 
     public static function postUpdateTag(Request $request) {
