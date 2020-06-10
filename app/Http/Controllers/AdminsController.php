@@ -1805,13 +1805,23 @@ class AdminsController extends Controller
     #Color
     public function postApiColorsQuery(Request $request) {
         $colors = Color::where('company_id',$request->company_id)->orderBy('ordered','asc')->get();
-        return response()->json(['status'=>(count($colors) > 0),'data'=>$colors]);
+        if (count($colors) > 0) {
+            return response()->json(['status'=>true,'data'=>$colors]);
+
+        }
+        return response()->json(['status'=>false,'data'=>null]);
+
     }
 
     #Company
     public function postApiCompanyGrab(Request $request) {
         $companies = Company::find($request->company_id);
-        return response()->json(['status'=>(!is_null($companies)),'data'=>$companies]);
+        if (!is_null($companies)) {
+            return response()->json(['status'=>true,'data'=>$companies]);
+
+        }
+        return response()->json(['status'=>true,'data'=>null]);
+
     }
 
     #Credit
@@ -1840,7 +1850,12 @@ class AdminsController extends Controller
 
     public function postApiCreditQuery(Request $request) {
         $credits = Credit::where('customer_id',$request->customer_id)->get();
-        return response()->json(['status'=>(!is_null($credits)),'data'=>$credits]);
+        if (!is_null($credits)) {
+            return response()->json(['status'=>true,'data'=>$credits]);
+
+        }
+        return response()->json(['status'=>false,'data'=>null]);
+
     }
 
     #Custid
@@ -1848,7 +1863,11 @@ class AdminsController extends Controller
         $custids = Custid::where('customer_id',$request->customer_id)
         ->where('status',$request->status)
         ->get();
-        return response()->json(['status'=>(!is_null($custids)),'data'=>$custids]);
+        if (!is_null($custids)) {
+            return response()->json(['status'=>true,'data'=>$custids]);
+
+        }
+        return response()->json(['status'=>false,'data'=>null]);
     }
     public function postApiCheckMark(Request $request) {
         $custids = Custid::where('mark',$request->mark)->first();
@@ -1890,8 +1909,10 @@ class AdminsController extends Controller
     #Delivery
     public function postApiDeliveryGrab(Request $request) {
         $delivery = Delivery::find($request->delivery_id);
-        return response()->json(['status'=>(!is_null($delivery)),'data'=>$delivery]);
-
+        if(!is_null($delivery)) {
+            return response()->json(['status'=>true,'data'=>$delivery]);
+        }
+        return response()->json(['status'=>false,'data'=>null]);
     }
 
     #Discount
@@ -1899,7 +1920,11 @@ class AdminsController extends Controller
         $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)
         ->where('inventory_id',$request->inventory_id)
         ->get();
-        return response()->json(['status'=>(count($invoice_items)>0),'data'=>$invoice_items]);
+        if(count($invoice_items)>0) {
+            return response()->json(['status'=> true,'data'=>$invoice_items]);
+
+        }
+        return response()->json(['status'=> false,'data'=>null]);
 
     }
 
@@ -1907,8 +1932,10 @@ class AdminsController extends Controller
         $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)
         ->where('item_id',$request->item_id)
         ->get();
-        return response()->json(['status'=>(count($invoice_items)>0),'data'=>$invoice_items]);
-
+        if(count($invoice_items)>0){
+            return response()->json(['status'=>true,'data'=>$invoice_items]);
+        }
+        return response()->json(['status'=>false,'data'=>null]);
     }
 
     public function postApiDiscountQuery(Request $request) {
@@ -1917,20 +1944,30 @@ class AdminsController extends Controller
         ->where('end_date','>=',$request->end_date)
         ->where('inventory_id',$request->inventory_id)
         ->get();
-        return response()->json(['status'=>(count($discounts) > 0),'data'=>$discounts]);
+        if(count($discounts) > 0){
+            return response()->json(['status'=>true,'data'=>$discounts]);
+        }
+        return response()->json(['status'=>false,'data'=>$discounts]);
+        
     }
     public function postApiDiscountGrab(Request $request) {
         $discounts = Discount::find($request->discount_id);
-        return response()->json(['status'=>(!is_null($discounts)),'data'=>$discounts]);
+        if(!is_null($discounts)) {
+            return response()->json(['status'=>true,'data'=>$discounts]);
 
+        }
+        return response()->json(['status'=>false,'data'=>null]);
     }
 
     public function postApiDiscountGrabByCompany(Request $request) {
         $discounts = Discount::where('company_id',$request->company_id)
         ->orderBy('id','desc')
         ->get();
-        return response()->json(['status'=>(!is_null($discounts)),'data'=>$discounts]);
+        if(!is_null($discounts)) {
+            return response()->json(['status'=>true,'data'=>$discounts]);
 
+        }
+        return response()->json(['status'=>false,'data'=>null]);
     }
 
     #Inventory
