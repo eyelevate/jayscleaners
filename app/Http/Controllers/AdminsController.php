@@ -1454,10 +1454,10 @@ class AdminsController extends Controller
         $customer_id = $request->customer_id;
         $mobile_number = $request->mobile_number;
 
-        // $invite = new Invite;
-        // $invite->company_id = $company_id;
-        // $invite->user_id = $customer_id;
-        // $invite->mobile_number = $mobile_number;
+        $invite = new Invite;
+        $invite->company_id = $company_id;
+        $invite->user_id = $customer_id;
+        $invite->mobile_number = $mobile_number;
         // if($invite->save()) {
         //     return response()->json(['status'=>true]);
         // }
