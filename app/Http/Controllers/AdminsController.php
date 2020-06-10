@@ -2147,7 +2147,6 @@ class AdminsController extends Controller
         return response()->json(['status'=>false]);
     }
     public function postApiCreateInvoice(Request $request) {
-
         $invoice = new Invoice();
         $i = json_decode($request->invoice,true);
         $ii = json_decode($request->items,true);
@@ -2192,7 +2191,7 @@ class AdminsController extends Controller
             }
             
 
-            return response()->json(['status'=>true,'invoice'=>$invoice]);
+            return response()->json(['status'=>true,'data'=>$invoice]);
         }
     
         return response()->json(['status'=>false]);
