@@ -73,7 +73,9 @@ Route::group(['middleware' => ['web']], function () {
     #Api-InventoryItem
     Route::post('/admins/api/item-grab',['uses'=>'AdminsController@postApiItemGrab']);
     Route::post('/admins/api/delete-inventory-item',['uses'=>'AdminsController@postApiDeleteInventoryItem']);
-    #Api-Invoice
+	#Api-invites
+	Route::post('/admins/api/create-invite',['uses'=>'AdminsController@postApiCreateInvite']);
+	#Api-Invoice
     Route::post('/admins/api/invoice-data',['uses'=>'AdminsController@postApiInvoiceData']);
     Route::post('/admins/api/rack-single',['uses'=>'AdminsController@postRackSingle']);
     Route::post('/admins/api/delete-rack-single',['uses'=>'AdminsController@postDeleteRackSingle']);
