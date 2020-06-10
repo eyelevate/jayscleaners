@@ -738,16 +738,11 @@ class AdminsController extends Controller
     }
 
     public function getApiUpdate($id = null, $api_token = null, $server_at = null, $up = null, $upd = null){
-
-
         if($server_at){
             $server_at = date('Y-m-d H:i:s',$server_at);
             $up =json_decode(str_replace(['up=','__'], ['',' '], $up),true);
             $upd = json_decode(str_replace(['upd=','__'],['',' '],$upd),true);
             $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
-
-
-
             if ($authenticate){
                 // create items to return
                 $updates = Admin::makeUpdate($authenticate,$server_at);
@@ -766,8 +761,6 @@ class AdminsController extends Controller
         
             } 
         }
-
-
         return abort(403, 'Unauthorized action.');
     }
 
@@ -785,8 +778,6 @@ class AdminsController extends Controller
                                          'user_id'=>Auth::user()->id
                                          ]);
             } 
-
-
         } 
 
         // If not authorized then return false
@@ -1009,9 +1000,6 @@ class AdminsController extends Controller
                 break;               
         }
 
-
-
-
         return response()->json(['status'=>200,
                                  'data'=>$data[$table]]);
 
@@ -1020,8 +1008,6 @@ class AdminsController extends Controller
     public function postApiAuto(Request $request) {
         $id = Input::get('cid'); 
         $api_token = Input::get('api'); 
-
-
         $authenticate = Company::where('id',$id)->where('api_token',$api_token)->first();
 
         if ($authenticate){
@@ -1050,7 +1036,6 @@ class AdminsController extends Controller
                                      ]);
     
         } 
-
 
         return abort(403, 'Unauthorized action.');
     }
@@ -1544,39 +1529,29 @@ class AdminsController extends Controller
         if (isset($discount_id)) {
             $discounts = Discount::find($discount_id);
             $new_pretax_sum = 0;
-
             if ($discounts) {
                 $discount_rate = $discounts->rate;
                 $discount_price = $discounts->price;
                 $discount_inventory_id = $discounts->inventory_id;
                 $discount_item_id = $discounts->item_id;
-                
                 if (isset($discount_price)) {
-
                     $new_pretax_sum = ($pretax_sum - $discount_price);
                 }
-
                 if (isset($discount_rate)) {
                     $discounted_amount = round($pretax_sum * $discount_rate,2);
                     $new_pretax_sum = money_format('%i',$pretax_sum - $discounted_amount);
                 }
-
-                
             }
-
-
             $pretax_sum = $new_pretax_sum;
             $tax_sum = money_format('%i',round($pretax_sum * $tax,2));
             $total_sum = money_format('%i',round($pretax_sum + $tax_sum,2));
         } 
-
         $invoices->pretax = $pretax_sum;
         $invoices->tax = $tax_sum;
         $invoices->total = $total_sum;
         if ($invoices->save()) {
             return response()->json(['status'=>true]);
         }
-
         return response()->json(['status'=>false]);
     }
 
@@ -1784,29 +1759,17 @@ class AdminsController extends Controller
 
     public function postApiAddressGrab(Request $request) {
         $addr = Address::find($request->address_id);
-
-        if (!is_null($addr)) {
-            return response()->json(['status'=>true,'data'=>$addr]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($addr)),'data'=>$addr]);
     }
 
     #Card
     public function postApiCardGrab(Request $request) {
         $card = Card::find($request->card_id);
-
-        if (!is_null($card)) {
-            return response()->json(['status'=>true,'data'=>$card]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($card)),'data'=>$card]);
     }
     public function postApiCardGrabRoot(Request $request) {
         $card = Card::where('payment_id',$request->root_id)->first();
-
-        if (!is_null($card)) {
-            return response()->json(['status'=>true,'data'=>$card]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($card)),'data'=>$card]);
     }
     public function postApiCreateCard(Request $request) {
         $card = new Card();
@@ -1842,19 +1805,13 @@ class AdminsController extends Controller
     #Color
     public function postApiColorsQuery(Request $request) {
         $colors = Color::where('company_id',$request->company_id)->orderBy('ordered','asc')->get();
-        if (count($colors) > 0) {
-            return response()->json(['status'=>true,'data'=>$colors]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($colors) > 0),'data'=>$colors]);
     }
 
     #Company
     public function postApiCompanyGrab(Request $request) {
         $companies = Company::find($request->company_id);
-        if (!is_null($companies)) {
-            return response()->json(['status'=>true,'data'=>$companies]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($companies)),'data'=>$companies]);
     }
 
     #Credit
@@ -1883,10 +1840,7 @@ class AdminsController extends Controller
 
     public function postApiCreditQuery(Request $request) {
         $credits = Credit::where('customer_id',$request->customer_id)->get();
-        if (!is_null($credits)) {
-            return response()->json(['status'=>true,'data'=>$credits]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($credits)),'data'=>$credits]);
     }
 
     #Custid
@@ -1894,10 +1848,7 @@ class AdminsController extends Controller
         $custids = Custid::where('customer_id',$request->customer_id)
         ->where('status',$request->status)
         ->get();
-        if (!is_null($custids)) {
-            return response()->json(['status'=>true,'data'=>$custids]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($custids)),'data'=>$custids]);
     }
     public function postApiCheckMark(Request $request) {
         $custids = Custid::where('mark',$request->mark)->first();
@@ -1939,10 +1890,8 @@ class AdminsController extends Controller
     #Delivery
     public function postApiDeliveryGrab(Request $request) {
         $delivery = Delivery::find($request->delivery_id);
-        if (!is_null($delivery)) {
-            return response()->json(['status'=>true,'data'=>$delivery]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($delivery)),'data'=>$delivery]);
+
     }
 
     #Discount
@@ -1950,20 +1899,16 @@ class AdminsController extends Controller
         $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)
         ->where('inventory_id',$request->inventory_id)
         ->get();
-        if (count($invoice_items)>0) {
-            return response()->json(['status'=>true,'data'=>$invoice_items]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($invoice_items)>0),'data'=>$invoice_items]);
+
     }
 
     public function postApiInvoiceItemDiscountFindItemId(Request $request) {
         $invoice_items = InvoiceItem::where('invoice_id',$request->invoice_id)
         ->where('item_id',$request->item_id)
         ->get();
-        if (count($invoice_items)>0) {
-            return response()->json(['status'=>true,'data'=>$invoice_items]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($invoice_items)>0),'data'=>$invoice_items]);
+
     }
 
     public function postApiDiscountQuery(Request $request) {
@@ -1972,28 +1917,20 @@ class AdminsController extends Controller
         ->where('end_date','>=',$request->end_date)
         ->where('inventory_id',$request->inventory_id)
         ->get();
-        if (count($discounts) > 0) {
-
-            return response()->json(['status'=>true,'data'=>$discounts]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($discounts) > 0),'data'=>$discounts]);
     }
     public function postApiDiscountGrab(Request $request) {
         $discounts = Discount::find($request->discount_id);
-        if (!is_null($discounts)) {
-            return response()->json(['status'=>true,'data'=>$discounts]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($discounts)),'data'=>$discounts]);
+
     }
 
     public function postApiDiscountGrabByCompany(Request $request) {
         $discounts = Discount::where('company_id',$request->company_id)
         ->orderBy('id','desc')
         ->get();
-        if (!is_null($discounts)) {
-            return response()->json(['status'=>true,'data'=>$discounts]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($discounts)),'data'=>$discounts]);
+
     }
 
     #Inventory
@@ -2001,18 +1938,13 @@ class AdminsController extends Controller
         $inventories = Inventory::with(['inventory_items'])->where('company_id',$request->company_id)
         ->orderBy('ordered','asc')
         ->get();
-        if (count($inventories) > 0) {
-            return response()->json(['status'=>true,'data'=>$inventories]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($inventories) > 0),'data'=>$inventories]);
+
     }
     public function postApiInventoryGrab(Request $request) {
         $inventory = Inventory::find($request->inventory_id);
-        if (!is_null($inventory)) {
-            
-            return response()->json(['status'=>true,'data'=>$inventory]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($inventory)),'data'=>$inventory]);
+
     }
 
     #InventoryItem
@@ -2025,20 +1957,15 @@ class AdminsController extends Controller
     }
     public function postApiItemGrab(Request $request) {
         $items = InventoryItem::find($request->item_id);
-        if (!is_null($items)) {
-            
-            return response()->json(['status'=>true,'data'=>$items]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($items)),'data'=>$items]);
+
     }
 
     #Invoice
     public function postApiInvoiceQueryTransactionId(Request $request) {
         $invoices = Invoice::where('transaction_id',$request->transaction_id)->get();
-        if (!is_null($invoices)) {
-            return response()->json(['status'=>true,'data'=>$invoices]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($invoices)),'data'=>$invoices]);
+
     }
     public function postApiDeleteInvoice(Request $request) {
         $invoices = Invoice::find($request->invoice_id);
@@ -2113,7 +2040,7 @@ class AdminsController extends Controller
         if ($invoices->save()) {
             return response()->json(['status'=>true,'data'=>$invoices]);
         }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
 
     public function postApiRestoreInvoice(Request $request) {
@@ -2124,7 +2051,7 @@ class AdminsController extends Controller
         if ($invoices->save()) {
             return response()->json(['status'=>true,'data'=>$invoices]);
         }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
     public function postApiInvoiceGrabWithTrashed(Request $request) {
         $invoices = Invoice::withTrashed()->where('id',$request->invoice_id)->get();
@@ -2135,16 +2062,13 @@ class AdminsController extends Controller
             
             return response()->json(['status'=>true,'data'=>$invoices]);
         }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
     public function postApiInvoiceGrab(Request $request) {
         $invoices = Invoice::with(['invoice_items','invoice_items.inventory','invoice_items.inventoryItem'])
         ->find($request->invoice_id);
-        if (!is_null($invoices)) {
-
-            return response()->json(['status'=>true,'data'=>$invoices]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($invoices)),'data'=>$invoices]);
+    
     }
     public function postApiCreateInvoice(Request $request) {
         $invoice = new Invoice();
@@ -2194,7 +2118,7 @@ class AdminsController extends Controller
             return response()->json(['status'=>true,'data'=>$invoice]);
         }
     
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
 
     public function postApiEditInvoice(Request $request) {
@@ -2266,11 +2190,7 @@ class AdminsController extends Controller
                 }
             }
         }
-        if ($count_racks == 0){
-            return response()->json(['status'=>true]);
-        } 
-        return response()->json(['status'=>false,'data'=>$errors]);
-
+        return response()->json(['status'=>($count_racks == 0), 'data'=>$errors]);
     }
     public function postApiSyncRackableInvoice(Request $request) {
         $invoice_id = $request->invoice_id;
@@ -2309,12 +2229,7 @@ class AdminsController extends Controller
         } else {
             $invoices = [];
         }
-
-        if (count($invoices) > 0) {
-            return response()->json(['status'=>true,'data'=>$invoices]);
-        } 
-
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($invoices) > 0),'data'=>$invoices]);
     }
 
     public function postApiInvoiceGrabCount(Request $request) {
@@ -2342,11 +2257,7 @@ class AdminsController extends Controller
                 ->take(10)
                 ->get(); 
         }
-        
-        if (count($invoices) >0){
-            return response()->json(['status'=>true,'data'=>$invoices]);
-        } 
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($invoices) >0),'data'=>$invoices]);
     }
 
     public function postApiSyncCustomer(Request $request) {
@@ -2367,22 +2278,13 @@ class AdminsController extends Controller
         } else {
             $invoices = [];
         }
-        if (count($invoices) > 0) {
-            return response()->json(['status'=>true,'data'=>$invoices]);
-        } 
-
-        return response()->json(['status'=>false]);
-        
+        return response()->json(['status'=>(count($invoices) > 0),'data'=>$invoices]);
     }
 
     #InvoiceItem
     public function postApiInvoiceItemGrab(Request $request) {
         $invoice_item = InvoiceItem::find($request->item_id);
-        if (!is_null($invoice_item)) {
-            
-            return response()->json(['status'=>true,'data'=>$invoice_item]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($invoice_item)) ,'data'=>$invoice_item]);
     }
     public function postApiCreateInvoiceItem(Request $request) {
         $ii = json_decode($request->items,true);
@@ -2411,16 +2313,13 @@ class AdminsController extends Controller
             return response()->json(['status'=>true,'data'=>$invoice_item]);
         }
     
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
 
     #Memo
     public function postApiMemosQuery(Request $request) {
         $memos = Memo::where('company_id',$request->company_id)->get();
-        if (!is_null($memos)) {
-            return response()->json(['status'=>true,'data'=>$memos]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($memos)),'data'=>$memos]);
     }
 
     #Profile
@@ -2438,49 +2337,34 @@ class AdminsController extends Controller
     }
     public function postApiProfilesQuery(Request $request) {
         $profiles = Profile::where('company_id',$request->company_id)
-        ->where('user_id',$request->customer_id)
-        ->get();
-        if (count($profiles)>0) {
-            return response()->json(['status'=>true,'data'=>$profiles]);
-        }
-        return response()->json(['status'=>false]);
+            ->where('user_id',$request->customer_id)
+            ->get();
+        return response()->json(['status'=>(count($profiles)>0),'data'=>$profiles]);
     }
 
     #Transaction
     public function postApiTransactionGrab(Request $request) {
         $transactions = Transaction::find($request->transaction_id);
-        if (!is_null($transactions)) {
-            return response()->json(['status'=>true,'data'=>$transactions]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>!is_null($transactions),'data'=>$transactions]);
     }
     public function postApiTransactionQuery(Request $request) {
         $transactions = Transaction::where('customer_id',$request->customer_id)
-        ->orderBy('id','desc')
-        ->get();
-        if (count($transactions)>0) {
-            return response()->json(['status'=>true,'data'=>$transactions]);
-        }
-        return response()->json(['status'=>false]);
+            ->orderBy('id','desc')
+            ->get();
+        return response()->json(['status'=>(count($transactions)>0),'data'=>$transactions]);
     }
     public function postApiTransactionPaymentQuery(Request $request) {
         $transactions = Transaction::where('customer_id',$request->customer_id)
-        ->where('status',2)
-        ->orderBy('id','desc')
-        ->get();
-        if (count($transactions)>0) {
-            return response()->json(['status'=>true,'data'=>$transactions]);
-        }
-        return response()->json(['status'=>false]);
+            ->where('status',2)
+            ->orderBy('id','desc')
+            ->get();
+        return response()->json(['status'=>(count($transactions)>0),'data'=>$transactions]);
     }
     public function postApiUpdateTransaction(Request $request) {
         $transactions = Transaction::where('status',3)
         ->where('customer_id',$request->customer_id)
         ->get();
         $t = json_decode($request->transaction,true);
-        
-
-        
         if (count($transactions) > 0) {
             foreach ($transactions as $tran) {
                 $trans = Transaction::find($tran->id);
@@ -2548,7 +2432,7 @@ class AdminsController extends Controller
         if ($trans->save()) {
             return response()->json(['status'=>true,'data'=>$trans]);
         }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=>null]);
     }
 
     public function postApiLastTransactionGrab(Request $request) {
@@ -2557,21 +2441,16 @@ class AdminsController extends Controller
         ->orderBy('id','desc')
         ->limit(1)
         ->get();
+        return response()->json(['status'=>(count($trans)>0),'data'=>$trans]);
 
-        if (count($trans)>0) {
-            return response()->json(['status'=>true,'data'=>$trans]);
-        }
-        return response()->json(['status'=>false]);
     }
 
     public function postApiCheckAccount(Request $request) {
         $trans = Transaction::where('customer_id',$request->customer_id)
         ->where('status',3)
         ->get();
-        if (count($trans)>0) {
-            return response()->json(['status'=>true,'data'=>$trans]);
-        }
-        return response()->json(['status'=>false]);
+  
+        return response()->json(['status'=>(count($trans)>0),'data'=>$trans]);
     }
 
     #Schedule
@@ -2600,17 +2479,12 @@ class AdminsController extends Controller
         $sch = Schedule::where('customer_id',$request->customer_id)
         ->where('status','<',12)
         ->get();
-        if (count($sch) > 0) {
-            return response()->json(['status'=>true,'data'=>$sch]);
-        }
-        return response()->json(['status'=>false]);
+  
+        return response()->json(['status'=>(count($sch) > 0),'data'=>$sch]);
     }
     public function postApiScheduleGrab(Request $request) {
         $sch = Schedule::find($request->id);
-        if (!is_null($sch)) {
-            return response()->json(['status'=>true,'data'=>$sch]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(!is_null($sch)),'data'=>$sch]);
     }
 
     #Tax
@@ -2618,10 +2492,8 @@ class AdminsController extends Controller
         $taxes = Tax::where('company_id',$request->company_id)
         ->where('status',$request->status)
         ->get();
-        if (!is_null($taxes)) {
-            return response()->json(['status'=>true,'data'=>$taxes]);
-        }
-        return response()->json(['status'=>false]);
+
+        return response()->json(['status'=>(!is_null($taxes)),'data'=>$taxes]);
     }
 
 
@@ -2723,7 +2595,7 @@ class AdminsController extends Controller
             return response()->json(['status'=>true,'data'=>$customer]);
         }
     
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
     public function postApiCustomerDelete(Request $request) {
         $user = User::find($request->customer_id);
@@ -2841,7 +2713,7 @@ class AdminsController extends Controller
             }
             return response()->json(['status'=>true,'data'=>$customers]);
         } 
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
 
     public function postApiCustomersIn(Request $request) {
@@ -2852,11 +2724,8 @@ class AdminsController extends Controller
         ->whereIn('id',$ids)
         ->orderBy(\DB::raw($rawString))
         ->get();
+        return response()->json(['status'=>(count($customers) >0),'data'=>$customers]);
 
-        if (count($customers) >0){
-            return response()->json(['status'=>true,'data'=>$customers]);
-        } 
-        return response()->json(['status'=>false]);
     }
 
 
@@ -2891,7 +2760,7 @@ class AdminsController extends Controller
             }
             return response()->json(['status'=>true,'data'=>$customers]);
         } 
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>false, 'data'=> null]);
     }
 
     public function postApiCustomersRowCap(Request $request) {
@@ -2918,11 +2787,7 @@ class AdminsController extends Controller
     #zipcode
     public function postApiZipcodeQuery(Request $request) {
         $zips = Zipcode::where('zipcode',$request->zipcode)->get();
-
-        if (count($zips) > 0) {
-            return response()->json(['status'=>true,'data'=>$zips]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>(count($zips) > 0),'data'=>$zips]);
     }
     #Last
 
