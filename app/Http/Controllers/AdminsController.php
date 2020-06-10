@@ -2067,8 +2067,9 @@ class AdminsController extends Controller
     public function postApiInvoiceGrab(Request $request) {
         $invoices = Invoice::with(['invoice_items','invoice_items.inventory','invoice_items.inventoryItem'])
         ->find($request->invoice_id);
-        return response()->json(['status'=>(!is_null($invoices)),'data'=>$invoices]);
-    
+        if (!is_null($invoices))
+            return response()->json(['status'=>true,'data'=>$invoices]);
+        return response()->json(['status'=>false,'data'=>null]);
     }
     public function postApiCreateInvoice(Request $request) {
         $invoice = new Invoice();
