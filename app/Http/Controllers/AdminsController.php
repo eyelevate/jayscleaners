@@ -1759,17 +1759,32 @@ class AdminsController extends Controller
 
     public function postApiAddressGrab(Request $request) {
         $addr = Address::find($request->address_id);
-        return response()->json(['status'=>(!is_null($addr)),'data'=>$addr]);
+        if(!is_null($addr)) {
+            return response()->json(['status'=>true,'data'=>$addr]);
+
+        }
+        return response()->json(['status'=>false,'data'=>null]);
+
     }
 
     #Card
     public function postApiCardGrab(Request $request) {
         $card = Card::find($request->card_id);
-        return response()->json(['status'=>(!is_null($card)),'data'=>$card]);
+        if(!is_null($card)) {
+            return response()->json(['status'=>true,'data'=>$card]);
+
+        }
+        return response()->json(['status'=>false,'data'=>null]);
+
     }
     public function postApiCardGrabRoot(Request $request) {
         $card = Card::where('payment_id',$request->root_id)->first();
-        return response()->json(['status'=>(!is_null($card)),'data'=>$card]);
+        if(!is_null($card)) {
+            return response()->json(['status'=>true,'data'=>$card]);
+
+        }
+        return response()->json(['status'=>false,'data'=>null]);
+
     }
     public function postApiCreateCard(Request $request) {
         $card = new Card();
@@ -2882,7 +2897,12 @@ class AdminsController extends Controller
     #zipcode
     public function postApiZipcodeQuery(Request $request) {
         $zips = Zipcode::where('zipcode',$request->zipcode)->get();
-        return response()->json(['status'=>(count($zips) > 0),'data'=>$zips]);
+        if(count($zips) > 0) {
+            return response()->json(['status'=>true,'data'=>$zips]);
+
+        }
+        return response()->json(['status'=>false,'data'=>null]);
+
     }
     #Last
 
