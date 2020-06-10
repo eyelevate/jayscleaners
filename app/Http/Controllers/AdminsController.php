@@ -32,6 +32,7 @@ use App\Invoice;
 use App\InvoiceItem;
 use App\Inventory;
 use App\InventoryItem;
+use App\Invite;
 use App\Color;
 use App\Delivery;
 use App\Discount;
@@ -1458,11 +1459,10 @@ class AdminsController extends Controller
         $invite->company_id = $company_id;
         $invite->user_id = $customer_id;
         $invite->mobile_number = $mobile_number;
-        // if($invite->save()) {
-        //     return response()->json(['status'=>true]);
-        // }
-        // return response()->json(['status'=>false]);
-        return response()->json(['status'=>true]);
+        if($invite->save()) {
+            return response()->json(['status'=>true]);
+        }
+        return response()->json(['status'=>false]);
     }
 
     public static function postUpdateTag(Request $request) {
