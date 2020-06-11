@@ -1453,15 +1453,15 @@ class AdminsController extends Controller
         $company_id = $request->company_id;
         $customer_id = $request->customer_id;
         $mobile_number = $request->mobile_number;
-
-        $invite = new Invite;
-        $invite->company_id = $company_id;
-        $invite->user_id = $customer_id;
-        $invite->mobile_number = $mobile_number;
-        if($invite->save()) {
-            return response()->json(['status'=>true]);
-        }
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>true]);
+        // $invite = new Invite;
+        // $invite->company_id = $company_id;
+        // $invite->user_id = $customer_id;
+        // $invite->mobile_number = $mobile_number;
+        // if($invite->save()) {
+        //     return response()->json(['status'=>true]);
+        // }
+        // return response()->json(['status'=>false]);
     }
 
     public static function postUpdateTag(Request $request) {
