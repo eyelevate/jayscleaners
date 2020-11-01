@@ -78,7 +78,7 @@
 				</ul>
 				<ul class="copyright">
 					<li>&copy; {{ date('Y') }}</li><li> Jays Cleaners</li>
-					<li><a href="{{ route('pages_terms') }}">Terms & Privay Policy</a></li>
+					<li><a href="{{ route('pages_terms') }}">Terms & Privacy Policy</a></li>
 				</ul>
 
 			</footer>
