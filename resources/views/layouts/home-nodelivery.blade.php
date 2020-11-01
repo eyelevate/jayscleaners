@@ -50,7 +50,7 @@
 						<li class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:20px;">
 							<ul>
 								<li><strong><u>For general assistance</u></strong></li>
-								<li><i class="fa fa-envelope" aria-hidden="true"></i> Email Us: <strong>young@jayscleaners.com</strong></li>
+								<li><i class="fa fa-envelope" aria-hidden="true"></i> Email Us: <strong>owner@jayscleaners.com</strong></li>
 								<li><i class="fa fa-mobile" aria-hidden="true"></i> Phone Us: <strong>(206) 453-5930</strong></li>
 							</ul>
 						</li>

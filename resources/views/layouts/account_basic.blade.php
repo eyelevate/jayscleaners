@@ -40,7 +40,7 @@
 
 						<header>
 							<h2>Need assistance? You contact us by <strong>phone</strong> or <strong>email</strong></h2>
-							<p>For website / technical assistance email us at <strong>wondo@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
+							<p>For website / technical assistance email us at <strong>owner@jayscleaners.com</strong> or call us at <strong>(206) 328-8158</strong></p>
 						</header>
 
 					</article>

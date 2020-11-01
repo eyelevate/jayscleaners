@@ -46,18 +46,11 @@
 						<h2>Need assistance? You can contact us by <strong>phone</strong> or <strong>email</strong></h2>
 					</header>
 					<ul>
-						<li class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-bottom:20px;">
-							<ul>
-								<li><strong><u>For website / technical assistance</u></strong></li>
-								<li><i class="fa fa-envelope" aria-hidden="true"></i> Email Us: <strong>wondo@jayscleaners.com</strong></li>
-								<li><i class="fa fa-mobile" aria-hidden="true"></i> Phone Us: <strong>(206) 328-8158</strong></li>
-							</ul>
-						</li>
 
 						<li class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-bottom:20px;">
 							<ul>
 								<li><strong><u>For delivery / general assistance</u></strong></li>
-								<li><i class="fa fa-envelope" aria-hidden="true"></i> Email Us: <strong>young@jayscleaners.com</strong></li>
+								<li><i class="fa fa-envelope" aria-hidden="true"></i> Email Us: <strong>owner@jayscleaners.com</strong></li>
 								<li><i class="fa fa-mobile" aria-hidden="true"></i> Phone Us: <strong>(206) 453-5930</strong></li>
 							</ul>
 						</li>
