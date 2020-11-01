@@ -85,7 +85,7 @@ class DeliveriesController extends Controller
 
         }
 
-        $zipcodes = Zipcode::where('zipcode',$primary_address_zipcode)->get();
+        $zipcodes = ZipcodeList::where('zipcode',$primary_address_zipcode)->get();
     
         $zip_list = [];
         if (count($zipcodes) > 0) {
