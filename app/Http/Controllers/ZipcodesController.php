@@ -103,7 +103,7 @@ class ZipcodesController extends Controller
     }
 
     public function getDelete($id = null) {
-        $zipcodes = Zipcode::find($id);
+        $zipcodes = ZipcodeList::find($id);
         if ($zipcodes->delete()) {
             Flash::success('Successfully removed route from zipcode.');
             
@@ -117,7 +117,7 @@ class ZipcodesController extends Controller
         if ($request->ajax()) {
             $delivery_id = $request->delivery_id;
             $zipcode_id = $request->zipcode_id;
-            $zipcodes = Zipcode::find($zipcode_id);
+            $zipcodes = ZipcodeList::find($zipcode_id);
             if ($zipcodes->delete()) {
                 return response()->json(['status'=>true]);
             } else {
@@ -128,7 +128,7 @@ class ZipcodesController extends Controller
     }
 
     public function getRequest($id = null){
-    	$zipcodes = Zipcode::getAllZipcodes();
+    	$zipcodes = ZipcodeList::getAllZipcodes();
         return view('zipcodes.request')
         ->with('zipcode',$id)
         ->with('layout',$this->layout);
