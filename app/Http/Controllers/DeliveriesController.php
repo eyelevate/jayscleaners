@@ -29,6 +29,7 @@ use App\Profile;
 use App\Layout;
 use App\Schedule;
 use App\Zipcode;
+use App\ZipcodeList;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
 
