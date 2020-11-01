@@ -1396,7 +1396,7 @@ class DeliveriesController extends Controller
         $zipcodes_selected = Zipcode::where('delivery_id',$id)->get();
 
         $companies = Company::prepareSelect(Company::all());
-        $zipcodes = Zipcode::getAllZipcodes();
+        $zipcodes = ZipcodeList::getAllZipcodes();
         $day = Delivery::prepareDow();
         $limits = Delivery::prepareLimit(5);
         $hours = Delivery::prepareHours();
