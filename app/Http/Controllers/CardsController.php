@@ -641,6 +641,9 @@ class CardsController extends Controller
 							Flash::error('ERROR: '.$errorMessages[0]->getText());
 							return Redirect::route('cards_index');
 						}
+					} else {
+						Flash::error('WARNING: There was an issue removing card from Authorize.net.');
+							return Redirect::route('cards_index');
 					}
     			}
     		}
