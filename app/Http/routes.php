@@ -178,69 +178,69 @@ Route::group(['middleware' => ['web']], function () {
 	    Route::post('/one-time-finish',['as'=>'accounts_oneTimeProcess_post','uses'=>'AccountsController@postOneTimeFinish']);
 
 
-	 //    // Delivery Customer Page
-	 //    Route::get('/login',['as'=>'pages_login','uses'=>'PagesController@getLogin']);
-	 //    Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
-	 //    Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
-	 //    Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
-	 //    Route::get('/reset-password/{token}',['as'=>'pages_reset_password','uses'=>'PagesController@getResetPassword']);
-	 //    Route::post('/reset-password',['as'=>'pages_reset_password_post','uses'=>'PagesController@postResetPassword']);
-	 //    Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
-	 //    Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
-	 //    Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
-	 //    Route::get('/zipcodes/request/{id}',['as'=>'zipcodes_request','uses'=>'ZipcodesController@getRequest']);
-	 //    Route::post('/zipcodes/request',['as'=>'zipcodes_request_post','uses'=>'ZipcodesController@postRequest']);
+	    // Delivery Customer Page
+	    Route::get('/login',['as'=>'pages_login','uses'=>'PagesController@getLogin']);
+	    Route::post('/login',  ['as'=>'pages_login_post', 'uses' => 'PagesController@postLogin']);
+	    Route::get('/logout',  ['as'=>'pages_logout', 'uses' => 'PagesController@getLogout']);
+	    Route::post('/logout',  ['as'=>'pages_logout_post', 'uses' => 'PagesController@postLogout']);
+	    Route::get('/reset-password/{token}',['as'=>'pages_reset_password','uses'=>'PagesController@getResetPassword']);
+	    Route::post('/reset-password',['as'=>'pages_reset_password_post','uses'=>'PagesController@postResetPassword']);
+	    Route::post('/zipcodes',  ['as'=>'pages_zipcodes', 'uses' => 'PagesController@postZipcodes']);
+	    Route::get('/register',['as'=>'pages_registration','uses'=>'PagesController@getRegistration']);
+	    Route::post('/register',  ['as'=>'pages_registration_post', 'uses' => 'PagesController@postRegistration']);    
+	    Route::get('/zipcodes/request/{id}',['as'=>'zipcodes_request','uses'=>'ZipcodesController@getRequest']);
+	    Route::post('/zipcodes/request',['as'=>'zipcodes_request_post','uses'=>'ZipcodesController@postRequest']);
 
 
-		// //Frontend Authentication
-		// Route::group(['middleware' => ['frontend']], function(){
-		// 	// Accounts
-		// 	Route::get('/member-payment',['as'=>'accounts_memberPayment','uses'=>'AccountsController@getMemberPayment']);
-	 //    	Route::post('/member-payment',['as'=>'accounts_memberPayment_post','uses'=>'AccountsController@postMemberPayment']);
-		// 	Route::post('/member-file',['as'=>'accounts_memberFile_post','uses'=>'AccountsController@postMemberFile']);
-		// 	//Address
-		// 	Route::get('/address', ['as'=>'address_index','uses'=>'AddressesController@getIndex']);
-		// 	Route::get('/address/add', ['as'=>'address_add','uses'=>'AddressesController@getAdd']);
-		// 	Route::post('/address/add', ['as'=>'address_add_post','uses'=>'AddressesController@postAdd']);
-		// 	Route::get('/address/edit/{id}', ['as'=>'address_edit','uses'=>'AddressesController@getEdit']);
-		// 	Route::post('/address/edit', ['as'=>'address_edit_post','uses'=>'AddressesController@postEdit']);
-		// 	Route::get('/address/delete/{id}', ['as'=>'address_delete','uses'=>'AddressesController@getDelete']);
-		// 	Route::get('/address/primary/{id}', ['as'=>'address_primary','uses'=>'AddressesController@getPrimary']);
+		//Frontend Authentication
+		Route::group(['middleware' => ['frontend']], function(){
+			// Accounts
+			Route::get('/member-payment',['as'=>'accounts_memberPayment','uses'=>'AccountsController@getMemberPayment']);
+	    	Route::post('/member-payment',['as'=>'accounts_memberPayment_post','uses'=>'AccountsController@postMemberPayment']);
+			Route::post('/member-file',['as'=>'accounts_memberFile_post','uses'=>'AccountsController@postMemberFile']);
+			//Address
+			Route::get('/address', ['as'=>'address_index','uses'=>'AddressesController@getIndex']);
+			Route::get('/address/add', ['as'=>'address_add','uses'=>'AddressesController@getAdd']);
+			Route::post('/address/add', ['as'=>'address_add_post','uses'=>'AddressesController@postAdd']);
+			Route::get('/address/edit/{id}', ['as'=>'address_edit','uses'=>'AddressesController@getEdit']);
+			Route::post('/address/edit', ['as'=>'address_edit_post','uses'=>'AddressesController@postEdit']);
+			Route::get('/address/delete/{id}', ['as'=>'address_delete','uses'=>'AddressesController@getDelete']);
+			Route::get('/address/primary/{id}', ['as'=>'address_primary','uses'=>'AddressesController@getPrimary']);
 			
-		// 	//Cards
-		// 	Route::get('/cards', ['as'=>'cards_index','uses'=>'CardsController@getIndex']);
-		// 	Route::get('/cards/add',['as'=>'cards_add','uses'=>'CardsController@getAdd']);
-	 //    	Route::post('/cards/add', ['as'=>'cards_add_post','uses'=>'CardsController@postAdd']);
-	 //    	Route::get('cards/edit/{id}', ['as' => 'cards_edit', 'uses'=>'CardsController@getEdit', function ($id) {}]);
-		// 	Route::post('/cards/edit',['as'=>'cards_edit_post','uses'=>'CardsController@postEdit']);
-	 //    	Route::get('/cards/edit_again',['as'=>'cards_edit_again','uses'=>'CardsController@getEditAgain']);
-	 //    	Route::get('cards/delete/{id}', ['as' => 'cards_delete', 'uses'=>'CardsController@getDelete', function ($id) {}]);
-	 //    	Route::get('/cards/delete_again',['as'=>'cards_delete_again','uses'=>'CardsController@getDeleteAgain']);
+			//Cards
+			Route::get('/cards', ['as'=>'cards_index','uses'=>'CardsController@getIndex']);
+			Route::get('/cards/add',['as'=>'cards_add','uses'=>'CardsController@getAdd']);
+	    	Route::post('/cards/add', ['as'=>'cards_add_post','uses'=>'CardsController@postAdd']);
+	    	Route::get('cards/edit/{id}', ['as' => 'cards_edit', 'uses'=>'CardsController@getEdit', function ($id) {}]);
+			Route::post('/cards/edit',['as'=>'cards_edit_post','uses'=>'CardsController@postEdit']);
+	    	Route::get('/cards/edit_again',['as'=>'cards_edit_again','uses'=>'CardsController@getEditAgain']);
+	    	Route::get('cards/delete/{id}', ['as' => 'cards_delete', 'uses'=>'CardsController@getDelete', function ($id) {}]);
+	    	Route::get('/cards/delete_again',['as'=>'cards_delete_again','uses'=>'CardsController@getDeleteAgain']);
 
-		// 	//Delivery 
-		// 	Route::get('/delivery',['as'=>'delivery_index','uses'=>'DeliveriesController@getIndex']);
-		// 	Route::get('/delivery/confirmation', ['as'=>'delivery_confirmation','uses'=>'DeliveriesController@getConfirmation']);
-	 //    	Route::post('/delivery/confirmation', ['as'=>'delivery_confirmation_post','uses'=>'DeliveriesController@postConfirmation']);
-		// 	Route::get('/delivery/pickup', ['as'=>'delivery_pickup','uses'=>'DeliveriesController@getPickupForm']);
-	 //    	Route::post('/delivery/pickup', ['as'=>'delivery_pickup_post','uses'=>'DeliveriesController@postPickupForm']);
-		// 	Route::get('/delivery/dropoff', ['as'=>'delivery_dropoff','uses'=>'DeliveriesController@getDropoffForm']);
-	 //    	Route::post('/delivery/dropoff', ['as'=>'delivery_dropoff_post','uses'=>'DeliveriesController@postDropoffForm']);
-	 //    	Route::post('/delivery/check_address', ['as'=>'delivery_check_address','uses'=>'DeliveriesController@postCheckAddress']);
-	 //    	Route::post('/delivery/set_time', ['as'=>'delivery_set_time','uses'=>'DeliveriesController@postSetTime']);
-	 //    	Route::get('/delivery/cancel',['as'=>'delivery_cancel','uses'=>'DeliveriesController@getCancel']);
-	 //    	Route::get('delivery/delete/{id}', ['as' => 'delivery_delete', 'uses'=>'DeliveriesController@getDelete', function ($id) {}]);
-	 //    	Route::get('/delivery/history',['as'=>'delivery_history','uses'=>'DeliveriesController@getHistory']);
-	 //    	Route::get('/delivery/start',['as'=>'delivery_start','uses'=>'DeliveriesController@getStart']);
-	 //    	Route::get('/delivery/thank-you',['as'=>'delivery_thankyou','uses'=>'DeliveriesController@getThankYou']);
-	 //    	Route::get('/delivery/email-test',['as'=>'delivery_emailtest','uses'=>'DeliveriesController@getEmailTest']);
-	 //    	Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
-	 //    	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
-	 //    	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
-	 //    	Route::get('/users/update', ['as' => 'users_update', 'uses'=>'UsersController@getUpdate']);
-	 //    	Route::post('/users/update', ['as' => 'users_update_post', 'uses'=>'UsersController@postUpdate']);
-	 //    	Route::get('/update-contact', ['as'=>'pages_update_contact','uses'=>'PagesController@getUpdateContact']);
-	 //    	Route::post('/pages/one-touch',['as'=>'pages_onetouch','uses'=>'PagesController@postOneTouch']);
-		// });
+			//Delivery 
+			Route::get('/delivery',['as'=>'delivery_index','uses'=>'DeliveriesController@getIndex']);
+			Route::get('/delivery/confirmation', ['as'=>'delivery_confirmation','uses'=>'DeliveriesController@getConfirmation']);
+	    	Route::post('/delivery/confirmation', ['as'=>'delivery_confirmation_post','uses'=>'DeliveriesController@postConfirmation']);
+			Route::get('/delivery/pickup', ['as'=>'delivery_pickup','uses'=>'DeliveriesController@getPickupForm']);
+	    	Route::post('/delivery/pickup', ['as'=>'delivery_pickup_post','uses'=>'DeliveriesController@postPickupForm']);
+			Route::get('/delivery/dropoff', ['as'=>'delivery_dropoff','uses'=>'DeliveriesController@getDropoffForm']);
+	    	Route::post('/delivery/dropoff', ['as'=>'delivery_dropoff_post','uses'=>'DeliveriesController@postDropoffForm']);
+	    	Route::post('/delivery/check_address', ['as'=>'delivery_check_address','uses'=>'DeliveriesController@postCheckAddress']);
+	    	Route::post('/delivery/set_time', ['as'=>'delivery_set_time','uses'=>'DeliveriesController@postSetTime']);
+	    	Route::get('/delivery/cancel',['as'=>'delivery_cancel','uses'=>'DeliveriesController@getCancel']);
+	    	Route::get('delivery/delete/{id}', ['as' => 'delivery_delete', 'uses'=>'DeliveriesController@getDelete', function ($id) {}]);
+	    	Route::get('/delivery/history',['as'=>'delivery_history','uses'=>'DeliveriesController@getHistory']);
+	    	Route::get('/delivery/start',['as'=>'delivery_start','uses'=>'DeliveriesController@getStart']);
+	    	Route::get('/delivery/thank-you',['as'=>'delivery_thankyou','uses'=>'DeliveriesController@getThankYou']);
+	    	Route::get('/delivery/email-test',['as'=>'delivery_emailtest','uses'=>'DeliveriesController@getEmailTest']);
+	    	Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
+	    	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
+	    	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
+	    	Route::get('/users/update', ['as' => 'users_update', 'uses'=>'UsersController@getUpdate']);
+	    	Route::post('/users/update', ['as' => 'users_update_post', 'uses'=>'UsersController@postUpdate']);
+	    	Route::get('/update-contact', ['as'=>'pages_update_contact','uses'=>'PagesController@getUpdateContact']);
+	    	Route::post('/pages/one-touch',['as'=>'pages_onetouch','uses'=>'PagesController@postOneTouch']);
+		});
 	
 		//Authenticated Pages
 		Route::group(['middleware' => ['auth']], function(){

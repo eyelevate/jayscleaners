@@ -227,8 +227,8 @@ class AccountsController extends Controller
                     // send email
                     $from = 'noreply@jayscleaners.com';
                     // Email customer
-                    if (Mail::send('emails.account_bill-nodelivery', [
-                    // if (Mail::send('emails.account_bill', [
+                    // if (Mail::send('emails.account_bill-nodelivery', [
+                    if (Mail::send('emails.account_bill', [
                         'transactions' => $transactions,
                         'customers' => $customers
                     ], function($message) use ($send_to, $title, $pdf_title)
@@ -364,29 +364,40 @@ class AccountsController extends Controller
     } 
 
     public function getPayMyBill(){
-        // $this->layout = 'layouts.bill';
-        // return view('accounts.pay_my_bill')
-        // ->with('layout',$this->layout); 
-        $this->layout = 'layouts.bill-nodelivery';
-        return view('accounts.pay_my_bill-nodelivery')
+        // DELIVERY
+        $this->layout = 'layouts.bill';
+        return view('accounts.pay_my_bill')
         ->with('layout',$this->layout); 
+
+        // NO DELIVERY
+        // $this->layout = 'layouts.bill-nodelivery';
+        // return view('accounts.pay_my_bill-nodelivery')
+        // ->with('layout',$this->layout); 
     }
 
     public function getOneTimePayment(){
-        // $this->layout = 'layouts.bill';
-        $this->layout = 'layouts.bill-nodelivery';
+        // DELIVERY
+        $this->layout = 'layouts.bill';
         $transactions = [];
-        return view('accounts.one_time_payment-nodelivery')
+        return view('accounts.one_time_payment')
         ->with('transactions',$transactions)
         ->with('layout',$this->layout); 
-        // return view('accounts.one_time_payment')
+        
+        // NO DELIVERY
+        // $this->layout = 'layouts.bill-nodelivery';
+        // return view('accounts.one_time_payment-nodelivery')
         // ->with('transactions',$transactions)
         // ->with('layout',$this->layout); 
+
     }
 
     public function postOneTimePayment(Request $request) {
-        // $this->layout = 'layouts.bill';
-        $this->layout = 'layouts.bill-nodelivery';
+        // DELIVERY
+        $this->layout = 'layouts.bill';
+        
+        // NO DELIVERY
+        // $this->layout = 'layouts.bill-nodelivery';
+        
         $transaction_id = $request->transaction_id;
         $customer_id = $request->customer_id;
         $transactions = Transaction::where('customer_id',$customer_id)
@@ -401,19 +412,26 @@ class AccountsController extends Controller
     }
 
     public function getOneTimeFinish(Request $request) {
-        // $this->layout = 'layouts.bill';
-        $this->layout = 'layouts.bill-nodelivery';
+        // DELIVERY
+        $this->layout = 'layouts.bill';
+        
+        // NO DELIVERY
+        // $this->layout = 'layouts.bill-nodelivery';
         $transaction_status = $request->session()->has('transaction_status') ? $request->session()->get('transaction_status') : false;
         if ($transaction_status) {
 
             $transactions = $request->session()->get('transactions');
 
-            return view('accounts.one_time_finish-nodelivery')
+            // DELIVERY
+            return view('accounts.one_time_finish')
             ->with('transactions',$transactions)
-            ->with('layout',$this->layout);   
-            // return view('accounts.one_time_finish')
+            ->with('layout',$this->layout);    
+            
+            // NO DELIVERY
+            // return view('accounts.one_time_finish-nodelivery')
             // ->with('transactions',$transactions)
-            // ->with('layout',$this->layout);             
+            // ->with('layout',$this->layout);   
+         
         } else {
             Flash::error('Your session has expired. Please enter in the invoice # and the customer # located on your most current account billing statement. Thank you.');
             return Redirect::route('accounts_oneTimePayment');
@@ -504,8 +522,11 @@ class AccountsController extends Controller
                             $send_to = $r->email;
                             $from = 'noreply@jayscleaners.com';
                             // Email customer
-                            // if (Mail::send('emails.account_receipt', [
-                            if (Mail::send('emails.account_receipt-nodelivery', [
+                            // DELIVERY
+                            if (Mail::send('emails.account_receipt', [
+
+                            // NO DELIVERY
+                            // if (Mail::send('emails.account_receipt-nodelivery', [
                                 'transactions' => $save,
                                 'customers'=>$customers
                             ], function($message) use ($send_to)
@@ -719,8 +740,10 @@ class AccountsController extends Controller
                                 $from = 'noreply@jayscleaners.com';
                                 $transactions = Transaction::whereIn('id',$transaction_ids)->get();
                                 // Email customer
-                                if (Mail::send('emails.account_receipts-nodelivery', [
-                                // if (Mail::send('emails.account_receipts', [
+                                // DELIVERY
+                                if (Mail::send('emails.account_receipts', [
+                                // NO DELIVERY
+                                // if (Mail::send('emails.account_receipts-nodelivery', [
                                     'transactions' => $transactions,
                                     'amount_paid' => $total,
                                     'customers'=>$customers
@@ -855,8 +878,10 @@ class AccountsController extends Controller
                                 $send_to = $r->email;
                                 $from = 'noreply@jayscleaners.com';
                                 // Email customer
-                                if (Mail::send('emails.account_receipts-nodelivery', [
-                                // if (Mail::send('emails.account_receipts', [
+                                // DELIVERY
+                                if (Mail::send('emails.account_receipts', [
+                                // NO DELIVERY
+                                // if (Mail::send('emails.account_receipts-nodelivery', [
                                     'transactions' => $transactions,
                                     'amount_paid' => $total,
                                     'customers'=>$customers
@@ -872,9 +897,6 @@ class AccountsController extends Controller
                             Flash::error('Accepted payment, however, could not find the correct transaction. Please contact administrator for refund. We apologize for the inconvenience.');
 
                         }
-
-                        
-
                         // echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
                         // echo  "Charge Customer Profile APPROVED  :" . "\n";
                         // echo " Charge Customer Profile AUTH CODE : " . $tresponse->getAuthCode() . "\n";
@@ -896,17 +918,10 @@ class AccountsController extends Controller
                 }
             } else {
                 Flash::error('No response from authorize.net servers. Server may be down. Please try again at another time. Thank you');
-                
             }
-
         } else {
             Flash::error('You must first select a card on file before processing.');
-
         }
         return Redirect::back();
     }
-
-
-
-
 }
