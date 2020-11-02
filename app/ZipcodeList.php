@@ -11,7 +11,7 @@ class ZipcodeList extends Model
 
     static public function getAllZipcodes() {
         $zipcodes = ZipcodeList::all();
-        $zips = [];
+        $zips = ["" => "Select a zipcode"];
         if (count($zipcodes) > 0) {
             foreach ($zipcodes as $z) {
                 $zips[$z->zipcode] = $z->zipcode;
