@@ -38,10 +38,10 @@ class Authenticate
                 return redirect()->guest('login');
             }
         }
-        // if (Auth::user()->role_id == 5) {
-        //     Flash::error('You do not have authorization to view this page');
-        //     return Redirect::route('pages_index');
-        // }
+        if (Auth::user()->role_id == 5) {
+            Flash::error('You do not have authorization to view this page');
+            return Redirect::route('pages_index');
+        }
 
         return $next($request);
     }

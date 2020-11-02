@@ -353,17 +353,6 @@ Route::group(['middleware' => ['web']], function () {
 			Route::get('/delivery/setup/delete/{id}',['as'=>'delivery_setup_delete','uses'=>'DeliveriesController@getSetupDelete']);
 
 
-	    	Route::post('/delivery/check_address', ['as'=>'delivery_check_address','uses'=>'DeliveriesController@postCheckAddress']);
-	    	Route::post('/delivery/set_time', ['as'=>'delivery_set_time','uses'=>'DeliveriesController@postSetTime']);
-	    	Route::get('/delivery/cancel',['as'=>'delivery_cancel','uses'=>'DeliveriesController@getCancel']);
-	    	Route::get('delivery/delete/{id}', ['as' => 'delivery_delete', 'uses'=>'DeliveriesController@getDelete', function ($id) {}]);
-	    	Route::get('/delivery/start',['as'=>'delivery_start','uses'=>'DeliveriesController@getStart']);
-	    	Route::get('/delivery/thank-you',['as'=>'delivery_thankyou','uses'=>'DeliveriesController@getThankYou']);
-	    	Route::get('/delivery/email-test',['as'=>'delivery_emailtest','uses'=>'DeliveriesController@getEmailTest']);
-	    	Route::get('delivery/update/{id}', ['as' => 'delivery_update', 'uses'=>'DeliveriesController@getUpdate', function ($id) {}]);
-	    	Route::post('/delivery/update',['as'=>'delivery_update_post','uses'=>'DeliveriesController@postUpdate']);
-	    	Route::post('/delivery/set_time_update',['as'=>'delivery_set_time_update','uses'=>'DeliveriesController@postSetTimeUpdate']);
-
 			// Discounts
 			Route::get('/discounts',['as'=>'discounts_index','uses'=>'DiscountsController@getIndex']);
 			Route::get('/discounts/add',['as'=>'discounts_add','uses'=>'DiscountsController@getAdd']);
