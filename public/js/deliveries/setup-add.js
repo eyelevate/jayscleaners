@@ -33,6 +33,8 @@ setup = {
 			var zipcode_tr = make.zipcode_tr(option_selected);
 			if ($("#zipcode_table tbody").find('#zipcode_tr-'+option_selected).length > 0) {
 				alert('Zipcode already selected');
+			} else if(option_selected === "") {
+				return;
 			} else {
 				$("#zipcode_table tbody").append(zipcode_tr);
 				make.reindex_zipcode_tr();
