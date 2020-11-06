@@ -8,9 +8,9 @@
 @section('scripts')
 <script type="text/javascript" src="/js/deliveries/confirmation.js"></script>
 <script type="text/javascript">
-    var confirm = null;
+    var confirmation = null;
     document.addEventListener('DOMContentLoaded', () => {
-        confirm = new Confirmation();
+        confirmation = new Confirmation();
     });
 </script>
 @stop
