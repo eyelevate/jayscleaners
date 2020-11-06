@@ -195,7 +195,7 @@
                     <div class="form-group" >
                         <ul class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin:0px;">
               
-                            <li><input id="confirm-button" type="submit" data-toggle="modal" data-target="#loading" class="button" value="Confirm"/></li>
+                            <li><input id="confirm-button" disabled type="submit" data-toggle="modal" data-target="#loading" class="button" value="Confirm"/></li>
                         </ul>
                     </div>
                 {!! Form::close() !!}

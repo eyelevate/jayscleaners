@@ -59,8 +59,7 @@
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: repeat(2, max-content);
-  row-gap: 5px;
-  background-color:
+  row-gap: 15px;
 }
 #delivery-terms-container a {
   text-decoration: none;
@@ -70,12 +69,23 @@
   padding: 5px;
   width: 100%;
   text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#delivery-terms-container a:hover {
+  background-color: rgba(255,255,255,0.7);
+  font-weight: bold;
+}
+#delivery-terms-container a:active {
+  background-color: rgba(0,0,0,0.7);
+  font-weight: bold;
 }
 
 #delivery-terms-container #term-checkbox {
   display: grid;
-  column-gap: 7px;
+  column-gap: 10px;
   grid-template-columns: min-content 1fr;
-  align-content: center;
+  align-items: center;
+  line-height: 1;
 }
 
