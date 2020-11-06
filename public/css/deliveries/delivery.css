@@ -59,7 +59,8 @@
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: repeat(2, max-content);
-  row-gap: 15px;
+  row-gap: 25px;
+  padding: 15px;
 }
 #delivery-terms-container a {
   text-decoration: none;
