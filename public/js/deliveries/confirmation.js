@@ -4,7 +4,7 @@ class Confirmation {
     confirmButton;
     constructor() {
         this.deliveryTermsModal = document.getElementById('delivery-terms-modal');
-        this.termCheckbox = document.getElementById('term-checkbox');
+        this.termCheckbox = document.getElementById('term-checkbox-input');
         this.confirmButton = document.getElementById('confirm-button');
     }
 

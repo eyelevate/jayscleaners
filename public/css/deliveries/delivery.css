@@ -90,7 +90,7 @@
   line-height: 1;
 }
 
-#confirm-button:disabled {
+#confirm-button[disabled] {
   cursor: not-allowed !important;
   background-color: rgba(255, 0, 0 , 0.2);
   color: red;
