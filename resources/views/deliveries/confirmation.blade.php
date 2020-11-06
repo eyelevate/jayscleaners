@@ -188,12 +188,13 @@
                             @endif
                         </div>
                     </div>
+                    <div id="delivery-terms-container">
+                        <a data-toggle="modal" data-target="#delivery-modal">Click to read delivery terms and conditions</button>
+                        <label id="term-checkbox"><input type="checkbox" onclick="confirmation.termsChecked()" required /> I agree to the delivery terms and conditions</label>
+                    </div> 
                     <div class="form-group" >
                         <ul class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin:0px;">
-                            <li id="delivery-terms-container">
-                                <a data-toggle="modal" data-target="#delivery-modal">Click to read delivery terms and conditions</button>
-                                <label id="term-checkbox"><input type="checkbox" onclick="confirmation.termsChecked()" required /> I agree to the delivery terms and conditions</label>
-                            </li> 
+              
                             <li><input id="confirm-button" type="submit" data-toggle="modal" data-target="#loading" class="button" value="Confirm"/></li>
                         </ul>
                     </div>

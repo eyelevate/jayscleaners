@@ -64,6 +64,9 @@ off or delivery/pickup service the Customer agrees to and accepts the following 
                 right to charge a $15.00 fee in circumstances where a pickup is requested but items are not left for
                 pickup by the Customer once our driver arrives and we have made an adequate attempt to contact the
                 Customer (email, phone, text etc.).</p>
+            </div>
+            <div class="modal-footer clearfix">
+				<button type="button" class="btn" data-dismiss="modal">Close</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

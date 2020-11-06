@@ -60,6 +60,7 @@
   grid-template-columns: 100%;
   grid-template-rows: repeat(2, max-content);
   row-gap: 5px;
+  background-color:
 }
 #delivery-terms-container a {
   text-decoration: none;
