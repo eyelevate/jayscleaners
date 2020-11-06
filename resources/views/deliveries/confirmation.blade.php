@@ -189,7 +189,7 @@
                         </div>
                     </div>
                     <div id="delivery-terms-container">
-                        <a data-toggle="modal" data-target="#delivery-modal">Click to read delivery terms and conditions</button>
+                        <a data-toggle="modal" data-target="#delivery-modal">Click to read delivery terms and conditions</a>
                         <label id="term-checkbox"><input type="checkbox" onclick="confirmation.termsChecked()" required /> I agree to the delivery terms and conditions</label>
                     </div> 
                     <div class="form-group" >
