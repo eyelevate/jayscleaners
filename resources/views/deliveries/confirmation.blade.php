@@ -8,7 +8,10 @@
 @section('scripts')
 <script type="text/javascript" src="/js/deliveries/confirmation.js"></script>
 <script type="text/javascript">
-
+    var confirm = null;
+    document.addEventListener('DOMContentLoaded', () => {
+        confirm = new Confirmation();
+    });
 </script>
 @stop
 
@@ -187,7 +190,11 @@
                     </div>
                     <div class="form-group" >
                         <ul class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="margin:0px;">
-                            <li><input type="submit" data-toggle="modal" data-target="#loading" class="button" value="Confirm"/></li>
+                            <li id="delivery-terms-container">
+                                <a data-toggle="modal" data-target="#delivery-modal">Click to read delivery terms and conditions</button>
+                                <label id="term-checkbox"><input type="checkbox" onclick="confirmation.termsChecked()" required /> I agree to the delivery terms and conditions</label>
+                            </li> 
+                            <li><input id="confirm-button" type="submit" data-toggle="modal" data-target="#loading" class="button" value="Confirm"/></li>
                         </ul>
                     </div>
                 {!! Form::close() !!}
@@ -226,4 +233,5 @@
 @stop
 @section('modals')
     {!! View::make('partials.frontend.modals')->render() !!}
+    {!! View::make('partials.frontend.delivery-terms-modal')->render() !!}
 @stop

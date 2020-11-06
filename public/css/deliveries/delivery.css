@@ -55,5 +55,26 @@
   border-left: 10px solid #adadad;
 }
 
+#delivery-terms-container {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: repeat(2, max-content);
+  row-gap: 5px;
+}
+#delivery-terms-container a {
+  text-decoration: none;
+  background-color: #fafafa;
+  color: #5e5e5e;
+  border: 1px solid #5e5e5e;
+  padding: 5px;
+  width: 100%;
+  text-align: center;
+}
 
+#delivery-terms-container #term-checkbox {
+  display: grid;
+  column-gap: 7px;
+  grid-template-columns: min-content 1fr;
+  align-content: center;
+}
 
