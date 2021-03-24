@@ -281,6 +281,10 @@ class Company extends Model
                 // map button
                 $address = $value->street.' '.$value->city.', '.$value->state.' '.$value->zipcode;
                 $latlong = Schedule::getLatLong($address);
+                if ($latlong['status'] == false) {
+                    continue;
+                }
+                
                 $data[$key]['map'] = 'http://maps.apple.com/?q='.$latlong['latitude'].','.$latlong['longitude'];
                 
                 if (isset($data[$key]['store_hours'])) {
