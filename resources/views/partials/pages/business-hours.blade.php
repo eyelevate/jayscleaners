@@ -2,7 +2,7 @@
 	<div id="store_hours" class="row">
 		<header class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12" style="">
 			<span class="icon featured fa-clock-o"></span>
-			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Store Hours</h3>
+			<h3 class="wrapper style2 special-alt col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top:5px; padding-bottom:5px; margin-bottom:10px;">Store Hours (Covid-19 Hours of Operation)</h3>
 		</header>
 		<section class="clearfix col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
