@@ -162,12 +162,12 @@ class AdminsController extends Controller
         try {
             $searchStart = date('Y-m-d 00:00:00', strtotime($request->startDate));
             $searchEnd = date('Y-m-d 23:59:59', strtotime($request->endDate));
-            $company_id = $request->company_id;
+            $companyId = $request->companyId;
             $racks = $request->racks;
 
             $history = Invoice::whereIn('rack', $racks)
                 ->whereBetween('rack_date', [$searchStart, $searchEnd])
-                ->where('company_id', $company_id)
+                ->where('company_id', $companyId)
                 ->orderBy('rack', 'asc')
                 ->get();
             return response()->json($history);
