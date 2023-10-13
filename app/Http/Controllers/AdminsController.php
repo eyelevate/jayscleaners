@@ -163,8 +163,8 @@ class AdminsController extends Controller
         try {
 //            $searchStart = date('Y-m-d 00:00:00', strtotime(date($request->startDate)));
 //            $searchEnd = date('Y-m-d 23:59:59', strtotime(date($request->endDate)));
-            $searchStart = new DateTime($request->startDate);
-            $searchEnd = new DateTime($request->endDate);
+            $searchStart = DateTime::createFromFormat('Y-m-d HH:ii:ss', $request->startDate);
+            $searchEnd = DateTime::createFromFormat('Y-m-d HH:ii:ss',$request->endDate);
             $companyId = $request->companyId;
             $racks = $request->racks;
 
