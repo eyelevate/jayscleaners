@@ -160,8 +160,8 @@ class AdminsController extends Controller
     public static function postApiRackHistoryByRack(Request $request)
     {
         try {
-            $searchStart = date('Y-m-d 00:00:00', strtotime($request->startDate));
-            $searchEnd = date('Y-m-d 23:59:59', strtotime($request->endDate));
+            $searchStart = date('Y-m-d 00:00:00', strtotime(date($request->startDate)));
+            $searchEnd = date('Y-m-d 23:59:59', strtotime(date($request->endDate)));
             $companyId = $request->companyId;
             $racks = $request->racks;
 
