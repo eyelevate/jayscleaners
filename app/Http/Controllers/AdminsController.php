@@ -142,14 +142,10 @@ class AdminsController extends Controller
         try {
             // code
             $companyId = $request->companyId;
-            $searchStart = date('Y-m-d HH:ii:ss', strtotime($request->startDate));
-            $searchEnd = date('Y-m-d HH:ii:ss', strtotime($request->endDate));
-
             $racks = Invoice::select('rack')
                 ->distinct()
                 ->where('company_id', $companyId)
                 ->where('rack', '!=', '')
-                ->whereBetween('rack_date', [$searchStart, $searchEnd])
                 ->pluck('rack')
                 ->unique()
                 ->sort();
@@ -164,10 +160,16 @@ class AdminsController extends Controller
     public static function postApiRackHistoryByRack(Request $request)
     {
         try {
+            $searchStart = date('Y-m-d 00:00:00', strtotime($request->startDate));
+            $searchEnd = date('Y-m-d 23:59:59', strtotime($request->endDate));
             $company_id = $request->company_id;
             $racks = $request->racks;
 
-            $history = Invoice::whereIn('rack', $racks)->orderBy('rack', 'asc')->get();
+            $history = Invoice::whereIn('rack', $racks)
+                ->whereBetween('rack_date', [$searchStart, $searchEnd])
+                ->where('company_id', $company_id)
+                ->orderBy('rack', 'asc')
+                ->get();
             return response()->json($history);
         } catch (\Exception $e) {
             // generic handling
