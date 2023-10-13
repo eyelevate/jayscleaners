@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Input;
 use Validator;
 use Redirect;
@@ -160,8 +161,10 @@ class AdminsController extends Controller
     public static function postApiRackHistoryByRack(Request $request)
     {
         try {
-            $searchStart = date('Y-m-d 00:00:00', strtotime(date($request->startDate)));
-            $searchEnd = date('Y-m-d 23:59:59', strtotime(date($request->endDate)));
+//            $searchStart = date('Y-m-d 00:00:00', strtotime(date($request->startDate)));
+//            $searchEnd = date('Y-m-d 23:59:59', strtotime(date($request->endDate)));
+            $searchStart = new DateTime($request->startDate.' 00:00:00');
+            $searchEnd = new DateTime($request->endDate.' 23:59:59');
             $companyId = $request->companyId;
             $racks = $request->racks;
 
