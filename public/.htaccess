@@ -19,8 +19,4 @@
     php_value suhosin.get.max_vars 8000
     php_value suhosin.post.max_vars 8000
     php_value suhosin.request.max_vars 8000
-
-    Header add Access-Control-Allow-Origin "*"
-    Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
-    Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
 </IfModule>
