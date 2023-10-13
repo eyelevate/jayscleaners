@@ -169,7 +169,6 @@ class AdminsController extends Controller
             $racks = $request->racks;
 
             $history = Invoice::whereIn('rack', $racks)
-                ->whereBetween('rack_date', [$searchStart, $searchEnd])
                 ->where('company_id', $companyId)
                 ->orderBy('rack', 'asc')
                 ->get();
