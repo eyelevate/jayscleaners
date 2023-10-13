@@ -29,9 +29,8 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
-        ],
-        'cors' => [
             \App\Http\Middleware\Cors::class,
+
         ],
         'api' => [
             'throttle:60,1',
@@ -51,6 +50,7 @@ class Kernel extends HttpKernel
         'frontend' => \App\Http\Middleware\FrontendMiddleware::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'forceSSL' => \App\Http\Middleware\ForceSSL::class
+        'forceSSL' => \App\Http\Middleware\ForceSSL::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 }

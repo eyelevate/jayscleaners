@@ -25,7 +25,7 @@ Route::get('/', ['as'=>'pages_index', 'uses' => 'PagesController@getIndex']);
 */
 
 
-Route::group(['middleware' => ['cors','web']], function () {
+Route::group(['middleware' => ['web', 'cors']], function () {
     //public pages
     Route::auth();
 	// Admins
