@@ -142,10 +142,14 @@ class AdminsController extends Controller
         try {
             // code
             $companyId = $request->companyId;
+            $searchStart = date('Y-m-d HH:ii:ss', strtotime($request->startDate));
+            $searchEnd = date('Y-m-d HH:ii:ss', strtotime($request->endDate));
+
             $racks = Invoice::select('rack')
                 ->distinct()
                 ->where('company_id', $companyId)
                 ->where('rack', '!=', '')
+                ->whereBetween('rack_date', [$searchStart, $searchEnd])
                 ->pluck('rack')
                 ->unique()
                 ->sort();
