@@ -161,14 +161,13 @@ class AdminsController extends Controller
     public static function postApiRackHistoryByRack(Request $request)
     {
         try {
-//            $searchStart = date('Y-m-d 00:00:00', strtotime(date($request->startDate)));
-//            $searchEnd = date('Y-m-d 23:59:59', strtotime(date($request->endDate)));
             $searchStart = DateTime::createFromFormat('Y-m-d H:i:s', $request->startDate);
             $searchEnd = DateTime::createFromFormat('Y-m-d H:i:s',$request->endDate);
             $companyId = $request->companyId;
             $racks = $request->racks;
 
-            $history = Invoice::whereIn('rack', $racks)
+            $history = Invoice::with('invoice_items', 'users')
+                ->whereIn('rack', $racks)
                 ->whereBetween('rack_date', [$searchStart, $searchEnd])
                 ->where('company_id', $companyId)
                 ->orderBy('rack', 'asc')
