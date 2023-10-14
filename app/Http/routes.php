@@ -156,6 +156,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/customers-search-results',['uses'=>'AdminsController@postApiCustomersSearchResults']);
     Route::post('/admins/api/customers-in',['uses'=>'AdminsController@postApiCustomersIn']);
     Route::post('/admins/api/cust-search-results',['uses'=>'AdminsController@postApiCustResults']); #for upgrade only
+    Route::post('/admins/api/no-duplicates-create-customer',['uses'=>'UsersController@postApiNoDuplicateCreate']); #for upgrade only
+
     // Route::get('/admins/api/single-user-data/{search}',['uses'=>'AdminsController@getSingleUserData']);
 
     // test only
