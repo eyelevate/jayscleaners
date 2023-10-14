@@ -97,44 +97,39 @@ class UsersController extends Controller
         $rules = [
             'first_name' => 'required|min:1',
             'last_name' => 'required|min:1',
-            'phone'=>'required|min:10'
+            'phone'=>'required|min:7|max:10'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
         // save
-        $users = new User;
-        $users->first_name = $request->first_name;
-        $users->last_name = $request->last_name;
-        $users->phone = $request->phone;
-        $users->email = $request->email;
-        $users->starch = $request->starch;
-        $users->shirt = $request->shirt;
-        $users->role_id = 5;
-        $users->company_id = $request->company_id;
+        $user = new User;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->starch = $request->starch;
+        $user->shirt = $request->shirt;
+        $user->role_id = 5;
+        $user->company_id = $request->company_id;
 //        $users->account = $request->account;
-        $users->save();
+        if($user->save()) {
+            //        create custID for the user
+            $mark = Custid::createOriginalMark($user);
+            $custids = new Custid();
+            $custids->company_id = $user->company_id;
+            $custids->customer_id = $user->id;
+            $custids->mark = $mark;
+            $custids->status = 1;
+            $custids->save();
+            return response()->json($user);
 
-//        create custID for the user
-        $last_name_initial = ucfirst(substr($users->last_name, 0, 1));
-        // Define an array to map starch_preference to its corresponding character
-        $starch_preference_characters = [
-            '1' => 'N', // None
-            '2' => 'L', // Light
-            '3' => 'M', // Medium
-            '4' => 'H', // Heavy
-        ];
-        $starch_preference = $starch_preference_characters[$users->starch];
-        $newCustId = $users->id . $last_name_initial . $starch_preference;
+        }
 
-        $custid = new Custid;
-        $custid->customer_id = $users->id;
-        $custid->custid = $newCustId;
-        $custid->save();
+        return response()->error('could_not_create_user', 500);
 
 
-        return response()->json($users);
     }
 
 }
