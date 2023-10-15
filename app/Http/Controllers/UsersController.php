@@ -104,7 +104,7 @@ class UsersController extends Controller
             return response()->json($validator->errors(), 422);
         }
         // save
-        $user = new User;
+        $user = new User();
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->phone = $request->phone;
@@ -115,7 +115,6 @@ class UsersController extends Controller
         $user->company_id = $request->company_id;
 //        $users->account = $request->account;
         if($user->save()) {
-            //        create custID for the user
             $mark = Custid::createOriginalMark($user);
             $custids = new Custid();
             $custids->company_id = $user->company_id;
