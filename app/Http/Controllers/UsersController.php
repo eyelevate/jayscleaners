@@ -97,11 +97,15 @@ class UsersController extends Controller
         $rules = [
             'first_name' => 'required|min:1',
             'last_name' => 'required|min:1',
-            'phone'=>'required|min:7|max:10'
+            'phone'=>'required|min:7|max:10|unique:users'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+        }
+        // Check if a user with the same phone number already exists
+        if (User::where('phone', $request->phone)->exists()) {
+            return response()->json(['phone' => 'Phone number is already in use.'], 422);
         }
         // save
         $user = new User();
