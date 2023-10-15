@@ -122,8 +122,8 @@ class UsersController extends Controller
             $custids->mark = $mark;
             $custids->status = 1;
             $custids->save();
+            $user->load('custids');
             return response()->json($user);
-
         }
 
         return response()->error('could_not_create_user', 500);
