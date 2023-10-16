@@ -114,10 +114,15 @@ class UsersController extends Controller
         $user->phone = $request->phone;
         $user->email = $request->email;
         $user->starch = $request->starch;
-        $user->shirt = $request->shirt;
+        $user->shirt = $request->shirts;
         $user->role_id = 5;
         $user->company_id = $request->company_id;
-//        $users->account = $request->account;
+        $user->important_memo = $request->important_memo;
+        $user->invoice_memo = $request->invoice_memo;
+        $user->street = $request->street;
+        $user->suite = $request->suite;
+        $user->city = $request->city;
+        $user->zipcode = $request->zipcode;
         if($user->save()) {
             $mark = Custid::createOriginalMark($user);
             $custids = new Custid();
@@ -131,8 +136,43 @@ class UsersController extends Controller
         }
 
         return response()->error('could_not_create_user', 500);
+    }
 
+    public function postApiEditCustomer(Request $request) {
+        // make rules that check for duplicate phone_number
+        $rules = [
+            'first_name' => 'required|min:1',
+            'last_name' => 'required|min:1',
+            'phone'=>'required|min:7|max:10'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        // save
+        $user = User::find($request->id);
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->starch = $request->starch;
+        $user->shirt = $request->shirts;
+        $user->company_id = $request->company_id;
+        $user->account = $request->account;
+        $user->special_instructions = $request->special_instructions;
+        $user->delivery = $request->delivery;
+        $user->street = $request->street;
+        $user->suite = $request->suite;
+        $user->city = $request->city;
+        $user->zipcode = $request->zipcode;
 
+        if($user->save()) {
+            $user->load('custids');
+
+            return response()->json($user);
+        }
+
+        return response()->error('could_not_edit_user', 500);
     }
 
 }
