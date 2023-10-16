@@ -159,6 +159,8 @@ class UsersController extends Controller
         $user->shirt = $request->shirts;
         $user->company_id = $request->company_id;
         $user->account = $request->account;
+        $user->important_memo = $request->important_memo;
+        $user->invoice_memo = $request->invoice_memo;
         $user->special_instructions = $request->special_instructions;
         $user->delivery = $request->delivery;
         $user->street = $request->street;
