@@ -1177,7 +1177,7 @@ class InvoicesController extends Controller
                 foreach ($racks as $invoiceData) {
                     $invoice = Invoice::findOrFail($invoiceData['invoiceId']);
                     $invoice->rack = $invoiceData['rack'];
-                    $invoice->rack_date = now();
+                    $invoice->rack_date = date('Y-m-d H:i:s');
                     $invoice->status = 2;
                     $invoice->saveOrFail();
                 }
