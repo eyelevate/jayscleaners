@@ -1171,10 +1171,10 @@ class InvoicesController extends Controller
 
     public function rackInvoices(Request $request)
     {
-
+        $racks = $request->get('racks');
         try {
-            DB::transaction(function () use ($request) {
-                foreach ($request as $invoiceData) {
+            DB::transaction(function () use ($racks) {
+                foreach ($racks as $invoiceData) {
                     $invoice = Invoice::findOrFail($invoiceData['invoiceId']);
                     $invoice->rack = $invoiceData['rack'];
                     $invoice->rack_date = now();
