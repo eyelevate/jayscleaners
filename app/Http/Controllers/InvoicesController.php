@@ -15,6 +15,7 @@ use Laracasts\Flash\Flash;
 use View;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Job;
 use App\User;
@@ -1166,6 +1167,40 @@ class InvoicesController extends Controller
                 'color'=> '#257e4a'
             ]);
         }
+    }
+
+    public function rackInvoices(Request $request)
+    {
+
+        try {
+            DB::transaction(function () use ($request) {
+                foreach ($request as $invoiceData) {
+                    $invoice = Invoice::findOrFail($invoiceData['invoiceId']);
+                    $invoice->rack = $invoiceData['rack'];
+                    $invoice->rack_date = now();
+                    $invoice->status = 2;
+                    $invoice->saveOrFail();
+                }
+            });
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Invoices racked successfully'
+            ]);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invoice not found'
+            ], 400);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error racking invoices, clean your list and try again.'
+            ], 500);
+        }
+
     }
 }
 

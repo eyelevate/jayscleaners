@@ -98,6 +98,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/invoice-get-totals',['uses'=>'AdminsController@postApiInvoiceGetTotals']);
     Route::post('/admins/api/racks-by-company', ['uses'=>'AdminsController@getAllUsedRacks']);
     Route::post('/admins/api/rack-history', ['uses'=>'AdminsController@postApiRackHistoryByRack']);
+    Route::post('/admins/api/rack/update', ['uses' => 'InvoicesControlls@rackInvoices']);
 
     #Api-InvoiceItem
     Route::post('/admins/api/invoice-items-data',['uses'=>'AdminsController@postApiInvoiceItemsData']);
