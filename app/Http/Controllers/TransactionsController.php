@@ -99,4 +99,52 @@ class TransactionsController extends Controller
         return response()->json($transactions);
 
     }
+
+    public function payAccount(Request $request) {
+        try {
+            $customer = User::findOrFail($request->customerId);
+            DB::transaction(function () use ($request, $customer) {
+                $transactions = Transaction::where('customer_id', $request->customerId)
+                    ->whereIn('status', [2,3])
+                    ->orderBy('status', 'asc')
+                    ->get();
+                $rollingTendered = $request->tendered;
+                foreach ($transactions as $transaction) {
+                    if($rollingTendered <= 0) {
+                        continue;
+                    }
+
+                    if ($transaction->status === 2) {
+                        $transaction->status = 1;
+                        $transaction->account_paid = $request->tendered;
+                        $transaction->account_paid_on = date('Y-m-d H:i:s');
+                        $rollingTendered -= $transaction->account_paid;
+                    } elseif($transaction->status === 3 && $rollingTendered >= $transaction->total) {
+                        $transaction->status = 1;
+                        $transaction->account_paid = $request->tendered;
+                        $transaction->account_paid_on = date('Y-m-d H:i:s');
+                        $rollingTendered -= $transaction->total;
+                    } elseif($transaction->status === 3 && $rollingTendered < $transaction->total) {
+                        $transaction->status = 2;
+                        $difference = $transaction->total - $rollingTendered;
+                        $transaction->account_paid = $difference;
+                        $rollingTendered = 0;
+                    }
+                    $transaction->saveOrFail();
+                }
+
+
+                $customer->account_total -= $request->tendered;
+
+                $customer->saveOrFail();
+
+            });
+            return response()->json($customer);
+        } catch (ModelNotFoundException $e) {
+            return response()->error('Account not paid, rolling back', 400);
+
+        } catch (QueryException $e) {
+            return response()->error('Error creating account, saving an invoice failed, rolling back.', 500);
+        }
+    }
 }
