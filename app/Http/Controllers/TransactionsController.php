@@ -17,7 +17,7 @@ class TransactionsController extends Controller
             $transaction = new Transaction;
 
             DB::transaction(function () use ($request, $transaction) {
-                $invoices = $request->get('invoices');
+                $invoices = (array) $request->get('invoices');
                 $transaction->company_id = $request->company_id;
                 $transaction->customer_id = $request->customer_id;
                 $transaction->pretax = $request->pretax;
@@ -29,14 +29,12 @@ class TransactionsController extends Controller
                 $transaction->type = $request->type;
                 $transaction->tendered = $request->tendered;
                 $transaction->status = $request->status;
-
-                if ($transaction->save()) {
-                    foreach ($invoices as $invoice) {
-                        $invoice = Invoice::findOrFail($invoice);
-                        $invoice->transaction_id = $transaction->id;
-                        $invoice->status = 5;
-                        $invoice->saveOrFail();
-                    }
+                $transaction->saveOrFail();
+                foreach ($invoices as $invoice) {
+                    $invoice = Invoice::findOrFail($invoice);
+                    $invoice->transaction_id = $transaction->id;
+                    $invoice->status = 5;
+                    $invoice->saveOrFail();
                 }
             });
             return response()->json($transaction);
