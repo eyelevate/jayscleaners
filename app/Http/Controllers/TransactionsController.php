@@ -32,7 +32,7 @@ class TransactionsController extends Controller
                 $transaction->saveOrFail();
                 foreach ($invoices as $invoice) {
                     $invoiceId = $invoice['id'];
-                    $invoice = Invoice::findOrFail(invoiceId);
+                    $invoice = Invoice::findOrFail($invoiceId);
                     $invoice->transaction_id = $transaction->id;
                     $invoice->status = 5;
                     $invoice->saveOrFail();
