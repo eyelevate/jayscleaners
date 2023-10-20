@@ -143,6 +143,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/remove-invoice-by-transaction',['uses'=>'AdminsController@postApiRemoveInvoiceByTransaction']);
     Route::post('/admins/api/pickup-non-account', ['uses'=> 'TransactionsController@pickupNonAccount']);
     Route::post('/admins/api/pickup-account', ['uses'=> 'TransactionsController@pickupAccount']);
+    Route::get('/admins/api/account-customer-transactions/{id}', ['uses'=> 'TransactionsController@accountTransactionsByCustomerId']);
     #Api-User
     Route::post('/admins/api/scc',['uses'=>'AdminsController@postApiSearchCustomer']);
     Route::post('/admins/api/delete-customer',['uses'=>'AdminsController@postApiCustomerDelete']);

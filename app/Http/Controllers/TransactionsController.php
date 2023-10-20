@@ -92,4 +92,11 @@ class TransactionsController extends Controller
             return response()->error('Error creating transaction, saving an invoice failed, rolling back.', 500);
         }
     }
+
+    public function accountTransactionsByCustomerId($id = null) {
+        $transactions = Transaction::where('customer_id',$id)->orderBy('updated_at', 'desc')->get();
+
+        return response()->json($transactions);
+
+    }
 }
