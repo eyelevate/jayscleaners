@@ -31,7 +31,8 @@ class TransactionsController extends Controller
                 $transaction->status = $request->status;
                 $transaction->saveOrFail();
                 foreach ($invoices as $invoice) {
-                    $invoice = Invoice::findOrFail($invoice);
+                    $invoiceId = $invoice['id'];
+                    $invoice = Invoice::findOrFail(invoiceId);
                     $invoice->transaction_id = $transaction->id;
                     $invoice->status = 5;
                     $invoice->saveOrFail();
