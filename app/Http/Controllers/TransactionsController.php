@@ -52,8 +52,8 @@ class TransactionsController extends Controller
     {
         try {
             $transaction = new Transaction;
-
-            DB::transaction(function () use ($request, $transaction) {
+            $customer = User::findOrFail($request->customer_id);
+            DB::transaction(function () use ($request, $transaction, $customer) {
                 $invoices = (array) $request->get('invoices');
                 $transaction->company_id = $request->company_id;
                 $transaction->customer_id = $request->customer_id;
@@ -75,7 +75,6 @@ class TransactionsController extends Controller
                     $invoice->saveOrFail();
                 }
 
-                $customer = User::findOrFail($request->customer_id);
                 if ($customer->account_total === null) {
                     $customer->account_total = $request->total;
                 } else {
@@ -83,8 +82,9 @@ class TransactionsController extends Controller
                 }
 
                 $customer->saveOrFail();
-                return response()->json($customer);
+
             });
+            return response()->json($customer);
         } catch (ModelNotFoundException $e) {
             return response()->error('Transaction not created, rolling back', 400);
 
