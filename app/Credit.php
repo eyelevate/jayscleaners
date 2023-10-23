@@ -8,6 +8,11 @@ class Credit extends Model
 {
     use SoftDeletes;
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public static function prepareReason(){
     	return [
     		''=>'Select Reason',

@@ -15,17 +15,10 @@ use Laracasts\Flash\Flash;
 use View;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Credit;
-use App\Job;
 use App\User;
-use App\Company;
-use App\Customer;
-use App\Custid;
 use App\Layout;
-use App\Invoice;
-use App\InvoiceItem;
-use App\Schedule;
+use App\Transaction;
 
 class CreditsController extends Controller
 {
@@ -59,6 +52,74 @@ class CreditsController extends Controller
         	
         }
 
+    }
+
+    public function create(Request $request) {
+        $amount = $request->amount;
+        $reason = $request->reason;
+        $status = 1;
+        $employee_id = $request->employeeId;
+        $customer_id = $request->customerId;
+
+        $credit = new Credit();
+        $credit->amount = $amount;
+        $credit->reason = $reason;
+        $credit->status = $status;
+        $credit->employee_id = $employee_id;
+        $credit->customer_id = $customer_id;
+        $credit->save();
+
+        return response()->json($credit);
+    }
+
+    public function edit(Request $request) {
+        $amount = $request->amount;
+        $reason = $request->reason;
+        $status = 1;
+        $employee_id = $request->employeeId;
+        $customer_id = $request->customerId;
+        $credit_id = $request->creditId;
+
+        $credit = Credit::find($credit_id);
+        $credit->amount = $amount;
+        $credit->reason = $reason;
+        $credit->status = $status;
+        $credit->employee_id = $employee_id;
+        $credit->customer_id = $customer_id;
+        $credit->save();
+
+        return response()->json($credit);
+    }
+
+    public function history($id = null)
+    {
+        $credits = Credit::where('customer_id', $id)->orderBy('created_at', 'desc')->get();
+
+        $credits->each(function ($credit) use ($credits, $id) {
+            $key = $credits->search($credit);
+
+            if ($key < $credits->count() - 1) {
+                $nextCredit = $credits[$key + 1];
+                $endDate = $nextCredit->created_at;
+            } else {
+                $endDate = date('Y-m-d H:i:s'); // Use today's date for the last credit record
+            }
+
+            $startDate = $credit->created_at;
+
+            // Query the Transaction model for records within the date range with credit > 0
+            $transactions = Transaction::where('customer_id', $id)
+                ->where('created_at', '>=', $startDate)
+                ->where('created_at', '<=', $endDate)
+                ->where('credit', '>', 0)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            // Set the transactions as a property of the credit record
+            $credit->transactions = $transactions;
+        });
+
+        return response()->json($credits);
     }
 
 
