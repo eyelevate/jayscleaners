@@ -59,7 +59,7 @@ class CreditsController extends Controller
         $status = 1;
         $employee_id = $request->employeeId;
         $customer_id = $request->customerId;
-
+        $customer = User::find($customer_id);
         $credit = new Credit();
         $credit->amount = $amount;
         $credit->reason = $reason;
@@ -67,14 +67,13 @@ class CreditsController extends Controller
         $credit->employee_id = $employee_id;
         $credit->customer_id = $customer_id;
         if ($credit->save()) {
-            $customer = User::find($customer_id);
             $oldCredit = ($customer->credits !== null) ? $customer->credits : 0;
             $newCredit = $oldCredit + $amount;
             $customer->credits = $newCredit;
             $customer->save();
         }
 
-        return response()->json($credit);
+        return response()->json($customer);
     }
 
     public function edit(Request $request)
@@ -86,7 +85,7 @@ class CreditsController extends Controller
         $customer_id = $request->customerId;
         $credit_id = $request->creditId;
         $old_amount = $request->oldAmount;
-
+        $customer = User::find($customer_id);
         $credit = Credit::find($credit_id);
         $credit->amount = $amount;
         $credit->reason = $reason;
@@ -94,7 +93,6 @@ class CreditsController extends Controller
         $credit->employee_id = $employee_id;
         $credit->customer_id = $customer_id;
         if ($credit->save()) {
-            $customer = User::find($customer_id);
             $oldCredit = ($customer->credits !== null) ? $customer->credits : 0;
             $creditRemoved = $oldCredit - $old_amount;
             $newCredit = $creditRemoved + $amount;
@@ -102,7 +100,7 @@ class CreditsController extends Controller
             $customer->save();
         }
 
-        return response()->json($credit);
+        return response()->json($customer);
     }
 
     public function history($id = null)
