@@ -177,6 +177,10 @@ class UsersController extends Controller
         return response()->error('could_not_edit_user', 500);
     }
 
+    public function fetchUser($id = null) {
+        return response()->json(User::find($id));
+    }
+
 }
 
 ?>
