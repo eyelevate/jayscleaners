@@ -38,6 +38,12 @@ class TransactionsController extends Controller
                     $invoice->status = 5;
                     $invoice->saveOrFail();
                 }
+                if ($request->credit > 0) {
+                    $customer = User::findOrFail($request->customer_id);
+                    $newCredits = (($customer->credits - $request->credit) > 0) ? $customer->credits - $request->credit : 0;
+                    $customer->credits = $newCredits;
+                    $customer->saveOrFail();
+                }
             });
             return response()->json($transaction);
         } catch (ModelNotFoundException $e) {
@@ -79,6 +85,10 @@ class TransactionsController extends Controller
                     $customer->account_total = $request->total;
                 } else {
                     $customer->account_total += $request->total;
+                }
+                if ($request->credit > 0) {
+                    $newCredits = (($customer->credits - $request->credit) > 0) ? $customer->credits - $request->credit : 0;
+                    $customer->credits = $newCredits;
                 }
 
                 $customer->saveOrFail();
@@ -132,12 +142,8 @@ class TransactionsController extends Controller
                     }
                     $transaction->saveOrFail();
                 }
-
-
                 $customer->account_total -= $request->tendered;
-
                 $customer->saveOrFail();
-
             });
             return response()->json($customer);
         } catch (ModelNotFoundException $e) {

@@ -49,10 +49,7 @@ class CreditsController extends Controller
                 Flash::error("Could not locate customer. Please try again");
             }
             return Redirect::back();
-
-
         }
-
     }
 
     public function create(Request $request)
