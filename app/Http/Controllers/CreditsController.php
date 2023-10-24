@@ -23,13 +23,14 @@ use App\Transaction;
 class CreditsController extends Controller
 {
 
-    public function postAdd(Request $request){
+    public function postAdd(Request $request)
+    {
         //Validate the request
         $this->validate($request, [
             'amount' => 'required',
             'reason' => 'required',
-            'customer_id'=>'required'
-        ]);    
+            'customer_id' => 'required'
+        ]);
 
         $credits = new Credit();
         $credits->customer_id = $request->customer_id;
@@ -38,23 +39,24 @@ class CreditsController extends Controller
         $credits->amount = $request->amount;
         $credits->status = 1;
         if ($credits->save()) {
-        	$customers = User::find($request->customer_id);
-        	$credit_amount = (isset($customers->credits)) ? $customers->credits : 0;
-        	$new_credit_amount = $credit_amount + $credits->amount;
-        	$customers->credits = $new_credit_amount;
-        	if ($customers->save()){
-        		Flash::success('Successfully added store credit!');
-        	} else {
-        		Flash::error("Could not locate customer. Please try again");
-        	}
-        	return Redirect::back();
+            $customers = User::find($request->customer_id);
+            $credit_amount = (isset($customers->credits)) ? $customers->credits : 0;
+            $new_credit_amount = $credit_amount + $credits->amount;
+            $customers->credits = $new_credit_amount;
+            if ($customers->save()) {
+                Flash::success('Successfully added store credit!');
+            } else {
+                Flash::error("Could not locate customer. Please try again");
+            }
+            return Redirect::back();
 
-        	
+
         }
 
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $amount = $request->amount;
         $reason = $request->reason;
         $status = 1;
@@ -67,18 +69,26 @@ class CreditsController extends Controller
         $credit->status = $status;
         $credit->employee_id = $employee_id;
         $credit->customer_id = $customer_id;
-        $credit->save();
+        if ($credit->save()) {
+            $customer = User::find($customer_id);
+            $oldCredit = ($customer->credits !== null) ? $customer->credits : 0;
+            $newCredit = $oldCredit + $amount;
+            $customer->credits = $newCredit;
+            $customer->save();
+        }
 
         return response()->json($credit);
     }
 
-    public function edit(Request $request) {
+    public function edit(Request $request)
+    {
         $amount = $request->amount;
         $reason = $request->reason;
         $status = 1;
         $employee_id = $request->employeeId;
         $customer_id = $request->customerId;
         $credit_id = $request->creditId;
+        $old_amount = $request->oldAmount;
 
         $credit = Credit::find($credit_id);
         $credit->amount = $amount;
@@ -86,7 +96,14 @@ class CreditsController extends Controller
         $credit->status = $status;
         $credit->employee_id = $employee_id;
         $credit->customer_id = $customer_id;
-        $credit->save();
+        if ($credit->save()) {
+            $customer = User::find($customer_id);
+            $oldCredit = ($customer->credits !== null) ? $customer->credits : 0;
+            $creditRemoved = $oldCredit - $old_amount;
+            $newCredit = $creditRemoved + $amount;
+            $customer->credits = $newCredit;
+            $customer->save();
+        }
 
         return response()->json($credit);
     }
