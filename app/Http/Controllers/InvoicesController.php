@@ -1215,7 +1215,7 @@ class InvoicesController extends Controller
                 $invoice->due_date = $request->due_date;
                 $invoice->status = $request->status;
                 $invoice->saveOrFail();
-                InvoiceItem::where('invoice_id', $request->id)->deleteOrFail();
+                InvoiceItem::where('invoice_id', $request->id)->delete();
                 $invoiceItems = (array) $request->invoice_items;
                 foreach ($invoiceItems as $item) {
                     $newItem = new InvoiceItem();
