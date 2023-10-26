@@ -1252,5 +1252,12 @@ class InvoicesController extends Controller
             ->get()
         );
     }
+    public function getHistoryInvoices($id = null) {
+        return response()->json(Invoice::with('invoice_items')
+            ->where('customer_id',$id)
+            ->orderBy('id', 'desc')
+            ->get()
+        );
+    }
 }
 
