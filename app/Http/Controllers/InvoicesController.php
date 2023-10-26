@@ -1243,5 +1243,14 @@ class InvoicesController extends Controller
             return response()->error('Error editing invoice, saving an invoice failed, rolling back.', 500);
         }
     }
+
+    public function getPickupInvoices($id = null) {
+        return response()->json(Invoice::with('invoice_items')
+            ->where('customer_id',$id)
+            ->where('status', '<' , 5)
+            ->orderBy('id', 'desc')
+            ->get()
+        );
+    }
 }
 
