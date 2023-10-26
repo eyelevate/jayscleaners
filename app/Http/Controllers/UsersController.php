@@ -169,6 +169,9 @@ class UsersController extends Controller
         $user->zipcode = $request->zipcode;
 
         if($user->save()) {
+            $custid = Custid::where('customer_id',$user->id)->first();
+            $custid->mark = Custid::createOriginalMark($user);
+            $custid->save();
             $user->load('custids');
 
             return response()->json($user);
