@@ -1202,5 +1202,46 @@ class InvoicesController extends Controller
         }
 
     }
+
+    public function edit(Request $request) {
+        $invoiceId = $request->id;
+        try {
+            $invoice = Invoice::findOrFail($invoiceId);
+            DB::transaction(function () use ($invoice, $request) {
+                $invoice->quantity = $request->quantity;
+                $invoice->pretax = $request->pretax;
+                $invoice->tax = $request->tax;
+                $invoice->total = $request->total;
+                $invoice->due_date = $request->due_date;
+                $invoice->status = $request->status;
+                $invoice->saveOrFail();
+                InvoiceItem::where('invoice_id', $request->id)->deleteOrFail();
+                $invoiceItems = (array) $request->invoice_items;
+                foreach ($invoiceItems as $item) {
+                    $newItem = new InvoiceItem();
+                    $newItem->invoice_id = $invoice->id;
+                    $newItem->item_id = $item->item_id;
+                    $newItem->inventory_id = $item->inventory_id;
+                    $newItem->company_id = $item->company_id;
+                    $newItem->customer_id = $item->customer_id;
+                    $newItem->quantity = $item->quantity;
+                    $newItem->color = $item->color;
+                    $newItem->memo = $item->memo;
+                    $newItem->pretax = $item->pretax;
+                    $newItem->tax = $item->tax;
+                    $newItem->total = $item->total;
+                    $newItem->status = $item->status;
+                    $newItem->saveOrFail();
+                }
+                $invoice->load('invoice_items');
+            });
+            return response()->json($invoice);
+        } catch (ModelNotFoundException $e) {
+            return response()->error('Invoice not edited, rolling back', 400);
+
+        } catch (QueryException $e) {
+            return response()->error('Error editing invoice, saving an invoice failed, rolling back.', 500);
+        }
+    }
 }
 
