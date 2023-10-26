@@ -1220,17 +1220,17 @@ class InvoicesController extends Controller
                 foreach ($invoiceItems as $item) {
                     $newItem = new InvoiceItem();
                     $newItem->invoice_id = $invoice->id;
-                    $newItem->item_id = $item->item_id;
-                    $newItem->inventory_id = $item->inventory_id;
-                    $newItem->company_id = $item->company_id;
-                    $newItem->customer_id = $item->customer_id;
-                    $newItem->quantity = $item->quantity;
-                    $newItem->color = $item->color;
-                    $newItem->memo = $item->memo;
-                    $newItem->pretax = $item->pretax;
-                    $newItem->tax = $item->tax;
-                    $newItem->total = $item->total;
-                    $newItem->status = $item->status;
+                    $newItem->item_id = $item['item_id'];
+                    $newItem->inventory_id = $item['inventory_id'];
+                    $newItem->company_id = $item['company_id'];
+                    $newItem->customer_id = $item['customer_id'];
+                    $newItem->quantity = $item['quantity'];
+                    $newItem->color = $item['color'];
+                    $newItem->memo = $item['memo'];
+                    $newItem->pretax = $item['pretax'];
+                    $newItem->tax = $item['tax'];
+                    $newItem->total = $item['total'];
+                    $newItem->status = $item['status'];
                     $newItem->saveOrFail();
                 }
                 $invoice->load('invoice_items');
