@@ -170,6 +170,11 @@ class UsersController extends Controller
 
         if($user->save()) {
             $custid = Custid::where('customer_id',$user->id)->first();
+            if (!$custid) {
+                // Create new Custid if it doesn't exist
+                $custid = new Custid;
+                $custid->customer_id = $user->id;
+            }
             $custid->mark = Custid::createOriginalMark($user);
             $custid->save();
             $user->load('custids');
