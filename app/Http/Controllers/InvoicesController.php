@@ -1205,6 +1205,7 @@ class InvoicesController extends Controller
 
     public function edit(Request $request) {
         $invoiceId = $request->id;
+
         try {
             $invoice = Invoice::findOrFail($invoiceId);
             DB::transaction(function () use ($invoice, $request) {
@@ -1215,23 +1216,39 @@ class InvoicesController extends Controller
                 $invoice->due_date = $request->due_date;
                 $invoice->status = $request->status;
                 $invoice->saveOrFail();
-                InvoiceItem::where('invoice_id', $request->id)->delete();
                 $invoiceItems = (array) $request->invoice_items;
                 foreach ($invoiceItems as $item) {
-                    $newItem = new InvoiceItem();
-                    $newItem->invoice_id = $invoice->id;
-                    $newItem->item_id = $item['item_id'];
-                    $newItem->inventory_id = $item['inventory_id'];
-                    $newItem->company_id = $item['company_id'];
-                    $newItem->customer_id = $item['customer_id'];
-                    $newItem->quantity = $item['quantity'];
-                    $newItem->color = $item['color'];
-                    $newItem->memo = $item['memo'];
-                    $newItem->pretax = $item['pretax'];
-                    $newItem->tax = $item['tax'];
-                    $newItem->total = $item['total'];
-                    $newItem->status = $item['status'];
-                    $newItem->saveOrFail();
+                    if (isset($item['id'])) {
+                        $invoiceItem = InvoiceItem::findOrFail($item['id']);
+                        $invoiceItem->invoice_id = $invoice->id;
+                        $invoiceItem->item_id = $item['item_id'];
+                        $invoiceItem->inventory_id = $item['inventory_id'];
+                        $invoiceItem->company_id = $item['company_id'];
+                        $invoiceItem->customer_id = $item['customer_id'];
+                        $invoiceItem->quantity = $item['quantity'];
+                        $invoiceItem->color = $item['color'];
+                        $invoiceItem->memo = $item['memo'];
+                        $invoiceItem->pretax = $item['pretax'];
+                        $invoiceItem->tax = $item['tax'];
+                        $invoiceItem->total = $item['total'];
+                        $invoiceItem->status = $item['status'];
+                        $invoiceItem->saveOrFail();
+                    } else {
+                        $newItem = new InvoiceItem();
+                        $newItem->invoice_id = $invoice->id;
+                        $newItem->item_id = $item['item_id'];
+                        $newItem->inventory_id = $item['inventory_id'];
+                        $newItem->company_id = $item['company_id'];
+                        $newItem->customer_id = $item['customer_id'];
+                        $newItem->quantity = $item['quantity'];
+                        $newItem->color = $item['color'];
+                        $newItem->memo = $item['memo'];
+                        $newItem->pretax = $item['pretax'];
+                        $newItem->tax = $item['tax'];
+                        $newItem->total = $item['total'];
+                        $newItem->status = $item['status'];
+                        $newItem->saveOrFail();
+                    }
                 }
                 $invoice->load('invoice_items');
             });

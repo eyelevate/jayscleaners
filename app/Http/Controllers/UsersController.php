@@ -189,7 +189,6 @@ class UsersController extends Controller
         // make sure to include custids in the fetch and get by id
         $user = User::with('custids')->find($id);
         return response()->json($user);
-
     }
 
 }

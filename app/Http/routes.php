@@ -122,6 +122,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/admins/api/invoice-item-discount-find-item-id',['uses'=>'AdminsController@postApiInvoiceItemDiscountFindItemId']);
     Route::post('/admins/api/edit-invoice-item',['uses'=>'AdminsController@postApiEditInvoiceItem']);
     Route::post('/admins/api/delete-invoice-items',['uses'=>'AdminsController@postApiDeleteInvoiceItems']);
+    Route::post('/admins/api/items/delete', ['uses' => 'InvoiceItemsController@deleteBulk']);
     #Api-Memo
     Route::post('/admins/api/memos-query',['uses'=>'AdminsController@postApiMemosQuery']);
     #Api-Printer
