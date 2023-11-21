@@ -10,8 +10,10 @@ class InvoiceItemsController extends Controller
     //
     public function deleteBulk(Request $request)
     {
-        // delete all items within a list of ids
-        InvoiceItem::whereIn('id', $request->get('ids'))->delete();
+        // delete only if there are ids length > 0
+        if (count($request->get('ids')) > 0) {
+            InvoiceItem::whereIn('id', $request->get('ids'))->delete();
+        }
 
         return response()->json(true);
     }
