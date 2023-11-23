@@ -2320,7 +2320,7 @@ class AdminsController extends Controller
                 }
             }
 
-            return response()->json(['status' => true, 'invoice' => $invoice::with('invoice_items')]);
+            return response()->json(['status' => true, 'invoice' => Invoice::with('invoice_items')->find($invoice->id)]);
         }
 
         return response()->json(['status' => false]);
